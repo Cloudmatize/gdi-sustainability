@@ -1,0 +1,25 @@
+{
+  "name": "boilerplate",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "dependencies": {
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.24.7",
+    "@tools/eslint-config-custom": "workspace:*",
+    "@tools/prettier": "workspace:*",
+    "@tools/typescript": "workspace:*",
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.1"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18"
+  }
+}
