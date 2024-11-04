@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "gdi-sustainability",
   "private": true,
   "scripts": {
     "build": "turbo build",
