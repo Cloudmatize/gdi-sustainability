@@ -1,10 +1,14 @@
-import { maskName } from "@cloudmatize/ts-utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import Logout from "@/components/auth/Logout";
+import { redirect } from "next/navigation";
+import { AppRoutes } from "@/domain/routes";
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold">Welcome to the Masked Name App!</h1>
-      <p className="text-lg">Masked Name: {maskName("John Rock Lee")}</p>
-    </main>
-  );
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  if (session) {
+    return redirect("/api/auth/signout");
+  } else {
+    return redirect("/api/auth/signin");
+  }
 }
