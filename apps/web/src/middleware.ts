@@ -32,3 +32,4 @@ export default withAuth(
 export const config = {
   matcher: ["/", "/buildings/:path*", "/transports/:path"],
 };
+

@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import React from "react";
 import { Car, Plane, Ship, Truck, Train, LogOut } from "lucide-react";

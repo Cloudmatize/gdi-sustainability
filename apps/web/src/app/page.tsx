@@ -1,4 +1,4 @@
-import BuildingsPage from "@/components/buildings/Page";
+import BuildingsPage from "@/components/buildings/page";
 
 const HomePage = () => <BuildingsPage />;
 

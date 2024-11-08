@@ -2,16 +2,12 @@
 import { Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { signIn, useSession } from "next-auth/react";
-import federatedLogout from "@/utils/federated-logout";
+import { signIn } from "next-auth/react";
+import { Spinner } from "../spinner";
 
 export default function Login() {
-  const { data, status } = useSession();
   const handleLogin = () => {
     signIn("keycloak", { redirect: true });
-  };
-  const handleLogout = () => {
-    federatedLogout();
   };
 
   return (
@@ -40,7 +36,7 @@ export default function Login() {
               className="w-full bg-green-600 hover:bg-green-700"
               onClick={handleLogin}
             >
-              Entrar
+              {status === "loading" ? <Spinner /> : "Entrar"}
             </Button>
             <Button
               variant="outline"
