@@ -1,5 +1,6 @@
-export default function Buildings() { 
-    return <div>
-        Buildings here
-    </div>
+"use client";
+import BuildingsPage from "@/components/buildings/Page";
+
+export default function Page() {
+  return <BuildingsPage />;
 }

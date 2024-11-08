@@ -1,5 +1,8 @@
-export default function Transports() { 
-    return <div>
-        Transports here
-    </div>
+"use client";
+import TransportsPage from "@/components/transports/Page";
+
+export default function Page() {
+  return <TransportsPage />;
 }
+
+

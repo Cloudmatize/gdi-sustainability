@@ -1,14 +1,28 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import { ReactNode, useEffect } from "react";
+import { redirect } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function SessionGuard({ children }: { children: ReactNode }) {
-  const { data, status, update } = useSession();
+  const searchParams = useSearchParams();
+  const autoSignInParam = searchParams.get("autoSignIn");
+  const { data, status } = useSession();
+  
   useEffect(() => {
-    if (data?.error === "RefreshAccessTokenError") {
-      signIn("keycloak");
+    const path = window.location.pathname;
+
+    if (
+      status === "unauthenticated" &&
+      autoSignInParam
+    ) {
+      signIn("keycloak", { redirect: false });
     }
-  }, [data]);
+
+    if (status === "authenticated" && path === "/auth/login") {
+      redirect("/buildings");
+    }
+  }, [data, status, autoSignInParam]);
 
   return <>{children}</>;
 }
