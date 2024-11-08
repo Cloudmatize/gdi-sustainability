@@ -15,8 +15,8 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#065f46]">
-      <div className="absolute inset-0 bg-[url('/login-background.jpg?height=1080&width=1920')] bg-cover bg-center opacity-20" />
+    <div className="relative min-h-screen w-full bg-[#065f46] overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/login-background.jpg?height=1080&width=1920')] bg-cover bg-center opacity-20 animate-[wiggle_40s_infinite]" />
 
       <div className="relative flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md space-y-8 p-8">
