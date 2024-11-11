@@ -1,6 +1,6 @@
-import BuildingsPage from "@/components/buildings/page";
+import TransportsPage from "@/components/transports/page";
 
-const HomePage = () => <BuildingsPage />;
+const HomePage = () => <TransportsPage />;
 
 export default async function Home() {
   return <HomePage />;
