@@ -32,7 +32,7 @@ const EmissionCard = ({
             <span className="font-bold text-sm text-white">CO₂</span>
           </div>
         </div>
-        <span className="text-7xl font-bold h-full text-teal-400 flex items-center">
+        <span className="text-7xl font-bold h-full text-teal-400 flex items-end gap-3">
           {value}
         </span>
       </div>
@@ -80,7 +80,7 @@ export default function TransportsPage() {
         </p>
 
         <div className="border-t border-gray-200 py-6" />
-
+        <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
         <div className="grid gap-6 md:grid-cols-3">
           <EmissionCard
@@ -90,11 +90,11 @@ export default function TransportsPage() {
           />
           <EmissionCard
             value={formatCO2Emission(data?.inboundCO2Emission)}
-            title="Emissão total de CO2 dentro da fronteira"
+            title="Emissão total de CO₂ dentro da fronteira"
           />
           <EmissionCard
             value={formatCO2Emission(data?.outboundCO2Emission)}
-            title="Emissão total de CO2 fora da fronteira"
+            title="Emissão total de CO₂ fora da fronteira"
           />
         </div>
 
