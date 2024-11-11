@@ -17,3 +17,7 @@ export default async function federatedLogout() {
     window.location.href = "/";
   }
 }
+
+export async function logout() {
+  await federatedLogout();
+}

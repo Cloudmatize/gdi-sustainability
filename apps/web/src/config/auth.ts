@@ -1,3 +1,4 @@
+import { graphQLClient } from "@/services/graphql";
 import { AuthOptions, TokenSet } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import KeycloakProvider from "next-auth/providers/keycloak";
@@ -33,6 +34,12 @@ export const authOptions: AuthOptions = {
     maxAge: 60 * 30,
   },
   callbacks: {
+    async session({ token, session }: { token: JWT; session: any }) {
+      return {
+        ...session,
+        token: token.accessToken,
+      };
+    },
     async jwt({ token, account }) {
       if (account) {
         token.idToken = account.id_token;
@@ -44,13 +51,13 @@ export const authOptions: AuthOptions = {
         token.expiresAt &&
         Date.now() < Number(token.expiresAt) * 1000 - 60 * 1000
       ) {
+        graphQLClient.setHeader("Authorization", `Bearer ${token}`);
         return token;
       } else {
         try {
           const response = await requestRefreshOfAccessToken(token);
 
           const tokens: TokenSet = await response.json();
-
           if (!response.ok) throw tokens;
 
           const updatedToken: JWT = {
@@ -62,6 +69,12 @@ export const authOptions: AuthOptions = {
             ),
             refreshToken: tokens.refresh_token ?? token.refreshToken,
           };
+
+          graphQLClient.setHeader(
+            "Authorization",
+            `Bearer ${updatedToken.accessToken}`
+          );
+
           return updatedToken;
         } catch (error) {
           console.error("Error refreshing access token", error);

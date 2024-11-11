@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowLeft, Bus, Calendar, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,10 +9,19 @@ import Co2EmissionPerKilometer from "./sections/co2-per-km";
 import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
 import CO2GoalsIndex from "./sections/co2-goals-index";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { useTransportsTotalCO2Emission } from "@/hooks/transports";
 
-const loading = false;
-const EmissionCard = ({ title, value }: { title: string; value: string }) =>
-  loading ? (
+const EmissionCard = ({
+  title,
+  value,
+  loading,
+}: {
+  title: string;
+  value?: string | number;
+  loading?: boolean;
+}) =>
+  loading || !value ? (
     <Skeleton className="h-[200px]  rounded-xl" />
   ) : (
     <Card className="p-6">
@@ -29,6 +40,7 @@ const EmissionCard = ({ title, value }: { title: string; value: string }) =>
   );
 
 export default function TransportsPage() {
+  const { data, refetch, isFetching } = useTransportsTotalCO2Emission();
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
       <div className="mx-auto space-y-6">
@@ -71,10 +83,18 @@ export default function TransportsPage() {
 
         {/* Metrics */}
         <div className="grid gap-6 md:grid-cols-3">
-          <EmissionCard title="Emissão total de CO₂" value="90t" />
           <EmissionCard
+            loading={isFetching}
+            title="Emissão total de CO₂"
+            value={formatCO2Emission(data?.totalCO2Emission)}
+          />
+          <EmissionCard
+            value={formatCO2Emission(data?.inboundCO2Emission)}
             title="Emissão total de CO2 dentro da fronteira"
-            value="32t"
+          />
+          <EmissionCard
+            value={formatCO2Emission(data?.outboundCO2Emission)}
+            title="Emissão total de CO2 fora da fronteira"
           />
         </div>
 
