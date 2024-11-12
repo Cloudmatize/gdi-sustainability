@@ -36,8 +36,8 @@ export default function CO2GoalsIndex() {
     <div className="space-y-12 py-6">
       <div className="flex items-start justify-between">
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">Índice de aderência a meta</h2>
-          <p className="text-muted-foreground max-w-lg">
+          <h2 className="text-2xl font-semibold text-slate-700">Índice de aderência a meta</h2>
+          <p className="text-muted-foreground max-w-lg ">
             Este índice acompanha nosso progresso em relação às metas de
             sustentabilidade, medindo quão de perto estamos seguindo nossas
             metas de redução de emissões de 2018 a 2030.

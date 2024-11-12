@@ -10,7 +10,8 @@ import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
 import CO2GoalsIndex from "./sections/co2-goals-index";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { useTransportsTotalCO2Emission } from "@/hooks/transports";
+import { useTransportsCO2Emission } from "@/hooks/transports";
+import { useSession } from "next-auth/react";
 
 const EmissionCard = ({
   title,
@@ -27,12 +28,12 @@ const EmissionCard = ({
     <Card className="p-6">
       <div className="space-y-2 h-full flex flex-col">
         <div className="flex items- justify-between h-16 ">
-          <span className="text-muted-foreground max-w-[75%]  ">{title}</span>
+          <span className="text-muted-foreground max-w-[75%]   ">{title}</span>
           <div className="rounded bg-teal-400 py-3 px-3">
             <span className="font-bold text-sm text-white">CO₂</span>
           </div>
         </div>
-        <span className="text-7xl font-bold h-full text-teal-400 flex items-end gap-3">
+        <span className="text-7xl font-bold h-full text-slate-600 flex items-end gap-3">
           {value}
         </span>
       </div>
@@ -40,7 +41,9 @@ const EmissionCard = ({
   );
 
 export default function TransportsPage() {
-  const { data, refetch, isFetching } = useTransportsTotalCO2Emission();
+  const { data: session } = useSession();
+
+  const { data, refetch, isFetching } = useTransportsCO2Emission();
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
       <div className="mx-auto space-y-6">
@@ -50,13 +53,13 @@ export default function TransportsPage() {
             <Link href="#" className="absolute left-6">
               <Button
                 variant="default"
-                className="bg-gray-100 text-slate-800 hover:text-white"
+                className="bg-gray-100 text-slate-700 hover:text-white"
                 size="icon"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="flex items-center gap-2 text-3xl font-bold">
+            <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
               Emissões de transporte <Bus className="h-7 w-7 ml-1 mt-0.5" />
             </h1>
           </div>
