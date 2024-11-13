@@ -74,10 +74,25 @@ export default function Co2EmissionPerKilometer() {
               <BarChart
                 data={data}
                 layout="vertical"
-                margin={{ top: 10, right: 50, bottom: 10, left: 60 }}
+                margin={{ top: 10, left: 50, bottom: 10 }}
               >
-                <XAxis type="number" />
-                <YAxis dataKey="mode" type="category" tick={{ fill: "#666" }} />
+                <XAxis
+                  type="number"
+                  tickSize={1}
+                  fontSize={14}
+                  strokeWidth={0.3}
+                  tickMargin={18}
+                />
+                <YAxis
+                  fontSize={14}
+                  
+                  tickMargin={10}
+                  strokeWidth={0.3}
+                  dataKey="mode"
+
+                  type="category"
+                  tick={{ fill: "#666" }}
+                />
                 <ReferenceLine
                   x={0.75}
                   stroke="#A855F7"
@@ -90,7 +105,8 @@ export default function Co2EmissionPerKilometer() {
                   radius={[0, 4, 4, 0]}
                   label={{
                     position: "right",
-                    formatter: (value: number) => `${value.toFixed(2)} kg/km`,
+                    formatter: (value: number) =>
+                      `${value.toFixed(2)} kgCO₂e/km`,
                     fill: "#666",
                     fontSize: 12,
                   }}

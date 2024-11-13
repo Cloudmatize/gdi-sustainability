@@ -36,11 +36,16 @@ export interface CO2EmissionPerKM {
   mode: TravelMode;
 }
 
-export interface CO2EmissionByYear {
+export interface CO2EmissionByYearAndModal {
   sum_full_co2e_tons: number;
   mode: TravelMode;
   year: number;
 }
+export interface CO2EmissionByYear {
+  sum_full_co2e_tons: number;
+  year: number;
+}
+
 export type TotalCO2EmissionResponse =
   TransportsCubeResponse<TotalCO2EmissionData>;
 
@@ -50,5 +55,9 @@ export type CO2EmissionByTravelBoundsResponse =
 export type CO2EmissionPerKMResponse =
   GraphTransportsCubeResponse<CO2EmissionPerKM>;
 
+export type CO2EmissionByYearAndModalResponse =
+  TransportsCubeResponse<CO2EmissionByYearAndModal>;
+
+
 export type CO2EmissionByYearResponse =
-  TransportsCubeResponse<CO2EmissionByYear>;
+TransportsCubeResponse<CO2EmissionByYearAndModal>;

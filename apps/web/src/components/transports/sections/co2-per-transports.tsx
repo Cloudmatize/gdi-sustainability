@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
-import { useTrannsportCO2EmissionByYear } from "@/hooks/transports";
+import { useTransportsCO2EmissionByYearAndModal } from "@/hooks/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import {
   Bus,
@@ -146,7 +146,7 @@ const TransportCard = ({
 };
 
 export default function Co2EmissionPerTransport() {
-  const { data, isFetching } = useTrannsportCO2EmissionByYear();
+  const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
 
   return (
     <div className="space-y-12 py-6">
@@ -193,12 +193,14 @@ export default function Co2EmissionPerTransport() {
                 <XAxis
                   dataKey="year"
                   tickSize={1}
+                  strokeWidth={0.3}
                   fontSize={14}
                   tickMargin={18}
                 />
                 <YAxis
                   fontSize={14}
                   tickMargin={10}
+                  strokeWidth={0.3}
                   tickFormatter={(value: number) => {
                     return `${formatCO2Emission(value) || 0}`;
                   }}

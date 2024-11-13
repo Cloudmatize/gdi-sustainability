@@ -36,12 +36,23 @@ export const getCO2EmissionPerKMQuery = gql`
   }
 `;
 
-export const getCO2EmissionByYearQuery = gql`
+export const getCO2EmissionByYearAndModalQuery = gql`
   query CubeQuery {
     cube {
       transportation_emission(orderBy: { sum_full_co2e_tons: desc }) {
         sum_full_co2e_tons
         mode
+        year
+      }
+    }
+  }
+`;
+
+export const getCO2EmissionByYearQuery = gql`
+  query CubeQuery {
+    cube {
+      transportation_emission(orderBy: { year: asc }) {
+        sum_full_co2e_tons
         year
       }
     }
