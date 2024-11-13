@@ -11,7 +11,7 @@ export function useTransportsCO2Emission() {
     queryKey: ["(transports): co2-emission"],
     queryFn: () => getTransportsCO2Emission(),
     staleTime: 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 }
 
@@ -20,7 +20,7 @@ export function useTransportsCO2EmissionByTravelBounds() {
     queryKey: ["(transports): co2-emission-by-travel-bounds"],
     queryFn: () => getTransportsCO2EmissionByTravelBounds(),
     staleTime: 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 }
 
@@ -29,7 +29,7 @@ export function useTransportsCO2EmissionPerKM() {
     queryKey: ["(transports): co2-emission-per-km"],
     queryFn: () => getTransportsCO2EmissionPerKM(),
     staleTime: 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 }
 
@@ -38,6 +38,6 @@ export function useTrannsportCO2EmissionByYear() {
     queryKey: ["(transports): co2-emission-by-year"],
     queryFn: () => getTransportsCO2EmissionByYear(),
     staleTime: 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 }

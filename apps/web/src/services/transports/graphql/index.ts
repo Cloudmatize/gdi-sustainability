@@ -152,36 +152,65 @@ export const getTransportsCO2EmissionByYear = async () => {
         )
       ).sort();
 
-      const emissionsByModeAndYear: {
-        [key: string]: { [year: number]: number };
-      } = {};
+      const resultMap: { [year: string]: { [key: string]: number } } = {};
 
-      data.cube.forEach(({ transportation_emission }) => {
-        const { mode, year, sum_full_co2e_tons } = transportation_emission;
-        if (!emissionsByModeAndYear[mode]) {
-          emissionsByModeAndYear[mode] = {};
+      data.cube.forEach((entry) => {
+        const { sum_full_co2e_tons, mode, year } =
+          entry.transportation_emission;
+
+        if (!resultMap[year]) {
+          resultMap[year] = {};
         }
-        emissionsByModeAndYear[mode][year] = sum_full_co2e_tons;
+
+        if (!resultMap[year][mode]) {
+          resultMap[year][mode] = 0;
+        }
+
+        resultMap[year][mode] += sum_full_co2e_tons;
       });
-      const desiredData = Object.entries(emissionsByModeAndYear).map(
-        ([mode, emissions]) => {
-          const modeData: { name: string; [key: string]: number | string } = {
-            name: modeMap[mode as TravelMode] || mode,
-          };
 
-          Object.entries(emissions).forEach(([year, emission]) => {
-            modeData[year] = emission;
+      const formattedData = uniqueYears.map((year) => {
+        const entry: { [key: string]: any } = { year: year.toString() };
+
+        if (resultMap[year]) {
+          Object.keys(resultMap[year]).forEach((mode) => {
+            entry[modeMap[mode as TravelMode]] = resultMap[year][mode];
           });
-
-          return modeData;
         }
-      );
-      const formattedData = {
-        years: uniqueYears,
-        data: desiredData,
-      };
 
-      return formattedData;
+        return entry;
+      });
+
+      const formattedDataWithNulls = formattedData.map((entry) => {
+        const newEntry: { [key: string]: any } = { year: entry.year };
+        Object.keys(entry).forEach((key) => {
+          if (key !== "year") {
+            newEntry[key] = entry[key] === 0 ? null : entry[key];
+          }
+        });
+        return newEntry;
+      });
+
+      const uniqueModes = Array.from(
+        new Set(
+          data.cube.map(
+            ({ transportation_emission }) => transportation_emission.mode
+          )
+        )
+      );
+
+      const filteredUniqueModes = uniqueModes.filter((mode) => {
+        return formattedDataWithNulls.some(
+          (entry) =>
+            entry[modeMap[mode as TravelMode]] !== null &&
+            entry[modeMap[mode as TravelMode]] !== undefined
+        );
+      });
+
+      return {
+        data: formattedDataWithNulls,
+        modals: filteredUniqueModes.map((mode) => modeMap[mode as TravelMode]),
+      };
     }
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);

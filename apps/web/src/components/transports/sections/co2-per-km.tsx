@@ -83,7 +83,7 @@ export default function Co2EmissionPerKilometer() {
                   stroke="#A855F7"
                   strokeDasharray="3 3"
                 />
-                <Tooltip  content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip />} />
                 <Bar
                   dataKey="emissionCO2KgPerKm"
                   fill="#22ccb2"
