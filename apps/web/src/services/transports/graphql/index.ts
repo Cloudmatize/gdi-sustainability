@@ -236,15 +236,7 @@ export const getTransportsCO2EmissionByTravelBounds = async ({
           },
           {}
         )
-      ).map(({ name, withinLimit, outsideLimit }) => {
-        const total = withinLimit + outsideLimit;
-        return {
-          name,
-          withinLimit: total ? Math.round((withinLimit / total) * 100) : 0,
-          outsideLimit: total ? Math.round((outsideLimit / total) * 100) : 0,
-        };
-      });
-
+      );
       return formattedData;
     }
   } catch (error) {
