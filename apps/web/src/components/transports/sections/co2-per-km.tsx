@@ -59,12 +59,12 @@ export default function Co2EmissionPerKilometer() {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      {/* <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <div className="h-px w-4 border-t-2 border-dotted border-purple-400" />
           Referência de sustentabilidade: 0.05
         </div>
-      </div>
+      </div> */}
       {isFetching ? (
         <Skeleton className="h-[450px]" />
       ) : (
@@ -79,25 +79,25 @@ export default function Co2EmissionPerKilometer() {
                 <XAxis
                   type="number"
                   tickSize={1}
-                  fontSize={14}
+                  stroke="#888888"
+                  fontSize={12}
                   strokeWidth={0.3}
                   tickMargin={18}
                 />
                 <YAxis
-                  fontSize={14}
-                  
+                  stroke="#888888"
+                  fontSize={12}
                   tickMargin={10}
                   strokeWidth={0.3}
                   dataKey="mode"
-
                   type="category"
                   tick={{ fill: "#666" }}
                 />
-                <ReferenceLine
+                {/* <ReferenceLine
                   x={0.75}
                   stroke="#A855F7"
                   strokeDasharray="3 3"
-                />
+                /> */}
                 <Tooltip content={<CustomTooltip />} />
                 <Bar
                   dataKey="emissionCO2KgPerKm"

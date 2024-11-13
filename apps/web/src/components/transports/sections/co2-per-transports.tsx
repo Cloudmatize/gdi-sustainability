@@ -194,11 +194,13 @@ export default function Co2EmissionPerTransport() {
                   dataKey="year"
                   tickSize={1}
                   strokeWidth={0.3}
-                  fontSize={14}
+                  stroke="#888888"
+                  fontSize={12}
                   tickMargin={18}
                 />
                 <YAxis
-                  fontSize={14}
+                  stroke="#888888"
+                  fontSize={12}
                   tickMargin={10}
                   strokeWidth={0.3}
                   tickFormatter={(value: number) => {

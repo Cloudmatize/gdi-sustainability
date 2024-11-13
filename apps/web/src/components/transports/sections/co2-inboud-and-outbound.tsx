@@ -58,7 +58,7 @@ const CustomTooltip = ({
 
 const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   return (
-    <div className="custom-legend w-full flex gap-3 justify-center items-center mt-8">
+    <div className="custom-legend w-full flex gap-3 justify-center items-center mt-6">
       {payload?.map((d, index) => (
         <div key={index} className="flex items-center gap-2">
           <div
@@ -124,12 +124,14 @@ export default function CO2InboundAndOutbound() {
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
                 <XAxis
+                  stroke="#888888"
+                  fontSize={12}
                   dataKey="name"
-                  fontSize={14}
                   strokeWidth={0.3}
                 />
                 <YAxis
-                  fontSize={14}
+                  stroke="#888888"
+                  fontSize={12}
                   strokeWidth={0.3}
                   tickMargin={10}
                   label={{
