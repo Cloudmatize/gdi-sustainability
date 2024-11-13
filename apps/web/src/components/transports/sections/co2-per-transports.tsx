@@ -212,6 +212,7 @@ export default function Co2EmissionPerTransport() {
                 <Legend content={<CustomLegend />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
+                    key={index}
                     type="monotone"
                     dataKey={modal}
                     strokeWidth={2}

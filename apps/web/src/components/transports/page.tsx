@@ -12,6 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import { useSession } from "next-auth/react";
+import YearSelect from "../year-select";
+import { useState } from "react";
 
 const EmissionCard = ({
   title,
@@ -43,7 +45,9 @@ const EmissionCard = ({
 export default function TransportsPage() {
   const { data: session } = useSession();
 
-  const { data, refetch, isFetching } = useTransportsCO2Emission();
+  const [dateFilter, setDateFilter] = useState("2023");
+
+  const { data, isFetching } = useTransportsCO2Emission();
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
       <div className="mx-auto space-y-6">
@@ -64,14 +68,12 @@ export default function TransportsPage() {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" className="gap-2">
-              <Calendar className="h-4 w-4" />
-              2024
-            </Button>
-            <Button variant="outline" className="gap-2">
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
+            <YearSelect
+              endYear={2023}
+              startYear={2018}
+              value={dateFilter}
+              onValueChange={(value) => setDateFilter(value)}
+            />
           </div>
         </div>
 
