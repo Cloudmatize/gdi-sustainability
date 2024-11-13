@@ -89,7 +89,10 @@ const CustomTooltip = ({
         {label}
         <div className="flex flex-col">
           <div
-            className={`my-1 text-teal-700 font-semibold ${!differencePercentage ? "" : "text-red-500"}`}
+            style={{
+              color: !differencePercentage ? "" : "#e53e3e",
+            }}
+            className={`my-1 text-teal-700 font-semibold `}
           >
             {status && status}
           </div>
@@ -158,15 +161,11 @@ export default function CO2GoalsIndex() {
               Grau de aderência a meta
             </div>
             <div
-              className={`flex gap-3 items-center text-3xl font-bold text-teal-600 ${currentYearEmissionStatus?.status === "Fora da meta" ? "text-red-400" : ""}`}
+              className={`flex gap-3 items-center text-3xl font-bold text-gray-500 `}
             >
               {currentYearEmissionStatus?.status}
-              <div
-                className={`rounded-lg bg-teal-100 p-2 ${currentYearEmissionStatus?.status === "Fora da meta" ? "bg-red-100" : ""}`}
-              >
-                <Target
-                  className={`h-5 w-5 text-teal-600 ${currentYearEmissionStatus?.status === "Fora da meta" ? "text-red-600" : ""}`}
-                />
+              <div className={`rounded-lg bg-gray-200 p-2 `}>
+                <Target className={`h-5 w-5 text-gray-500 `} />
               </div>
             </div>
           </div>
@@ -196,26 +195,16 @@ export default function CO2GoalsIndex() {
                 <Line
                   type="monotone"
                   dataKey="co2Emission"
-                  stroke={
-                    currentYearEmissionStatus?.status === "Fora da meta"
-                      ? "#f87171"
-                      : "#22ccb2"
-                  }
+                  stroke={"#22ccb2"}
                   strokeWidth={2}
                   dot={{
-                    fill:
-                      currentYearEmissionStatus?.status === "Fora da meta"
-                        ? "#f87171"
-                        : "#059669",
+                    fill: "#059669",
                     stroke: "#fff",
                     strokeWidth: 2,
                     r: 4,
                   }}
                   activeDot={{
-                    fill:
-                      currentYearEmissionStatus?.status === "Fora da meta"
-                        ? "#f87171"
-                        : "#9aeee2",
+                    fill: "#9aeee2",
                     stroke: "#fff",
                     strokeWidth: 2,
                     r: 6,
