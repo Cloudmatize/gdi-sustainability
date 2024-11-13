@@ -14,19 +14,121 @@ import {
 } from "@/types/transports";
 import { graphQLClient } from "@/services/graphql";
 import { convertTons } from "@/utils/convert-tons";
+import { mappedTravelMode } from "@/constants/transports";
 
-const modeMap: {
-  [key in TravelMode]: string;
-} = {
-  AUTOMOBILE: "Carro",
-  BUS: "Ônibus",
-  MOTORCYCLE: "Motocicleta",
-  RAIL: "Trem",
-  SUBWAY: "Metrô",
-  "ON FOOT": "A Pé",
-  CYCLING: "Bicicleta",
-  PLANE: "Avião",
-};
+interface TransportationEmission {
+  sum_full_co2e_tons: number;
+  mode: string;
+  year: number;
+}
+
+interface InputData {
+  cube: { transportation_emission: TransportationEmission }[];
+}
+
+interface CardInfo {
+  mode: string;
+  changePercentage: number;
+  contributionPercentage: number;
+  trend: "increase" | "reduction";
+}
+
+function getEmissionAnalysisByYears(input: InputData): {
+  reduction: CardInfo;
+  increase: CardInfo;
+} {
+  const modeYearlyEmissions: { [mode: string]: { [year: number]: number } } =
+    {};
+  const totalEmissionsByYear: { [year: number]: number } = {};
+
+  input.cube.forEach(({ transportation_emission }) => {
+    const { mode, year, sum_full_co2e_tons } = transportation_emission;
+
+    if (!modeYearlyEmissions[mode]) {
+      modeYearlyEmissions[mode] = {};
+    }
+    modeYearlyEmissions[mode][year] = sum_full_co2e_tons;
+
+    if (!totalEmissionsByYear[year]) {
+      totalEmissionsByYear[year] = 0;
+    }
+    totalEmissionsByYear[year] += sum_full_co2e_tons;
+  });
+
+  const modeTrends: {
+    [mode: string]: {
+      changePercentage: number;
+      trend: "increase" | "reduction";
+      totalContribution: number;
+    };
+  } = {};
+
+  for (const mode in modeYearlyEmissions) {
+    const years = Object.keys(modeYearlyEmissions[mode])
+      .map(Number)
+      .sort((a, b) => a - b);
+    const startYear = years[0];
+    const endYear = years[years.length - 1];
+    const startEmissions = modeYearlyEmissions[mode][startYear];
+    const endEmissions = modeYearlyEmissions[mode][endYear];
+    const changePercentage =
+      (((endEmissions - startEmissions) / startEmissions) * 100) /
+      (years.length - 1);
+
+    const trend = changePercentage >= 0 ? "increase" : "reduction";
+
+    const totalEmissionsAcrossYears = years.reduce(
+      (sum, year) => sum + modeYearlyEmissions[mode][year],
+      0
+    );
+    const totalEmissionsOverall = Object.values(totalEmissionsByYear).reduce(
+      (sum, yearlyTotal) => sum + yearlyTotal,
+      0
+    );
+    const totalContribution =
+      (totalEmissionsAcrossYears / totalEmissionsOverall) * 100;
+
+    modeTrends[mode] = {
+      changePercentage: Math.abs(changePercentage),
+      trend,
+      totalContribution: parseFloat(totalContribution.toFixed(2)),
+    };
+  }
+
+  let highestIncrease: CardInfo | null = null;
+  let highestReduction: CardInfo | null = null;
+
+  for (const mode in modeTrends) {
+    const { changePercentage, trend, totalContribution } = modeTrends[mode];
+    const cardInfo: CardInfo = {
+      mode,
+      changePercentage,
+      contributionPercentage: totalContribution,
+      trend,
+    };
+
+    if (trend === "increase") {
+      if (
+        !highestIncrease ||
+        changePercentage > highestIncrease.changePercentage
+      ) {
+        highestIncrease = cardInfo;
+      }
+    } else if (trend === "reduction") {
+      if (
+        !highestReduction ||
+        changePercentage > highestReduction.changePercentage
+      ) {
+        highestReduction = cardInfo;
+      }
+    }
+  }
+
+  return {
+    reduction: highestReduction!,
+    increase: highestIncrease!,
+  };
+}
 
 export const getTransportsCO2Emission = async () => {
   try {
@@ -78,7 +180,7 @@ export const getTransportsCO2EmissionByTravelBounds = async () => {
               transportation_emission;
             if (!acc[mode])
               acc[mode] = {
-                name: modeMap[mode],
+                name: mappedTravelMode[mode],
                 withinLimit: 0,
                 outsideLimit: 0,
               };
@@ -120,7 +222,7 @@ export const getTransportsCO2EmissionPerKM = async () => {
       const formattedData = data.cube.map(
         ({ graph_transportation_emission_by_mode }) => {
           return {
-            mode: modeMap[graph_transportation_emission_by_mode.mode],
+            mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
             emissionCO2KgPerKm: convertTons(
               graph_transportation_emission_by_mode.avg_co2e_tons_per_km,
               "kg"
@@ -174,7 +276,7 @@ export const getTransportsCO2EmissionByYear = async () => {
 
         if (resultMap[year]) {
           Object.keys(resultMap[year]).forEach((mode) => {
-            entry[modeMap[mode as TravelMode]] = resultMap[year][mode];
+            entry[mappedTravelMode[mode as TravelMode]] = resultMap[year][mode];
           });
         }
 
@@ -202,14 +304,18 @@ export const getTransportsCO2EmissionByYear = async () => {
       const filteredUniqueModes = uniqueModes.filter((mode) => {
         return formattedDataWithNulls.some(
           (entry) =>
-            entry[modeMap[mode as TravelMode]] !== null &&
-            entry[modeMap[mode as TravelMode]] !== undefined
+            entry[mappedTravelMode[mode as TravelMode]] !== null &&
+            entry[mappedTravelMode[mode as TravelMode]] !== undefined
         );
       });
 
+      const emissionsAnalysis = getEmissionAnalysisByYears(data);
       return {
         data: formattedDataWithNulls,
-        modals: filteredUniqueModes.map((mode) => modeMap[mode as TravelMode]),
+        modals: filteredUniqueModes.map(
+          (mode) => mappedTravelMode[mode as TravelMode]
+        ),
+        emissionsAnalysis,
       };
     }
   } catch (error) {
