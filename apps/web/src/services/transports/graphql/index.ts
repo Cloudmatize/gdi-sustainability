@@ -17,6 +17,7 @@ import {
 import { graphQLClient } from "@/services/graphql";
 import { convertTons } from "@/utils/convert-tons";
 import { mappedTravelMode } from "@/constants/transports";
+import { TransportFilters } from "@/store/transports";
 
 interface TransportationEmission {
   sum_full_co2e_tons: number;
@@ -159,12 +160,18 @@ const calculateCityEmissionTargets = (
   return targets;
 };
 
-export const getTransportsCO2Emission = async () => {
+export const getTransportsCO2Emission = async ({
+  filters,
+}: {
+  filters?: TransportFilters;
+}) => {
   try {
-    const data = await graphQLClient.request<TotalCO2EmissionResponse>(
-      getTotalCO2EmissionQuery,
-      { queryName: "getTotalCO2EmissionQuery" }
-    );
+    const query = getTotalCO2EmissionQuery({
+      filters,
+    });
+    const data = await graphQLClient.request<TotalCO2EmissionResponse>(query, {
+      queryName: "getTotalCO2EmissionQuery",
+    });
 
     if (data) {
       const outboundCO2Emission =
@@ -189,10 +196,15 @@ export const getTransportsCO2Emission = async () => {
     console.log("Error fetching total CO2 emission", error);
   }
 };
-export const getTransportsCO2EmissionByTravelBounds = async () => {
+export const getTransportsCO2EmissionByTravelBounds = async ({
+  filters,
+}: {
+  filters?: TransportFilters;
+}) => {
   try {
+    const query = getCO2EmissionByTravelBoundsQuery({ filters });
     const data = await graphQLClient.request<CO2EmissionByTravelBoundsResponse>(
-      getCO2EmissionByTravelBoundsQuery,
+      query,
       { queryName: "getCO2EmissionByTravelBoundsQuery" }
     );
     if (data) {
@@ -240,12 +252,17 @@ export const getTransportsCO2EmissionByTravelBounds = async () => {
   }
 };
 
-export const getTransportsCO2EmissionPerKM = async () => {
+export const getTransportsCO2EmissionPerKM = async ({
+  filters,
+}: {
+  filters?: TransportFilters;
+}) => {
   try {
-    const data = await graphQLClient.request<CO2EmissionPerKMResponse>(
-      getCO2EmissionPerKMQuery,
-      { queryName: "getCO2EmissionPerKMQuery" }
-    );
+    const query = getCO2EmissionPerKMQuery({ filters });
+
+    const data = await graphQLClient.request<CO2EmissionPerKMResponse>(query, {
+      queryName: "getCO2EmissionPerKMQuery",
+    });
 
     if (data) {
       const formattedData = data.cube.map(

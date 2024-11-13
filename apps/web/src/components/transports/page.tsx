@@ -11,20 +11,18 @@ import CO2GoalsIndex from "./sections/co2-goals-index";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { useTransportsCO2Emission } from "@/hooks/transports";
-import { useSession } from "next-auth/react";
 import YearSelect from "../year-select";
-import { useState } from "react";
+import { useTransportsStore } from "@/store/transports";
 
 const EmissionCard = ({
   title,
   value,
-  loading,
 }: {
   title: string;
   value?: string | number;
   loading?: boolean;
 }) =>
-  loading || !value ? (
+  !value ? (
     <Skeleton className="h-[200px]  rounded-xl" />
   ) : (
     <Card className="p-6">
@@ -43,11 +41,16 @@ const EmissionCard = ({
   );
 
 export default function TransportsPage() {
-  const { data: session } = useSession();
+  const { filters, setFilters } = useTransportsStore();
 
-  const [dateFilter, setDateFilter] = useState("2023");
+  const handleYearChange = (value: string) => {
+    setFilters({ date: value });
+  };
+  const { date } = filters;
 
-  const { data, isFetching } = useTransportsCO2Emission();
+  const { data } = useTransportsCO2Emission({
+    filters,
+  });
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
       <div className="mx-auto space-y-6">
@@ -71,8 +74,8 @@ export default function TransportsPage() {
             <YearSelect
               endYear={2023}
               startYear={2018}
-              value={dateFilter}
-              onValueChange={(value) => setDateFilter(value)}
+              value={date}
+              onValueChange={handleYearChange}
             />
           </div>
         </div>
@@ -89,7 +92,6 @@ export default function TransportsPage() {
         {/* Metrics */}
         <div className="grid gap-6 md:grid-cols-3">
           <EmissionCard
-            loading={isFetching}
             title="Emissão total de CO₂"
             value={formatCO2Emission(data?.totalCO2Emission)}
           />

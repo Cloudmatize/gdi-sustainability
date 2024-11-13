@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { useTransportsStore } from "@/store/transports";
 
 const CustomTooltip = ({
   active,
@@ -46,7 +47,10 @@ const CustomTooltip = ({
 };
 
 export default function Co2EmissionPerKilometer() {
-  const { data, isFetching } = useTransportsCO2EmissionPerKM();
+  const { filters } = useTransportsStore();
+  const { data, isFetching } = useTransportsCO2EmissionPerKM({
+    filters,
+  });
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">

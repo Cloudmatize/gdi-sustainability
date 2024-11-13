@@ -55,10 +55,10 @@ const CustomTooltip = ({
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
         {label}
-        {payload.map((item) => {
+        {payload.map((item, index) => {
           return (
             !!item.value && (
-              <div className="flex gap-10 items-center justify-between ">
+              <div key={index} className="flex gap-10 items-center justify-between ">
                 <div className="flex items-center  gap-2  h-10">
                   <div
                     className="w-[14px] h-[14px] rounded-xs"

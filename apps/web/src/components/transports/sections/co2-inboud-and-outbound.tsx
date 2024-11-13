@@ -3,8 +3,8 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2EmissionByTravelBounds } from "@/hooks/transports";
+import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { Building2 } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -73,7 +73,11 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
 };
 
 export default function CO2InboundAndOutbound() {
-  const { data, isFetching } = useTransportsCO2EmissionByTravelBounds();
+  const { filters } = useTransportsStore();
+
+  const { data, isFetching } = useTransportsCO2EmissionByTravelBounds({
+    filters,
+  });
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col md:flex-row justify-between gap-6">
