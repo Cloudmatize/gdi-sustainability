@@ -2,20 +2,45 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { gradientColors } from "@/config/colors";
-import { useTrannsportCO2EmissionByYear } from "@/hooks/transports";
+import { elegantColors } from "@/config/colors";
+import { useTransportsCO2EmissionByYearAndModal } from "@/hooks/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { Car, Truck } from "lucide-react";
 import {
-  Bar,
-  BarChart,
+  Bus,
+  Car,
+  RailSymbol,
+  Truck,
+  Bike,
+  TrainFront,
+  Plane,
+  Footprints,
+} from "lucide-react";
+import { TravelMode } from "@/types/transports";
+import {
+  LineChart,
+  Legend,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { RiMotorbikeFill } from "react-icons/ri";
+import { mappedTravelMode } from "@/constants/transports";
 
+const mappedTravelModeIcons: {
+  [key in TravelMode]: any;
+} = {
+  AUTOMOBILE: Car,
+  BUS: Bus,
+  MOTORCYCLE: RiMotorbikeFill,
+  RAIL: RailSymbol,
+  "ON FOOT": Footprints,
+  CYCLING: Bike,
+  PLANE: Plane,
+  SUBWAY: TrainFront,
+};
 
 const CustomTooltip = ({
   active,
@@ -29,38 +54,75 @@ const CustomTooltip = ({
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
-        {payload.map((item) => {
+        {label}
+        {payload.map((item, index) => {
           return (
-            <div className="flex gap-2 items-center ">
-              <div className="flex items-center gap-2  h-10">
-                <div
-                  className="w-[14px] h-[14px] rounded-xs"
-                  style={{ backgroundColor: item.color }}
-                />
-                <span className="text-slate-800 font-bold  w-12 text-center">
-                  {String(item?.dataKey) || ""}
-                </span>
+            !!item.value && (
+              <div key={index} className="flex gap-10 items-center justify-between ">
+                <div className="flex items-center  gap-2  h-10">
+                  <div
+                    className="w-[14px] h-[14px] rounded-xs"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <span className="text-slate-800 font-bold  text-center">
+                    {String(item?.dataKey) || ""}
+                  </span>
+                </div>
+                {formatCO2Emission(item.value) || 0} tons
               </div>
-              {formatCO2Emission(item.value)} tons
-            </div>
+            )
           );
         })}
       </div>
     );
   }
+};
 
-  return null;
+const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+  return (
+    <div className="custom-legend w-full flex gap-3 justify-center items-center mt-8">
+      {payload?.map((d, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <div
+            className="w-[12px] h-[12px] rounded-full"
+            style={{ backgroundColor: d?.color }}
+          />
+          <span className="text-sm text-slate-700 text-center">{d?.value}</span>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 const TransportCard = ({
-  title,
-  description,
-  icon: Icon,
-  percentage,
-  contribution,
+  data,
+  type,
   loading,
-}: any) =>
-  loading ? (
+}: {
+  data: any;
+  type: "increase" | "reduction";
+  loading: boolean;
+}) => {
+  const description =
+    type === "increase"
+      ? "Modal que obteve a maior acréscimo de emissões durante os últimos anos"
+      : "Modal que obteve a maior redução de emissões durante os últimos anos";
+  const title = mappedTravelMode[data?.[type]?.mode as TravelMode];
+  const Icon = mappedTravelModeIcons[data?.[type]?.mode as TravelMode];
+  const percentage = data?.[type]?.changePercentage;
+  const contribution = data?.[type]?.contributionPercentage;
+
+  const percentageDescription =
+    type === "increase"
+      ? `${percentage?.toFixed(2)}% média anual de crescimento `
+      : `${percentage?.toFixed(2)}% média anual de redução `;
+
+  const contributionDescription =
+    type === "increase"
+      ? `${contribution?.toFixed(2)}% Contribuição no total de emissões`
+      : `${contribution?.toFixed(2)}% Contribuição no total de emissões`;
+
+  return loading ? (
     <Skeleton className="h-[250px]  rounded-xl" />
   ) : (
     <Card className="p-6">
@@ -74,14 +136,17 @@ const TransportCard = ({
       </div>
       <h3 className="text-7xl font-bold text-teal-400 mb-2">{title}</h3>
       <div className="space-y-1">
-        <div className="text-xl font-semibold text-slate-600">{percentage}</div>
-        <div className="text-muted-foreground ">{contribution}</div>
+        <div className="text-xl font-semibold text-slate-600">
+          {percentageDescription}
+        </div>
+        <div className="text-muted-foreground ">{contributionDescription}</div>
       </div>
     </Card>
   );
+};
 
 export default function Co2EmissionPerTransport() {
-  const { data, isFetching } = useTrannsportCO2EmissionByYear();
+  const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
 
   return (
     <div className="space-y-12 py-6">
@@ -98,21 +163,15 @@ export default function Co2EmissionPerTransport() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <TransportCard
+          data={data?.emissionsAnalysis}
+          type={"reduction"}
           loading={isFetching}
-          title="Carro"
-          description="Modal que obteve a maior acréscimo de emissões durante os últimos anos"
-          icon={Car}
-          percentage="45% média anual de redução"
-          contribution="20% Contribuição no total de emissões"
         />
 
         <TransportCard
-          title="Caminhão"
+          data={data?.emissionsAnalysis}
+          type={"increase"}
           loading={isFetching}
-          description="Modal que obteve a maior acréscimo de emissões durante os últimos anos"
-          icon={Truck}
-          percentage="45% média anual de crescimento "
-          contribution="20% Contribuição no total de emissões"
         />
       </div>
 
@@ -123,38 +182,45 @@ export default function Co2EmissionPerTransport() {
           <h3 className="font-semibold mb-6">Emissão de CO₂</h3>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data?.data}>
-                <XAxis dataKey="name" />
-                <YAxis
-                  tickFormatter={(value) => formatCO2Emission(value) || ""}
+              <LineChart
+                width={500}
+                height={300}
+                data={data?.data}
+                margin={{
+                  top: 5,
+                }}
+              >
+                <XAxis
+                  dataKey="year"
+                  tickSize={1}
+                  strokeWidth={0.3}
+                  stroke="#888888"
+                  fontSize={12}
+                  tickMargin={18}
                 />
-
-                <Tooltip content={<CustomTooltip />} />
-
-                {data?.years?.map((year, index) => (
-                  <Bar
-                    legendType="circle"
-                    dataKey={year}
-                    radius={[4, 4, 0, 0]}
-                    stackId="a"
-                    fill={gradientColors[index]}
-                  />
-                ))}
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex justify-center gap-4 mt-4">
-            {data?.years?.map((year, index) => (
-              <div key={year} className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{
-                    backgroundColor: gradientColors[index],
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickMargin={10}
+                  strokeWidth={0.3}
+                  tickFormatter={(value: number) => {
+                    return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <span className="text-sm text-muted-foreground">{year}</span>
-              </div>
-            ))}
+                <Tooltip content={<CustomTooltip />} />
+
+                <Legend content={<CustomLegend />} />
+                {data?.modals?.map((modal, index) => (
+                  <Line
+                    key={index}
+                    type="monotone"
+                    dataKey={modal}
+                    strokeWidth={2}
+                    stroke={elegantColors[index]}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </Card>
       )}

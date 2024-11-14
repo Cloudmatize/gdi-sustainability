@@ -11,18 +11,18 @@ import CO2GoalsIndex from "./sections/co2-goals-index";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { useTransportsCO2Emission } from "@/hooks/transports";
-import { useSession } from "next-auth/react";
+import YearSelect from "../year-select";
+import { useTransportsStore } from "@/store/transports";
 
 const EmissionCard = ({
   title,
   value,
-  loading,
 }: {
   title: string;
   value?: string | number;
   loading?: boolean;
 }) =>
-  loading || !value ? (
+  !value ? (
     <Skeleton className="h-[200px]  rounded-xl" />
   ) : (
     <Card className="p-6">
@@ -41,9 +41,16 @@ const EmissionCard = ({
   );
 
 export default function TransportsPage() {
-  const { data: session } = useSession();
+  const { filters, setFilters } = useTransportsStore();
 
-  const { data, refetch, isFetching } = useTransportsCO2Emission();
+  const handleYearChange = (value: string) => {
+    setFilters({ date: value });
+  };
+  const { date } = filters;
+
+  const { data } = useTransportsCO2Emission({
+    filters,
+  });
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
       <div className="mx-auto space-y-6">
@@ -64,14 +71,12 @@ export default function TransportsPage() {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" className="gap-2">
-              <Calendar className="h-4 w-4" />
-              2024
-            </Button>
-            <Button variant="outline" className="gap-2">
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
+            <YearSelect
+              endYear={2023}
+              startYear={2018}
+              value={date}
+              onValueChange={handleYearChange}
+            />
           </div>
         </div>
 
@@ -87,7 +92,6 @@ export default function TransportsPage() {
         {/* Metrics */}
         <div className="grid gap-6 md:grid-cols-3">
           <EmissionCard
-            loading={isFetching}
             title="Emissão total de CO₂"
             value={formatCO2Emission(data?.totalCO2Emission)}
           />

@@ -3,8 +3,8 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2EmissionByTravelBounds } from "@/hooks/transports";
+import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { Building2 } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -33,9 +33,12 @@ const CustomTooltip = ({
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
         <p className="py-1">{label}</p>
-        {payload.map((item) => {
+        {payload.map((item, index) => {
           return (
-            <div className="flex gap-5 items-center justify-between ">
+            <div
+              key={index}
+              className="flex gap-5 items-center justify-between "
+            >
               <div className="flex items-center gap-2  h-10">
                 <div
                   className="w-[14px] h-[14px] rounded-xs"
@@ -56,8 +59,28 @@ const CustomTooltip = ({
   return null;
 };
 
+const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+  return (
+    <div className="custom-legend w-full flex gap-3 justify-center items-center mt-6">
+      {payload?.map((d, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <div
+            className="w-[12px] h-[12px] rounded-full"
+            style={{ backgroundColor: d?.color }}
+          />
+          <span className="text-sm text-slate-700 text-center">{d?.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default function CO2InboundAndOutbound() {
-  const { data, isFetching } = useTransportsCO2EmissionByTravelBounds();
+  const { filters } = useTransportsStore();
+
+  const { data, isFetching } = useTransportsCO2EmissionByTravelBounds({
+    filters,
+  });
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col md:flex-row justify-between gap-6">
@@ -72,7 +95,10 @@ export default function CO2InboundAndOutbound() {
             fora dos limites geográficos
           </p>
         </div>
-        {isFetching ? (
+
+        {/* Está comentado pra ver qual será a métrica de comparação, talvez entre em uma V2 */}
+
+        {/* {isFetching ? (
           <Skeleton className="h-[130px]  min-w-[250px]" />
         ) : (
           <Card className="p-4 min-w-[250px]">
@@ -91,7 +117,7 @@ export default function CO2InboundAndOutbound() {
               </div>
             </div>
           </Card>
-        )}
+        )} */}
       </div>
 
       {isFetching ? (
@@ -104,8 +130,17 @@ export default function CO2InboundAndOutbound() {
                 data={data}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
-                <XAxis dataKey="name" />
+                <XAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  dataKey="name"
+                  strokeWidth={0.3}
+                />
                 <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  strokeWidth={0.3}
+                  tickMargin={10}
                   label={{
                     value: "Emsisão CO₂ (tons)",
                     angle: -90,
@@ -113,8 +148,10 @@ export default function CO2InboundAndOutbound() {
                   }}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend />
+                <Legend content={<CustomLegend />} />
                 <Bar
+                  strokeWidth={1}
+                  maxBarSize={50}
                   dataKey="withinLimit"
                   name="Dentro do limite"
                   legendType="circle"
@@ -124,6 +161,7 @@ export default function CO2InboundAndOutbound() {
                 />
                 <Bar
                   dataKey="outsideLimit"
+                  maxBarSize={50}
                   name="Fora do limite"
                   legendType="circle"
                   stackId="a"

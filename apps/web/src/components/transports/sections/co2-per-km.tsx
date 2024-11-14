@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { useTransportsStore } from "@/store/transports";
 
 const CustomTooltip = ({
   active,
@@ -46,7 +47,10 @@ const CustomTooltip = ({
 };
 
 export default function Co2EmissionPerKilometer() {
-  const { data, isFetching } = useTransportsCO2EmissionPerKM();
+  const { filters } = useTransportsStore();
+  const { data, isFetching } = useTransportsCO2EmissionPerKM({
+    filters,
+  });
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
@@ -59,12 +63,12 @@ export default function Co2EmissionPerKilometer() {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      {/* <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <div className="h-px w-4 border-t-2 border-dotted border-purple-400" />
           Referência de sustentabilidade: 0.05
         </div>
-      </div>
+      </div> */}
       {isFetching ? (
         <Skeleton className="h-[450px]" />
       ) : (
@@ -74,23 +78,39 @@ export default function Co2EmissionPerKilometer() {
               <BarChart
                 data={data}
                 layout="vertical"
-                margin={{ top: 10, right: 50, bottom: 10, left: 60 }}
+                margin={{ top: 10, left: 50, bottom: 10 }}
               >
-                <XAxis type="number" />
-                <YAxis dataKey="mode" type="category" tick={{ fill: "#666" }} />
-                <ReferenceLine
+                <XAxis
+                  type="number"
+                  tickSize={1}
+                  stroke="#888888"
+                  fontSize={12}
+                  strokeWidth={0.3}
+                  tickMargin={18}
+                />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickMargin={10}
+                  strokeWidth={0.3}
+                  dataKey="mode"
+                  type="category"
+                  tick={{ fill: "#666" }}
+                />
+                {/* <ReferenceLine
                   x={0.75}
                   stroke="#A855F7"
                   strokeDasharray="3 3"
-                />
-                <Tooltip  content={<CustomTooltip />} />
+                /> */}
+                <Tooltip content={<CustomTooltip />} />
                 <Bar
                   dataKey="emissionCO2KgPerKm"
                   fill="#22ccb2"
                   radius={[0, 4, 4, 0]}
                   label={{
                     position: "right",
-                    formatter: (value: number) => `${value.toFixed(2)} kg/km`,
+                    formatter: (value: number) =>
+                      `${value.toFixed(2)} kgCO₂e/km`,
                     fill: "#666",
                     fontSize: 12,
                   }}
