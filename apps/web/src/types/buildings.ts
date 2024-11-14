@@ -1,5 +1,9 @@
 export type BuildingsSector = "RESIDENTIAL" | "NON-RESIDENTIAL";
-
+export type EnergyFractions =
+  | "PROPANE"
+  | "ELECTRICITY"
+  | "DIESEL_OIL"
+  | "NATURAL_GAS";
 interface BuildingsCube<T> {
   buildings: T;
 }
@@ -17,6 +21,7 @@ export interface BuildingsFloorAreasBySector {
   sum_floor_area: number;
   sector: BuildingsSector;
   buildings: number;
+  co2e_tons: number;
 }
 
 export interface BuildingsCO2EmissionsBySector {
@@ -33,7 +38,6 @@ export interface BuildingsEnergyFractionsBySector {
 }
 
 export interface BuildingsEnergyIntensitiesBySector {
-  avg_energy_intensity: number;
   avg_propane_intensity: number;
   avg_diesel_oil_intensity: number;
   avg_electricity_intensity: number;

@@ -7,6 +7,7 @@ export const getBuildingsFloorAreasBySectorQuery = ({}: {}) => gql`
         sum_floor_area
         sector
         buildings
+        co2e_tons
       }
     }
   }
@@ -38,7 +39,6 @@ export const getBuildingsEnergyIntensitiesBySectorQuery = ({}: {}) => gql`
   query CubeQuery {
     cube {
       buildings_intensity {
-        avg_energy_intensity
         avg_propane_intensity
         avg_diesel_oil_intensity
         avg_electricity_intensity

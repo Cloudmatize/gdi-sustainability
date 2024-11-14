@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { ArrowLeft, Calendar, Filter, Building } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Filter,
+  Building,
+  House,
+  Factory,
+} from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 import { Card } from "../ui/card";
 import BuildingsCO2Emissions from "./sections/co2-emissions";
@@ -8,57 +15,15 @@ import EnergyFractions from "./sections/energy-fractions";
 import { useBuildingsFloorAreasBySector } from "@/hooks/buildings";
 import CO2Emissions from "./sections/co2-emissions";
 import EnergyIntensities from "./sections/energy-intensities";
-
-const BuildingsFloorAreasCard = ({
-  title,
-  value,
-  loading,
-  percentage,
-  icon: Icon,
-  description,
-}: {
-  title: string;
-  value?: string | number;
-  loading?: boolean;
-  percentage?: string;
-  description?: string;
-  icon: any;
-}) =>
-  loading || !value ? (
-    <Skeleton className="h-[230px]  rounded-xl" />
-  ) : (
-    <Card className="p-6">
-      <div className="space-y-2 h-full flex flex-col">
-        <div className="flex items- justify-between h-16 ">
-          <span className="text-muted-foreground max-w-[75%]   ">{title}</span>
-          <div className="rounded bg-teal-400 p-3">
-            <Icon className="h-6 w-6 text-white" />
-          </div>
-        </div>
-        <span className="text-7xl font-bold h-full text-slate-600 flex items-end gap-3">
-          {value}
-          {percentage && (
-            <span className="text-2xl text-slate-400 font-light  mb-1">
-              ({percentage})
-            </span>
-          )}
-        </span>
-        {description && (
-          <span className="pt-4 px-2  text-slate-400">{description}</span>
-        )}
-      </div>
-    </Card>
-  );
+import { formatNumber } from "@/utils/format-number";
+import InfoCard from "../info-card";
+import { MdCo2 } from "react-icons/md";
+import { formatCO2Emission } from "@/utils/format-co2-emission";
 
 export default function BuildingsPage() {
   const { data } = useBuildingsFloorAreasBySector({});
 
   const isFetching = false;
-
-  const totalBuildingsArea =
-    (data?.residential?.area ?? 0) + (data?.nonResidential?.area ?? 0);
-  const totalBuildingsCount =
-    (data?.residential?.count ?? 0) + (data?.nonResidential?.count ?? 0);
 
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
@@ -92,34 +57,59 @@ export default function BuildingsPage() {
         <div className="border-t border-gray-200 py-6" />
         {/* Metrics */}
         <div className="grid gap-6 md:grid-cols-3">
-          <BuildingsFloorAreasCard
+          <InfoCard
+            icon={MdCo2}
+            title="Emissão total de CO₂"
+            value={formatCO2Emission(data?.total?.co2Emission)}
+            percentage={"100%"}
+            description={`
+             ${formatNumber(data?.total?.count)} edifícios (${formatNumber(data?.total?.area)}m²)`}
+          />
+          <InfoCard
+            icon={MdCo2}
+            title="Emissão de CO₂ de edifícios residenciais"
+            value={formatCO2Emission(data?.residential?.co2Emission)}
+            percentage={data?.residential?.percentage}
+            description={`
+             ${formatNumber(data?.residential?.count)} edifícios (${formatNumber(data?.residential.area)}m²)`}
+          />
+          <InfoCard
+            icon={MdCo2}
+            value={formatCO2Emission(data?.notResidential?.co2Emission)}
+            title="Emissão de CO₂ de edifícios não residenciais"
+            percentage={data?.notResidential?.percentage}
+            description={`
+              ${formatNumber(data?.notResidential?.count)} edifícios (${formatNumber(data?.notResidential.area)}m²)`}
+          />
+
+          {/* <InfoCard
             icon={Building}
             loading={isFetching}
             title="Total de edifícios do município"
-            value={totalBuildingsCount}
+            value={formatNumber(totalBuildingsCount)}
             percentage={"100%"}
             description={`
-              área de ${totalBuildingsArea}m²`}
+              área de ${formatNumber(totalBuildingsArea)}m²`}
           />
-          <BuildingsFloorAreasCard
-            icon={Building}
+          <InfoCard
+            icon={House}
             loading={isFetching}
             title="Edifícios residenciais"
-            value={data?.residential?.count}
-            description={`área de ${data?.residential?.area}m²`}
+            value={formatNumber(data?.residential?.count)}
+            description={`área de ${formatNumber(data?.residential?.area)}m²`}
             percentage={`${(((data?.residential?.area ?? 0) / totalBuildingsArea) * 100).toFixed(1)}%`}
           />
 
-          <BuildingsFloorAreasCard
-            icon={Building}
+          <InfoCard
+            icon={Factory}
             loading={isFetching}
             title="Edifícios não residenciais"
-            description={`área de ${data?.nonResidential?.area}m²`}
-            value={data?.nonResidential?.count}
+            description={`área de ${formatNumber(data?.nonResidential?.area)}m²`}
+            value={formatNumber(data?.nonResidential?.count)}
             percentage={`${(((data?.nonResidential?.area ?? 0) / totalBuildingsArea) * 100).toFixed(1)}%`}
-          />
+          /> */}
         </div>
-        <CO2Emissions />
+        {/* <CO2Emissions /> */}
         <EnergyFractions />
         <EnergyIntensities />
       </div>

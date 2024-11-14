@@ -139,8 +139,10 @@ const calculateCityEmissionTargets = (
 ) => {
   const brasilEmissions2005 = 2_560_000_000;
   const brasilEmissionsCurrentYear = 2_300_000_000; // (2023)
-  const reductionTarget = 0.67;
-  const targetYear = 2035;
+
+  const baseYear = 2019;
+  const targetYear = 2030;
+  const reductionTarget = 0.21;
 
   const cityProportion = startEmissionData / brasilEmissionsCurrentYear;
 
@@ -174,20 +176,41 @@ export const getTransportsCO2Emission = async ({
     });
 
     if (data) {
-      const outboundCO2Emission =
-        data.cube.find(
-          (d) => d.transportation_emission.travel_bounds === "OUTBOUND"
-        )?.transportation_emission.sum_full_co2e_tons || 0;
+      const outboundCO2Emission = data.cube.find(
+        (d) => d.transportation_emission.travel_bounds === "OUTBOUND"
+      )?.transportation_emission;
 
-      const inboundCO2Emission =
-        data.cube.find(
-          (d) => d.transportation_emission.travel_bounds === "INBOUND"
-        )?.transportation_emission.sum_full_co2e_tons || 0;
+      const inboundCO2Emission = data.cube.find(
+        (d) => d.transportation_emission.travel_bounds === "INBOUND"
+      )?.transportation_emission;
+
+      const totalCo2Emission =
+        (inboundCO2Emission?.sum_full_co2e_tons || 0) +
+        (outboundCO2Emission?.sum_full_co2e_tons || 0);
+
+      const inboundPercentage =
+        (inboundCO2Emission?.sum_full_co2e_tons || 0) / totalCo2Emission;
+      const outboundPercentage = 1 - inboundPercentage;
 
       const formattedData = {
-        outboundCO2Emission,
-        inboundCO2Emission,
-        totalCO2Emission: outboundCO2Emission + inboundCO2Emission,
+        inbound: {
+          co2Emission: inboundCO2Emission?.sum_full_co2e_tons || 0,
+          trips: inboundCO2Emission?.sum_trips || 0,
+          percentage: inboundPercentage,
+        },
+        outbound: {
+          co2Emission: outboundCO2Emission?.sum_full_co2e_tons || 0,
+          trips: outboundCO2Emission?.sum_trips || 0,
+          percentage: outboundPercentage,
+        },
+        total: {
+          co2Emission:
+            (inboundCO2Emission?.sum_full_co2e_tons || 0) +
+            (outboundCO2Emission?.sum_full_co2e_tons || 0),
+          trips:
+            (inboundCO2Emission?.sum_trips || 0) +
+            (outboundCO2Emission?.sum_trips || 0),
+        },
       };
 
       return formattedData;

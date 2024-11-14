@@ -24,6 +24,7 @@ interface GraphTransportsCubeResponse<T> {
 export interface TotalCO2EmissionData {
   sum_full_co2e_tons: number;
   travel_bounds: "INBOUND" | "OUTBOUND";
+  sum_trips:number;
 }
 export interface CO2EmissionPerTravelBounds {
   sum_full_co2e_tons: number;

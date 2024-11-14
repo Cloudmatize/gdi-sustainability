@@ -31,13 +31,16 @@ export async function GET(req: NextRequest) {
           },
         }
       );
-      return NextResponse.json({ message: "Logout successful" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Logout successful" },
+        { status: 200 }
+      );
     } catch (error) {
-      console.error("Error on Keycloak logout", error);
-      return handleError("Error on Keycloak logout", 500);
+      console.error("FederatedLogout - Error on Keycloak logout", (error as Error).message);
+      // return handleError("Error on Keycloak logout", 500);
     }
   } catch (error) {
-    console.error("Error retrieving token", error);
-    return handleError("Unable to logout from the session", 500);
+    console.error("FederatedLogout - Error retrieving token", (error as Error).message);
+    // return handleError("Unable to logout from the session", 500);
   }
 }

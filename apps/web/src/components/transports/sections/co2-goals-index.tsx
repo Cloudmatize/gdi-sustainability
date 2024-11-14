@@ -103,10 +103,13 @@ const CustomTooltip = ({
             <div className="text-muted-foreground text-sm">{sugestion}</div>
           )}
         </div>
-        {payload.map((item) => {
+        {payload.map((item, index) => {
           return (
             !!item.value && (
-              <div className="flex gap-10 items-center justify-between ">
+              <div
+                key={index}
+                className="flex gap-10 items-center justify-between "
+              >
                 <div className="flex items-center  gap-2  h-10">
                   <div
                     className="w-[14px] h-[14px] rounded-xs"
@@ -227,12 +230,23 @@ export default function CO2GoalsIndex() {
                 />
 
                 <ReferenceLine
-                  x={currentYear - 1}
+                  x={2019}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
                     value: "Ano de referência",
                     position: "top",
+                    fill: "#bab8b8",
+                    fontSize: 12,
+                  }}
+                />
+                <ReferenceLine
+                  x={2030}
+                  stroke="#bab8b8"
+                  strokeWidth={1}
+                  label={{
+                    value: "Ano de conclusão da meta",
+                    position: "left",
                     fill: "#bab8b8",
                     fontSize: 12,
                   }}

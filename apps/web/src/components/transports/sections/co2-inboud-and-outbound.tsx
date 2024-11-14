@@ -139,6 +139,9 @@ export default function CO2InboundAndOutbound() {
                 <YAxis
                   stroke="#888888"
                   fontSize={12}
+                  tickFormatter={(value) =>
+                    formatCO2Emission(value ?? 0) || "0"
+                  }
                   strokeWidth={0.3}
                   tickMargin={10}
                   label={{
@@ -151,7 +154,6 @@ export default function CO2InboundAndOutbound() {
                 <Legend content={<CustomLegend />} />
                 <Bar
                   strokeWidth={1}
-                  maxBarSize={50}
                   dataKey="withinLimit"
                   name="Dentro do limite"
                   legendType="circle"
@@ -161,7 +163,6 @@ export default function CO2InboundAndOutbound() {
                 />
                 <Bar
                   dataKey="outsideLimit"
-                  maxBarSize={50}
                   name="Fora do limite"
                   legendType="circle"
                   stackId="a"

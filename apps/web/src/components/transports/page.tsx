@@ -13,32 +13,9 @@ import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import YearSelect from "../year-select";
 import { useTransportsStore } from "@/store/transports";
-
-const EmissionCard = ({
-  title,
-  value,
-}: {
-  title: string;
-  value?: string | number;
-  loading?: boolean;
-}) =>
-  !value ? (
-    <Skeleton className="h-[200px]  rounded-xl" />
-  ) : (
-    <Card className="p-6">
-      <div className="space-y-2 h-full flex flex-col">
-        <div className="flex items- justify-between h-16 ">
-          <span className="text-muted-foreground max-w-[75%]   ">{title}</span>
-          <div className="rounded bg-teal-400 py-3 px-3">
-            <span className="font-bold text-sm text-white">CO₂</span>
-          </div>
-        </div>
-        <span className="text-7xl font-bold h-full text-slate-600 flex items-end gap-3">
-          {value}
-        </span>
-      </div>
-    </Card>
-  );
+import InfoCard from "../info-card";
+import { MdCo2 } from "react-icons/md";
+import { formatNumber } from "@/utils/format-number";
 
 export default function TransportsPage() {
   const { filters, setFilters } = useTransportsStore();
@@ -91,23 +68,36 @@ export default function TransportsPage() {
         <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
         <div className="grid gap-6 md:grid-cols-3">
-          <EmissionCard
+          <InfoCard
+            icon={MdCo2}
             title="Emissão total de CO₂"
-            value={formatCO2Emission(data?.totalCO2Emission)}
+            value={formatCO2Emission(data?.total.co2Emission)}
+            percentage={"100%"}
+            description={`
+              viagens de ${formatNumber(data?.total.trips)}`}
           />
-          <EmissionCard
-            value={formatCO2Emission(data?.inboundCO2Emission)}
-            title="Emissão total de CO₂ dentro da fronteira"
+          <InfoCard
+            icon={MdCo2}
+            title="Emissão de CO₂ dentro da fronteira"
+            value={formatCO2Emission(data?.inbound.co2Emission)}
+            percentage={data?.inbound?.percentage}
+
+            description={`
+              viagens de ${formatNumber(data?.inbound.trips)}`}
           />
-          <EmissionCard
-            value={formatCO2Emission(data?.outboundCO2Emission)}
-            title="Emissão total de CO₂ fora da fronteira"
+          <InfoCard
+            icon={MdCo2}
+            value={formatCO2Emission(data?.outbound.co2Emission)}
+            title="Emissão de CO₂ fora da fronteira"
+            percentage={data?.outbound?.percentage}
+            description={`
+              viagens de ${formatNumber(data?.outbound.trips)}`}
           />
         </div>
 
+        <CO2InboundAndOutbound />
         <Co2EmissionPerTransport />
         <Co2EmissionPerKilometer />
-        <CO2InboundAndOutbound />
         <CO2GoalsIndex />
       </div>
     </div>

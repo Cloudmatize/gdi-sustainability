@@ -98,7 +98,7 @@ const TransportCard = ({
   data,
   type,
   loading,
-}: {
+}: {    
   data: any;
   type: "increase" | "reduction";
   loading: boolean;
@@ -134,7 +134,7 @@ const TransportCard = ({
           <Icon className="h-6 w-6 text-white" />
         </div>
       </div>
-      <h3 className="text-7xl font-bold text-teal-400 mb-2">{title}</h3>
+      <h3 className="text-6xl font-bold text-teal-400 mb-2">{title}</h3>
       <div className="space-y-1">
         <div className="text-xl font-semibold text-slate-600">
           {percentageDescription}
@@ -173,6 +173,7 @@ export default function Co2EmissionPerTransport() {
           type={"increase"}
           loading={isFetching}
         />
+      
       </div>
 
       {isFetching ? (
