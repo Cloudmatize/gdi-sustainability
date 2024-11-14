@@ -134,15 +134,15 @@ function getEmissionAnalysisByYears(input: InputData): {
 }
 
 const calculateCityEmissionTargets = (
-  mostRecentCityEmissions: number,
+  startEmissionData: number,
   startYear: number
 ) => {
   const brasilEmissions2005 = 2_560_000_000;
-  const brasilEmissionsCurrentYear = 2_300_000_000;
+  const brasilEmissionsCurrentYear = 2_300_000_000; // (2023)
   const reductionTarget = 0.67;
   const targetYear = 2035;
 
-  const cityProportion = mostRecentCityEmissions / brasilEmissionsCurrentYear;
+  const cityProportion = startEmissionData / brasilEmissionsCurrentYear;
 
   const cityEmissions2005Estimate = brasilEmissions2005 * cityProportion;
 
