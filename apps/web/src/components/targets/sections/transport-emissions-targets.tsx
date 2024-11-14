@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTrannsportCO2EmissionByYear } from "@/hooks/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { Target } from "lucide-react";
+import { CalendarClock, Percent, Target } from "lucide-react";
 import {
   Legend,
   Line,
@@ -128,7 +128,90 @@ const CustomTooltip = ({
     );
   }
 };
-export default function CO2GoalsIndex() {
+
+const GoalIndexDescription = () => {
+  return (
+    <div className="space-y-12 py-6 w-full">
+      <div className="flex flex-col gap-4">
+        <h2 className="text-2xl font-semibold mb-2 text-slate-700">
+          Índice de Aderência à Meta
+        </h2>
+        <p className="text-muted-foreground max-w-lg">
+          O índice de aderência à meta acompanha o progresso em relação às metas
+          de redução de emissões de CO2 com ano base de 2018 e meta de 20% de
+          redução até 2030.
+        </p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="overflow-hidden">
+          <div className="bg-gradient-to-br from-teal-500 to-teal-400 p-4">
+            <div className="flex items-center gap-2 text-white">
+              <CalendarClock className="h-6 w-6" />
+              <h3 className="text-lg font-semibold">Ano base</h3>
+            </div>
+          </div>
+          <div className="p-6 space-y-4">
+            <p className="text-4xl font-bold text-teal-700">2018</p>
+            <div>
+              <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
+                Emissão inicial de CO2
+              </p>
+              <p className="text-2xl font-semibold text-teal-800">
+                200.212{" "}
+                <span className="text-base font-normal text-teal-600">
+                  toneladas de CO2
+                </span>
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="overflow-hidden">
+          <div className="bg-gradient-to-br from-teal-500 to-teal-400  p-4">
+            <div className="flex items-center gap-2 text-white">
+              <Percent className="h-6 w-6" />
+              <h3 className="text-lg font-semibold">Taxa de redução</h3>
+            </div>
+          </div>
+          <div className="p-6 space-y-4">
+            <p className="text-4xl font-bold text-teal-700">20%</p>
+            <div>
+              <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
+                meta de redução
+              </p>
+              <p className="text-2xl font-semibold text-teal-800">de 2030</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="overflow-hidden">
+          <div className="bg-gradient-to-br from-teal-500 to-teal-400  p-4">
+            <div className="flex items-center gap-2 text-white">
+              <Target className="h-6 w-6" />
+              <h3 className="text-lg font-semibold">Meta</h3>
+            </div>
+          </div>
+          <div className="p-6 space-y-4">
+            <p className="text-4xl font-bold text-teal-700">2030</p>
+            <div>
+              <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
+                Emissão estimada
+              </p>
+              <p className="text-2xl font-semibold text-teal-800">
+                2021.12{" "}
+                <span className="text-base font-normal text-teal-600">
+                  toneladas de CO2
+                </span>
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+};
+export default function TransportEmissionTargets() {
   const { data, isFetching } = useTrannsportCO2EmissionByYear();
 
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
@@ -137,23 +220,9 @@ export default function CO2GoalsIndex() {
     lastYearData?.targetCo2Emission
   );
   return (
-    <div className="space-y-12 py-6">
-      <div className="flex items-start justify-between">
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-slate-700">
-            Índice de aderência a meta
-          </h2>
-          <p className="text-muted-foreground ">
-            O índice de aderência à meta acompanha o progresso em relação às
-            metas de redução de emissões de CO₂ do Brasil, conforme
-            estabelecidas na nova Contribuição Nacional Determinada (NDC)
-            apresentada pelo governo na COP29, parte do Acordo do Clima de
-            Paris. Utilizamos uma Comparação Proporcional com as Emissões do
-            Brasil para projetar uma trajetória de redução alinhada à meta
-            nacional de reduzir entre 59% e 67% das emissões até 2035, com base
-            nos níveis de 2005.
-          </p>
-        </div>
+    <div className="min-h-screen bg-background p-6 mx-16">
+      <div className="flex items-start justify-between mb-8">
+        <GoalIndexDescription />
       </div>
       {isFetching ? (
         <Skeleton className="h-[540px]" />
@@ -173,7 +242,7 @@ export default function CO2GoalsIndex() {
             </div>
           </div>
 
-          <div className="h-[400px]">
+          <div className="h-[400px] ">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={data}

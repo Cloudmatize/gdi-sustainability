@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Bus, Calendar, Filter } from "lucide-react";
+import { ArrowLeft, Bus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import Co2EmissionPerTransport from "./sections/co2-per-transports";
 import Co2EmissionPerKilometer from "./sections/co2-per-km";
 import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
-import CO2GoalsIndex from "./sections/co2-goals-index";
-import { Skeleton } from "@/components/ui/skeleton";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import YearSelect from "../year-select";
@@ -81,7 +78,6 @@ export default function TransportsPage() {
             title="Emissão de CO₂ dentro da fronteira"
             value={formatCO2Emission(data?.inbound.co2Emission)}
             percentage={data?.inbound?.percentage}
-
             description={`
               viagens de ${formatNumber(data?.inbound.trips)}`}
           />
@@ -98,7 +94,6 @@ export default function TransportsPage() {
         <CO2InboundAndOutbound />
         <Co2EmissionPerTransport />
         <Co2EmissionPerKilometer />
-        <CO2GoalsIndex />
       </div>
     </div>
   );
