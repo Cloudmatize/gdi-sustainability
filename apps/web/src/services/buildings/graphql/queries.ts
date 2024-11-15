@@ -31,6 +31,7 @@ export const getBuildingsEnergyFractionsBySectorQuery = ({}: {}) => gql`
         diesel_oil_fraction
         electricity_fraction
         natural_gas_fraction
+        co2e_tons
       }
     }
   }

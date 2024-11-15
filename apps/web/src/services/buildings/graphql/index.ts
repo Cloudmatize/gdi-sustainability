@@ -154,7 +154,7 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
       );
 
     if (data) {
-      const formattedData = data.cube.map(({ buildings }) => {
+      const energyFractions = data.cube.map(({ buildings }) => {
         const fractions = {
           PROPANE: buildings.propane_fraction,
           ELECTRICITY: buildings.diesel_oil_fraction,
@@ -182,6 +182,45 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
           ...sortedFractions,
         };
       });
+
+      const totalEmissionsByFraction = data.cube.reduce(
+        (acc, { buildings }) => {
+          acc.PROPANE =
+            (acc.PROPANE || 0) +
+            buildings.propane_fraction * buildings.co2e_tons;
+          acc.ELECTRICITY =
+            (acc.ELECTRICITY || 0) +
+            buildings.electricity_fraction * buildings.co2e_tons;
+          acc.DIESEL_OIL =
+            (acc.DIESEL_OIL || 0) +
+            buildings.diesel_oil_fraction * buildings.co2e_tons;
+          acc.NATURAL_GAS =
+            (acc.NATURAL_GAS || 0) +
+            buildings.natural_gas_fraction * buildings.co2e_tons;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+
+      const totalEmissions = Object.values(totalEmissionsByFraction).reduce(
+        (sum, value) => sum + value,
+        0
+      );
+
+      const totalEmissionCO2ByFraction = Object.entries(
+        totalEmissionsByFraction
+      )
+        .map(([key, co2Emission]) => ({
+          name: key,
+          co2Emission,
+          percentage: co2Emission / totalEmissions,
+        }))
+        .filter(({ co2Emission }) => co2Emission > 0);
+
+      const formattedData = {
+        totalEmissionCO2ByFraction,
+        energyFractions,
+      };
 
       return formattedData;
     }

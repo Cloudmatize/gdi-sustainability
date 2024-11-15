@@ -35,6 +35,7 @@ export interface BuildingsEnergyFractionsBySector {
   diesel_oil_fraction: number;
   electricity_fraction: number;
   natural_gas_fraction: number;
+  co2e_tons: number;
 }
 
 export interface BuildingsEnergyIntensitiesBySector {

@@ -5,10 +5,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { gradientColors } from "@/config/colors";
 import { ENERGY_FRACTIONS } from "@/constants/buildings";
 import { useBuildingsEnergyFractionsBySector } from "@/hooks/buildings";
+import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { formatNumber } from "@/utils/format-number";
 import {
   Bar,
   BarChart,
+  Cell,
   Legend,
+  Pie,
+  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -17,7 +22,6 @@ import {
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
-  console.log("payload", payload);
   return (
     <div className="custom-legend w-full flex gap-3 justify-center items-center mt-6">
       {payload?.map((d, index) => (
@@ -75,11 +79,65 @@ const CustomTooltip = ({
     );
   }
 };
+const CustomPieChartTooltip = ({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: {
+    value: number;
+    payload: {
+      fill: string;
+      name: string;
+      payload: {
+        co2Emission: number;
+      };
+    };
+  }[];
+  label?: string;
+}) => {
+  if (active && payload && payload.length) {
+    const item = payload[0];
+    return (
+      <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
+        <div className="flex gap-2 items-center ">
+          <div className="flex items-center gap-2  h-10  ">
+            <div
+              className="w-[14px] h-[14px] rounded-xs"
+              style={{ backgroundColor: item.payload?.fill }}
+            />
+            <span className="text-slate-800 font-bold  w-24 text-center">
+              {
+                ENERGY_FRACTIONS[
+                  item.payload.name as keyof typeof ENERGY_FRACTIONS
+                ]
+              }
+            </span>
+          </div>
+        </div>
+        <div>
+          <span className="font-bold ">
+            {formatNumber(Number(item.payload.payload.co2Emission.toFixed(0)))}{" "}
+          </span>
+          tons de CO2 emitidos
+        </div>
+        <div>
+          Equivale à{" "}
+          <span className="font-bold">{(item.value * 100).toFixed(1)}%</span> do
+          total
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
 
 export default function EnergyFractions() {
   const { data, isFetching } = useBuildingsEnergyFractionsBySector({});
   const barData = data
-    ? Object.entries(data[0])
+    ? Object.entries(data.energyFractions[0])
         .filter(([key, value]) => key !== "sector")
         .map(([key]) => key)
         .flat()
@@ -97,65 +155,102 @@ export default function EnergyFractions() {
           de cada modalidade ao longo do tempo.
         </p>
       </div>
-      {isFetching ? (
-        <Skeleton className="h-[490px]  rounded-xl" />
-      ) : (
-        <Card className="p-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold">Fração da fonte de energia</h3>
-            <div className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={data}
-                  layout="vertical"
-                  stackOffset="expand"
-                  margin={{ top: 10, right: 30, left: 100, bottom: 20 }}
-                >
-                  <XAxis
-                    tickFormatter={(value) => `${Math.round(value * 100)}%`}
-                    type="number"
-                    tickSize={1}
-                    stroke="#888888"
-                    fontSize={12}
-                    strokeWidth={0.3}
-                    tickMargin={18}
-                  />
-                  <YAxis
-                    stroke="#888888"
-                    fontSize={12}
-                    tickMargin={10}
-                    strokeWidth={0.3}
-                    tick={{ fill: "#666" }}
-                    type="category"
-                    dataKey="sector"
-                  />
+      <div className="flex gap-8">
+        {isFetching ? (
+          <Skeleton className="h-[490px] w-3/4 first: rounded-xl" />
+        ) : (
+          <Card className="p-6 w-3/4">
+            <div className="space-y-4">
+              <h3 className="font-semibold">Fração da fonte de energia</h3>
+              <div className="h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={data?.energyFractions}
+                    layout="vertical"
+                    stackOffset="expand"
+                    margin={{ top: 10, right: 30, left: 100, bottom: 20 }}
+                  >
+                    <XAxis
+                      tickFormatter={(value) => `${Math.round(value * 100)}%`}
+                      type="number"
+                      tickSize={1}
+                      stroke="#888888"
+                      fontSize={12}
+                      strokeWidth={0.3}
+                      tickMargin={18}
+                    />
+                    <YAxis
+                      stroke="#888888"
+                      fontSize={12}
+                      tickMargin={10}
+                      strokeWidth={0.3}
+                      tick={{ fill: "#666" }}
+                      type="category"
+                      dataKey="sector"
+                    />
 
-                  <Tooltip
-                    formatter={(value) =>
-                      `${(Number(value) * 100).toFixed(1)}%`
-                    }
-                    content={<CustomTooltip />}
-                  />
-                  <Legend content={<CustomLegend />} />
-                  {barData?.map((fraction, index) => {
-                    return (
-                      <Bar
-                        maxBarSize={40}
-                        dataKey={fraction}
-                        key={fraction}
-                        radius={barData.length === index + 1 ? [0, 4, 4, 0] : 0}
-                        stackId="a"
-                        fill={gradientColors[index]}
-                        name={fraction}
+                    <Tooltip
+                      formatter={(value) =>
+                        `${(Number(value) * 100).toFixed(1)}%`
+                      }
+                      content={<CustomTooltip />}
+                    />
+                    <Legend content={<CustomLegend />} />
+                    {barData?.map((fraction, index) => {
+                      return (
+                        <Bar
+                          maxBarSize={40}
+                          dataKey={fraction}
+                          key={fraction}
+                          radius={
+                            barData.length === index + 1 ? [0, 4, 4, 0] : 0
+                          }
+                          stackId="a"
+                          fill={gradientColors[index]}
+                          name={fraction}
+                        />
+                      );
+                    })}
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </Card>
+        )}
+        {isFetching ? (
+          <Skeleton className="h-[490px] flex-1" />
+        ) : (
+          <Card className="p-6 flex-1">
+            <h3 className="font-semibold mb-4">Emissão de CO2</h3>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={data?.totalEmissionCO2ByFraction}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    dataKey="percentage"
+                  >
+                    {data?.totalEmissionCO2ByFraction?.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={gradientColors[index % gradientColors.length]}
                       />
-                    );
-                  })}
-                </BarChart>
+                    ))}
+                  </Pie>
+                  <Legend align="center" content={<CustomLegend />} />
+                  <Tooltip
+                    content={<CustomPieChartTooltip />}
+                    formatter={(value) => `${value}%`}
+                  />
+                </PieChart>
               </ResponsiveContainer>
             </div>
-          </div>
-        </Card>
-      )}
+          </Card>
+        )}
+      </div>
     </div>
   );
 }
