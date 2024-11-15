@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { elegantColors } from "@/config/colors";
+import { elegantColors, gradientColors, oceanColors } from "@/config/colors";
 import { useTransportsCO2EmissionByYearAndModal } from "@/hooks/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import {
@@ -28,6 +28,7 @@ import {
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import { RiMotorbikeFill } from "react-icons/ri";
 import { mappedTravelMode } from "@/constants/transports";
+import { formatNumber } from "@/utils/format-number";
 
 const mappedTravelModeIcons: {
   [key in TravelMode]: any;
@@ -58,7 +59,10 @@ const CustomTooltip = ({
         {payload.map((item, index) => {
           return (
             !!item.value && (
-              <div key={index} className="flex gap-10 items-center justify-between ">
+              <div
+                key={index}
+                className="flex gap-10 items-center justify-between "
+              >
                 <div className="flex items-center  gap-2  h-10">
                   <div
                     className="w-[14px] h-[14px] rounded-xs"
@@ -68,7 +72,7 @@ const CustomTooltip = ({
                     {String(item?.dataKey) || ""}
                   </span>
                 </div>
-                {formatCO2Emission(item.value) || 0} tons
+                {formatNumber(item.value.toFixed(0)) || 0} tons
               </div>
             )
           );
@@ -98,7 +102,7 @@ const TransportCard = ({
   data,
   type,
   loading,
-}: {    
+}: {
   data: any;
   type: "increase" | "reduction";
   loading: boolean;
@@ -134,8 +138,8 @@ const TransportCard = ({
           <Icon className="h-6 w-6 text-white" />
         </div>
       </div>
-      <h3 className="text-6xl font-bold text-teal-400 mb-2">{title}</h3>
-      <div className="space-y-1">
+      <h3 className="text-5xl font-bold text-teal-400 my-6">{title}</h3>
+      <div className="space-y-1 mt-3">
         <div className="text-xl font-semibold text-slate-600">
           {percentageDescription}
         </div>
@@ -173,14 +177,15 @@ export default function Co2EmissionPerTransport() {
           type={"increase"}
           loading={isFetching}
         />
-      
       </div>
 
       {isFetching ? (
         <Skeleton className="h-[530px]  rounded-xl" />
       ) : (
         <Card className="p-6">
-          <h3 className="font-semibold mb-6">Emissão de CO₂</h3>
+          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+            Emsisão CO₂ (tons)
+          </h3>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
@@ -188,7 +193,8 @@ export default function Co2EmissionPerTransport() {
                 height={300}
                 data={data?.data}
                 margin={{
-                  top: 5,
+                  top: 30,
+                  right: 30,
                 }}
               >
                 <XAxis
@@ -215,6 +221,14 @@ export default function Co2EmissionPerTransport() {
                   <Line
                     key={index}
                     type="monotone"
+                    label={{
+                      position: "top",
+                      formatter: (value: number) =>
+                        `${formatCO2Emission(value) || 0} `,
+                      fill: "#666",
+                      fontSize: 12,
+                      offset: 10,
+                    }}
                     dataKey={modal}
                     strokeWidth={2}
                     stroke={elegantColors[index]}

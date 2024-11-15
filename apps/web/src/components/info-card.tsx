@@ -2,6 +2,7 @@ import React from "react";
 import { formatNumber } from "@/utils/format-number";
 import { Skeleton } from "./ui/skeleton";
 import { Card } from "./ui/card";
+import InfoTooltip from "./ui/info-tooltip";
 
 interface InfoCardProps {
   title: string;
@@ -10,6 +11,7 @@ interface InfoCardProps {
   percentage?: string | number;
   description?: string;
   icon: React.ElementType;
+  infoTooltip?: string;
 }
 
 export function InfoCard({
@@ -19,6 +21,7 @@ export function InfoCard({
   percentage,
   icon: Icon,
   description,
+  infoTooltip,
 }: InfoCardProps) {
   return loading || !value ? (
     <Skeleton className="h-[230px] rounded-xl" />
@@ -26,7 +29,10 @@ export function InfoCard({
     <Card className="p-6">
       <div className="space-y-2 h-full flex flex-col">
         <div className="flex items-center justify-between h-16">
-          <span className="text-muted-foreground max-w-[75%]">{title}</span>
+          <div className="flex items-center  max-w-[75%] gap-2 ">
+            <span className="text-muted-foreground">{title}</span>
+            {infoTooltip && <InfoTooltip content={infoTooltip} />}
+          </div>
           <div className="rounded bg-teal-400 p-3">
             <Icon className="h-6 w-6 text-white" />
           </div>

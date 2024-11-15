@@ -1,6 +1,6 @@
 "use client";
-import GoalsPage from "@/components/targets/page";
+import TargetsPage from "@/components/targets/page";
 
 export default function Page() {
-  return <GoalsPage />;
+  return <TargetsPage />;
 }

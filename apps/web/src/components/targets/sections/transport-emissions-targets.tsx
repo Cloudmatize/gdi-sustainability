@@ -158,7 +158,7 @@ const GoalIndexDescription = () => {
                 Emissão inicial de CO2
               </p>
               <p className="text-2xl font-semibold text-teal-800">
-                200.212{" "}
+                100.000{" "}
                 <span className="text-base font-normal text-teal-600">
                   toneladas de CO2
                 </span>
@@ -180,7 +180,7 @@ const GoalIndexDescription = () => {
               <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
                 meta de redução
               </p>
-              <p className="text-2xl font-semibold text-teal-800">de 2030</p>
+              <p className="text-2xl font-semibold text-teal-800">até 2030</p>
             </div>
           </div>
         </Card>
@@ -199,7 +199,7 @@ const GoalIndexDescription = () => {
                 Emissão estimada
               </p>
               <p className="text-2xl font-semibold text-teal-800">
-                2021.12{" "}
+                80.000{" "}
                 <span className="text-base font-normal text-teal-600">
                   toneladas de CO2
                 </span>

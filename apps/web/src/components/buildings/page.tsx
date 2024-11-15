@@ -19,6 +19,7 @@ import { formatNumber } from "@/utils/format-number";
 import InfoCard from "../info-card";
 import { MdCo2 } from "react-icons/md";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
+import DataSourceInfo from "../data-source-info";
 
 export default function BuildingsPage() {
   const { data } = useBuildingsFloorAreasBySector({});
@@ -53,6 +54,7 @@ export default function BuildingsPage() {
           organização a monitorar, analisar e progredir em direção às metas de
           sustentabilidade, focando na redução de gases de efeito estufa.
         </p>
+        <DataSourceInfo />
 
         <div className="border-t border-gray-200 py-6" />
         {/* Metrics */}

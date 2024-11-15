@@ -260,7 +260,10 @@ export const getTransportsCO2EmissionByTravelBounds = async ({
           {}
         )
       );
-      return formattedData;
+      const filteredData = formattedData.filter(
+        (item) => item.withinLimit !== 0 || item.outsideLimit !== 0
+      );
+      return filteredData;
     }
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
@@ -280,17 +283,17 @@ export const getTransportsCO2EmissionPerKM = async ({
     });
 
     if (data) {
-      const formattedData = data.cube.map(
-        ({ graph_transportation_emission_by_mode }) => {
+      const formattedData = data.cube
+        .map(({ graph_transportation_emission_by_mode }) => {
           return {
-            mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
-            emissionCO2KgPerKm: convertTons(
-              graph_transportation_emission_by_mode.avg_co2e_tons_per_km,
-              "kg"
-            ),
+        mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
+        emissionCO2KgPerKm: convertTons(
+          graph_transportation_emission_by_mode.avg_co2e_tons_per_km,
+          "kg"
+        ),
           };
-        }
-      );
+        })
+        .filter((item) => item.emissionCO2KgPerKm !== 0);
 
       return formattedData;
     }
@@ -348,7 +351,7 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
         const newEntry: { [key: string]: any } = { year: entry.year };
         Object.keys(entry).forEach((key) => {
           if (key !== "year") {
-            newEntry[key] = entry[key] === 0 ? null : entry[key];
+        newEntry[key] = entry[key] === 0 ? null : entry[key];
           }
         });
         return newEntry;
@@ -357,7 +360,7 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
       const uniqueModes = Array.from(
         new Set(
           data.cube.map(
-            ({ transportation_emission }) => transportation_emission.mode
+        ({ transportation_emission }) => transportation_emission.mode
           )
         )
       );
@@ -365,8 +368,8 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
       const filteredUniqueModes = uniqueModes.filter((mode) => {
         return formattedDataWithNulls.some(
           (entry) =>
-            entry[mappedTravelMode[mode as TravelMode]] !== null &&
-            entry[mappedTravelMode[mode as TravelMode]] !== undefined
+        entry[mappedTravelMode[mode as TravelMode]] !== null &&
+        entry[mappedTravelMode[mode as TravelMode]] !== undefined
         );
       });
 

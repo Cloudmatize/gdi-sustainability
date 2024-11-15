@@ -3,6 +3,7 @@
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 import { TanstackProvider } from "./tanstack";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -11,7 +12,9 @@ interface ProvidersProps {
 export function PublicProviders({ children }: ProvidersProps) {
   return (
     <SessionProvider refetchInterval={4 * 60}>
-      <TanstackProvider>{children}</TanstackProvider>
+      <TanstackProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+      </TanstackProvider>
     </SessionProvider>
   );
 }

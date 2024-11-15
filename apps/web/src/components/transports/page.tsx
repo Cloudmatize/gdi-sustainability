@@ -13,6 +13,7 @@ import { useTransportsStore } from "@/store/transports";
 import InfoCard from "../info-card";
 import { MdCo2 } from "react-icons/md";
 import { formatNumber } from "@/utils/format-number";
+import DataSourceInfo from "../data-source-info";
 
 export default function TransportsPage() {
   const { filters, setFilters } = useTransportsStore();
@@ -60,7 +61,7 @@ export default function TransportsPage() {
           organização a monitorar, analisar e progredir em direção às metas de
           sustentabilidade, focando na redução de gases de efeito estufa.
         </p>
-
+        <DataSourceInfo />
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
@@ -71,23 +72,29 @@ export default function TransportsPage() {
             value={formatCO2Emission(data?.total.co2Emission)}
             percentage={"100%"}
             description={`
-              viagens de ${formatNumber(data?.total.trips)}`}
+             ${formatNumber(data?.total.trips || 150_000)} viagens`}
           />
           <InfoCard
             icon={MdCo2}
             title="Emissão de CO₂ dentro da fronteira"
             value={formatCO2Emission(data?.inbound.co2Emission)}
             percentage={data?.inbound?.percentage}
+            infoTooltip={
+              "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade."
+            }
             description={`
-              viagens de ${formatNumber(data?.inbound.trips)}`}
+            ${formatNumber(data?.inbound.trips || 100_000)} viagens`}
           />
           <InfoCard
             icon={MdCo2}
             value={formatCO2Emission(data?.outbound.co2Emission)}
             title="Emissão de CO₂ fora da fronteira"
             percentage={data?.outbound?.percentage}
+            infoTooltip={
+              "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade"
+            }
             description={`
-              viagens de ${formatNumber(data?.outbound.trips)}`}
+              ${formatNumber(data?.outbound.trips || 50_000)} viagens`}
           />
         </div>
 
