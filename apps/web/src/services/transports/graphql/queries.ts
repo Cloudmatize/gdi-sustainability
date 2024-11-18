@@ -11,6 +11,7 @@ export const getTotalCO2EmissionQuery = ({
       transportation_emission {
         sum_full_co2e_tons
         travel_bounds
+        sum_trips
       }
     }
   }
