@@ -29,7 +29,7 @@ export default function SessionGuard({
     }
 
     if (status === "authenticated" && path === "/auth/login") {
-      redirect("/buildings");
+      redirect("/transports");
     }
   }, [data, status, autoSignInParam]);
 
