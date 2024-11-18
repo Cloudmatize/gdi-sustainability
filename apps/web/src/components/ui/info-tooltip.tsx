@@ -29,7 +29,7 @@ export default function InfoTooltip({
             className={`h-${iconSize / 4} w-${iconSize / 4} p-0 ${className}`}
           >
             <Info
-              className={`h-${iconSize / 4} w-${iconSize / 4} text-slate-400`}
+              className={`h-${iconSize / 4} w-${iconSize / 4} text-slate-400 ${className}`}
             />
           </Button>
         </TooltipTrigger>

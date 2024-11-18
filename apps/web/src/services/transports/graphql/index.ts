@@ -4,6 +4,7 @@ import {
   getCO2EmissionPerKMQuery,
   getCO2EmissionByYearQuery,
   getCO2EmissionByYearAndModalQuery,
+  getTransportsCO2EmissionModalAnalysisQuery,
 } from "./queries";
 
 import {
@@ -13,6 +14,7 @@ import {
   CO2EmissionPerKMResponse,
   TravelMode,
   CO2EmissionByYearAndModalResponse,
+  CO2EmissionModalAnalysisResponse,
 } from "@/types/transports";
 import { graphQLClient } from "@/services/graphql";
 import { convertTons } from "@/utils/convert-tons";
@@ -135,26 +137,20 @@ function getEmissionAnalysisByYears(input: InputData): {
 
 const calculateCityEmissionTargets = (
   startEmissionData: number,
-  startYear: number
+  startYear: number = 2018
 ) => {
-  const brasilEmissions2005 = 2_560_000_000;
-  const brasilEmissionsCurrentYear = 2_300_000_000; // (2023)
+  const INITIAL_EMISSION_YEAR = startYear;
+  const REDUCTION_RATE = 0.2; // 20%
+  const TARGET_YEAR = 2030;
 
-  const baseYear = 2019;
-  const targetYear = 2030;
-  const reductionTarget = 0.21;
+  const years = TARGET_YEAR - INITIAL_EMISSION_YEAR;
 
-  const cityProportion = startEmissionData / brasilEmissionsCurrentYear;
-
-  const cityEmissions2005Estimate = brasilEmissions2005 * cityProportion;
-
-  const years = targetYear - startYear;
-  const annualReductionRate = (1 - reductionTarget) ** (1 / years);
+  const annualReductionRate = (1 - REDUCTION_RATE) ** (1 / years);
 
   const targets: { [key: number]: number } = {};
-  let currentTarget = cityEmissions2005Estimate;
+  let currentTarget = startEmissionData;
 
-  for (let year = startYear; year <= targetYear; year++) {
+  for (let year = INITIAL_EMISSION_YEAR; year <= TARGET_YEAR; year++) {
     targets[year] = currentTarget;
     currentTarget *= annualReductionRate;
   }
@@ -286,11 +282,11 @@ export const getTransportsCO2EmissionPerKM = async ({
       const formattedData = data.cube
         .map(({ graph_transportation_emission_by_mode }) => {
           return {
-        mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
-        emissionCO2KgPerKm: convertTons(
-          graph_transportation_emission_by_mode.avg_co2e_tons_per_km,
-          "kg"
-        ),
+            mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
+            emissionCO2KgPerKm: convertTons(
+              graph_transportation_emission_by_mode.avg_co2e_tons_per_km,
+              "kg"
+            ),
           };
         })
         .filter((item) => item.emissionCO2KgPerKm !== 0);
@@ -351,7 +347,7 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
         const newEntry: { [key: string]: any } = { year: entry.year };
         Object.keys(entry).forEach((key) => {
           if (key !== "year") {
-        newEntry[key] = entry[key] === 0 ? null : entry[key];
+            newEntry[key] = entry[key] === 0 ? null : entry[key];
           }
         });
         return newEntry;
@@ -360,7 +356,7 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
       const uniqueModes = Array.from(
         new Set(
           data.cube.map(
-        ({ transportation_emission }) => transportation_emission.mode
+            ({ transportation_emission }) => transportation_emission.mode
           )
         )
       );
@@ -368,8 +364,8 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
       const filteredUniqueModes = uniqueModes.filter((mode) => {
         return formattedDataWithNulls.some(
           (entry) =>
-        entry[mappedTravelMode[mode as TravelMode]] !== null &&
-        entry[mappedTravelMode[mode as TravelMode]] !== undefined
+            entry[mappedTravelMode[mode as TravelMode]] !== null &&
+            entry[mappedTravelMode[mode as TravelMode]] !== undefined
         );
       });
 
@@ -402,8 +398,7 @@ export const getTransportsCO2EmissionByYear = async () => {
       });
 
       const targetEmissions = calculateCityEmissionTargets(
-        emissionsByYear[0].co2Emission,
-        emissionsByYear[0].year
+        emissionsByYear[0].co2Emission
       );
 
       const formattedData: {
@@ -429,6 +424,75 @@ export const getTransportsCO2EmissionByYear = async () => {
           targetCo2Emission,
         });
       });
+
+      return formattedData;
+    }
+  } catch (error) {
+    console.log("Error fetching total CO2 emission", error);
+  }
+};
+
+export const getTransportsCO2EmissionModalAnalysis = async () => {
+  try {
+    const query = getTransportsCO2EmissionModalAnalysisQuery();
+    const data = await graphQLClient.request<CO2EmissionModalAnalysisResponse>(
+      query,
+      {
+        queryName: "getTransportsCO2EmissionModalAnalysisQuery",
+      }
+    );
+
+    if (data) {
+      const modalsData: {
+        mode: string;
+        percentageContribution: number;
+        avgPercentageYearly: number;
+        contributionStatus: string;
+      }[] = data?.cube?.map(({ transportation_emission_cards }) => {
+        return {
+          mode: transportation_emission_cards.mode,
+          percentageContribution:
+            transportation_emission_cards.percentage_contribution,
+          avgPercentageYearly:
+            transportation_emission_cards.avg_percentage_yearly,
+          contributionStatus: transportation_emission_cards.contribution_status,
+        };
+      });
+
+      const reductionModals = modalsData?.filter(
+        (modal) => modal.contributionStatus === "Redução"
+      );
+      const elevationModals = modalsData?.filter(
+        (modal) => modal.contributionStatus === "Elevação"
+      );
+
+      const modalWithHighestYearlyReduction = reductionModals?.reduce(
+        (max, modal) => {
+          return modal.avgPercentageYearly > (max?.avgPercentageYearly || 0)
+            ? modal
+            : max;
+        },
+        null as (typeof modalsData)[0] | null
+      );
+
+      const modalWithLowestYearlyReduction = elevationModals?.reduce(
+        (min, modal) => {
+          return modal.avgPercentageYearly <
+            (min?.avgPercentageYearly || Infinity)
+            ? modal
+            : min;
+        },
+        null as (typeof modalsData)[0] | null
+      );
+      const updatedModalsData = modalsData?.map((modal) => ({
+        ...modal,
+        isHighestYearlyReduction: modal.mode === modalWithHighestYearlyReduction?.mode,
+        isLowestYearlyReduction: modal.mode === modalWithLowestYearlyReduction?.mode,
+      }));
+      
+      const formattedData = {
+        modalsData: updatedModalsData,
+      };
 
       return formattedData;
     }

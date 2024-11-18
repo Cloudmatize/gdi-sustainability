@@ -2,18 +2,22 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { elegantColors, gradientColors, oceanColors } from "@/config/colors";
-import { useTransportsCO2EmissionByYearAndModal } from "@/hooks/transports";
+import { elegantColors } from "@/config/colors";
+import {
+  useTransportsCO2EmissionByYearAndModal,
+  useTransportsCO2EmissionModalAnalysis,
+} from "@/hooks/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import {
   Bus,
   Car,
   RailSymbol,
-  Truck,
   Bike,
   TrainFront,
   Plane,
   Footprints,
+  TrendingUp,
+  TrendingDown,
 } from "lucide-react";
 import { TravelMode } from "@/types/transports";
 import {
@@ -21,14 +25,15 @@ import {
   Legend,
   Line,
   ResponsiveContainer,
-  Tooltip,
   XAxis,
+  Tooltip as RechartTooltip,
   YAxis,
 } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import { RiMotorbikeFill } from "react-icons/ri";
 import { mappedTravelMode } from "@/constants/transports";
 import { formatNumber } from "@/utils/format-number";
+import InfoTooltip from "@/components/ui/info-tooltip";
 
 const mappedTravelModeIcons: {
   [key in TravelMode]: any;
@@ -98,52 +103,100 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   );
 };
 
-const TransportCard = ({
+const ModalEmissionAnalysisCard = ({
   data,
-  type,
   loading,
 }: {
-  data: any;
-  type: "increase" | "reduction";
+  data: {
+    mode: string;
+    avgPercentageYearly: number;
+    percentageContribution: number;
+    contributionStatus: "Elevação" | "Redução";
+    isHighestYearlyReduction: boolean;
+    isLowestYearlyReduction: boolean;
+  };
   loading: boolean;
 }) => {
-  const description =
-    type === "increase"
-      ? "Modal que obteve a maior acréscimo de emissões durante os últimos anos"
-      : "Modal que obteve a maior redução de emissões durante os últimos anos";
-  const title = mappedTravelMode[data?.[type]?.mode as TravelMode];
-  const Icon = mappedTravelModeIcons[data?.[type]?.mode as TravelMode];
-  const percentage = data?.[type]?.changePercentage;
-  const contribution = data?.[type]?.contributionPercentage;
+  const modalWithLowestYearlyReductionDescription =
+    data?.isLowestYearlyReduction
+      ? `O modal ${mappedTravelMode[data?.mode as TravelMode]} foi o maior responsável pelo aumento de emissões, contribuindo de forma significativa para o total de emissões no período analisado`
+      : null;
+  const modalWithHighestYearlyReductionDescription =
+    data?.isHighestYearlyReduction
+      ? `As emissões do modal ${mappedTravelMode[data?.mode as TravelMode]} apresentaram a maior redução anual, indicando uma tendência positiva no período analisado`
+      : null;
 
-  const percentageDescription =
-    type === "increase"
-      ? `${percentage?.toFixed(2)}% média anual de crescimento `
-      : `${percentage?.toFixed(2)}% média anual de redução `;
+  const title = mappedTravelMode[data?.mode as TravelMode];
+  const Icon = mappedTravelModeIcons[data?.mode as TravelMode] || Bus;
 
-  const contributionDescription =
-    type === "increase"
-      ? `${contribution?.toFixed(2)}% Contribuição no total de emissões`
-      : `${contribution?.toFixed(2)}% Contribuição no total de emissões`;
+  const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
 
   return loading ? (
-    <Skeleton className="h-[250px]  rounded-xl" />
+    <Skeleton className="h-[200px]  rounded-xl" />
   ) : (
-    <Card className="p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="text-sm text-muted-foreground max-w-xs">
-          {description}
+    <Card className="p-6 hover:shadow-lg transition-shadow">
+      <div className="space-y-5">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-teal-500">{title}</h3>
+            </div>
+          </div>
+          <div className="rounded-lg bg-teal-100 p-2">
+            <Icon className="h-5 w-5 text-teal-500" />
+          </div>
         </div>
-        <div className="rounded bg-teal-400 p-3">
-          <Icon className="h-6 w-6 text-white" />
+
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1">
+            <p
+              className={` font-bold ${
+                trend === "up" ? "text-red-400" : "text-teal-500"
+              }`}
+            >
+              {data.contributionStatus}
+            </p>
+          </div>
+          <div className=" flex items-center gap-1">
+            <p className="text-sm text-muted-foreground ">
+              Média anual de {trend === "up" ? "elevação" : "redução"}:
+            </p>
+            <div className="flex items-center gap-1">
+              {trend === "up" ? (
+                <TrendingUp className="h-4 w-4 text-red-400" />
+              ) : (
+                <TrendingDown className="h-4 w-4 text-teal-500" />
+              )}
+              <span
+                className={` font-bold ${
+                  trend === "up" ? "text-red-400" : "text-teal-500"
+                }`}
+              >
+                {data.avgPercentageYearly}%
+              </span>
+              {modalWithLowestYearlyReductionDescription && (
+                <InfoTooltip
+                  className="text-white fill-red-400"
+                  content={modalWithLowestYearlyReductionDescription}
+                />
+              )}
+              {modalWithHighestYearlyReductionDescription && (
+                <InfoTooltip
+                  className="text-white fill-teal-400"
+                  content={modalWithHighestYearlyReductionDescription}
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <p className="text-sm text-muted-foreground">
+              Contribuição no total:
+            </p>
+            <p className=" font-bold text-teal-500">
+              {data.percentageContribution}%
+            </p>
+          </div>
         </div>
-      </div>
-      <h3 className="text-5xl font-bold text-teal-400 my-6">{title}</h3>
-      <div className="space-y-1 mt-3">
-        <div className="text-xl font-semibold text-slate-600">
-          {percentageDescription}
-        </div>
-        <div className="text-muted-foreground ">{contributionDescription}</div>
       </div>
     </Card>
   );
@@ -151,7 +204,9 @@ const TransportCard = ({
 
 export default function Co2EmissionPerTransport() {
   const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
-
+  const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
+    useTransportsCO2EmissionModalAnalysis();
+  console.log("modalAnalysis", modalAnalysis);
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
@@ -165,18 +220,25 @@ export default function Co2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <TransportCard
-          data={data?.emissionsAnalysis}
-          type={"reduction"}
-          loading={isFetching}
-        />
-
-        <TransportCard
-          data={data?.emissionsAnalysis}
-          type={"increase"}
-          loading={isFetching}
-        />
+      <div className="grid gap-6 md:grid-cols-3">
+        {modalAnalysis &&
+          modalAnalysis.modalsData &&
+          modalAnalysis.modalsData.map((modal, index) => {
+            const formattedModal = {
+              ...modal,
+              contributionStatus: modal.contributionStatus as
+                | "Redução"
+                | "Elevação",
+            };
+            return (
+              <div key={index}>
+                <ModalEmissionAnalysisCard
+                  data={formattedModal}
+                  loading={isLoadingModalAnalysis}
+                />
+              </div>
+            );
+          })}
       </div>
 
       {isFetching ? (
@@ -214,7 +276,7 @@ export default function Co2EmissionPerTransport() {
                     return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <RechartTooltip content={<CustomTooltip />} />
 
                 <Legend content={<CustomLegend />} />
                 {data?.modals?.map((modal, index) => (

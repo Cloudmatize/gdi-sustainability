@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTrannsportCO2EmissionByYear } from "@/hooks/transports";
+import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { CalendarClock, Percent, Target } from "lucide-react";
 import {
@@ -212,7 +212,7 @@ const GoalIndexDescription = () => {
   );
 };
 export default function TransportEmissionTargets() {
-  const { data, isFetching } = useTrannsportCO2EmissionByYear();
+  const { data, isFetching } = useTransportCO2EmissionByYear();
 
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
   const currentYearEmissionStatus = checkEmissionsStatus(
