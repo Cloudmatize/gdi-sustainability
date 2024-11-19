@@ -15,6 +15,28 @@ export const routes = [
         icon: MapIcon,
       },
       {
+        id: 7,
+        title: "Apenas Teste",
+        path: "/",
+        icon: Cloud,
+        children: [
+            {
+                id: 8,
+                parent: 7,
+                title: "Emissão de Transporte",
+                path: "#",
+                icon: Bus,
+              },
+              {
+                id: 9,
+                parent: 7,
+                title: "Emissão de Edifícios",
+                path: "#",
+                icon: Building,
+              },
+        ]
+    },
+      {
         id: 3,
         title: "Rastreador de Metas",
         path: "#",
