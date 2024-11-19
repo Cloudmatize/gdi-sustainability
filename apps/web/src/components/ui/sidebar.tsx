@@ -15,7 +15,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Slot } from "@radix-ui/react-slot"
 import { type VariantProps, cva } from "class-variance-authority"
-import { ArrowLeft } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 import React, { type CSSProperties, type ComponentProps, type ElementRef, createContext, forwardRef, useCallback, useContext, useEffect, useState } from "react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
@@ -264,7 +264,7 @@ const SidebarTrigger = forwardRef<
   ElementRef<typeof Button>,
   ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, open } = useSidebar()
 
   return (
     <Button
@@ -275,16 +275,45 @@ const SidebarTrigger = forwardRef<
       toggleSidebar()
     }}
     {...props}
-      variant="default"
-      className="bg-gray-100 text-slate-700 hover:text-white"
+      variant="ghost"
+      className="text-slate-700 bg-transparent"
       size="icon"
     >
-      <ArrowLeft className="h-5 w-5" />
+      <ChevronLeft className="h-5 w-5" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
 })
 SidebarTrigger.displayName = "SidebarTrigger"
+
+const SidebarTriggerOnPage = forwardRef<
+  ElementRef<typeof Button>,
+  ComponentProps<typeof Button>
+>(({ className, onClick, ...props }, ref) => {
+  const { toggleSidebar, open } = useSidebar()
+
+  if (!open) {
+    return (
+      <Button
+      ref={ref}
+      data-sidebar="trigger"
+      onClick={(event) => {
+        onClick?.(event)
+        toggleSidebar()
+      }}
+      {...props}
+        variant="ghost"
+        className="text-slate-700 bg-transparent"
+        size="icon"
+      >
+        <ChevronLeft className="h-5 w-5" />
+        <span className="sr-only">Toggle Sidebar</span>
+      </Button>
+    )
+  } 
+  return (<></>)
+})
+SidebarTriggerOnPage.displayName = "SidebarTriggerOnPage"
 
 const SidebarRail = forwardRef<
   HTMLButtonElement,
@@ -751,15 +780,13 @@ export {
   SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSkeleton,
+  SidebarMenuItem, SidebarMenuSkeleton,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,
-  SidebarTrigger,
-  useSidebar
+  SidebarTrigger, SidebarTriggerOnPage, useSidebar
 }
 

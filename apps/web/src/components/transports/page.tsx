@@ -6,7 +6,7 @@ import { useTransportsCO2Emission } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { Bus } from "lucide-react";
-import { SidebarTrigger } from "../ui/sidebar";
+import { SidebarTriggerOnPage } from "../ui/sidebar";
 import YearSelect from "../year-select";
 import CO2GoalsIndex from "./sections/co2-goals-index";
 import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
@@ -54,7 +54,7 @@ export default function TransportsPage() {
     <div className="min-h-screen bg-background p-6 mx-16">
       <div className="mx-auto space-y-6">
         {/* Header */}
-        <SidebarTrigger />
+        <SidebarTriggerOnPage />
         <div className="flex items-center justify-between">
           
           <div className="flex items-center gap-4">
