@@ -1,6 +1,14 @@
 "use client";
 
-import { Building2, Goal, Leaf, LogOut, Truck, User } from "lucide-react";
+import {
+  Building2,
+  Goal,
+  Leaf,
+  LogOut,
+  Truck,
+  User,
+  LayoutDashboard,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -21,7 +29,12 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    title: "Emissão de Transportes",
+    title: "Visão geral",
+    href: "/dashboard",
+    icon: <LayoutDashboard className="h-4 w-4" />,
+  },
+  {
+    title: "Emissão de transportes",
     href: "/transports",
     icon: <Truck className="h-4 w-4" />,
   },
