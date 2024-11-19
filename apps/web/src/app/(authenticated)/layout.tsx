@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/ui/app-sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { CustomSideBarTrigger, SidebarProvider } from "@/components/ui/sidebar";
 import { AuthenticatedProviders } from "@/providers/authenticated";
 import { cookies } from "next/headers";
 import type { ReactNode } from "react";
@@ -11,10 +11,20 @@ export default async function AuthenticatedLayout({ children }: Props) {
   const cookieStore = cookies()
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true"
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
-      <AuthenticatedProviders>
-        {children}</AuthenticatedProviders>
-    </SidebarProvider>
+    <>
+      <SidebarProvider defaultOpen={defaultOpen}>
+        <div className="flex flex-row w-full h-full p-0 m-0">
+          <AppSidebar />
+          <div className="w-full p-0 m-0 overflow-hidden flex flex-col gap-4">
+            <div className="w-full bg-sidebar flex flex-row items-center gap-2 border-b p-2 h-[65px]">
+              <CustomSideBarTrigger className="" />
+              Emissões de transporte
+            </div>
+            <AuthenticatedProviders>
+              {children}</AuthenticatedProviders>
+          </div>
+        </div>
+      </SidebarProvider>
+    </>
   );
 }
