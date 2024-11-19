@@ -59,8 +59,8 @@ export function MobileSideBar() {
                                 <SidebarGroupContent className="mt-2">
                                     <SidebarMenu className="border-l-2 px-4">
                                         {route?.children?.map((children) => (
-                                            <SidebarMenuItem key={children.title}>
-                                                <SidebarMenuButton asChild className={`${openRoute.includes(children.id) ? "bg-teal-400 text-white  w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(children)}>
+                                            <SidebarMenuItem key={children.title} className="max-w-56 w-56">
+                                                <SidebarMenuButton asChild className={`max-w-56 ${openRoute.includes(children.id) ? "bg-teal-400 text-white  w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(children)}>
                                                     <a href={children.path}>
                                                         <children.icon />
                                                         <span>{children.title}</span>
@@ -77,8 +77,8 @@ export function MobileSideBar() {
                     <SidebarGroup className="p-1" key={route.id}>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton variant="default" className={`${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                <SidebarMenuItem className="max-w-56 w-56">
+                                    <SidebarMenuButton variant="default" className={`max-w-56 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                         <route.icon size={20} />
                                         {route.title}
                                     </SidebarMenuButton>

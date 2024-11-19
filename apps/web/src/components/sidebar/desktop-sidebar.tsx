@@ -50,10 +50,11 @@ export function DesktopSideBar() {
                         <Collapsible open={openRoute.includes(route.id)} className="group/collapsible">
                             <SidebarGroup className="p-1 my-1 flex flex-col items-center">
                                 {!open ?
-                                    (<DropdownMenuTrigger><SidebarMenuButton tooltip={route.title} variant="default" className={`text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
-                                        <route.icon size={20} />
-                                        {open && route.title}
-                                    </SidebarMenuButton>
+                                    (<DropdownMenuTrigger>
+                                        <SidebarMenuButton tooltip={route.title} variant="default" className={`text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                            <route.icon size={20} />
+                                            {open && route.title}
+                                        </SidebarMenuButton>
                                     </DropdownMenuTrigger>
                                     ) :
                                     (
@@ -74,8 +75,8 @@ export function DesktopSideBar() {
                                     <DropdownMenuLabel className="flex flex-row items-center justify-start gap-2"><route.icon size={20} /> {route.title}</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     {route?.children?.map((children) => (
-                                        <DropdownMenuItem key={children.title} className="p-0 m-0 hover:bg-teal-400 ">
-                                            <SidebarMenuButton asChild variant="default" className={`text-slate-600 flex flex-row justify-start gap-2 ${openRoute.includes(children.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`}>
+                                        <DropdownMenuItem key={children.title} className="p-0 m-0 hover:bg-teal-400 max-w-56 w-56">
+                                            <SidebarMenuButton asChild variant="default" className={`max-w-56 text-slate-600 flex flex-row justify-start gap-2 ${openRoute.includes(children.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`}>
                                                 <a href={children.path}>
                                                     <children.icon />
                                                     <span>{children.title}</span>
@@ -88,8 +89,8 @@ export function DesktopSideBar() {
                                     <SidebarGroupContent className="pl-4 mt-2">
                                         <SidebarMenu className="border-l-2 px-2">
                                             {route?.children?.map((children) => (
-                                                <SidebarMenuItem key={children.title}>
-                                                    <SidebarMenuButton asChild className={`text-slate-600 ${openRoute.includes(children.id) ? "bg-teal-400 text-white mb-2 w-full font-bold" : "mb-2 w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(children)}>
+                                                <SidebarMenuItem key={children.title} className="max-w-56 w-56">
+                                                    <SidebarMenuButton asChild className={`max-w-56 text-slate-600 ${openRoute.includes(children.id) ? "bg-teal-400 text-white mb-2 w-full font-bold" : "mb-2 w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(children)}>
                                                         <a href={children.path}>
                                                             <children.icon />
                                                             <span>{children.title}</span>
@@ -106,10 +107,11 @@ export function DesktopSideBar() {
                     <SidebarGroup className="p-1" key={route.id}>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                <SidebarMenuItem><SidebarMenuButton tooltip={route.title} variant="default" className={`text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
-                                    <route.icon size={20} />
-                                    {open && route.title}
-                                </SidebarMenuButton>
+                                <SidebarMenuItem className="max-w-56 w-56">
+                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`max-w-56 text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                        <route.icon size={20} />
+                                        {open && route.title}
+                                    </SidebarMenuButton>
                                 </SidebarMenuItem>
                             </SidebarMenu>
                         </SidebarGroupContent>
