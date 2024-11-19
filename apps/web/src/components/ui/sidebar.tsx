@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button, type ButtonProps } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tooltip"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import { Slot } from "@radix-ui/react-slot"
 import { type VariantProps, cva } from "class-variance-authority"
 import { ChevronLeft } from "lucide-react"
@@ -22,7 +23,7 @@ const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
-const SIDEBAR_WIDTH_ICON = "3rem"
+const SIDEBAR_WIDTH_ICON = "3.5rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
 type SidebarContext = {
@@ -90,7 +91,7 @@ const SidebarProvider = forwardRef<
 
     // Helper to toggle the sidebar.
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-        const toggleSidebar = useCallback(() => {
+    const toggleSidebar = useCallback(() => {
       return isMobile
         ? setOpenMobile((open) => !open)
         : setOpen((open) => !open)
@@ -260,25 +261,60 @@ const Sidebar = forwardRef<
 )
 Sidebar.displayName = "Sidebar"
 
+interface CustomSideBarTriggerProps extends ButtonProps {
+  handleToggleSideBar?: () => void;
+}
+
+const CustomSideBarTrigger = forwardRef<HTMLButtonElement, CustomSideBarTriggerProps>(({ className, onClick, handleToggleSideBar, ...props }, ref) => {
+  const { toggleSidebar, open } = useSidebar()
+
+  const handleRemoveChecks = () => {
+    if (handleToggleSideBar) handleToggleSideBar()
+  }
+
+  return (
+    <Button
+      ref={ref}
+      data-sidebar="trigger"
+      onClick={(event) => {
+        onClick?.(event)
+        handleRemoveChecks()
+        toggleSidebar()
+      }}
+      {...props}
+      variant="ghost"
+      className={`w-8 h-8 justify-between flex flex-row ${open ? "p-2" : "p-0 justify-center items-center"}`}
+    >
+      {props.children}
+      <ChevronLeft />
+      <span className="sr-only">Toggle Sidebar</span>
+    </Button>
+  )
+})
+CustomSideBarTrigger.displayName = "CustomSideBarTrigger"
+
 const SidebarTrigger = forwardRef<
   ElementRef<typeof Button>,
   ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar, open } = useSidebar()
 
+  console.log(props)
+
   return (
     <Button
-    ref={ref}
-    data-sidebar="trigger"
-    onClick={(event) => {
-      onClick?.(event)
-      toggleSidebar()
-    }}
-    {...props}
+      ref={ref}
+      data-sidebar="trigger"
+      onClick={(event) => {
+        onClick?.(event)
+        toggleSidebar()
+      }}
+      {...props}
       variant="ghost"
       className="text-slate-700 bg-transparent"
       size="icon"
     >
+      {props.children}
       <ChevronLeft className="h-5 w-5" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
@@ -290,27 +326,27 @@ const SidebarTriggerOnPage = forwardRef<
   ElementRef<typeof Button>,
   ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar, open } = useSidebar()
+  const { toggleSidebar, open, isMobile } = useSidebar()
 
-  if (!open) {
+  if (isMobile) {
     return (
       <Button
-      ref={ref}
-      data-sidebar="trigger"
-      onClick={(event) => {
-        onClick?.(event)
-        toggleSidebar()
-      }}
-      {...props}
+        ref={ref}
+        data-sidebar="trigger"
+        onClick={(event) => {
+          onClick?.(event)
+          toggleSidebar()
+        }}
+        {...props}
         variant="ghost"
         className="text-slate-700 bg-transparent"
         size="icon"
       >
-        <ChevronLeft className="h-5 w-5" />
+        <HamburgerMenuIcon className="h-5 w-5" />
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
     )
-  } 
+  }
   return (<></>)
 })
 SidebarTriggerOnPage.displayName = "SidebarTriggerOnPage"
@@ -644,7 +680,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}
@@ -766,7 +802,7 @@ const SidebarMenuSubButton = React.forwardRef<
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
 
 export {
-  Sidebar,
+  CustomSideBarTrigger, Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -786,7 +822,6 @@ export {
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
-  SidebarSeparator,
-  SidebarTrigger, SidebarTriggerOnPage, useSidebar
+  SidebarSeparator, SidebarTrigger, SidebarTriggerOnPage, useSidebar
 }
 
