@@ -620,7 +620,7 @@ const SidebarMenuButton = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : "button"
-    const { isMobile, state } = useSidebar()
+    const { isMobile } = useSidebar()
 
     const button = (
       <Comp
@@ -649,7 +649,7 @@ const SidebarMenuButton = React.forwardRef<
         <TooltipContent
           side="right"
           align="center"
-          hidden={state !== "collapsed" || isMobile}
+          hidden={isMobile}
           {...tooltip}
         />
       </Tooltip>
@@ -777,11 +777,13 @@ const SidebarMenuSubButton = React.forwardRef<
     asChild?: boolean
     size?: "sm" | "md"
     isActive?: boolean
+    tooltip?: string | React.ComponentProps<typeof TooltipContent>
   }
->(({ asChild = false, size = "md", isActive, className, ...props }, ref) => {
+>(({ asChild = false, size = "md", tooltip, isActive, className, ...props }, ref) => {
   const Comp = asChild ? Slot : "a"
+  const { isMobile } = useSidebar()
 
-  return (
+  const button = (
     <Comp
       ref={ref}
       data-sidebar="menu-sub-button"
@@ -797,6 +799,27 @@ const SidebarMenuSubButton = React.forwardRef<
       )}
       {...props}
     />
+  )
+  if (!tooltip) {
+    return button
+  }
+
+  if (typeof tooltip === "string") {
+    tooltip = {
+      children: tooltip,
+    }
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent
+        side="right"
+        align="center"
+        hidden={isMobile}
+        {...tooltip}
+      />
+    </Tooltip>
   )
 })
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
