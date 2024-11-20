@@ -3,30 +3,37 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
+import {
+  useTransportsCO2EmissionByYearAndModal,
+  useTransportsCO2EmissionModalAnalysis,
+} from "@/hooks/transports";
 import { mappedTravelMode } from "@/constants/transports";
-import { useTransportsCO2EmissionByYearAndModal } from "@/hooks/transports";
 import type { TravelMode } from "@/types/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import {
-  Bike,
   Bus,
   Car,
+  Bike,
+  TrendingUp,
+  TrendingDown,
   Footprints,
   Plane,
   RailSymbol,
   TrainFront
 } from "lucide-react";
-import { RiMotorbikeFill } from "react-icons/ri";
 import {
   Legend,
   Line,
   LineChart,
   ResponsiveContainer,
-  Tooltip,
   XAxis,
+  Tooltip as RechartTooltip,
   YAxis,
 } from "recharts";
-import type { Payload } from "recharts/types/component/DefaultLegendContent";
+import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { RiMotorbikeFill } from "react-icons/ri";
+import { formatNumber } from "@/utils/format-number";
+import InfoTooltip from "@/components/ui/info-tooltip";
 
 const mappedTravelModeIcons: {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -58,7 +65,10 @@ const CustomTooltip = ({
         {payload.map((item, index) => {
           return (
             !!item.value && (
-              <div key={index} className="flex gap-10 items-center justify-between ">
+              <div
+                key={index}
+                className="flex gap-10 items-center justify-between "
+              >
                 <div className="flex items-center  gap-2  h-10">
                   <div
                     className="w-[14px] h-[14px] rounded-xs"
@@ -68,7 +78,7 @@ const CustomTooltip = ({
                     {String(item?.dataKey) || ""}
                   </span>
                 </div>
-                {formatCO2Emission(item.value) || 0} tons
+                {formatNumber(item.value.toFixed(0)) || 0} tons
               </div>
             )
           );
@@ -94,52 +104,100 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   );
 };
 
-const TransportCard = ({
+const ModalEmissionAnalysisCard = ({
   data,
-  type,
   loading,
 }: {
-  data: any;
-  type: "increase" | "reduction";
+  data: {
+    mode: string;
+    avgPercentageYearly: number;
+    percentageContribution: number;
+    contributionStatus: "Elevação" | "Redução";
+    isHighestYearlyReduction: boolean;
+    isLowestYearlyReduction: boolean;
+  };
   loading: boolean;
 }) => {
-  const description =
-    type === "increase"
-      ? "Modal que obteve a maior acréscimo de emissões durante os últimos anos"
-      : "Modal que obteve a maior redução de emissões durante os últimos anos";
-  const title = mappedTravelMode[data?.[type]?.mode as TravelMode];
-  const Icon = mappedTravelModeIcons[data?.[type]?.mode as TravelMode];
-  const percentage = data?.[type]?.changePercentage;
-  const contribution = data?.[type]?.contributionPercentage;
+  const modalWithLowestYearlyReductionDescription =
+    data?.isLowestYearlyReduction
+      ? `O modal ${mappedTravelMode[data?.mode as TravelMode]} foi o maior responsável pelo aumento de emissões, contribuindo de forma significativa para o total de emissões no período analisado`
+      : null;
+  const modalWithHighestYearlyReductionDescription =
+    data?.isHighestYearlyReduction
+      ? `As emissões do modal ${mappedTravelMode[data?.mode as TravelMode]} apresentaram a maior redução anual, indicando uma tendência positiva no período analisado`
+      : null;
 
-  const percentageDescription =
-    type === "increase"
-      ? `${percentage?.toFixed(2)}% média anual de crescimento `
-      : `${percentage?.toFixed(2)}% média anual de redução `;
+  const title = mappedTravelMode[data?.mode as TravelMode];
+  const Icon = mappedTravelModeIcons[data?.mode as TravelMode] || Bus;
 
-  const contributionDescription =
-    type === "increase"
-      ? `${contribution?.toFixed(2)}% Contribuição no total de emissões`
-      : `${contribution?.toFixed(2)}% Contribuição no total de emissões`;
+  const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
 
   return loading ? (
-    <Skeleton className="h-[250px]  rounded-xl" />
+    <Skeleton className="h-[200px]  rounded-xl" />
   ) : (
-    <Card className="p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="break-words text-sm text-muted-foreground max-w-xs">
-          {description}
+    <Card className="p-6 hover:shadow-lg transition-shadow">
+      <div className="space-y-5">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-teal-500">{title}</h3>
+            </div>
+          </div>
+          <div className="rounded-lg bg-teal-100 p-2">
+            <Icon className="h-5 w-5 text-teal-500" />
+          </div>
         </div>
-        <div className="rounded bg-teal-400 p-3">
-          <Icon className="h-6 w-6 text-white" />
+
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1">
+            <p
+              className={` font-bold ${
+                trend === "up" ? "text-red-400" : "text-teal-500"
+              }`}
+            >
+              {data.contributionStatus}
+            </p>
+          </div>
+          <div className=" flex items-center gap-1">
+            <p className="text-sm text-muted-foreground ">
+              Média anual de {trend === "up" ? "elevação" : "redução"}:
+            </p>
+            <div className="flex items-center gap-1">
+              {trend === "up" ? (
+                <TrendingUp className="h-4 w-4 text-red-400" />
+              ) : (
+                <TrendingDown className="h-4 w-4 text-teal-500" />
+              )}
+              <span
+                className={` font-bold ${
+                  trend === "up" ? "text-red-400" : "text-teal-500"
+                }`}
+              >
+                {data.avgPercentageYearly}%
+              </span>
+              {modalWithLowestYearlyReductionDescription && (
+                <InfoTooltip
+                  className="text-white fill-red-400"
+                  content={modalWithLowestYearlyReductionDescription}
+                />
+              )}
+              {modalWithHighestYearlyReductionDescription && (
+                <InfoTooltip
+                  className="text-white fill-teal-400"
+                  content={modalWithHighestYearlyReductionDescription}
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <p className="text-sm text-muted-foreground">
+              Contribuição no total:
+            </p>
+            <p className=" font-bold text-teal-500">
+              {data.percentageContribution}%
+            </p>
+          </div>
         </div>
-      </div>
-      <h3 className="text-2xl md:text-4xl font-bold text-teal-400 mb-2 break-words">{title}</h3>
-      <div className="space-y-1">
-        <div className="text-xl font-semibold text-slate-600">
-          {percentageDescription}
-        </div>
-        <div className="text-muted-foreground ">{contributionDescription}</div>
       </div>
     </Card>
   );
@@ -147,7 +205,9 @@ const TransportCard = ({
 
 export default function Co2EmissionPerTransport() {
   const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
-
+  const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
+    useTransportsCO2EmissionModalAnalysis();
+  console.log("modalAnalysis", modalAnalysis);
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
@@ -161,25 +221,34 @@ export default function Co2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <TransportCard
-          data={data?.emissionsAnalysis}
-          type={"reduction"}
-          loading={isFetching}
-        />
-
-        <TransportCard
-          data={data?.emissionsAnalysis}
-          type={"increase"}
-          loading={isFetching}
-        />
+      <div className="grid gap-6 md:grid-cols-3">
+        {modalAnalysis &&
+          modalAnalysis.modalsData &&
+          modalAnalysis.modalsData.map((modal, index) => {
+            const formattedModal = {
+              ...modal,
+              contributionStatus: modal.contributionStatus as
+                | "Redução"
+                | "Elevação",
+            };
+            return (
+              <div key={index}>
+                <ModalEmissionAnalysisCard
+                  data={formattedModal}
+                  loading={isLoadingModalAnalysis}
+                />
+              </div>
+            );
+          })}
       </div>
 
       {isFetching ? (
         <Skeleton className="h-[530px]  rounded-xl" />
       ) : (
         <Card className="p-6">
-          <h3 className="font-semibold mb-6">Emissão de CO₂</h3>
+          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+            Emsisão CO₂ (tons)
+          </h3>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
@@ -187,7 +256,8 @@ export default function Co2EmissionPerTransport() {
                 height={300}
                 data={data?.data}
                 margin={{
-                  top: 5,
+                  top: 30,
+                  right: 30,
                 }}
               >
                 <XAxis
@@ -207,7 +277,7 @@ export default function Co2EmissionPerTransport() {
                     return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <RechartTooltip content={<CustomTooltip />} />
 
                 <Legend content={<CustomLegend />} />
                 {data?.modals?.map((modal, index) => (
@@ -215,6 +285,14 @@ export default function Co2EmissionPerTransport() {
                     // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     key={index}
                     type="monotone"
+                    label={{
+                      position: "top",
+                      formatter: (value: number) =>
+                        `${formatCO2Emission(value) || 0} `,
+                      fill: "#666",
+                      fontSize: 12,
+                      offset: 10,
+                    }}
                     dataKey={modal}
                     strokeWidth={2}
                     stroke={elegantColors[index]}

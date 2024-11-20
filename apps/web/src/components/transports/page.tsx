@@ -1,16 +1,22 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowLeft, Bus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { Bus } from "lucide-react";
 import YearSelect from "../year-select";
-import CO2GoalsIndex from "./sections/co2-goals-index";
 import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
 import Co2EmissionPerKilometer from "./sections/co2-per-km";
 import Co2EmissionPerTransport from "./sections/co2-per-transports";
+import InfoCard from "../info-card";
+import { MdCo2 } from "react-icons/md";
+import DataSourceInfo from "../data-source-info";
+import { formatNumber } from "@/utils/format-number";
 
 const EmissionCard = ({
   title,
@@ -51,17 +57,14 @@ export default function TransportsPage() {
   });
   return (
     <div className="min-h-screen bg-background p-6 md:mx-16">
-
       <div className="mx-auto space-y-6">
         {/* Header */}
 
         <div className="flex items-center justify-between flex-wrap">
-
           <div className="flex items-center gap-4">
             <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-slate-800">
               Emissões de transporte <Bus size={48} />
             </h1>
-
           </div>
           <div className="flex items-center gap-2">
             <YearSelect
@@ -79,29 +82,46 @@ export default function TransportsPage() {
           organização a monitorar, analisar e progredir em direção às metas de
           sustentabilidade, focando na redução de gases de efeito estufa.
         </p>
-
+        <DataSourceInfo />
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          <EmissionCard
+        <div className="grid gap-6 md:grid-cols-3">
+          <InfoCard
+            icon={MdCo2}
             title="Emissão total de CO₂"
-            value={formatCO2Emission(data?.totalCO2Emission)}
+            value={formatCO2Emission(data?.total.co2Emission)}
+            percentage={"100%"}
+            description={`
+             ${formatNumber(data?.total.trips || 150_000)} viagens`}
           />
-          <EmissionCard
-            value={formatCO2Emission(data?.inboundCO2Emission)}
-            title="Emissão total de CO₂ dentro da fronteira"
+          <InfoCard
+            icon={MdCo2}
+            title="Emissão de CO₂ dentro da fronteira"
+            value={formatCO2Emission(data?.inbound.co2Emission)}
+            percentage={data?.inbound?.percentage}
+            infoTooltip={
+              "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade."
+            }
+            description={`
+            ${formatNumber(data?.inbound.trips || 100_000)} viagens`}
           />
-          <EmissionCard
-            value={formatCO2Emission(data?.outboundCO2Emission)}
-            title="Emissão total de CO₂ fora da fronteira"
+          <InfoCard
+            icon={MdCo2}
+            value={formatCO2Emission(data?.outbound.co2Emission)}
+            title="Emissão de CO₂ fora da fronteira"
+            percentage={data?.outbound?.percentage}
+            infoTooltip={
+              "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade"
+            }
+            description={`
+              ${formatNumber(data?.outbound.trips || 50_000)} viagens`}
           />
         </div>
 
+        <CO2InboundAndOutbound />
         <Co2EmissionPerTransport />
         <Co2EmissionPerKilometer />
-        <CO2InboundAndOutbound />
-        <CO2GoalsIndex />
       </div>
     </div>
   );

@@ -141,11 +141,11 @@ export const sunsetColors = [
 // Cool Ocean Tones
 export const oceanColors = [
   "#004E64", // Deep Ocean Blue
-  "#00A5CF", // Sea Blue
-  "#A0D9D9", // Soft Aqua
   "#41B3A3", // Turquoise
   "#72B6BA", // Mist Blue
+  "#A0D9D9", // Soft Aqua
   "#2A7592", // Ocean Teal
+  "#00A5CF", // Sea Blue
   "#89CFF0", // Sky Blue
   "#76A1E6", // Bright Blue
   "#AFDBF5", // Pale Blue

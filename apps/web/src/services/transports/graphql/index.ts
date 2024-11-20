@@ -4,6 +4,7 @@ import {
   getCO2EmissionPerKMQuery,
   getCO2EmissionByYearQuery,
   getCO2EmissionByYearAndModalQuery,
+  getTransportsCO2EmissionModalAnalysisQuery,
 } from "./queries";
 
 import {
@@ -13,6 +14,7 @@ import {
   CO2EmissionPerKMResponse,
   TravelMode,
   CO2EmissionByYearAndModalResponse,
+  CO2EmissionModalAnalysisResponse,
 } from "@/types/transports";
 import { graphQLClient } from "@/services/graphql";
 import { convertTons } from "@/utils/convert-tons";
@@ -134,25 +136,21 @@ function getEmissionAnalysisByYears(input: InputData): {
 }
 
 const calculateCityEmissionTargets = (
-  mostRecentCityEmissions: number,
-  startYear: number
+  startEmissionData: number,
+  startYear: number = 2018
 ) => {
-  const brasilEmissions2005 = 2_560_000_000;
-  const brasilEmissionsCurrentYear = 2_300_000_000;
-  const reductionTarget = 0.67;
-  const targetYear = 2035;
+  const INITIAL_EMISSION_YEAR = startYear;
+  const REDUCTION_RATE = 0.2; // 20%
+  const TARGET_YEAR = 2030;
 
-  const cityProportion = mostRecentCityEmissions / brasilEmissionsCurrentYear;
+  const years = TARGET_YEAR - INITIAL_EMISSION_YEAR;
 
-  const cityEmissions2005Estimate = brasilEmissions2005 * cityProportion;
-
-  const years = targetYear - startYear;
-  const annualReductionRate = (1 - reductionTarget) ** (1 / years);
+  const annualReductionRate = (1 - REDUCTION_RATE) ** (1 / years);
 
   const targets: { [key: number]: number } = {};
-  let currentTarget = cityEmissions2005Estimate;
+  let currentTarget = startEmissionData;
 
-  for (let year = startYear; year <= targetYear; year++) {
+  for (let year = INITIAL_EMISSION_YEAR; year <= TARGET_YEAR; year++) {
     targets[year] = currentTarget;
     currentTarget *= annualReductionRate;
   }
@@ -174,20 +172,41 @@ export const getTransportsCO2Emission = async ({
     });
 
     if (data) {
-      const outboundCO2Emission =
-        data.cube.find(
-          (d) => d.transportation_emission.travel_bounds === "OUTBOUND"
-        )?.transportation_emission.sum_full_co2e_tons || 0;
+      const outboundCO2Emission = data.cube.find(
+        (d) => d.transportation_emission.travel_bounds === "OUTBOUND"
+      )?.transportation_emission;
 
-      const inboundCO2Emission =
-        data.cube.find(
-          (d) => d.transportation_emission.travel_bounds === "INBOUND"
-        )?.transportation_emission.sum_full_co2e_tons || 0;
+      const inboundCO2Emission = data.cube.find(
+        (d) => d.transportation_emission.travel_bounds === "INBOUND"
+      )?.transportation_emission;
+
+      const totalCo2Emission =
+        (inboundCO2Emission?.sum_full_co2e_tons || 0) +
+        (outboundCO2Emission?.sum_full_co2e_tons || 0);
+
+      const inboundPercentage =
+        (inboundCO2Emission?.sum_full_co2e_tons || 0) / totalCo2Emission;
+      const outboundPercentage = 1 - inboundPercentage;
 
       const formattedData = {
-        outboundCO2Emission,
-        inboundCO2Emission,
-        totalCO2Emission: outboundCO2Emission + inboundCO2Emission,
+        inbound: {
+          co2Emission: inboundCO2Emission?.sum_full_co2e_tons || 0,
+          trips: inboundCO2Emission?.sum_trips || 0,
+          percentage: inboundPercentage,
+        },
+        outbound: {
+          co2Emission: outboundCO2Emission?.sum_full_co2e_tons || 0,
+          trips: outboundCO2Emission?.sum_trips || 0,
+          percentage: outboundPercentage,
+        },
+        total: {
+          co2Emission:
+            (inboundCO2Emission?.sum_full_co2e_tons || 0) +
+            (outboundCO2Emission?.sum_full_co2e_tons || 0),
+          trips:
+            (inboundCO2Emission?.sum_trips || 0) +
+            (outboundCO2Emission?.sum_trips || 0),
+        },
       };
 
       return formattedData;
@@ -237,7 +256,10 @@ export const getTransportsCO2EmissionByTravelBounds = async ({
           {}
         )
       );
-      return formattedData;
+      const filteredData = formattedData.filter(
+        (item) => item.withinLimit !== 0 || item.outsideLimit !== 0
+      );
+      return filteredData;
     }
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
@@ -257,8 +279,8 @@ export const getTransportsCO2EmissionPerKM = async ({
     });
 
     if (data) {
-      const formattedData = data.cube.map(
-        ({ graph_transportation_emission_by_mode }) => {
+      const formattedData = data.cube
+        .map(({ graph_transportation_emission_by_mode }) => {
           return {
             mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
             emissionCO2KgPerKm: convertTons(
@@ -266,8 +288,8 @@ export const getTransportsCO2EmissionPerKM = async ({
               "kg"
             ),
           };
-        }
-      );
+        })
+        .filter((item) => item.emissionCO2KgPerKm !== 0);
 
       return formattedData;
     }
@@ -376,8 +398,7 @@ export const getTransportsCO2EmissionByYear = async () => {
       });
 
       const targetEmissions = calculateCityEmissionTargets(
-        emissionsByYear[0].co2Emission,
-        emissionsByYear[0].year
+        emissionsByYear[0].co2Emission
       );
 
       const formattedData: {
@@ -403,6 +424,75 @@ export const getTransportsCO2EmissionByYear = async () => {
           targetCo2Emission,
         });
       });
+
+      return formattedData;
+    }
+  } catch (error) {
+    console.log("Error fetching total CO2 emission", error);
+  }
+};
+
+export const getTransportsCO2EmissionModalAnalysis = async () => {
+  try {
+    const query = getTransportsCO2EmissionModalAnalysisQuery();
+    const data = await graphQLClient.request<CO2EmissionModalAnalysisResponse>(
+      query,
+      {
+        queryName: "getTransportsCO2EmissionModalAnalysisQuery",
+      }
+    );
+
+    if (data) {
+      const modalsData: {
+        mode: string;
+        percentageContribution: number;
+        avgPercentageYearly: number;
+        contributionStatus: string;
+      }[] = data?.cube?.map(({ transportation_emission_cards }) => {
+        return {
+          mode: transportation_emission_cards.mode,
+          percentageContribution:
+            transportation_emission_cards.percentage_contribution,
+          avgPercentageYearly:
+            transportation_emission_cards.avg_percentage_yearly,
+          contributionStatus: transportation_emission_cards.contribution_status,
+        };
+      });
+
+      const reductionModals = modalsData?.filter(
+        (modal) => modal.contributionStatus === "Redução"
+      );
+      const elevationModals = modalsData?.filter(
+        (modal) => modal.contributionStatus === "Elevação"
+      );
+
+      const modalWithHighestYearlyReduction = reductionModals?.reduce(
+        (max, modal) => {
+          return modal.avgPercentageYearly > (max?.avgPercentageYearly || 0)
+            ? modal
+            : max;
+        },
+        null as (typeof modalsData)[0] | null
+      );
+
+      const modalWithLowestYearlyReduction = elevationModals?.reduce(
+        (min, modal) => {
+          return modal.avgPercentageYearly <
+            (min?.avgPercentageYearly || Infinity)
+            ? modal
+            : min;
+        },
+        null as (typeof modalsData)[0] | null
+      );
+      const updatedModalsData = modalsData?.map((modal) => ({
+        ...modal,
+        isHighestYearlyReduction: modal.mode === modalWithHighestYearlyReduction?.mode,
+        isLowestYearlyReduction: modal.mode === modalWithLowestYearlyReduction?.mode,
+      }));
+      
+      const formattedData = {
+        modalsData: updatedModalsData,
+      };
 
       return formattedData;
     }

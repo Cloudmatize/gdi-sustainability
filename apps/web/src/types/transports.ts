@@ -14,6 +14,10 @@ interface TransportaionCube<T> {
 interface GraphTransportsCube<T> {
   graph_transportation_emission_by_mode: T;
 }
+
+interface TransportationEmissionCardsCube<T> {
+  transportation_emission_cards: T;
+}
 interface TransportsCubeResponse<T> {
   cube: TransportaionCube<T>[];
 }
@@ -21,9 +25,14 @@ interface GraphTransportsCubeResponse<T> {
   cube: GraphTransportsCube<T>[];
 }
 
+interface TransportationEmissionCardsResponse<T> {
+  cube: TransportationEmissionCardsCube<T>[];
+}
+
 export interface TotalCO2EmissionData {
   sum_full_co2e_tons: number;
   travel_bounds: "INBOUND" | "OUTBOUND";
+  sum_trips: number;
 }
 export interface CO2EmissionPerTravelBounds {
   sum_full_co2e_tons: number;
@@ -46,6 +55,13 @@ export interface CO2EmissionByYear {
   year: number;
 }
 
+export interface CO2EmissionModalAnalysis {
+  percentage_contribution: number;
+  avg_percentage_yearly: number;
+  contribution_status: "Elevação" | "Redução";
+  mode: TravelMode;
+}
+
 export type TotalCO2EmissionResponse =
   TransportsCubeResponse<TotalCO2EmissionData>;
 
@@ -58,6 +74,8 @@ export type CO2EmissionPerKMResponse =
 export type CO2EmissionByYearAndModalResponse =
   TransportsCubeResponse<CO2EmissionByYearAndModal>;
 
-
 export type CO2EmissionByYearResponse =
-TransportsCubeResponse<CO2EmissionByYearAndModal>;
+  TransportsCubeResponse<CO2EmissionByYearAndModal>;
+
+export type CO2EmissionModalAnalysisResponse =
+TransportationEmissionCardsResponse<CO2EmissionModalAnalysis>;

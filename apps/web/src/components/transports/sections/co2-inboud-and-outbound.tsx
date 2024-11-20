@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2EmissionByTravelBounds } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { formatNumber } from "@/utils/format-number";
 import {
   Bar,
   BarChart,
@@ -48,7 +49,7 @@ const CustomTooltip = ({
                   {mapped[item?.dataKey as string] || ""}
                 </span>
               </div>
-              {formatCO2Emission(item.value)} tons
+              {formatNumber(Number(item.value.toFixed(0)))} tons
             </div>
           );
         })}
@@ -124,12 +125,12 @@ export default function CO2InboundAndOutbound() {
         <Skeleton className="h-[450px]" />
       ) : (
         <Card className="p-6">
+          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+            Emsisão CO₂ (tons)
+          </h3>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={data}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <BarChart data={data} margin={{ top: 30 }}>
                 <XAxis
                   stroke="#888888"
                   fontSize={12}
@@ -139,32 +140,40 @@ export default function CO2InboundAndOutbound() {
                 <YAxis
                   stroke="#888888"
                   fontSize={12}
+                  tickFormatter={(value) =>
+                    formatCO2Emission(value ?? 0) || "0"
+                  }
                   strokeWidth={0.3}
                   tickMargin={10}
-                  label={{
-                    value: "Emsisão CO₂ (tons)",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend content={<CustomLegend />} />
                 <Bar
                   strokeWidth={1}
-                  maxBarSize={50}
+                  label={{
+                    position: "top",
+                    formatter: (value: number) =>
+                      `${`${formatNumber(Number(value.toFixed(0)))}`}`,
+                    fontSize: 14,
+                    offset: 10,
+                  }}
                   dataKey="withinLimit"
                   name="Dentro do limite"
                   legendType="circle"
-                  stackId="a"
                   fill="#1ba18d"
                   radius={[4, 4, 0, 0]}
                 />
                 <Bar
+                  label={{
+                    position: "top",
+                    formatter: (value: number) =>
+                      `${`${formatNumber(Number(value.toFixed(0)))}`}`,
+                    fontSize: 14,
+                    offset: 10,
+                  }}
                   dataKey="outsideLimit"
-                  maxBarSize={50}
                   name="Fora do limite"
                   legendType="circle"
-                  stackId="a"
                   fill="#9aeee2"
                   radius={[4, 4, 0, 0]}
                 />

@@ -1,5 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import federatedLogout from "./utils/auth/federated-logout";
 
 function buildRedirectUrl({
   req,

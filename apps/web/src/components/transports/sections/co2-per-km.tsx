@@ -2,7 +2,6 @@
 import {
   Bar,
   BarChart,
-  ReferenceLine,
   ResponsiveContainer,
   XAxis,
   YAxis,
@@ -73,16 +72,21 @@ export default function Co2EmissionPerKilometer() {
         <Skeleton className="h-[450px]" />
       ) : (
         <Card className="p-6">
+          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+            Emsisão CO₂ (kgCO2e/km)
+          </h3>
+
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={data}
                 layout="vertical"
-                margin={{ top: 10, left: 50, bottom: 10 }}
+                margin={{ top: 20, bottom:30, left: 50, right: 30}}
               >
                 <XAxis
                   type="number"
                   tickSize={1}
+                  tickFormatter={(value: number) => `${value.toFixed(2)} kgCO2e/km`}
                   stroke="#888888"
                   fontSize={12}
                   strokeWidth={0.3}
@@ -97,11 +101,7 @@ export default function Co2EmissionPerKilometer() {
                   type="category"
                   tick={{ fill: "#666" }}
                 />
-                {/* <ReferenceLine
-                  x={0.75}
-                  stroke="#A855F7"
-                  strokeDasharray="3 3"
-                /> */}
+
                 <Tooltip content={<CustomTooltip />} />
                 <Bar
                   dataKey="emissionCO2KgPerKm"

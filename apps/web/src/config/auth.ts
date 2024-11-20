@@ -2,6 +2,7 @@ import { graphQLClient } from "@/services/graphql";
 import { AuthOptions, TokenSet } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import KeycloakProvider from "next-auth/providers/keycloak";
+import { redirect } from "next/navigation";
 
 export const keycloakOptions = {
   clientId: process.env.KEYCLOAK_CLIENT_ID,
@@ -28,7 +29,6 @@ export const authOptions: AuthOptions = {
   providers: [KeycloakProvider(keycloakOptions)],
   pages: {
     signIn: "/auth/login",
-    signOut: "/auth/signout",
   },
   session: {
     maxAge: 60 * 30,
@@ -77,8 +77,10 @@ export const authOptions: AuthOptions = {
 
           return updatedToken;
         } catch (error) {
-          console.error("Error refreshing access token", error);
-          return { ...token, error: "RefreshAccessTokenError" };
+          if ((error as { error: string }).error === "invalid_grant") {
+            redirect("/auth/signout");
+          }
+          return { error: "RefreshAccessTokenError" };
         }
       }
     },

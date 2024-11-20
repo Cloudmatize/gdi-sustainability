@@ -11,6 +11,7 @@ export const getTotalCO2EmissionQuery = ({
       transportation_emission {
         sum_full_co2e_tons
         travel_bounds
+        sum_trips
       }
     }
   }
@@ -69,6 +70,21 @@ export const getCO2EmissionByYearQuery = gql`
       transportation_emission(orderBy: { year: asc }) {
         sum_full_co2e_tons
         year
+      }
+    }
+  }
+`;
+
+export const getTransportsCO2EmissionModalAnalysisQuery = () => gql`
+  query CubeQuery {
+    cube {
+      transportation_emission_cards(
+        orderBy: { percentage_contribution: desc }
+      ) {
+        percentage_contribution
+        avg_percentage_yearly
+        contribution_status
+        mode
       }
     }
   }

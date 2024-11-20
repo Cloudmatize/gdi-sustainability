@@ -4,6 +4,7 @@ import {
   getTransportsCO2EmissionPerKM,
   getTransportsCO2EmissionByYearAndModal,
   getTransportsCO2EmissionByYear,
+  getTransportsCO2EmissionModalAnalysis
 } from "@/services/transports/graphql";
 import { TransportFilters } from "@/store/transports";
 import { useQuery } from "@tanstack/react-query";
@@ -65,7 +66,17 @@ export function useTransportsCO2EmissionByYearAndModal() {
     refetchOnWindowFocus: false,
   });
 }
-export function useTrannsportCO2EmissionByYear() {
+
+export function useTransportsCO2EmissionModalAnalysis() {
+  return useQuery({
+    queryKey: ["(transports): c02-emission-modal-analysis"],
+    queryFn: () => getTransportsCO2EmissionModalAnalysis(),
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useTransportCO2EmissionByYear() {
   return useQuery({
     queryKey: ["(transports): co2-emission-by-year"],
     queryFn: () => getTransportsCO2EmissionByYear(),
