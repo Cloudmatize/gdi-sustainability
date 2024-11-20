@@ -3,33 +3,33 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
+import { mappedTravelMode } from "@/constants/transports";
 import { useTransportsCO2EmissionByYearAndModal } from "@/hooks/transports";
+import type { TravelMode } from "@/types/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import {
+  Bike,
   Bus,
   Car,
-  RailSymbol,
-  Truck,
-  Bike,
-  TrainFront,
-  Plane,
   Footprints,
+  Plane,
+  RailSymbol,
+  TrainFront
 } from "lucide-react";
-import { TravelMode } from "@/types/transports";
+import { RiMotorbikeFill } from "react-icons/ri";
 import {
-  LineChart,
   Legend,
   Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
-import { RiMotorbikeFill } from "react-icons/ri";
-import { mappedTravelMode } from "@/constants/transports";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const mappedTravelModeIcons: {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [key in TravelMode]: any;
 } = {
   AUTOMOBILE: Car,
@@ -127,14 +127,14 @@ const TransportCard = ({
   ) : (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <div className="text-sm text-muted-foreground max-w-xs">
+        <div className="break-words text-sm text-muted-foreground max-w-xs">
           {description}
         </div>
         <div className="rounded bg-teal-400 p-3">
           <Icon className="h-6 w-6 text-white" />
         </div>
       </div>
-      <h3 className="text-7xl font-bold text-teal-400 mb-2">{title}</h3>
+      <h3 className="text-2xl md:text-4xl font-bold text-teal-400 mb-2 break-words">{title}</h3>
       <div className="space-y-1">
         <div className="text-xl font-semibold text-slate-600">
           {percentageDescription}
@@ -212,6 +212,7 @@ export default function Co2EmissionPerTransport() {
                 <Legend content={<CustomLegend />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     key={index}
                     type="monotone"
                     dataKey={modal}

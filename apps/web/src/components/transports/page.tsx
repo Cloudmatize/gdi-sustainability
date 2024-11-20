@@ -21,17 +21,17 @@ const EmissionCard = ({
   loading?: boolean;
 }) =>
   !value ? (
-    <Skeleton className="h-[200px]  rounded-xl" />
+    <Skeleton className="h-52 rounded-xl" />
   ) : (
-    <Card className="p-6">
-      <div className="space-y-2 h-full flex flex-col">
-        <div className="flex items- justify-between h-16 ">
-          <span className="text-muted-foreground max-w-[75%]   ">{title}</span>
-          <div className="rounded bg-teal-400 py-3 px-3">
+    <Card className="p-6 h-44 md:h-40 lg:h-52">
+      <div className=" h-full flex flex-col gap-2">
+        <div className="flex flex-row justify-between h-16">
+          <span className="text-muted-foreground max-w-[75%]">{title}</span>
+          <div className="rounded bg-teal-400 py-3 px-3 max-w-12 max-h-12">
             <span className="font-bold text-sm text-white">CO₂</span>
           </div>
         </div>
-        <span className="text-7xl font-bold h-full text-slate-600 flex items-end gap-3">
+        <span className="text-6xl md:text-6xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
           {value}
         </span>
       </div>
@@ -55,14 +55,13 @@ export default function TransportsPage() {
       <div className="mx-auto space-y-6">
         {/* Header */}
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap">
 
           <div className="flex items-center gap-4">
-
-
-            <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
-              Emissões de transporte <Bus className="h-7 w-7 ml-1 mt-0.5" />
+            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-slate-800">
+              Emissões de transporte <Bus size={48} />
             </h1>
+
           </div>
           <div className="flex items-center gap-2">
             <YearSelect
@@ -84,7 +83,7 @@ export default function TransportsPage() {
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3">
           <EmissionCard
             title="Emissão total de CO₂"
             value={formatCO2Emission(data?.totalCO2Emission)}
