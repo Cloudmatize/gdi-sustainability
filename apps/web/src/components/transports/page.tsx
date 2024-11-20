@@ -1,18 +1,16 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft, Bus, Calendar, Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import Co2EmissionPerTransport from "./sections/co2-per-transports";
-import Co2EmissionPerKilometer from "./sections/co2-per-km";
-import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
-import CO2GoalsIndex from "./sections/co2-goals-index";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { useTransportsCO2Emission } from "@/hooks/transports";
-import YearSelect from "../year-select";
 import { useTransportsStore } from "@/store/transports";
+import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { Bus } from "lucide-react";
+import YearSelect from "../year-select";
+import CO2GoalsIndex from "./sections/co2-goals-index";
+import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
+import Co2EmissionPerKilometer from "./sections/co2-per-km";
+import Co2EmissionPerTransport from "./sections/co2-per-transports";
 
 const EmissionCard = ({
   title,
@@ -53,19 +51,15 @@ export default function TransportsPage() {
   });
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
+
       <div className="mx-auto space-y-6">
         {/* Header */}
+
         <div className="flex items-center justify-between">
+
           <div className="flex items-center gap-4">
-            <Link href="#" className="absolute left-6">
-              <Button
-                variant="default"
-                className="bg-gray-100 text-slate-700 hover:text-white"
-                size="icon"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
+
+
             <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
               Emissões de transporte <Bus className="h-7 w-7 ml-1 mt-0.5" />
             </h1>
