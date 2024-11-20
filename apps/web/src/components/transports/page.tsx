@@ -3,17 +3,46 @@
 import Link from "next/link";
 import { ArrowLeft, Bus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Co2EmissionPerTransport from "./sections/co2-per-transports";
-import Co2EmissionPerKilometer from "./sections/co2-per-km";
-import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
-import { formatCO2Emission } from "@/utils/format-co2-emission";
+
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2Emission } from "@/hooks/transports";
-import YearSelect from "../year-select";
 import { useTransportsStore } from "@/store/transports";
+import { formatCO2Emission } from "@/utils/format-co2-emission";
+import YearSelect from "../year-select";
+import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
+import Co2EmissionPerKilometer from "./sections/co2-per-km";
+import Co2EmissionPerTransport from "./sections/co2-per-transports";
 import InfoCard from "../info-card";
 import { MdCo2 } from "react-icons/md";
-import { formatNumber } from "@/utils/format-number";
 import DataSourceInfo from "../data-source-info";
+import { formatNumber } from "@/utils/format-number";
+
+const EmissionCard = ({
+  title,
+  value,
+}: {
+  title: string;
+  value?: string | number;
+  loading?: boolean;
+}) =>
+  !value ? (
+    <Skeleton className="h-52 rounded-xl" />
+  ) : (
+    <Card className="p-6 h-44 md:h-40 lg:h-52">
+      <div className=" h-full flex flex-col gap-2">
+        <div className="flex flex-row justify-between h-16">
+          <span className="text-muted-foreground max-w-[75%]">{title}</span>
+          <div className="rounded bg-teal-400 py-3 px-3 max-w-12 max-h-12">
+            <span className="font-bold text-sm text-white">CO₂</span>
+          </div>
+        </div>
+        <span className="text-6xl md:text-6xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
+          {value}
+        </span>
+      </div>
+    </Card>
+  );
 
 export default function TransportsPage() {
   const { filters, setFilters } = useTransportsStore();
@@ -27,22 +56,14 @@ export default function TransportsPage() {
     filters,
   });
   return (
-    <div className="min-h-screen bg-background p-6 mx-16">
+    <div className="min-h-screen bg-background p-6 md:mx-16">
       <div className="mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+
+        <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
-            <Link href="#" className="absolute left-6">
-              <Button
-                variant="default"
-                className="bg-gray-100 text-slate-700 hover:text-white"
-                size="icon"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
-            <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
-              Emissões de transporte <Bus className="h-7 w-7 ml-1 mt-0.5" />
+            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-slate-800">
+              Emissões de transporte <Bus size={48} />
             </h1>
           </div>
           <div className="flex items-center gap-2">

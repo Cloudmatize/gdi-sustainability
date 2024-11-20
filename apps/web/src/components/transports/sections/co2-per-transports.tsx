@@ -7,23 +7,24 @@ import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
 } from "@/hooks/transports";
+import { mappedTravelMode } from "@/constants/transports";
+import type { TravelMode } from "@/types/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import {
   Bus,
   Car,
-  RailSymbol,
   Bike,
-  TrainFront,
-  Plane,
-  Footprints,
   TrendingUp,
   TrendingDown,
+  Footprints,
+  Plane,
+  RailSymbol,
+  TrainFront
 } from "lucide-react";
-import { TravelMode } from "@/types/transports";
 import {
-  LineChart,
   Legend,
   Line,
+  LineChart,
   ResponsiveContainer,
   XAxis,
   Tooltip as RechartTooltip,
@@ -31,11 +32,11 @@ import {
 } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import { RiMotorbikeFill } from "react-icons/ri";
-import { mappedTravelMode } from "@/constants/transports";
 import { formatNumber } from "@/utils/format-number";
 import InfoTooltip from "@/components/ui/info-tooltip";
 
 const mappedTravelModeIcons: {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [key in TravelMode]: any;
 } = {
   AUTOMOBILE: Car,
@@ -281,6 +282,7 @@ export default function Co2EmissionPerTransport() {
                 <Legend content={<CustomLegend />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     key={index}
                     type="monotone"
                     label={{
