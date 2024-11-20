@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils"
 import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import { Slot } from "@radix-ui/react-slot"
 import { type VariantProps, cva } from "class-variance-authority"
-import { ChevronLeft } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import React, { type CSSProperties, type ComponentProps, type ElementRef, createContext, forwardRef, useCallback, useContext, useEffect, useState } from "react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
@@ -226,7 +226,7 @@ const Sidebar = forwardRef<
         {/* This is what handles the sidebar gap on desktop */}
         <div
           className={cn(
-            "duration-200 relative h-svh w-[--sidebar-width] bg-transparent transition-[width] ease-linear",
+            "duration-400 relative h-svh w-[--sidebar-width] bg-transparent transition-[width] ease-in-out",
             "group-data-[collapsible=offcanvas]:w-0",
             "group-data-[side=right]:rotate-180",
             variant === "floating" || variant === "inset"
@@ -236,7 +236,7 @@ const Sidebar = forwardRef<
         />
         <div
           className={cn(
-            "duration-200 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
+            "duration-400 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
             side === "left"
               ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
               : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -266,7 +266,7 @@ interface CustomSideBarTriggerProps extends ButtonProps {
 }
 
 const CustomSideBarTrigger = forwardRef<HTMLButtonElement, CustomSideBarTriggerProps>(({ className, onClick, handleToggleSideBar, ...props }, ref) => {
-  const { toggleSidebar, open } = useSidebar()
+  const { toggleSidebar, open, isMobile } = useSidebar()
 
   const handleRemoveChecks = () => {
     if (handleToggleSideBar) handleToggleSideBar()
@@ -286,7 +286,7 @@ const CustomSideBarTrigger = forwardRef<HTMLButtonElement, CustomSideBarTriggerP
       className={`w-8 h-8 justify-between flex flex-row ${open ? "p-2" : "p-0 justify-center items-center"}`}
     >
       {props.children}
-      <ChevronLeft />
+      {isMobile ? (<HamburgerMenuIcon />) : open ? (<ChevronLeft />) : (<ChevronRight />)}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
