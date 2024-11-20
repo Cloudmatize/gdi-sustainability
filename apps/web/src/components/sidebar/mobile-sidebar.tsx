@@ -47,7 +47,7 @@ export function MobileSideBar() {
                     <Collapsible key={route.id} open={openRoute.includes(route.id)} className="group/collapsible">
                         <SidebarGroup className="p-1 my-1 flex flex-col items-center">
                             <SidebarGroupLabel asChild className="w-full p-0">
-                                <CollapsibleTrigger className="w-full p-0">
+                                <CollapsibleTrigger asChild className="w-full p-0">
 
                                     <SidebarMenuButton variant="default" className={`${openRoute.includes(route.id) ? "bg-teal-400 text-white  w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                         <route.icon size={20} />
