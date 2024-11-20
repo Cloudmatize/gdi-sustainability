@@ -1,19 +1,8 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import {
-  ArrowLeft,
-  Calendar,
-  Filter,
-  Building,
-  House,
-  Factory,
-} from "lucide-react";
-import { Skeleton } from "../ui/skeleton";
-import { Card } from "../ui/card";
-import BuildingsCO2Emissions from "./sections/co2-emissions";
+import { ArrowLeft, Building } from "lucide-react";
 import EnergyFractions from "./sections/energy-fractions";
 import { useBuildingsFloorAreasBySector } from "@/hooks/buildings";
-import CO2Emissions from "./sections/co2-emissions";
 import EnergyIntensities from "./sections/energy-intensities";
 import { formatNumber } from "@/utils/format-number";
 import InfoCard from "../info-card";
@@ -23,8 +12,6 @@ import DataSourceInfo from "../data-source-info";
 
 export default function BuildingsPage() {
   const { data } = useBuildingsFloorAreasBySector({});
-
-  const isFetching = false;
 
   return (
     <div className="min-h-screen bg-background p-6 mx-16">
@@ -83,35 +70,7 @@ export default function BuildingsPage() {
             description={`
               ${formatNumber(data?.notResidential?.count)} edifícios (${formatNumber(data?.notResidential.area)}m²)`}
           />
-
-          {/* <InfoCard
-            icon={Building}
-            loading={isFetching}
-            title="Total de edifícios do município"
-            value={formatNumber(totalBuildingsCount)}
-            percentage={"100%"}
-            description={`
-              área de ${formatNumber(totalBuildingsArea)}m²`}
-          />
-          <InfoCard
-            icon={House}
-            loading={isFetching}
-            title="Edifícios residenciais"
-            value={formatNumber(data?.residential?.count)}
-            description={`área de ${formatNumber(data?.residential?.area)}m²`}
-            percentage={`${(((data?.residential?.area ?? 0) / totalBuildingsArea) * 100).toFixed(1)}%`}
-          />
-
-          <InfoCard
-            icon={Factory}
-            loading={isFetching}
-            title="Edifícios não residenciais"
-            description={`área de ${formatNumber(data?.nonResidential?.area)}m²`}
-            value={formatNumber(data?.nonResidential?.count)}
-            percentage={`${(((data?.nonResidential?.area ?? 0) / totalBuildingsArea) * 100).toFixed(1)}%`}
-          /> */}
         </div>
-        {/* <CO2Emissions /> */}
         <EnergyFractions />
         <EnergyIntensities />
       </div>

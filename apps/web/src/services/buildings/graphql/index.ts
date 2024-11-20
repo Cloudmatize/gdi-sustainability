@@ -17,20 +17,6 @@ import { mappedSectors } from "@/constants/buildings";
 import { gradientColors } from "@/config/colors";
 
 export const getBuildingsFloorAreasBySector = async ({}) => {
-  // const mockedData = {
-  //   residential: {
-  //     area: 1000,
-  //     sector: "Residencial",
-  //     count: 10,
-  //   },
-  //   nonResidential: {
-  //     area: 2000,
-  //     sector: "Não Residencial",
-  //     count: 20,
-  //   },
-  // };
-
-  // return mockedData;
   try {
     const query = getBuildingsFloorAreasBySectorQuery({});
     const data =
@@ -88,19 +74,6 @@ export const getBuildingsFloorAreasBySector = async ({}) => {
 };
 
 export const getBuildingsCO2EmissionsBySector = async ({}) => {
-  // const mockedData = [
-  //   {
-  //     co2e: 1000,
-  //     sector: "Residencial",
-  //     color: "#2DD4BF",
-  //   },
-  //   {
-  //     co2e: 2000,
-  //     sector: "Não Residencial",
-  //     color: "#99F6E4",
-  //   },
-  // ];
-  // return mockedData;
   try {
     const query = getBuildingsCO2EmissionsBySectorQuery({});
     const data =
@@ -127,25 +100,6 @@ export const getBuildingsCO2EmissionsBySector = async ({}) => {
   }
 };
 export const getBuildingsEnergyFractionsBySector = async ({}) => {
-  // const mockedData = [
-  //   {
-  //     sector: "Residencial",
-  //     propane: 0.1,
-  //     dieselOil: 0.2,
-  //     electricity: 0.3,
-  //     naturalGas: 0.4,
-  //   },
-  //   {
-  //     sector: "Não Residencial",
-  //     propane: 0.1,
-  //     dieselOil: 0.2,
-  //     electricity: 0.3,
-  //     naturalGas: 0.4,
-  //   },
-  // ];
-
-  // return mockedData;
-
   try {
     const query = getBuildingsEnergyFractionsBySectorQuery({});
     const data =
@@ -229,29 +183,6 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
   }
 };
 export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
-  // const mockedData = [
-  //   {
-  //     energy: 1000,
-  //     propane: 2000,
-  //     dieselOil: 3000,
-  //     electricity: 4000,
-  //     naturalGas: 5000,
-  //   },
-  // ];
-  // const formattedData = mockedData
-  //   .map((item) => {
-  //     const total = Object.values(item).reduce((acc, value) => acc + value, 0);
-  //     return Object.entries(item).map(([key, value]) => {
-  //       return {
-  //         name: key,
-  //         value: value,
-  //         percentage: Number(((value / total) * 100).toFixed(2)),
-  //       };
-  //     });
-  //   })
-  //   .flat();
-  // return formattedData;
-
   try {
     const query = getBuildingsEnergyIntensitiesBySectorQuery({});
     const data =
