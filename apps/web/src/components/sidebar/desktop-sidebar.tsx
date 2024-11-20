@@ -37,11 +37,9 @@ export function DesktopSideBar() {
                     <SidebarMenuButton asChild tooltip={open ? "Clique para esconder" : "Clique para abrir"} className="bg-transparent hover:bg-none p-0 m-0 justify-center flex flex-row duration-300" onClick={handleToggleSideBar}>
                         <div className="flex flex-row gap-2 justify-center w-full items-center">
                             <Image src="./icon.svg" alt="GDI Sustainability" width={24} height={24} className={`${!open ? 'w-5' : 'w-5'} rounded-md `} />
-                            {/* {open && ( */}
                             <p className={`${open ? 'text-lg' : 'text-[0px]'} font-medium transition-all ease-in-out delay-150 duration-1000 overflow-hidden`}>
                                 GDI Sustainability
                             </p>
-                            {/* )} */}
                         </div>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -58,17 +56,23 @@ export function DesktopSideBar() {
                                         (<DropdownMenuTrigger>
                                             <SidebarMenuButton tooltip={route.title} variant="default" className={`text-slate-600 font-normal ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                                 <route.icon size={20} className="font-bold" />
-                                                {open && route.title}
+                                                {/* {open && route.title} */}
+                                                <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
+                                                    {route.title}
+                                                </p>
                                             </SidebarMenuButton>
                                         </DropdownMenuTrigger>
                                         ) :
                                         (
                                             <SidebarGroupLabel asChild className="w-full p-0">
                                                 <CollapsibleTrigger className="w-full p-0">
-                                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                                         <div className="flex flex-row gap-2 items-center">
                                                             <route.icon size={20} className="font-bold" />
-                                                            {open && route.title}
+                                                            {/* {open && route.title} */}
+                                                            <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
+                                                                {route.title}
+                                                            </p>
                                                         </div>
                                                         {openRoute.includes(route.id) ? <ChevronUp /> : <ChevronDown />}
 
@@ -112,10 +116,10 @@ export function DesktopSideBar() {
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 <SidebarMenuItem className="max-w-56 w-56">
-                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`max-w-56 font-normal text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`transition-all min-h-8 max-h-8 h-8 ease-in-out delay-150 duration-400 max-w-56 font-normal text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                         <Link href={route.path} className="flex flex-row gap-2">
-                                            <route.icon size={20} />
-                                            <p className={`${open ? 'text-sm' : 'text-[0px]'} transition-all ease-in-out duration-400`}>
+                                            <route.icon size={20} className={`${open ? 'size-5' : 'size-5'} transition-all delay-150 duration-400 ease-in-out`} />
+                                            <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
                                                 {route.title}
                                             </p>
                                         </Link>
