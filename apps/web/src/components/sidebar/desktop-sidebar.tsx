@@ -63,8 +63,8 @@ export function DesktopSideBar() {
                                         (
                                             <SidebarGroupLabel asChild className="w-full p-0">
                                                 <CollapsibleTrigger asChild className="w-full p-0">
-                                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
-                                                        <div className="flex flex-row gap-2 items-center px-2">
+                                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`px-2 transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                                        <div className="flex flex-row gap-2 items-center">
                                                             <route.icon size={20} className="font-bold" />
                                                             <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
                                                                 {route.title}
