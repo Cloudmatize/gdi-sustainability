@@ -114,17 +114,16 @@ export function DesktopSideBar() {
                     </DropdownMenu>) : (
                     <SidebarGroup className="p-1" key={route.id}>
                         <SidebarGroupContent>
-                            <SidebarMenu>
+                            <SidebarMenu className="flex flex-col">
                                 <SidebarMenuItem className="max-w-56 w-56">
-                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`transition-all min-h-8 max-h-8 h-8 ease-in-out delay-150 duration-400 max-w-56 font-normal text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
-                                        <Link href={route.path} className="flex flex-row gap-2">
+                                    <Link href={route.path} >
+                                        <SidebarMenuButton tooltip={route.title} variant="default" className={`flex flex-row flex-nowrap justify-start transition-[width] min-h-8 max-h-8 h-8 ease-in-out delay-150 duration-400 max-w-56 font-normal text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                             <route.icon size={20} className={`${open ? 'size-5' : 'size-5'} transition-all delay-150 duration-400 ease-in-out`} />
                                             <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
                                                 {route.title}
                                             </p>
-                                        </Link>
-                                    </SidebarMenuButton>
-
+                                        </SidebarMenuButton>
+                                    </Link>
                                 </SidebarMenuItem>
                             </SidebarMenu>
                         </SidebarGroupContent>
