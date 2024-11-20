@@ -2,20 +2,18 @@ import { routes } from "@/config/menuRoutes";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
 
 export function DesktopSideBar() {
-    const [openRoute, setOpenRoute] = useState([0])
-    const { open, setOpen, toggleSidebar } = useSidebar()
+    const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar()
 
     const handleChangeOpenState = (route: { id: number, parent?: number }) => {
         if (!openRoute.includes(route.id)) {
             if (route.parent) {
-                const routes = [route.id, route.parent]
+                const routes: number[] = [route.id, route.parent]
                 setOpenRoute(routes)
             } else {
                 setOpenRoute([route.id])
@@ -53,10 +51,9 @@ export function DesktopSideBar() {
                             <SidebarGroup className="p-1 my-1 flex flex-col items-center">
                                 <SidebarGroupContent>
                                     {!open ?
-                                        (<DropdownMenuTrigger>
+                                        (<DropdownMenuTrigger asChild>
                                             <SidebarMenuButton tooltip={route.title} variant="default" className={`text-slate-600 font-normal ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                                 <route.icon size={20} className="font-bold" />
-                                                {/* {open && route.title} */}
                                                 <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
                                                     {route.title}
                                                 </p>
@@ -65,17 +62,15 @@ export function DesktopSideBar() {
                                         ) :
                                         (
                                             <SidebarGroupLabel asChild className="w-full p-0">
-                                                <CollapsibleTrigger className="w-full p-0">
-                                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                                <CollapsibleTrigger asChild className="w-full p-0">
+                                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`px-2 transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
                                                         <div className="flex flex-row gap-2 items-center">
                                                             <route.icon size={20} className="font-bold" />
-                                                            {/* {open && route.title} */}
                                                             <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
                                                                 {route.title}
                                                             </p>
                                                         </div>
                                                         {openRoute.includes(route.id) ? <ChevronUp /> : <ChevronDown />}
-
                                                     </SidebarMenuButton>
                                                 </CollapsibleTrigger>
                                             </SidebarGroupLabel>)}

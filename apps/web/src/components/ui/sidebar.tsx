@@ -29,6 +29,8 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 type SidebarContext = {
   state: "expanded" | "collapsed"
   open: boolean
+  openRoute: number[]
+  setOpenRoute: (openRoute: number[]) => void
   setOpen: (open: boolean) => void
   openMobile: boolean
   setOpenMobile: (open: boolean) => void
@@ -69,6 +71,7 @@ const SidebarProvider = forwardRef<
   ) => {
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = useState(false)
+    const [openRoute, setOpenRoute] = useState<number[]>([0])
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
@@ -124,11 +127,13 @@ const SidebarProvider = forwardRef<
         open,
         setOpen,
         isMobile,
+        openRoute,
+        setOpenRoute,
         openMobile,
         setOpenMobile,
         toggleSidebar,
       }),
-      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+      [state, open, setOpen, isMobile, openMobile, openRoute, setOpenRoute, setOpenMobile, toggleSidebar]
     )
 
     return (
@@ -266,21 +271,18 @@ interface CustomSideBarTriggerProps extends ButtonProps {
 }
 
 const CustomSideBarTrigger = forwardRef<HTMLButtonElement, CustomSideBarTriggerProps>(({ className, onClick, handleToggleSideBar, ...props }, ref) => {
-  const { toggleSidebar, open, isMobile } = useSidebar()
+  const { toggleSidebar, open, isMobile, setOpenRoute } = useSidebar()
 
   const handleRemoveChecks = () => {
-    if (handleToggleSideBar) handleToggleSideBar()
+    setOpenRoute([0])
+    toggleSidebar()
   }
 
   return (
     <Button
       ref={ref}
       data-sidebar="trigger"
-      onClick={(event) => {
-        onClick?.(event)
-        handleRemoveChecks()
-        toggleSidebar()
-      }}
+      onClick={handleRemoveChecks}
       {...props}
       variant="ghost"
       className={`w-8 h-8 justify-between flex flex-row ${open ? "p-2" : "p-0 justify-center items-center"}`}
@@ -620,7 +622,7 @@ const SidebarMenuButton = React.forwardRef<
     ref
   ) => {
     const Comp = asChild ? Slot : "button"
-    const { isMobile } = useSidebar()
+    const { isMobile, state } = useSidebar()
 
     const button = (
       <Comp
