@@ -138,9 +138,9 @@ export default function TransportEmissionTargets() {
     lastYearData?.targetCo2Emission
   );
   return (
-    <div >
+    <div className="min-h-screen bg-background">
       {isFetching ? (
-        <Skeleton className="h-[495px]" />
+        <Skeleton className="h-[540px]" />
       ) : (
         <Card className="p-6">
           <div className="mb-8 space-y-2">
@@ -157,7 +157,7 @@ export default function TransportEmissionTargets() {
             </div>
           </div>
 
-          <div className="h-[350px] ">
+          <div className="h-[400px] ">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={data}
