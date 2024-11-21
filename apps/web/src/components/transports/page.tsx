@@ -1,22 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft, Bus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Bus } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { formatNumber } from "@/utils/format-number";
+import { MdCo2 } from "react-icons/md";
+import DataSourceInfo from "../data-source-info";
+import InfoCard from "../info-card";
 import YearSelect from "../year-select";
 import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
 import Co2EmissionPerKilometer from "./sections/co2-per-km";
 import Co2EmissionPerTransport from "./sections/co2-per-transports";
-import InfoCard from "../info-card";
-import { MdCo2 } from "react-icons/md";
-import DataSourceInfo from "../data-source-info";
-import { formatNumber } from "@/utils/format-number";
 
 const EmissionCard = ({
   title,
@@ -86,7 +84,7 @@ export default function TransportsPage() {
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           <InfoCard
             icon={MdCo2}
             title="Emissão total de CO₂"
