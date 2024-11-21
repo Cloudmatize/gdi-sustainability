@@ -219,7 +219,7 @@ export default function Co2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll">
+      <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll xl:overflow-hidden">
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
