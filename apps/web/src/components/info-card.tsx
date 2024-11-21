@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Card } from "./ui/card";
 import InfoTooltip from "./ui/info-tooltip";
 import { Skeleton } from "./ui/skeleton";
