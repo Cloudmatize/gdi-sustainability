@@ -84,7 +84,7 @@ export default function TransportsPage() {
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
         {/* Metrics */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll">
+        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll xl:overflow-hidden">
           <InfoCard
             icon={MdCo2}
             title="Emissão total de CO₂"
