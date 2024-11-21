@@ -106,7 +106,6 @@ export default function MultiModalSimulatorTransferTest() {
   const [enabled, setEnabled] = useState(false);
   const { transfers, setTransfers } = useTargetsStore();
 
-  console.log("transfers", transfers);
   const addTransferRow = () => {
     const newId = (transfers.length + 1).toString();
     setTransfers([
@@ -188,17 +187,19 @@ export default function MultiModalSimulatorTransferTest() {
   };
 
   return (
-    <Card className="w-full h-full overflow-y-auto ">
+    <Card className="w-full h-full overflow-y-auto rounded-none ">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-xl font-semibold">
-          Simulador de Substituição de Modal
+        <CardTitle className="text-xl text-center font-semibold">
+          Simulador de transferência de viagens entre modais
         </CardTitle>
-        <Switch checked={enabled} onCheckedChange={setEnabled} />
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 mt-4">
         {transfers.map((transfer) => (
-          <div key={transfer.id} className="space-y-4 p-4 border rounded-lg">
-            <div className="flex items-center justify-between">
+          <div key={transfer.id} className="space-y-4 p-4  rounded-lg">
+            <div className="flex items-center gap-5">
+              <Badge variant="default" className="h-8 mr-3 ">
+                De:
+              </Badge>
               <Select
                 value={transfer.fromMode}
                 onValueChange={(value) => {
@@ -209,7 +210,7 @@ export default function MultiModalSimulatorTransferTest() {
                   );
                 }}
               >
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -223,38 +224,57 @@ export default function MultiModalSimulatorTransferTest() {
                   ))}
                 </SelectContent>
               </Select>
-              <Badge variant="secondary">
-                {getAvailablePercentage(transfer.distributions)}% disponível
-              </Badge>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               {transfer.distributions.map((dist) => (
-                <div key={dist.id} className="flex items-center gap-4">
-                  <Select
-                    value={dist.toMode}
-                    onValueChange={(value) =>
-                      updateDistribution(transfer.id, dist.id, "toMode", value)
-                    }
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {formattedData
-                        .filter((mode) => mode.id !== transfer.fromMode)
-                        .map((mode) => (
-                          <SelectItem key={mode.id} value={mode.id}>
-                            <div className="flex items-center gap-2">
-                              {mode.icon}
-                              <span>{mode.name}</span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
+                <div
+                  key={dist.id}
+                  className="flex flex-col items-center justify-between gap-4"
+                >
+                  <div className="flex gap-3 items-center w-full">
+                    <Badge variant="secondary" className="h-8 mr-3">
+                      Para:
+                    </Badge>
+                    <Select
+                      value={dist.toMode}
+                      onValueChange={(value) =>
+                        updateDistribution(
+                          transfer.id,
+                          dist.id,
+                          "toMode",
+                          value
+                        )
+                      }
+                    >
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {formattedData
+                          .filter((mode) => mode.id !== transfer.fromMode)
+                          .map((mode) => (
+                            <SelectItem key={mode.id} value={mode.id}>
+                              <div className="flex items-center gap-2">
+                                {mode.icon}
+                                <span>{mode.name}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    {transfer.distributions.length > 1 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeDistribution(transfer.id, dist.id)}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    )}
+                  </div>
 
-                  <div className="flex-1">
+                  <div className="">
                     <Slider
                       value={[dist.percentage]}
                       onValueChange={(value) => {
@@ -281,21 +301,10 @@ export default function MultiModalSimulatorTransferTest() {
                         formattedData.find((d) => d.id === transfer.fromMode)
                           ?.name
                       }{" "}
-                     transferidas para{" "}
+                      transferidas para{" "}
                       {formattedData.find((d) => d.id === dist.toMode)?.name}
-
                     </div>
                   </div>
-
-                  {transfer.distributions.length > 1 && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeDistribution(transfer.id, dist.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  )}
                 </div>
               ))}
 
@@ -311,13 +320,6 @@ export default function MultiModalSimulatorTransferTest() {
                 </Button>
               )}
             </div>
-
-            {getTotalPercentage(transfer.distributions) > 100 && (
-              <div className="flex items-center gap-2 text-sm text-red-500">
-                <AlertCircle className="h-4 w-4" />
-                <span>O total não pode exceder 100%</span>
-              </div>
-            )}
           </div>
         ))}
 
