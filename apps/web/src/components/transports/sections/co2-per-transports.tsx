@@ -133,9 +133,9 @@ const ModalEmissionAnalysisCard = ({
   const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
 
   return loading ? (
-    <Skeleton className="h-60  rounded-xl" />
+    <Skeleton className="h-60 w-full lg:w-96 rounded-xl" />
   ) : (
-    <Card className="h-60 w-full lg:w-60 px-4 py-4 hover:shadow-lg transition-shadow">
+    <Card className="h-60 w-full lg:w-96 px-4 py-4 hover:shadow-lg transition-shadow">
       <div className="space-y-5">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
@@ -219,7 +219,7 @@ export default function Co2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll xl:overflow-hidden">
+      <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
