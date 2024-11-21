@@ -23,9 +23,9 @@ export function InfoCard({
   infoTooltip,
 }: InfoCardProps) {
   return loading || !value ? (
-    <Skeleton className="h-[240px] rounded-xl" />
+    <Skeleton className="h-60 w-full md:w-96 rounded-xl" />
   ) : (
-    <Card className="p-4 h-fit">
+    <Card className="p-4 h-60 md:w-96">
       <div className="gap-2 h-full flex flex-col">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center max-w-[75%] gap-2 ">
@@ -49,7 +49,7 @@ export function InfoCard({
           )}
         </span>
         {description && (
-          <span className="pt-4 px-2 text-slate-400">{description}</span>
+          <span className="pt-4 text-slate-400">{description}</span>
         )}
       </div>
     </Card>
