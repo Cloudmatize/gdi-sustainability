@@ -154,7 +154,7 @@ export default function EnergyFractions() {
           de cada modalidade ao longo do tempo.
         </p>
       </div>
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col xl:flex-row gap-6">
         {isFetching ? (
           <Skeleton className="h-[490px] w-full first: rounded-xl" />
         ) : (
