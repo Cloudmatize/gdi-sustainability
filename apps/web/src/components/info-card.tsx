@@ -1,8 +1,7 @@
 import React from "react";
-import { formatNumber } from "@/utils/format-number";
-import { Skeleton } from "./ui/skeleton";
 import { Card } from "./ui/card";
 import InfoTooltip from "./ui/info-tooltip";
+import { Skeleton } from "./ui/skeleton";
 
 interface InfoCardProps {
   title: string;
@@ -24,10 +23,10 @@ export function InfoCard({
   infoTooltip,
 }: InfoCardProps) {
   return loading || !value ? (
-    <Skeleton className="h-[230px] rounded-xl" />
+    <Skeleton className="h-[240px] rounded-xl" />
   ) : (
-    <Card className="p-6">
-      <div className="space-y-2 h-full flex flex-col">
+    <Card className="p-4 h-fit">
+      <div className="gap-2 h-full flex flex-col">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center  max-w-[75%] gap-2 ">
             <span className="text-muted-foreground">{title}</span>
@@ -37,10 +36,10 @@ export function InfoCard({
             <Icon className="h-6 w-6 text-white" />
           </div>
         </div>
-        <span className="text-6xl font-bold h-full text-slate-600 flex items-end gap-3">
+        <span className="text-2xl md:text-4xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
           {value}
           {percentage && (
-            <span className="text-2xl text-slate-400 font-light mb-1">
+            <span className="text-xl lg:text-2xl text-slate-400 font-light mb-1">
               (
               {typeof percentage === "string"
                 ? percentage
