@@ -60,7 +60,7 @@ export default function BuildingsPage() {
 
         <div className="border-t border-gray-200 py-6" />
         {/* Metrics */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll xl:overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
           <InfoCard
             icon={MdCo2}
             title="Emissão total de CO₂"
