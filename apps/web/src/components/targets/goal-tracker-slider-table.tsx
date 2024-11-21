@@ -24,6 +24,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
+import MultiModalSimulator from "./multi-modal-simulator";
+import MultiModalSimulatorTransferTest from "./transfer-test";
+import { useTargetsStore } from "@/store/targets";
 
 interface TransportMode {
   id: string;
@@ -153,14 +156,53 @@ function simulateTransport(
   };
 }
 
-function calculateEmissionsForSingleMode(data: TransportModeReal): number {
-  const totalPassengers = data.trips * passengersPerTripMapping[data.mode];
-  const emissionsInKg = data.co2Emissions * 1000; // Convert tons to kg
-
-  return totalPassengers > 0 ? emissionsInKg / totalPassengers : 0;
+interface TransportMode {
+  id: string;
+  baseTrips: number;
+  emissionsPerPassenger: number;
+  passengersPerTrip: number;
+  totalEmissions: number;
+}
+interface FormattedTransportMode {
+  id: string;
+  name: string;
+  icon: JSX.Element | undefined;
+  baseTrips: number;
+  tripPercentage: number;
+  passengersPerTrip: number;
+  totalEmissions: number;
+  emissionsPerPassenger: number;
 }
 
-const transformData = (data?: TransportModeReal[]) => {
+interface Transfer {
+  id: string;
+  fromMode: string;
+  distributions: {
+    id: string;
+    toMode: string;
+    percentage: number;
+  }[];
+}
+
+function calculateEmissionsForSingleMode(data: TransportModeReal): number {
+  // Verifica se os dados são válidos
+  if (data.trips <= 0 || passengersPerTripMapping[data.mode] <= 0) {
+    return 0; // Evita divisão por zero ou resultados negativos
+  }
+
+  // Calcula o total de passageiros usando o mapeamento
+  const totalPassengers = data.trips * passengersPerTripMapping[data.mode];
+
+  // Converte emissões de toneladas para quilogramas
+  const emissionsInKg = data.co2Emissions * 1000;
+
+  // Calcula emissões por passageiro e evita valores negativos
+  return totalPassengers > 0 ? Math.max(emissionsInKg / totalPassengers, 0) : 0;
+}
+
+const transformData = (
+  data?: TransportModeReal[]
+): FormattedTransportMode[] => {
   const formattedData = data?.map((item) => {
     return {
       id: item.mode,
@@ -179,24 +221,95 @@ const transformData = (data?: TransportModeReal[]) => {
 export default function GoalTrackerSliderTable({ data }: Props) {
   const [transportData, setTransportData] = useState(transformData(data));
 
-  const handleTripPercentageChange = (id: string, percentage: number) => {
-    setTransportData((prev) =>
-      prev.map((mode) =>
-        mode.id === id ? { ...mode, tripPercentage: percentage } : mode
-      )
-    );
-  };
+  const transportDataTesst = transformData(data);
+  console.log("transportDataTesst", transportDataTesst);
 
+  function recalculateEmissions(
+    transportData: FormattedTransportMode[],
+    transfers: Transfer[]
+  ): FormattedTransportMode[] {
+    // Faz uma cópia dos dados originais para preservar a integridade
+    const updatedData = [...transportData];
+
+    for (const transfer of transfers) {
+      const fromMode = updatedData.find(
+        (mode) => mode.id === transfer.fromMode
+      );
+      if (!fromMode) continue;
+
+      for (const distribution of transfer.distributions) {
+        const toMode = updatedData.find(
+          (mode) => mode.id === distribution.toMode
+        );
+        if (!toMode) continue;
+
+        // Calcula as viagens transferidas com base na proporção
+        const transferredTrips =
+          fromMode.baseTrips * (distribution.percentage / 100);
+
+        // Calcula a proporção de impacto considerando passageiros por viagem
+        const fromPassengersRatio =
+          transferredTrips * fromMode.passengersPerTrip;
+        const toPassengersRatio = transferredTrips * toMode.passengersPerTrip;
+
+        // Calcula a redução de emissões no modo de origem
+        const reduction = fromPassengersRatio * fromMode.emissionsPerPassenger;
+
+        // Calcula o aumento de emissões no modo de destino
+        const increase = toPassengersRatio * toMode.emissionsPerPassenger;
+
+        // Atualiza as emissões totais de cada modal
+        //check if the result is < 0
+        fromMode.totalEmissions = Math.max(
+          fromMode.totalEmissions - reduction,
+          0
+        );
+        toMode.totalEmissions = Math.max(toMode.totalEmissions + increase, 0);
+
+        // Atualiza o número de viagens para cada modal
+        fromMode.baseTrips -= transferredTrips;
+        toMode.baseTrips += transferredTrips;
+
+        // Recalcula emissões por passageiro para cada modal
+        fromMode.emissionsPerPassenger =
+          fromMode.baseTrips > 0
+            ? calculateEmissionsForSingleMode({
+                mode: fromMode.id,
+                co2Emissions: fromMode.totalEmissions,
+                trips: fromMode.baseTrips * fromMode.passengersPerTrip,
+              })
+            : 0;
+
+        toMode.emissionsPerPassenger =
+          toMode.baseTrips > 0
+            ? calculateEmissionsForSingleMode({
+                mode: toMode.id,
+                co2Emissions: toMode.totalEmissions,
+                trips: toMode.baseTrips * toMode.passengersPerTrip,
+              })
+            : 0;
+      }
+    }
+
+    return updatedData;
+  }
+  const { transfers } = useTargetsStore();
+
+  // Recalcula as emissões totais
+  const updatedTransportData = recalculateEmissions(
+    transportDataTesst,
+    transfers
+  );
+
+  // Exibe os resultados
+  console.log("updatedTransportData", updatedTransportData);
+  console.log("transfers", transfers);
   const handlePassengerChange = (id: string, value: number) => {
     setTransportData((prev) =>
       prev.map((mode) =>
         mode.id === id ? { ...mode, passengersPerTrip: value } : mode
       )
     );
-  };
-
-  const calculateAdjustedTrips = (baseTrips: number, percentage: number) => {
-    return baseTrips * (1 + percentage / 100);
   };
 
   return (
@@ -228,34 +341,29 @@ export default function GoalTrackerSliderTable({ data }: Props) {
                     <span>{mode.name}</span>
                   </div>
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right w-56 ">
                   <div className="space-y-2">
                     <div className="flex justify-end items-center gap-2">
                       <span className="font-medium">
                         {mode.baseTrips?.toLocaleString()}
                       </span>
-                      <span className="text-sm text-muted-foreground">
-                        {mode.tripPercentage >= 0 ? "+" : ""}
-                        {mode.tripPercentage}%
-                      </span>
-                      {' ->'}
-                      <span className="font-medium">
-                        {calculateAdjustedTrips(
-                          mode.baseTrips,
-                          mode.tripPercentage
-                        ).toLocaleString()}
-                      </span>
+
+                      {transfers.find(
+                        (d) =>
+                          d.distributions.find(
+                            (dist) => dist.toMode == mode.id
+                          ) || transfers?.find((t) => t.fromMode === mode.id)
+                      ) && (
+                        <>
+                          {"->"}
+                          <span className=" text-teal-500 font-bold">
+                            {updatedTransportData
+                              .find((t) => t.id === mode.id)
+                              ?.baseTrips.toLocaleString()}
+                          </span>
+                        </>
+                      )}
                     </div>
-                    {/* <Slider
-                      min={-50}
-                      max={50}
-                      step={1}
-                      value={[mode.tripPercentage]}
-                      onValueChange={(value: number[]) =>
-                        handleTripPercentageChange(mode.id, value[0])
-                      }
-                      className="w-[200px] ml-auto"
-                    /> */}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
@@ -268,11 +376,51 @@ export default function GoalTrackerSliderTable({ data }: Props) {
                     className="w-20 text-right"
                   />
                 </TableCell>
-                <TableCell className="text-right">
-                  {mode.totalEmissions.toLocaleString()}
+                <TableCell className="text-right  w-64">
+                  <div className="flex justify-end items-center gap-2">
+                    <span className="font-medium">
+                      {mode.totalEmissions.toLocaleString()}
+                    </span>
+
+                    {transfers.find(
+                      (d) =>
+                        d.distributions.find(
+                          (dist) => dist.toMode == mode.id
+                        ) || transfers?.find((t) => t.fromMode === mode.id)
+                    ) && (
+                      <>
+                        {"->"}
+                        <span className=" text-teal-500 font-bold">
+                          {updatedTransportData
+                            .find((t) => t.id === mode.id)
+                            ?.totalEmissions.toLocaleString()}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {mode.emissionsPerPassenger.toFixed(2)}
+                  <div className="flex justify-end items-center gap-2">
+                    <span className="font-medium">
+                      {mode.emissionsPerPassenger.toFixed(2)}
+                    </span>
+
+                    {transfers.find(
+                      (d) =>
+                        d.distributions.find(
+                          (dist) => dist.toMode == mode.id
+                        ) || transfers?.find((t) => t.fromMode === mode.id)
+                    ) && (
+                      <>
+                        {"->"}
+                        <span className=" text-teal-500 font-bold">
+                          {updatedTransportData
+                            .find((t) => t.id === mode.id)
+                            ?.emissionsPerPassenger.toFixed(2)}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

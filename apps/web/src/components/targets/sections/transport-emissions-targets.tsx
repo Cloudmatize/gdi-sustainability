@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
+import { CO2_EMISSION_BY_YEAR_MOCK } from "@/mock/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { CalendarClock, Percent, Target } from "lucide-react";
 import {
@@ -130,7 +131,9 @@ const CustomTooltip = ({
 };
 
 export default function TransportEmissionTargets() {
-  const { data, isFetching } = useTransportCO2EmissionByYear();
+  // const { data, isFetching } = useTransportCO2EmissionByYear();
+  const data= CO2_EMISSION_BY_YEAR_MOCK
+  const isFetching = false;
 
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
   const currentYearEmissionStatus = checkEmissionsStatus(

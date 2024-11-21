@@ -38,6 +38,8 @@ import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import TransportStatsCard from "./transport-stats-card";
 import TransportStats2 from "./transports-stats-card-2";
 import ModalSimulator from "./modal-simulator";
+import MultiModalSimulatorTransferTest from "./transfer-test";
+import { CO2_EMISSION_BY_YEAR_TARGETS_MOCK } from "@/mock/target";
 
 type TransportType = "car" | "bus" | "bike";
 
@@ -58,8 +60,9 @@ const targetEmissions = 1000000; // Example target in tons of CO2
 const targetYear = 2030;
 
 export default function GoalTracker() {
-  const { data } = useTargetsCO2EmissionByModal();
-  console.log("data", data);
+  // const { data } = useTargetsCO2EmissionByModal();
+  const data = CO2_EMISSION_BY_YEAR_TARGETS_MOCK;
+
   const [transportData, setTransportData] =
     useState<TransportData[]>(initialData);
 
@@ -172,12 +175,17 @@ export default function GoalTracker() {
           </div>
         </div>
       )} */}
-      <div className=" gap-3 h-[530px]">
-          <ModalSimulator />
-        <div className="w-3/4 ">
-          <TransportEmissionTargets />
+      <div className=" gap-3 flex h-[370px]">
+        <div className="w-2/3 h-full ">
+          <MultiModalSimulatorTransferTest />
         </div>
+        <div className="w-1/3">
+
+        {/* <ModalSimulator /> */}
+        </div>
+
       </div>
+      <TransportEmissionTargets />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-const CO2_EMISSION_BY_YEAR_MOCK = [
+export const CO2_EMISSION_BY_YEAR_MOCK = [
   { year: 2018, co2Emission: 224105.9935, targetCo2Emission: 224105.9935 },
   {
     year: 2019,

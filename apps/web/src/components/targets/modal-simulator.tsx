@@ -104,68 +104,6 @@ export default function ModalSimulator() {
   const results = calculateNewEmissions();
 
   return (
-    <div className=" flex   h-full gap-4">
-      <Card className="flex-1">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-semibold">
-            Simulador de Substituição de Modal
-          </CardTitle>
-          <Switch checked={enabled} onCheckedChange={setEnabled} />
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex gap-3">
-            <div className="space-y-2 w-40">
-              <Label>De:</Label>
-              <Select value={fromMode} onValueChange={setFromMode}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {transportModes.map((mode) => (
-                    <SelectItem key={mode.id} value={mode.id}>
-                      <div className="flex items-center gap-2">
-                        {mode.icon}
-                        <span>{mode.name}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2 w-40">
-              <Label>Para:</Label>
-              <Select value={toMode} onValueChange={setToMode}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {transportModes.map((mode) => (
-                    <SelectItem key={mode.id} value={mode.id}>
-                      <div className="flex items-center gap-2">
-                        {mode.icon}
-                        <span>{mode.name}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Porcentagem de viagens substituídas</Label>
-              <Slider
-                value={[percentage]}
-                onValueChange={(value) => setPercentage(value[0])}
-                max={100}
-                step={1}
-              />
-              <div className="text-sm text-muted-foreground">
-                {percentage}% das viagens de {fromTransport.name} substituídas
-                por {toTransport.name}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
       <Card className="h-full">
         <CardHeader>
           <CardTitle className="text-base font-semibold">
@@ -200,6 +138,5 @@ export default function ModalSimulator() {
           <Progress value={results.reduction} className="h-2" />
         </CardContent>
       </Card>
-    </div>
   );
 }
