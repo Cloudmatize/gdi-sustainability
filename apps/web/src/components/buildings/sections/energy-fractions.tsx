@@ -154,9 +154,9 @@ export default function EnergyFractions() {
           de cada modalidade ao longo do tempo.
         </p>
       </div>
-      <div className="flex flex-col lg:flex-row gap-2">
+      <div className="flex flex-col lg:flex-row gap-6">
         {isFetching ? (
-          <Skeleton className="h-[490px] w-3/4 first: rounded-xl" />
+          <Skeleton className="h-[490px] w-full first: rounded-xl" />
         ) : (
           <Card className="p-6 w-full">
             <div className="space-y-4">
@@ -217,7 +217,7 @@ export default function EnergyFractions() {
           </Card>
         )}
         {isFetching ? (
-          <Skeleton className="h-[490px] flex-1" />
+          <Skeleton className="h-[490px] w-full" />
         ) : (
           <Card className="p-6 w-full">
             <h3 className="font-semibold mb-4">Emissão de CO2</h3>
