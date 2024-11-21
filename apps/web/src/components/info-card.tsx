@@ -28,7 +28,7 @@ export function InfoCard({
     <Card className="p-4 h-fit">
       <div className="gap-2 h-full flex flex-col">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center  max-w-[75%] gap-2 ">
+          <div className="flex items-center max-w-[75%] gap-2 ">
             <span className="text-muted-foreground">{title}</span>
             {infoTooltip && <InfoTooltip content={infoTooltip} />}
           </div>
@@ -36,7 +36,7 @@ export function InfoCard({
             <Icon className="h-6 w-6 text-white" />
           </div>
         </div>
-        <span className="text-2xl md:text-4xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
+        <span className="text-4xl md:text-4xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
           {value}
           {percentage && (
             <span className="text-xl lg:text-2xl text-slate-400 font-light mb-1">
