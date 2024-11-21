@@ -49,6 +49,7 @@ export interface CO2EmissionByYearAndModal {
   sum_full_co2e_tons: number;
   mode: TravelMode;
   year: number;
+  sum_trips: number;
 }
 export interface CO2EmissionByYear {
   sum_full_co2e_tons: number;

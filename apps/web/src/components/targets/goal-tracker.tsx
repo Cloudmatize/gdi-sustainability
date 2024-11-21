@@ -34,6 +34,10 @@ import GoalTrackerSliderTable from "./goal-tracker-slider-table";
 import GoalTrackerModalSelect from "./goal-tracker-modal-select";
 import { useTargetsStore } from "@/store/targets";
 import { TargetAdherenceCard } from "./target-adherence-card";
+import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
+import TransportStatsCard from "./transport-stats-card";
+import TransportStats2 from "./transports-stats-card-2";
+import ModalSimulator from "./modal-simulator";
 
 type TransportType = "car" | "bus" | "bike";
 
@@ -54,6 +58,8 @@ const targetEmissions = 1000000; // Example target in tons of CO2
 const targetYear = 2030;
 
 export default function GoalTracker() {
+  const { data } = useTargetsCO2EmissionByModal();
+  console.log("data", data);
   const [transportData, setTransportData] =
     useState<TransportData[]>(initialData);
 
@@ -145,46 +151,33 @@ export default function GoalTracker() {
           />
         </div>
       </div>
-      {hypothesisMode && (
+      {hypothesisMode && <TransportStats2 data={data || []} />}
+      {/* {hypothesisMode && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {transportData.map((transport, index) => (
-            <Card key={transport.type}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {transport.type.charAt(0).toUpperCase() +
-                    transport.type.slice(1)}
-                </CardTitle>
-                {getIcon(transport.type)}
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {(
-                    (transport.trips * transport.emissionsPerTrip) /
-                    transport.avgPassengers /
-                    1000000
-                  ).toFixed(2)}
-                  M
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  toneladas de CO2 por 1.000.000 viagens
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {data?.map((item) => <TransportStatsCard data={item} />)}
+        </div>
+      )} */}
+      {hypothesisMode && (
+        <div className="flex flex-col gap-6">
+          <GoalTrackerSliderTable data={data || []} />
         </div>
       )}
-      {hypothesisMode && (
-        <div className="flex gap-4 w-full h-[300px] ">
+      {/* {hypothesisMode && (
+        <div className="flex gap-4 w-full h-[330px] ">
           <div className="w-4/5 ">
-            <GoalTrackerSliderTable />
+            <GoalTrackerSliderTable data={data || []} />
           </div>
-          <div className="" >
+          <div className="">
             <GoalTrackerModalSelect />
           </div>
         </div>
-      )}
-
-      <TransportEmissionTargets />
+      )} */}
+      <div className=" gap-3 h-[530px]">
+          <ModalSimulator />
+        <div className="w-3/4 ">
+          <TransportEmissionTargets />
+        </div>
+      </div>
     </div>
   );
 }

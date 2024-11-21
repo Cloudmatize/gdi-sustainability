@@ -60,9 +60,11 @@ const scenarios = [10];
 export default function GoalTrackerModalSelect() {
   const [transportData, setTransportData] =
     useState<TransportData[]>(initialData);
-  const [hypothesisMode, setHypothesisMode] = useState(false);
   const [fromTransport, setFromTransport] = useState<TransportType>("car");
+  const [percentage, setPercentage] = useState(30);
+  console.log("percentage TESTE", percentage);
   const [toTransport, setToTransport] = useState<TransportType>("bus");
+  const [isSimulationEnabled, setIsSimulationEnabled] = useState(false);
 
   const getTransportName = (type: TransportType): string => {
     switch (type) {
@@ -113,14 +115,26 @@ export default function GoalTrackerModalSelect() {
 
   return (
     <Card className="h-full">
-      <CardHeader>
-        <CardTitle>Simulador de Substituição de Modal</CardTitle>
+      <CardHeader className="">
+        <CardTitle className="flex items-center gap-2">
+          Simulador de Substituição de Modal
+          <div className="">
+            <Switch
+              checked={isSimulationEnabled}
+              onCheckedChange={() =>
+                setIsSimulationEnabled(!isSimulationEnabled)
+              }
+              id="enable-replace-modal-simulation"
+            />
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div>
             <Label htmlFor="from-transport">De:</Label>
             <Select
+              disabled={!isSimulationEnabled}
               value={fromTransport}
               onValueChange={(value) =>
                 setFromTransport(value as TransportType)
@@ -146,6 +160,7 @@ export default function GoalTrackerModalSelect() {
           <div>
             <Label htmlFor="to-transport">Para:</Label>
             <Select
+              disabled={!isSimulationEnabled}
               value={toTransport}
               onValueChange={(value) => setToTransport(value as TransportType)}
             >
@@ -170,45 +185,44 @@ export default function GoalTrackerModalSelect() {
 
         <div className="space-y-4">
           <div>
-              <Label htmlFor="percentage">
-                Porcentagem de viagens substituídas:
-              </Label>
+            <Label>Porcentagem de viagens substituídas</Label>
 
             <Slider
-              min={-50}
-              max={50}
-              step={1}
-              value={[30]}
-              className="w-full"
-              onValueChange={(value) => console.log("Percentage", value[0])}
+              className="fill-teal-400 mt-1"
+              disabled={!isSimulationEnabled}
+              min={0}
+              max={100}
+              step={5}
+              value={[!isSimulationEnabled ? 0 : percentage]}
+              onValueChange={(value: number[]) => setPercentage(value[0])}
             />
           </div>
-          {scenarios.map((percentage) => (
-            <Card key={percentage}>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium">
-                      {percentage}% das viagens de{" "}
-                      {getTransportName(fromTransport)} substituídas por{" "}
-                      {getTransportName(toTransport)}
-                    </p>
-                    <p className="text-2xl font-bold text-green-600">
-                      {calculateEmissionReduction(percentage)}% de redução
-                    </p>
-                  </div>
-                  <div className="h-2 w-24 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-green-500"
-                      style={{
-                        width: `${Math.min(100, Number(calculateEmissionReduction(percentage)))}%`,
-                      }}
-                    />
-                  </div>
+          <div className="flex flex-col items-start justify-between  w-full">
+            <div className=" w-full">
+              <div className="text-sm font-medium text-start">
+                <span className="font-bold">{percentage}% </span>
+                <span>
+                  das viagens de {getTransportName(fromTransport)} substituídas
+                  por {getTransportName(toTransport)}
+                </span>
+              </div>
+            </div>
+            {isSimulationEnabled && (
+              <div className="flex flex-col my-2">
+                <p className="text-2xl mt-1 font-bold text-teal-500">
+                  {calculateEmissionReduction(percentage)}% de redução
+                </p>
+                <div className="h-2 w-24  bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-teal-500"
+                    style={{
+                      width: `${Math.min(100, Number(calculateEmissionReduction(percentage)))}%`,
+                    }}
+                  />
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

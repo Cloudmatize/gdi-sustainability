@@ -300,8 +300,9 @@ export const getTransportsCO2EmissionPerKM = async ({
 
 export const getTransportsCO2EmissionByYearAndModal = async () => {
   try {
+    const query = getCO2EmissionByYearAndModalQuery({});
     const data = await graphQLClient.request<CO2EmissionByYearAndModalResponse>(
-      getCO2EmissionByYearAndModalQuery,
+      query,
       { queryName: "getCO2EmissionByYearAndModalQuery" }
     );
 
@@ -486,10 +487,12 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
       );
       const updatedModalsData = modalsData?.map((modal) => ({
         ...modal,
-        isHighestYearlyReduction: modal.mode === modalWithHighestYearlyReduction?.mode,
-        isLowestYearlyReduction: modal.mode === modalWithLowestYearlyReduction?.mode,
+        isHighestYearlyReduction:
+          modal.mode === modalWithHighestYearlyReduction?.mode,
+        isLowestYearlyReduction:
+          modal.mode === modalWithLowestYearlyReduction?.mode,
       }));
-      
+
       const formattedData = {
         modalsData: updatedModalsData,
       };
@@ -500,3 +503,4 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
     console.log("Error fetching total CO2 emission", error);
   }
 };
+

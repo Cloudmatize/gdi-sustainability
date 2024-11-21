@@ -142,8 +142,8 @@ export default function TransportEmissionTargets() {
       {isFetching ? (
         <Skeleton className="h-[495px]" />
       ) : (
-        <Card className="p-6">
-          <div className="mb-8 space-y-2">
+        <Card className="p-6 h-full">
+          <div className="mb-8 space-y-2 ">
             <div className="text-sm text-muted-foreground">
               Grau de aderência a meta
             </div>
@@ -157,7 +157,7 @@ export default function TransportEmissionTargets() {
             </div>
           </div>
 
-          <div className="h-[350px] ">
+          <div className="h-[380px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={data}
