@@ -5,7 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { gradientColors } from "@/config/colors";
 import { ENERGY_FRACTIONS } from "@/constants/buildings";
 import { useBuildingsEnergyFractionsBySector } from "@/hooks/buildings";
-import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { formatNumber } from "@/utils/format-number";
 import {
   Bar,
@@ -19,7 +18,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   return (
@@ -66,7 +65,7 @@ const CustomTooltip = ({
                   <span className="text-slate-800 font-bold  text-center">
                     {item.dataKey &&
                       ENERGY_FRACTIONS[
-                        item.dataKey as keyof typeof ENERGY_FRACTIONS
+                      item.dataKey as keyof typeof ENERGY_FRACTIONS
                       ]}
                   </span>
                 </div>
@@ -110,7 +109,7 @@ const CustomPieChartTooltip = ({
             <span className="text-slate-800 font-bold  w-24 text-center">
               {
                 ENERGY_FRACTIONS[
-                  item.payload.name as keyof typeof ENERGY_FRACTIONS
+                item.payload.name as keyof typeof ENERGY_FRACTIONS
                 ]
               }
             </span>
@@ -138,9 +137,9 @@ export default function EnergyFractions() {
   const { data, isFetching } = useBuildingsEnergyFractionsBySector({});
   const barData = data
     ? Object.entries(data.energyFractions[0])
-        .filter(([key, value]) => key !== "sector")
-        .map(([key]) => key)
-        .flat()
+      .filter(([key, value]) => key !== "sector")
+      .map(([key]) => key)
+      .flat()
     : [];
 
   return (
@@ -155,11 +154,11 @@ export default function EnergyFractions() {
           de cada modalidade ao longo do tempo.
         </p>
       </div>
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-2">
         {isFetching ? (
           <Skeleton className="h-[490px] w-3/4 first: rounded-xl" />
         ) : (
-          <Card className="p-6 w-3/4">
+          <Card className="p-6 w-full">
             <div className="space-y-4">
               <h3 className="font-semibold">Fração da fonte de energia</h3>
               <div className="h-[400px]">
@@ -220,7 +219,7 @@ export default function EnergyFractions() {
         {isFetching ? (
           <Skeleton className="h-[490px] flex-1" />
         ) : (
-          <Card className="p-6 flex-1">
+          <Card className="p-6 w-full">
             <h3 className="font-semibold mb-4">Emissão de CO2</h3>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
