@@ -29,19 +29,24 @@ export default function ModalSimulator() {
             </div>
           </div>
           <div className="flex  flex-col items-center space-x-2 ">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               {percentage > 0 ? (
                 <ArrowDown className={`h-6 w-6 ${percentageColor}`} />
               ) : (
                 <ArrowUp className={`h-6 w-6 ${percentageColor}`} />
               )}
-              <span className={`text-3xl font-semibold ${percentageColor}`}>
-                {percentage.toFixed(2)}%
-              </span>
+              <div className="flex flex-col items-center justify-center">
+                <span className={`text-3xl font-semibold ${percentageColor}`}>
+                  {percentage.toFixed(2)}%{" "}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {(simulated - original).toLocaleString()} tCo2
+                </span>
+                {/* <span className="text-sm text-muted-foreground">
+                  percentual de {percentage > 0 ? "redução" : "aumento"}
+                </span> */}
+              </div>
             </div>
-            <span className="text-muted-foreground text-sm">
-              percentual de {percentage > 0 ? "redução" : "aumento"}
-            </span>
           </div>
           <div className="flex items-center space-x-2 ">
             <div className=" w-10">

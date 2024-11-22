@@ -14,7 +14,7 @@ import {
 
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { useTargetsStore } from "@/store/targets";
-import { TrendingDown, TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUp, RotateCcw } from "lucide-react";
 import ModalSimulator from "./modal-simulator";
 import { mappedTravelMode } from "@/constants/transports";
 import { TravelMode } from "@/types/transports";
@@ -23,7 +23,7 @@ const passengersPerTripMapping: { [key: string]: number } = {
   AUTOMOBILE: 1.5,
   BUS: 40,
   MOTORCYCLE: 1,
-  RAIL: 1,
+  RAIL: 1000,
   "ON FOOT": 1,
   CYCLING: 1,
 };
@@ -69,11 +69,14 @@ type Transfer = {
   distributions: Distribution[];
 };
 
-function calculateEmissionsForSingleMode(data: TransportModeReal): number {
+function calculateEmissionsForSingleMode(
+  data: TransportModeReal,
+  passengersPerTripData: { [key: string]: number }
+): number {
   if (data.trips <= 0 || passengersPerTripMapping[data.mode] <= 0) {
     return 0;
   }
-  const totalPassengers = data.trips * passengersPerTripMapping[data.mode];
+  const totalPassengers = data.trips * passengersPerTripData[data.mode];
   const emissionsInKg = data.co2Emissions * 1000;
   return totalPassengers > 0 ? Math.max(emissionsInKg / totalPassengers, 0) : 0;
 }
@@ -91,7 +94,10 @@ const transformData = (
       tripPercentage: 0,
       passengersPerTrip: passengersPerTripData[item.mode] || 1,
       totalEmissions: Math.trunc(item.co2Emissions),
-      emissionsPerPassenger: calculateEmissionsForSingleMode(item),
+      emissionsPerPassenger: calculateEmissionsForSingleMode(
+        item,
+        passengersPerTripData
+      ),
     };
   });
   return formattedData || [];
@@ -200,6 +206,10 @@ export default function GoalTrackerSliderTable({ data }: Props) {
   };
 
   useEffect(() => {
+    setTransportData(transformData(data, passengersPerTripData));
+  }, [passengersPerTripData]);
+
+  useEffect(() => {
     const simulatedCo2EmissionsData = simulateTransfers(
       transportDataTesst,
       transfers
@@ -223,7 +233,6 @@ export default function GoalTrackerSliderTable({ data }: Props) {
     });
     setSimulatedCo2Emissions(simulatedCo2EmissionsData);
   }, [transfers, passengersPerTripData]);
-
   return (
     <Card className="h-full  overflow-y-auto">
       <CardHeader>
@@ -245,7 +254,7 @@ export default function GoalTrackerSliderTable({ data }: Props) {
             </TableRow>
           </TableHeader>
           <TableBody className="pb-5  w-full ">
-            {transportData.map((mode) => {
+            {transportData.map((mode, index) => {
               const initialTransportMode = initialTransportData.find(
                 (t) => t.id === mode.id
               );
@@ -299,7 +308,7 @@ export default function GoalTrackerSliderTable({ data }: Props) {
               const percentageVariationColor =
                 percentageVariation < 0 ? "text-teal-500" : "text-red-500";
               return (
-                <TableRow className="w-full" key={mode.id}>
+                <TableRow className="w-full" key={`${mode.id}-${index}`}>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span>{mode.icon}</span>
@@ -322,10 +331,13 @@ export default function GoalTrackerSliderTable({ data }: Props) {
                           </>
                         )}
                       </div>
-                      {simulatedData?.transferLogs?.map((log) => {
+                      {simulatedData?.transferLogs?.map((log, index) => {
                         if (log.type === "income") {
                           return (
-                            <div className="flex justify-end items-center gap-2 text-teal-600">
+                            <div
+                              key={`${log}-${index}`}
+                              className="flex justify-end items-center gap-2 text-teal-600"
+                            >
                               <span>{"->"}</span>
                               <span>
                                 {getIconByTransportMode(
@@ -337,7 +349,10 @@ export default function GoalTrackerSliderTable({ data }: Props) {
                           );
                         }
                         return (
-                          <div className="flex justify-end items-center gap-2 text-red-500 ">
+                          <div
+                            key={`${log}-${index}`}
+                            className="flex justify-end items-center gap-2 text-red-500 "
+                          >
                             <span>{"->"}</span>
                             <span>
                               {getIconByTransportMode(log?.to as TravelMode)}
@@ -350,9 +365,28 @@ export default function GoalTrackerSliderTable({ data }: Props) {
                     </div>
                   </TableCell>
                   <TableCell className="text-right pr-10 ">
-                    <div className="flex items-center justify-end">
+                    <div className="flex items-center justify-end ">
+                      {mode.passengersPerTrip !==
+                        passengersPerTripMapping[mode.id] && (
+                        <button
+                          onClick={() =>
+                            handlePassengerChange(
+                              mode.id,
+                              passengersPerTripMapping[mode.id]
+                            )
+                          }
+                          className="mr-3 text-gray-500 hover:text-gray-700  "
+                        >
+                          <RotateCcw className="ml-1 h-3 w-3" />
+                        </button>
+                      )}
                       <Input
-                        type="number"
+                        type="text"
+                        pattern="\d*"
+                        required
+                        maxLength={4}
+                        min={1}
+                        max={2000}
                         value={mode.passengersPerTrip}
                         onChange={(e) =>
                           handlePassengerChange(mode.id, Number(e.target.value))

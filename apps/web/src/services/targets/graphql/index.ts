@@ -25,10 +25,12 @@ export const getTargetsCO2EmissionByModal = async () => {
         };
       });
 
-      return formattedData;
+      const filteredData = formattedData.filter((item) =>
+        !["ON FOOT", "CYCLING"].includes(item.mode)
+      );
+      return filteredData;
     }
   } catch (error) {
     console.error("getCO2EmissionByYearAndModalQuery", error);
   }
-  getTargetsCO2EmissionByModal;
 };

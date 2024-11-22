@@ -1,7 +1,9 @@
+import { TravelMode } from "@/types/transports";
 import { create } from "zustand";
 
 export type TransportFilters = {
   date: string;
+  mode?: TravelMode
 };
 interface TransportsState {
   filters: TransportFilters;

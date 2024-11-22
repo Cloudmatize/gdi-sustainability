@@ -62,7 +62,6 @@ export default function GoalTrackerModalSelect() {
     useState<TransportData[]>(initialData);
   const [fromTransport, setFromTransport] = useState<TransportType>("car");
   const [percentage, setPercentage] = useState(30);
-  console.log("percentage TESTE", percentage);
   const [toTransport, setToTransport] = useState<TransportType>("bus");
   const [isSimulationEnabled, setIsSimulationEnabled] = useState(false);
 

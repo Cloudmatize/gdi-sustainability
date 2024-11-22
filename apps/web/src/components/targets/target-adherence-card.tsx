@@ -21,9 +21,8 @@ export default function TargetAdherenceCard({
   const { hypothesisMode, totalCo2Emission } = useTargetsStore();
   const { simulated: simulatedEmissions } = totalCo2Emission;
 
-  const baseAdherence = (baseEmissions / targetEmissions) * 100;
-  const simulatedAdherence = (targetEmissions /  simulatedEmissions) * 100;
-
+  const baseAdherence = (targetEmissions / baseEmissions) * 100;
+  const simulatedAdherence = (targetEmissions / simulatedEmissions) * 100;
   return (
     <Card className="w-full h-full ">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -70,7 +69,7 @@ export default function TargetAdherenceCard({
               </div>
               <Progress
                 indicatorClassName="bg-violet-700"
-                value={simulatedAdherence}
+                value={Math.min(simulatedAdherence, 100)}
                 className="h-2 bg-gray-100"
               />
               <div className="flex justify-between text-xs text-muted-foreground">

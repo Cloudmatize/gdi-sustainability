@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -10,20 +9,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Plus,
-  Trash2,
-  AlertCircle,
-  Car,
-  Bus,
-  Bike,
-  Train,
-  PersonStanding,
-} from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useTargetsStore } from "@/store/targets";
+import { TravelMode } from "@/types/transports";
 
 interface Distribution {
   id: string;
@@ -31,88 +21,23 @@ interface Distribution {
   percentage: number;
 }
 
-interface TransferRow {
-  id: string;
-  fromMode: string;
-  distributions: Distribution[];
+interface Props {
+  data: {
+    id: TravelMode;
+    name: string;
+
+    icon: JSX.Element | undefined;
+  }[];
 }
-
-interface TransportMode {
-  id: string;
-  name: string;
-  icon: JSX.Element | undefined;
-  baseTrips: number;
-  tripPercentage: number;
-  passengersPerTrip: number;
-  totalEmissions: number;
-  emissionsPerPassenger: number;
-}
-
-// Mocked transport modes data
-const formattedData: TransportMode[] = [
-  {
-    id: "AUTOMOBILE",
-    name: "Automóvel",
-    icon: <Car className="h-4 w-4" />,
-    baseTrips: 1574189068,
-    tripPercentage: 0,
-    passengersPerTrip: 1.5,
-    totalEmissions: 3027871,
-    emissionsPerPassenger: 1.28,
-  },
-  {
-    id: "BUS",
-    name: "Ônibus",
-    icon: <Bus className="h-4 w-4" />,
-    baseTrips: 71675566,
-    tripPercentage: 0,
-    passengersPerTrip: 40,
-    totalEmissions: 558306,
-    emissionsPerPassenger: 0.19,
-  },
-  {
-    id: "MOTORCYCLE",
-    name: "Motocicleta",
-    icon: <Bike className="h-4 w-4" />,
-    baseTrips: 189521914,
-    tripPercentage: 0,
-    passengersPerTrip: 1,
-    totalEmissions: 124178,
-    emissionsPerPassenger: 0.65,
-  },
-  {
-    id: "RAIL",
-    name: "Trem",
-    icon: <Train className="h-4 w-4" />,
-    baseTrips: 5642438,
-    tripPercentage: 0,
-    passengersPerTrip: 250,
-    totalEmissions: 0,
-    emissionsPerPassenger: 0,
-  },
-  {
-    id: "ON_FOOT",
-    name: "A pé",
-    icon: <PersonStanding className="h-4 w-4" />,
-    baseTrips: 49430651,
-    tripPercentage: 0,
-    passengersPerTrip: 1,
-    totalEmissions: 0,
-    emissionsPerPassenger: 0,
-  },
-];
-
-export default function MultiModalSimulatorTransferTest() {
-  const [enabled, setEnabled] = useState(false);
+export default function MultiModalSimulatorTransferTest({ data }: Props) {
   const { transfers, setTransfers } = useTargetsStore();
-
   const addTransferRow = () => {
-    const newId = (transfers.length + 1).toString();
+    const newDistId = String(Math.floor(Math.random() * 9000) + 1000);
     setTransfers([
       ...transfers,
       {
-        id: newId,
-        fromMode: "AUTOMOBILE",
+        id: newDistId,
+        fromMode: "",
         distributions: [],
       },
     ]);
@@ -122,14 +47,14 @@ export default function MultiModalSimulatorTransferTest() {
     setTransfers(
       transfers.map((transfer) => {
         if (transfer.id === transferId) {
-          const newDistId = (transfer.distributions.length + 1).toString();
+          const newDistId = String(Math.floor(Math.random() * 9000) + 1000);
           return {
             ...transfer,
             distributions: [
               ...transfer.distributions,
               {
                 id: newDistId,
-                toMode: formattedData[0].id,
+                toMode: data[0].id,
                 percentage: 0,
               },
             ],
@@ -185,7 +110,6 @@ export default function MultiModalSimulatorTransferTest() {
   const getAvailablePercentage = (distributions: Distribution[]) => {
     return 100 - getTotalPercentage(distributions);
   };
-
   return (
     <Card className="w-full h-full overflow-y-auto rounded-none ">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -214,8 +138,16 @@ export default function MultiModalSimulatorTransferTest() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {formattedData.map((mode) => (
-                    <SelectItem key={mode.id} value={mode.id}>
+                  {data.map((mode) => (
+                    <SelectItem
+                      disabled={
+                        mode.id === transfer.fromMode ||
+                        transfers.some((t) => t.fromMode === mode.id) ||
+                        transfer.distributions.some((d) => d.toMode === mode.id)
+                      }
+                      key={mode.id}
+                      value={mode.id}
+                    >
                       <div className="flex items-center gap-2">
                         {mode.icon}
                         <span>{mode.name}</span>
@@ -227,43 +159,50 @@ export default function MultiModalSimulatorTransferTest() {
             </div>
 
             <div className="space-y-4 ">
-              {transfer.distributions.map((dist) => (
-                <div
-                  key={dist.id}
-                  className="flex flex-col items-center justify-between gap-4"
-                >
-                  <div className="flex gap-3 items-center w-full">
-                    <Badge variant="secondary" className="h-8 mr-3">
-                      Para:
-                    </Badge>
-                    <Select
-                      value={dist.toMode}
-                      onValueChange={(value) =>
-                        updateDistribution(
-                          transfer.id,
-                          dist.id,
-                          "toMode",
-                          value
-                        )
-                      }
-                    >
-                      <SelectTrigger className="w-[200px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {formattedData
-                          .filter((mode) => mode.id !== transfer.fromMode)
-                          .map((mode) => (
-                            <SelectItem key={mode.id} value={mode.id}>
-                              <div className="flex items-center gap-2">
-                                {mode.icon}
-                                <span>{mode.name}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    {transfer.distributions.length > 1 && (
+              {transfer.distributions.map((dist, index) => {
+                return (
+                  <div
+                    key={`${dist.id}-${index}`}
+                    className="flex flex-col items-center justify-between gap-4"
+                  >
+                    <div className="flex gap-3 items-center w-full">
+                      <Badge variant="secondary" className="h-8 mr-3">
+                        Para:
+                      </Badge>
+                      <Select
+                        value={dist.toMode}
+                        onValueChange={(value) =>
+                          updateDistribution(
+                            transfer.id,
+                            dist.id,
+                            "toMode",
+                            value
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[200px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {data
+                            .filter((mode) => mode.id !== transfer.fromMode)
+                            .map((mode, index) => (
+                              <SelectItem
+                                disabled={transfer.distributions.some(
+                                  (d) => d.toMode === mode.id
+                                )}
+                                key={`${mode.id}-${index}`}
+                                value={mode.id}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {mode.icon}
+                                  <span>{mode.name}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      {/* {transfer.distributions.length > 1 && ( */}
                       <Button
                         variant="ghost"
                         size="icon"
@@ -271,62 +210,62 @@ export default function MultiModalSimulatorTransferTest() {
                       >
                         <Trash2 className="h-4 w-4 text-red-500" />
                       </Button>
-                    )}
-                  </div>
+                      {/* )} */}
+                    </div>
 
-                  <div className="">
-                    <Slider
-                      value={[dist.percentage]}
-                      onValueChange={(value) => {
-                        const newPercentage = value[0];
-                        const otherDistTotal = transfer.distributions
-                          .filter((d) => d.id !== dist.id)
-                          .reduce((sum, d) => sum + d.percentage, 0);
+                    <div className="">
+                      <Slider
+                        value={[dist.percentage]}
+                        onValueChange={(value) => {
+                          const newPercentage = value[0];
+                          const otherDistTotal = transfer.distributions
+                            .filter((d) => d.id !== dist.id)
+                            .reduce((sum, d) => sum + d.percentage, 0);
 
-                        if (newPercentage + otherDistTotal <= 100) {
-                          updateDistribution(
-                            transfer.id,
-                            dist.id,
-                            "percentage",
-                            newPercentage
-                          );
-                        }
-                      }}
-                      max={100}
-                      step={1}
-                    />
-                    <div className="text-sm text-muted-foreground mt-1">
-                      {dist.percentage}% das viagens de{" "}
-                      {
-                        formattedData.find((d) => d.id === transfer.fromMode)
-                          ?.name
-                      }{" "}
-                      transferidas para{" "}
-                      {formattedData.find((d) => d.id === dist.toMode)?.name}
+                          if (newPercentage + otherDistTotal <= 100) {
+                            updateDistribution(
+                              transfer.id,
+                              dist.id,
+                              "percentage",
+                              newPercentage
+                            );
+                          }
+                        }}
+                        max={100}
+                        step={1}
+                      />
+                      <div className="text-sm text-muted-foreground mt-1">
+                        {dist.percentage}% das viagens de{" "}
+                        {data.find((d) => d.id === transfer.fromMode)?.name}{" "}
+                        transferidas para{" "}
+                        {data.find((d) => d.id === dist.toMode)?.name}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
-              {getAvailablePercentage(transfer.distributions) > 0 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addDistribution(transfer.id)}
-                  className="w-full mt-2"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Adicionar distribuição
-                </Button>
-              )}
+              {getAvailablePercentage(transfer.distributions) > 0 &&
+                transfer.distributions.length < data.length - 1 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addDistribution(transfer.id)}
+                    className="w-full mt-2"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Adicionar distribuição
+                  </Button>
+                )}
             </div>
           </div>
         ))}
-
-        <Button variant="outline" onClick={addTransferRow} className="w-full">
-          <Plus className="h-4 w-4 mr-2" />
-          Adicionar transferência
-        </Button>
+        {transfers.length < 1 && (
+          <Button variant="outline" onClick={addTransferRow} className="w-full">
+            <Plus className="h-4 w-4 mr-2" />
+            Adicionar transferência
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
