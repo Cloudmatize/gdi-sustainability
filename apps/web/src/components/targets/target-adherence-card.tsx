@@ -21,8 +21,8 @@ export default function TargetAdherenceCard({
   const { hypothesisMode, totalCo2Emission } = useTargetsStore();
   const { simulated: simulatedEmissions } = totalCo2Emission;
 
-  const baseAdherence = (targetEmissions / baseEmissions) * 100;
-  const simulatedAdherence = (targetEmissions / simulatedEmissions) * 100;
+  const baseAdherence = (baseEmissions / targetEmissions) * 100;
+  const simulatedAdherence = (targetEmissions /  simulatedEmissions) * 100;
 
   return (
     <Card className="w-full h-full ">

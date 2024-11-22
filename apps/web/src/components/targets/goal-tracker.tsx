@@ -80,13 +80,16 @@ export default function GoalTracker() {
     (item) => item?.year === new Date().getFullYear()
   );
 
-  console.log("targetCo2EmissionsCurrentYear", targetCo2EmissionsCurrentYear);
-
   const targetCo2EmissionsFinalYear =
     transformDataTest && transformDataTest[transformDataTest.length - 1];
 
-  console.log("targetCo2EmissionsFinalYear", targetCo2EmissionsFinalYear);
   const [openSidebar, setOpenSidebar] = useState(false);
+
+  console.log("lastYearCo2Emission", lastYearCo2Emission);
+  console.log(
+    "targetCo2EmissionsCurrentYear?.targetCo2Emission",
+    targetCo2EmissionsCurrentYear?.targetCo2Emission
+  );
 
   const yearBaseCo2Emission = yearData?.[0]?.co2Emission || 0;
   const yearBase = yearData?.[0]?.year || 0;

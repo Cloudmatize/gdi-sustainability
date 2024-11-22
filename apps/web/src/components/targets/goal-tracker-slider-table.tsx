@@ -79,7 +79,8 @@ function calculateEmissionsForSingleMode(data: TransportModeReal): number {
 }
 
 const transformData = (
-  data?: TransportModeReal[]
+  data: TransportModeReal[],
+  passengersPerTripData: { [key: string]: number }
 ): FormattedTransportMode[] => {
   const formattedData = data?.map((item) => {
     return {
@@ -88,7 +89,7 @@ const transformData = (
       icon: getIconByTransportMode(item.mode),
       baseTrips: item.trips,
       tripPercentage: 0,
-      passengersPerTrip: passengersPerTripMapping[item.mode] || 1,
+      passengersPerTrip: passengersPerTripData[item.mode] || 1,
       totalEmissions: Math.trunc(item.co2Emissions),
       emissionsPerPassenger: calculateEmissionsForSingleMode(item),
     };
@@ -172,48 +173,56 @@ function simulateTransfers(
 }
 
 export default function GoalTrackerSliderTable({ data }: Props) {
-  const initialTransportData = transformData(data);
-  const [transportData, setTransportData] = useState(transformData(data));
-  const [passengersPerTripData, setPassengersPerTripData] = useState()
+  const [passengersPerTripData, setPassengersPerTripData] = useState(
+    passengersPerTripMapping
+  );
+
+  const initialTransportData = transformData(data, passengersPerTripData);
+  const [transportData, setTransportData] = useState(
+    transformData(data, passengersPerTripData)
+  );
+
+  const [simulatedCo2Emissions, setSimulatedCo2Emissions] = useState(
+    [] as FormattedTransportMode[]
+  );
 
   const { setTotalCo2Emission } = useTargetsStore();
 
-  const transportDataTesst = transformData(data);
+  const transportDataTesst = transformData(data, passengersPerTripData);
 
   const { transfers } = useTargetsStore();
 
   const handlePassengerChange = (id: string, value: number) => {
-    setTransportData((prev) =>
-      prev.map((mode) =>
-        mode.id === id ? { ...mode, passengersPerTrip: value } : mode
-      )
-    );
+    setPassengersPerTripData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
   };
 
-  const updatedTransportData = simulateTransfers(transportDataTesst, transfers);
-
-  useEffect(() => { }, [
-
-  ])
-
-
-  const sumSimulatedTotalCo2Emisisons = updatedTransportData.reduce(
-    (acc, mode) => {
-      return acc + mode.totalEmissions;
-    },
-    0
-  );
-
-  const originalTotalCo2Emissions = initialTransportData.reduce((acc, mode) => {
-    return acc + mode.totalEmissions;
-  }, 0);
-
   useEffect(() => {
+    const simulatedCo2EmissionsData = simulateTransfers(
+      transportDataTesst,
+      transfers
+    );
+    const sumSimulatedTotalCo2Emisisons = simulatedCo2EmissionsData?.reduce(
+      (acc, mode) => {
+        return acc + mode.totalEmissions;
+      },
+      0
+    );
+
+    const originalTotalCo2Emissions = transportDataTesst?.reduce(
+      (acc, mode) => {
+        return acc + mode.totalEmissions;
+      },
+      0
+    );
     setTotalCo2Emission({
       original: originalTotalCo2Emissions,
       simulated: Math.trunc(sumSimulatedTotalCo2Emisisons),
     });
-  }, [sumSimulatedTotalCo2Emisisons, originalTotalCo2Emissions]);
+    setSimulatedCo2Emissions(simulatedCo2EmissionsData);
+  }, [transfers, passengersPerTripData]);
 
   return (
     <Card className="h-full  overflow-y-auto">
@@ -240,7 +249,7 @@ export default function GoalTrackerSliderTable({ data }: Props) {
               const initialTransportMode = initialTransportData.find(
                 (t) => t.id === mode.id
               );
-              const simulatedData = updatedTransportData.find(
+              const simulatedData = simulatedCo2Emissions?.find(
                 (f) => f.id === mode.id
               );
 
@@ -267,7 +276,7 @@ export default function GoalTrackerSliderTable({ data }: Props) {
                 (t) => t.fromMode === mode.id
               );
 
-              const updatedModeData = updatedTransportData.find(
+              const updatedModeData = simulatedCo2Emissions?.find(
                 (t) => t.id === mode.id
               );
 
