@@ -28,15 +28,15 @@ export default function GoalCard({
           <h3 className="text-lg font-semibold">{title}</h3>
         </div>
       </div>
-      <div className="p-5 pt-0 space-y-3">
-        <p className="text-2xl font-bold text-teal-700">{value}</p>
-        <div>
-          <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
+      <div className="p-5 pt-0 space-y-5">
+        <p className="text-2xl font-bold text-slate-700">{value}</p>
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-slate-600 uppercase tracking-wide">
             {subLabel}
           </p>
-          <p className="text-xl font-semibold text-teal-800">
+          <p className="text-xl font-bold text-teal-500">
             {subValue}{" "}
-            <span className="text-base font-normal text-teal-600">
+            <span className="text-base font-normal text-slate-600">
               {subUnit}
             </span>
           </p>

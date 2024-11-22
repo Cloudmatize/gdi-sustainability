@@ -136,13 +136,23 @@ const CustomTooltip = ({
 type DataEntry = {
   year: number;
   co2Emission: number | null;
-  targetCo2Emission: number;
+  targetCo2Emission: number | null;
   simulatedCo2Emission?: number | null;
 };
 
-export default function TransportEmissionTargets() {
+
+interface Props {
+  data?: {
+    year: number;
+    co2Emission: number | null;
+    targetCo2Emission: number | null;
+    simulatedCo2Emission?: number | null;
+
+  }[];
+}
+export default function TransportEmissionTargets({ data = [] }: Props) {
   // const { data, isFetching } = useTransportCO2EmissionByYear();
-  const data = CO2_EMISSION_BY_YEAR_MOCK;
+  // const data = CO2_EMISSION_BY_YEAR_MOCK;
 
   const [transportEmissionData, setTransportEmissionData] = useState<
     DataEntry[]

@@ -74,12 +74,18 @@ export const getCO2EmissionByYearAndModalQuery = ({
   }
 `;
 
-export const getCO2EmissionByYearQuery = gql`
+export const getCO2EmissionByYearQuery = ({
+  filters,
+}: {
+  filters?: {
+    date: number[];
+  };
+}) => gql`
   query CubeQuery {
-    cube {
+    cube(where: { transportation_emission: { year: { ${filters?.date ? `in:  ${JSON.stringify(filters?.date)}` : ""} } } }) {
       transportation_emission(orderBy: { year: asc }) {
-        sum_full_co2e_tons
         year
+        sum_full_co2e_tons
       }
     }
   }

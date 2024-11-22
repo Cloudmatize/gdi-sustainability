@@ -174,6 +174,7 @@ function simulateTransfers(
 export default function GoalTrackerSliderTable({ data }: Props) {
   const initialTransportData = transformData(data);
   const [transportData, setTransportData] = useState(transformData(data));
+  const [passengersPerTripData, setPassengersPerTripData] = useState()
 
   const { setTotalCo2Emission } = useTargetsStore();
 
@@ -191,6 +192,9 @@ export default function GoalTrackerSliderTable({ data }: Props) {
 
   const updatedTransportData = simulateTransfers(transportDataTesst, transfers);
 
+  useEffect(() => { }, [
+
+  ])
 
 
   const sumSimulatedTotalCo2Emisisons = updatedTransportData.reduce(
@@ -207,12 +211,10 @@ export default function GoalTrackerSliderTable({ data }: Props) {
   useEffect(() => {
     setTotalCo2Emission({
       original: originalTotalCo2Emissions,
-      simulated: sumSimulatedTotalCo2Emisisons,
+      simulated: Math.trunc(sumSimulatedTotalCo2Emisisons),
     });
   }, [sumSimulatedTotalCo2Emisisons, originalTotalCo2Emissions]);
 
-  console.log('transportData')
-  console.log("updatedTransportData", updatedTransportData);
   return (
     <Card className="h-full  overflow-y-auto">
       <CardHeader>
