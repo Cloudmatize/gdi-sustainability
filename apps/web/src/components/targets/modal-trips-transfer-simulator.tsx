@@ -29,7 +29,7 @@ interface Props {
     icon: JSX.Element | undefined;
   }[];
 }
-export default function MultiModalSimulatorTransferTest({ data }: Props) {
+export default function ModalTripsTransferSimulator({ data }: Props) {
   const { transfers, setTransfers } = useTargetsStore();
   const addTransferRow = () => {
     const newDistId = String(Math.floor(Math.random() * 9000) + 1000);

@@ -42,9 +42,7 @@ export default function ModalSimulator() {
                 <span className="text-sm text-muted-foreground">
                   {(simulated - original).toLocaleString()} tCo2
                 </span>
-                {/* <span className="text-sm text-muted-foreground">
-                  percentual de {percentage > 0 ? "redução" : "aumento"}
-                </span> */}
+          
               </div>
             </div>
           </div>

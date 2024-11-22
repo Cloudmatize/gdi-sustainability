@@ -178,7 +178,7 @@ function simulateTransfers(
   return Array.from(transportMap.values());
 }
 
-export default function GoalTrackerSliderTable({ data }: Props) {
+export default function GoalTrackerTable({ data }: Props) {
   const [passengersPerTripData, setPassengersPerTripData] = useState(
     passengersPerTripMapping
   );

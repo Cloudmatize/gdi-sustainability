@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-
 import { CalendarClock, Target } from "lucide-react";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
-import GoalTrackerSliderTable from "./goal-tracker-slider-table";
 import { useTargetsStore } from "@/store/targets";
-import MultiModalSimulatorTransferTest from "./transfer-test";
+import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
 import { CO2_EMISSION_BY_YEAR_TARGETS_MOCK } from "@/mock/target";
 import GoalCard from "./goal-card";
 import { Sidebar } from "../sidebar";
@@ -20,15 +18,7 @@ import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { mappedTravelMode } from "@/constants/transports";
 import { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
-
-type TransportType = "car" | "bus" | "bike";
-
-interface TransportData {
-  type: TransportType;
-  trips: number;
-  avgPassengers: number;
-  emissionsPerTrip: number;
-}
+import GoalTrackerTable from "./goal-tracker-table";
 
 const transformData = (
   data: {
@@ -66,14 +56,12 @@ const transformData = (
 };
 
 export default function GoalTracker() {
-  // const { data } = useTargetsCO2Emiss  ionByModal();
-
   const { data: yearData, isFetching } = useTransportCO2EmissionByYear({});
   const { data: targetsData } = useTargetsCO2EmissionByModal();
+  const [openSidebar, setOpenSidebar] = useState(false);
+
   const transformDataTest = transformData(yearData || []);
-
-  const data = CO2_EMISSION_BY_YEAR_TARGETS_MOCK;
-
+  
   const modalData = targetsData?.map((data) => {
     return {
       id: data?.mode,
@@ -88,14 +76,9 @@ export default function GoalTracker() {
     yearData?.find((item) => item.year === new Date().getFullYear() - 1)
       ?.co2Emission || 0;
 
-  const targetCo2EmissionsCurrentYear = transformDataTest?.find(
-    (item) => item?.year === new Date().getFullYear()
-  );
-
   const targetCo2EmissionsFinalYear =
     transformDataTest && transformDataTest[transformDataTest.length - 1];
 
-  const [openSidebar, setOpenSidebar] = useState(false);
 
   const yearBaseCo2Emission = yearData?.[0]?.co2Emission || 0;
   const yearBase = yearData?.[0]?.year || 0;
@@ -111,7 +94,6 @@ export default function GoalTracker() {
         </Sidebar>
       )}
 
-      {/* <SimulatorSidebar /> */}
       <div className="flex justify-end w-full  ">
         <div className="flex items-center  space-x-2">
           <Switch
@@ -126,13 +108,13 @@ export default function GoalTracker() {
         </div>
       </div>
       <div className="space-y-3 py-1 w-full">
-        <div
-          className={cx(
-            "grid gap-3 md:grid-cols-4",
-            // hypothesisMode ? `md:grid-cols-4` : ""
-          )}
-        >
-          <div className={cx("md:col-span-1", hypothesisMode ? "md:col-span-1" : "")}>
+        <div className={cx("grid gap-3 md:grid-cols-4")}>
+          <div
+            className={cx(
+              "md:col-span-1",
+              hypothesisMode ? "md:col-span-1" : ""
+            )}
+          >
             <GoalCard
               icon={CalendarClock}
               title="Ano base"
@@ -142,7 +124,12 @@ export default function GoalTracker() {
               subUnit="toneladas de CO2"
             />
           </div>
-          <div className={cx("md:col-span-1", hypothesisMode ? "md:col-span-1" : "")}>
+          <div
+            className={cx(
+              "md:col-span-1",
+              hypothesisMode ? "md:col-span-1" : ""
+            )}
+          >
             <GoalCard
               icon={Target}
               title="Meta"
@@ -152,16 +139,13 @@ export default function GoalTracker() {
               subUnit="toneladas de CO2"
             />
           </div>
-          {/* <div className={cx("", hypothesisMode ? "md:col-span-2" : "")}>
-            <TargetAdherenceCard
-              targetYear={2024}
-              baseEmissions={lastYearCo2Emission || 0}
-              targetEmissions={
-                targetCo2EmissionsCurrentYear?.targetCo2Emission || 0
-              }
-            />
-          </div> */}
-          <div className={cx("md:col-span-2", hypothesisMode ? "md:col-span-2" : "")}>
+
+          <div
+            className={cx(
+              "md:col-span-2",
+              hypothesisMode ? "md:col-span-2" : ""
+            )}
+          >
             <TargetAdherenceCard
               targetYear={2030}
               baseEmissions={lastYearCo2Emission || 0}
@@ -174,7 +158,7 @@ export default function GoalTracker() {
       </div>
       {hypothesisMode && (
         <div className="flex flex-col gap-6">
-          <GoalTrackerSliderTable data={targetsData || []} />
+          <GoalTrackerTable data={targetsData || []} />
         </div>
       )}
       <TransportEmissionTargets data={transformDataTest} />

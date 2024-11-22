@@ -6,7 +6,7 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import ModalSimulator from "./targets/modal-simulator";
-import MultiModalSimulatorTransferTest from "./targets/transfer-test";
+import MultiModalSimulatorTransferTest from "./targets/modal-trips-transfer-simulator";
 
 export function AppSidebar() {
   return (
