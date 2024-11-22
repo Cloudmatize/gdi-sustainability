@@ -1,25 +1,40 @@
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { ArrowLeft, Building } from "lucide-react";
-import EnergyFractions from "./sections/energy-fractions";
 import { useBuildingsFloorAreasBySector } from "@/hooks/buildings";
-import EnergyIntensities from "./sections/energy-intensities";
-import { formatNumber } from "@/utils/format-number";
-import InfoCard from "../info-card";
-import { MdCo2 } from "react-icons/md";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { formatNumber } from "@/utils/format-number";
+import { Building } from "lucide-react";
+import { MdCo2 } from "react-icons/md";
 import DataSourceInfo from "../data-source-info";
+import InfoCard from "../info-card";
+import EnergyFractions from "./sections/energy-fractions";
+import EnergyIntensities from "./sections/energy-intensities";
 
 export default function BuildingsPage() {
   const { data } = useBuildingsFloorAreasBySector({});
 
   return (
-    <div className="min-h-screen bg-background p-6 mx-16">
+    <div className="min-h-screen bg-background p-6 md:mx-16">
       <div className="mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+
+        <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
-            <Link href="#" className="absolute left-6">
+            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-slate-800">
+              Emissões de edifícios <Building size={48} />
+            </h1>
+          </div>
+          {/* <div className="flex items-center gap-2">
+            <YearSelect
+              endYear={2023}
+              startYear={2018}
+              value={date}
+              onValueChange={handleYearChange}
+            />
+          </div> */}
+        </div>
+
+        {/* <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4"> */}
+        {/* <Link href="#" className="absolute left-6">
               <Button
                 variant="default"
                 className="bg-gray-100 text-slate-700 hover:text-white"
@@ -27,13 +42,13 @@ export default function BuildingsPage() {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-            </Link>
+            </Link> */}
 
-            <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
+        {/* <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
               Emissões de edifícios <Building className="h-7 w-7 ml-1 mt-0.5" />
             </h1>
           </div>
-        </div>
+        </div> */}
 
         {/* Description */}
         <p className="text-muted-foreground max-w-lg">
@@ -45,7 +60,7 @@ export default function BuildingsPage() {
 
         <div className="border-t border-gray-200 py-6" />
         {/* Metrics */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
           <InfoCard
             icon={MdCo2}
             title="Emissão total de CO₂"
