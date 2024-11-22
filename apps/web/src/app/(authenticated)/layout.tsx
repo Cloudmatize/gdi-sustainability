@@ -15,7 +15,6 @@ export default async function AuthenticatedLayout({ children }: Props) {
           <div className="w-full p-0 m-0 overflow-hidden flex flex-col gap-4">
             <div className="w-full bg-sidebar flex flex-row items-center gap-2 border-b p-2 h-[65px]">
               <CustomSideBarTrigger className="" />
-              Emissões de transporte
             </div>
             <AuthenticatedProviders>
               {children}</AuthenticatedProviders>

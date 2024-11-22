@@ -49,10 +49,10 @@ export function MobileSideBar() {
                         <SidebarGroup className="p-1 my-1 flex flex-col items-center">
                             <SidebarGroupLabel asChild className="w-full p-0">
                                 <CollapsibleTrigger asChild className="w-full p-0">
-                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`px-2 transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                    <SidebarMenuButton tooltip={route.title} variant="default" className={`px-2 transition-all duration-200 delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full "}`} onClick={(e) => handleChangeOpenState(route)}>
                                         <div className="flex flex-row gap-2 items-center">
                                             <route.icon size={20} className="font-bold" />
-                                            <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-400`}>
+                                            <p className={`${open ? 'text-sm' : 'text-[0px]'} delay-100 transition-all ease-in-out duration-200`}>
                                                 {route.title}
                                             </p>
                                         </div>
@@ -65,7 +65,7 @@ export function MobileSideBar() {
                                     <SidebarMenu className="border-l-2 px-4">
                                         {route?.children?.map((children) => (
                                             <SidebarMenuItem key={children.title} className="max-w-56 w-56">
-                                                <SidebarMenuButton asChild className={`max-w-56 ${openRoute.includes(children.id) ? "bg-teal-400 text-white  w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(children)}>
+                                                <SidebarMenuButton asChild className={`max-w-56  w-full ${openRoute.includes(children.id) ? "bg-teal-400 text-white font-bold" : ""}`} onClick={(e) => handleChangeOpenState(children)}>
                                                     <a href={children.path}>
                                                         <children.icon />
                                                         <span>{children.title}</span>
@@ -82,8 +82,8 @@ export function MobileSideBar() {
                     <SidebarGroup className="p-1" key={route.id}>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                <SidebarMenuItem className="max-w-56 w-56">
-                                    <SidebarMenuButton variant="default" className={`text-slate-600 max-w-56 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full hover:bg-teal-400 hover:text-white hover:font-bold"}`} onClick={(e) => handleChangeOpenState(route)}>
+                                <SidebarMenuItem className="w-full">
+                                    <SidebarMenuButton variant="default" className={`w-full text-slate-600  ${openRoute.includes(route.id) ? "bg-teal-400 text-white font-bold" : ""}`} onClick={(e) => handleChangeOpenState(route)}>
                                         <route.icon size={20} />
                                         {route.title}
                                     </SidebarMenuButton>
