@@ -7,7 +7,6 @@ import { CalendarClock, Target } from "lucide-react";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import { useTargetsStore } from "@/store/targets";
 import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
-import { CO2_EMISSION_BY_YEAR_TARGETS_MOCK } from "@/mock/target";
 import GoalCard from "./goal-card";
 import { Sidebar } from "../sidebar";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
@@ -19,6 +18,7 @@ import { mappedTravelMode } from "@/constants/transports";
 import { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import GoalTrackerTable from "./goal-tracker-table";
+import { Skeleton } from "../ui/skeleton";
 
 const transformData = (
   data: {
@@ -56,13 +56,17 @@ const transformData = (
 };
 
 export default function GoalTracker() {
-  const { data: yearData, isFetching } = useTransportCO2EmissionByYear({});
-  const { data: targetsData } = useTargetsCO2EmissionByModal();
+  const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
+    useTransportCO2EmissionByYear({});
+  const {
+    data: targetsCo2EmissionByModal,
+    isFetching: loadingTargetsCo2EmissionByModal,
+  } = useTargetsCO2EmissionByModal();
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const transformDataTest = transformData(yearData || []);
-  
-  const modalData = targetsData?.map((data) => {
+  const transformDataTest = transformData(co2EmissionByYear || []);
+
+  const modalData = targetsCo2EmissionByModal?.map((data) => {
     return {
       id: data?.mode,
       name: mappedTravelMode[data.mode as TravelMode],
@@ -73,15 +77,15 @@ export default function GoalTracker() {
   const { hypothesisMode, setHypothesisMode } = useTargetsStore();
 
   const lastYearCo2Emission =
-    yearData?.find((item) => item.year === new Date().getFullYear() - 1)
-      ?.co2Emission || 0;
+    co2EmissionByYear?.find(
+      (item) => item.year === new Date().getFullYear() - 1
+    )?.co2Emission || 0;
 
   const targetCo2EmissionsFinalYear =
     transformDataTest && transformDataTest[transformDataTest.length - 1];
 
-
-  const yearBaseCo2Emission = yearData?.[0]?.co2Emission || 0;
-  const yearBase = yearData?.[0]?.year || 0;
+  const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
+  const yearBase = co2EmissionByYear?.[0]?.year || 0;
   return (
     <div className="container mx-auto p-4 space-y-6">
       {hypothesisMode && (
@@ -97,6 +101,9 @@ export default function GoalTracker() {
       <div className="flex justify-end w-full  ">
         <div className="flex items-center  space-x-2">
           <Switch
+            disabled={
+              loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
+            }
             checked={hypothesisMode}
             onCheckedChange={(value) => {
               setHypothesisMode(value);
@@ -115,14 +122,18 @@ export default function GoalTracker() {
               hypothesisMode ? "md:col-span-1" : ""
             )}
           >
-            <GoalCard
-              icon={CalendarClock}
-              title="Ano base"
-              value={String(yearBase)}
-              subLabel="Emissão inicial de CO2"
-              subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
-              subUnit="toneladas de CO2"
-            />
+            {loadingCo2EmissionByYear ? (
+              <Skeleton className="h-[185px]" />
+            ) : (
+              <GoalCard
+                icon={CalendarClock}
+                title="Ano base"
+                value={String(yearBase)}
+                subLabel="Emissão inicial de CO2"
+                subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
+                subUnit="toneladas de CO2"
+              />
+            )}
           </div>
           <div
             className={cx(
@@ -130,14 +141,20 @@ export default function GoalTracker() {
               hypothesisMode ? "md:col-span-1" : ""
             )}
           >
-            <GoalCard
-              icon={Target}
-              title="Meta"
-              value="2030"
-              subLabel="Emissão estimada (-20%)"
-              subValue={Math.trunc(yearBaseCo2Emission * 0.8).toLocaleString()}
-              subUnit="toneladas de CO2"
-            />
+            {loadingCo2EmissionByYear ? (
+              <Skeleton className="h-[185px]" />
+            ) : (
+              <GoalCard
+                icon={Target}
+                title="Meta"
+                value="2030"
+                subLabel="Emissão estimada (-20%)"
+                subValue={Math.trunc(
+                  yearBaseCo2Emission * 0.8
+                ).toLocaleString()}
+                subUnit="toneladas de CO2"
+              />
+            )}
           </div>
 
           <div
@@ -146,22 +163,30 @@ export default function GoalTracker() {
               hypothesisMode ? "md:col-span-2" : ""
             )}
           >
-            <TargetAdherenceCard
-              targetYear={2030}
-              baseEmissions={lastYearCo2Emission || 0}
-              targetEmissions={
-                targetCo2EmissionsFinalYear.targetCo2Emission || 0
-              }
-            />
+            {loadingCo2EmissionByYear ? (
+              <Skeleton className="h-[185px]" />
+            ) : (
+              <TargetAdherenceCard
+                targetYear={2030}
+                baseEmissions={lastYearCo2Emission || 0}
+                targetEmissions={
+                  targetCo2EmissionsFinalYear.targetCo2Emission || 0
+                }
+              />
+            )}
           </div>
         </div>
       </div>
       {hypothesisMode && (
         <div className="flex flex-col gap-6">
-          <GoalTrackerTable data={targetsData || []} />
+          <GoalTrackerTable data={targetsCo2EmissionByModal || []} />
         </div>
       )}
-      <TransportEmissionTargets data={transformDataTest} />
+      {loadingCo2EmissionByYear ? (
+        <Skeleton className="h-[500px]" />
+      ) : (
+        <TransportEmissionTargets data={transformDataTest} />
+      )}
     </div>
   );
 }

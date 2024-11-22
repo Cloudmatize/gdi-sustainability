@@ -1,7 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { CardContent } from "@/components/ui/card";
 import { useTargetsStore } from "@/store/targets";
 import { ArrowDown, Target, ArrowUp } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
@@ -42,7 +41,6 @@ export default function ModalSimulator() {
                 <span className="text-sm text-muted-foreground">
                   {(simulated - original).toLocaleString()} tCo2
                 </span>
-          
               </div>
             </div>
           </div>

@@ -1,8 +1,6 @@
 "use client";
 
-import { ArrowLeft, CalendarClock, Percent, Target } from "lucide-react";
 import { Card } from "../ui/card";
-
 interface GoalCardProps {
   icon: React.ElementType;
   title: string;
