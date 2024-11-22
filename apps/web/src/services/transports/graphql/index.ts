@@ -135,7 +135,7 @@ function getEmissionAnalysisByYears(input: InputData): {
   };
 }
 
-const calculateCityEmissionTargets = (
+export const calculateCityEmissionTargets = (
   startEmissionData: number,
   startYear: number = 2018
 ) => {

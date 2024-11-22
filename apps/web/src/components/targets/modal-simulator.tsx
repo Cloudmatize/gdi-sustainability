@@ -14,7 +14,7 @@ export default function ModalSimulator() {
   return (
     <div className="w-full border-b  border-gray-200">
       <CardContent className=" space-y-4 flex  items-center">
-        <div className=" flex gap-5 items-center justify-center w-full text-xl">
+        <div className=" flex gap-12 items-center justify-center  w-full text-xl">
           <div className="flex items-center space-x-2">
             <div className=" w-10">
               <MdCo2 size={40} className="text-slate-700" />
@@ -28,17 +28,22 @@ export default function ModalSimulator() {
               </span>
             </div>
           </div>
-          <div className="flex text-center items-center space-x-2">
-            <ArrowDown className="h-6 w-6 text-teal-500" />
-            <span className="text-2xl font-semibold  text-teal-500">
-              {percentage.toFixed(2)}%
+          <div className="flex  flex-col items-center space-x-2 ">
+            <div className="flex items-center gap-2">
+              <ArrowDown className="h-6 w-6 text-teal-500" />
+              <span className="text-3xl font-semibold  text-teal-500">
+                {percentage.toFixed(2)}%
+              </span>
+            </div>
+            <span className="text-muted-foreground text-sm">
+              percentual de redução
             </span>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 ">
             <div className=" w-10">
               <Target className="text-slate-700" />
             </div>
-            <div className="flex-col flex items-center">
+            <div className="flex-col flex items-center ">
               <span className="font-semibold text-slate-700">
                 {simulated.toLocaleString()} tCo2
               </span>
@@ -52,5 +57,3 @@ export default function ModalSimulator() {
     </div>
   );
 }
-
-

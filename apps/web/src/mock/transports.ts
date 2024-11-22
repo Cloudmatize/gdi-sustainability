@@ -25,11 +25,39 @@ export const CO2_EMISSION_BY_YEAR_MOCK = [
     co2Emission: 193953.47790000003,
     targetCo2Emission: 204208.7276457511,
   },
-  { year: 2024, co2Emission: null, targetCo2Emission: 200446.49425245041 },
-  { year: 2025, co2Emission: null, targetCo2Emission: 196753.5742536792 },
-  { year: 2026, co2Emission: null, targetCo2Emission: 193128.69065618396 },
-  { year: 2027, co2Emission: null, targetCo2Emission: 189570.5899933583 },
-  { year: 2028, co2Emission: null, targetCo2Emission: 186078.04189180039 },
-  { year: 2029, co2Emission: null, targetCo2Emission: 182649.838645856 },
-  { year: 2030, co2Emission: null, targetCo2Emission: 179284.7948 },
+  {
+    year: 2024,
+    co2Emission: null,
+    targetCo2Emission: 200446.49425245041,
+  },
+  {
+    year: 2025,
+    co2Emission: null,
+    targetCo2Emission: 196753.5742536792,
+  },
+  {
+    year: 2026,
+    co2Emission: null,
+    targetCo2Emission: 193128.69065618396,
+  },
+  {
+    year: 2027,
+    co2Emission: null,
+    targetCo2Emission: 189570.5899933583,
+  },
+  {
+    year: 2028,
+    co2Emission: null,
+    targetCo2Emission: 186078.04189180039,
+  },
+  {
+    year: 2029,
+    co2Emission: null,
+    targetCo2Emission: 182649.838645856,
+  },
+  {
+    year: 2030,
+    co2Emission: null,
+    targetCo2Emission: 179284.7948,
+  },
 ];
