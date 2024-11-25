@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { CustomSideBarTrigger, SidebarProvider } from "@/components/ui/sidebar";
 import { AuthenticatedProviders } from "@/providers/authenticated";
+import NavBar from "@/components/nav-bar";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -16,8 +17,7 @@ export default async function AuthenticatedLayout({ children }: Props) {
             <div className="w-full bg-sidebar flex flex-row items-center gap-2 border-b p-2 h-[65px]">
               <CustomSideBarTrigger className="" />
             </div>
-            <AuthenticatedProviders>
-              {children}</AuthenticatedProviders>
+            <AuthenticatedProviders>{children}</AuthenticatedProviders>
           </div>
         </div>
       </SidebarProvider>

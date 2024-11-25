@@ -205,7 +205,6 @@ export default function Co2EmissionPerTransport() {
   const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
-  console.log("modalAnalysis", modalAnalysis);
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">

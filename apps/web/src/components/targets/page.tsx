@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft, Goal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import TransportEmissionTargets from "./sections/transport-emissions-targets";
+import GoalTracker from "./goal-tracker";
 
 export default function TargetsPage() {
   return (
@@ -25,8 +25,7 @@ export default function TargetsPage() {
             </h1>
           </div>
         </div>
-
-        <TransportEmissionTargets />
+        <GoalTracker />
       </div>
     </div>
   );

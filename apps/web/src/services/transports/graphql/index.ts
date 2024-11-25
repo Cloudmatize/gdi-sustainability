@@ -135,7 +135,7 @@ function getEmissionAnalysisByYears(input: InputData): {
   };
 }
 
-const calculateCityEmissionTargets = (
+export const calculateCityEmissionTargets = (
   startEmissionData: number,
   startYear: number = 2018
 ) => {
@@ -300,8 +300,9 @@ export const getTransportsCO2EmissionPerKM = async ({
 
 export const getTransportsCO2EmissionByYearAndModal = async () => {
   try {
+    const query = getCO2EmissionByYearAndModalQuery({});
     const data = await graphQLClient.request<CO2EmissionByYearAndModalResponse>(
-      getCO2EmissionByYearAndModalQuery,
+      query,
       { queryName: "getCO2EmissionByYearAndModalQuery" }
     );
 
@@ -382,12 +383,18 @@ export const getTransportsCO2EmissionByYearAndModal = async () => {
     console.log("Error fetching total CO2 emission", error);
   }
 };
-export const getTransportsCO2EmissionByYear = async () => {
+export const getTransportsCO2EmissionByYear = async ({
+  filters,
+}: {
+  filters?: {
+    date: number[];
+  };
+}) => {
   try {
-    const data = await graphQLClient.request<CO2EmissionByYearResponse>(
-      getCO2EmissionByYearQuery,
-      { queryName: "getCO2EmissionByYearQuery" }
-    );
+    const query = getCO2EmissionByYearQuery({ filters });
+    const data = await graphQLClient.request<CO2EmissionByYearResponse>(query, {
+      queryName: "getCO2EmissionByYearQuery",
+    });
 
     if (data) {
       const emissionsByYear = data.cube.map(({ transportation_emission }) => {
@@ -397,35 +404,7 @@ export const getTransportsCO2EmissionByYear = async () => {
         };
       });
 
-      const targetEmissions = calculateCityEmissionTargets(
-        emissionsByYear[0].co2Emission
-      );
-
-      const formattedData: {
-        year: number;
-        co2Emission: number | null;
-        targetCo2Emission: number | null;
-      }[] = [];
-
-      const allYears = new Set([
-        ...emissionsByYear.map((item) => item.year),
-        ...Object.keys(targetEmissions).map((year) => parseInt(year, 10)),
-      ]);
-
-      allYears.forEach((year) => {
-        const co2Emission =
-          emissionsByYear.find((item) => item.year === year)?.co2Emission ||
-          null;
-        const targetCo2Emission = targetEmissions[year] || null;
-
-        formattedData.push({
-          year,
-          co2Emission,
-          targetCo2Emission,
-        });
-      });
-
-      return formattedData;
+      return emissionsByYear;
     }
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
@@ -486,10 +465,12 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
       );
       const updatedModalsData = modalsData?.map((modal) => ({
         ...modal,
-        isHighestYearlyReduction: modal.mode === modalWithHighestYearlyReduction?.mode,
-        isLowestYearlyReduction: modal.mode === modalWithLowestYearlyReduction?.mode,
+        isHighestYearlyReduction:
+          modal.mode === modalWithHighestYearlyReduction?.mode,
+        isLowestYearlyReduction:
+          modal.mode === modalWithLowestYearlyReduction?.mode,
       }));
-      
+
       const formattedData = {
         modalsData: updatedModalsData,
       };

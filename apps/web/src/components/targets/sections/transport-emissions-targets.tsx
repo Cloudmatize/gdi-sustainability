@@ -3,8 +3,12 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
+import { CO2_EMISSION_BY_YEAR_MOCK } from "@/mock/transports";
+import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { CalendarClock, Percent, Target } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Legend,
   Line,
@@ -21,6 +25,7 @@ const currentYear = new Date().getFullYear();
 const mappedGoal = {
   targetCo2Emission: "Meta de emissões",
   co2Emission: "Total de emissões",
+  simulatedCo2Emission: "Emissões projetadas",
 };
 function checkEmissionsStatus(
   currentEmission: number | undefined | null,
@@ -128,107 +133,86 @@ const CustomTooltip = ({
     );
   }
 };
-
-const GoalIndexDescription = () => {
-  return (
-    <div className="space-y-12 py-6 w-full">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold mb-2 text-slate-700">
-          Índice de Aderência à Meta
-        </h2>
-        <p className="text-muted-foreground max-w-lg">
-          O índice de aderência à meta acompanha o progresso em relação às metas
-          de redução de emissões de CO2 com ano base de 2018 e meta de 20% de
-          redução até 2030.
-        </p>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="overflow-hidden">
-          <div className="bg-gradient-to-br from-teal-500 to-teal-400 p-4">
-            <div className="flex items-center gap-2 text-white">
-              <CalendarClock className="h-6 w-6" />
-              <h3 className="text-lg font-semibold">Ano base</h3>
-            </div>
-          </div>
-          <div className="p-6 space-y-4">
-            <p className="text-4xl font-bold text-teal-700">2018</p>
-            <div>
-              <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
-                Emissão inicial de CO2
-              </p>
-              <p className="text-2xl font-semibold text-teal-800">
-                100.000{" "}
-                <span className="text-base font-normal text-teal-600">
-                  toneladas de CO2
-                </span>
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="overflow-hidden">
-          <div className="bg-gradient-to-br from-teal-500 to-teal-400  p-4">
-            <div className="flex items-center gap-2 text-white">
-              <Percent className="h-6 w-6" />
-              <h3 className="text-lg font-semibold">Taxa de redução</h3>
-            </div>
-          </div>
-          <div className="p-6 space-y-4">
-            <p className="text-4xl font-bold text-teal-700">20%</p>
-            <div>
-              <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
-                meta de redução
-              </p>
-              <p className="text-2xl font-semibold text-teal-800">até 2030</p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="overflow-hidden">
-          <div className="bg-gradient-to-br from-teal-500 to-teal-400  p-4">
-            <div className="flex items-center gap-2 text-white">
-              <Target className="h-6 w-6" />
-              <h3 className="text-lg font-semibold">Meta</h3>
-            </div>
-          </div>
-          <div className="p-6 space-y-4">
-            <p className="text-4xl font-bold text-teal-700">2030</p>
-            <div>
-              <p className="text-sm font-medium text-teal-600 uppercase tracking-wide">
-                Emissão estimada
-              </p>
-              <p className="text-2xl font-semibold text-teal-800">
-                80.000{" "}
-                <span className="text-base font-normal text-teal-600">
-                  toneladas de CO2
-                </span>
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+type DataEntry = {
+  year: number;
+  co2Emission: number | null;
+  targetCo2Emission: number | null;
+  simulatedCo2Emission?: number | null;
 };
-export default function TransportEmissionTargets() {
-  const { data, isFetching } = useTransportCO2EmissionByYear();
+
+
+interface Props {
+  data?: {
+    year: number;
+    co2Emission: number | null;
+    targetCo2Emission: number | null;
+    simulatedCo2Emission?: number | null;
+
+  }[];
+}
+export default function TransportEmissionTargets({ data = [] }: Props) {
+  // const { data, isFetching } = useTransportCO2EmissionByYear();
+  // const data = CO2_EMISSION_BY_YEAR_MOCK;
+
+  const [transportEmissionData, setTransportEmissionData] = useState<
+    DataEntry[]
+  >([]);
+
+  const { totalCo2Emission, hypothesisMode } = useTargetsStore();
+
+  function updateSimulatedEmissions(
+    data: DataEntry[],
+    simulatedRaw: Record<string, number>
+  ): DataEntry[] {
+    return data.map((entry) => {
+      const rawValue = simulatedRaw[entry.year.toString()];
+      if (rawValue !== undefined) {
+        return {
+          ...entry,
+          simulatedCo2Emission: rawValue,
+        };
+      }
+      return entry;
+    });
+  }
+
+  useEffect(() => {
+    if (data || !hypothesisMode) {
+      setTransportEmissionData(data);
+    }
+
+    if (hypothesisMode && totalCo2Emission.percentage) {
+      const simulatedCo2Emission = calculateCityEmissionTargets(
+        totalCo2Emission?.simulated,
+        2024
+      );
+
+      let updatedData = updateSimulatedEmissions(data, simulatedCo2Emission);
+
+      let lastYearData = updatedData?.find(
+        (item) => item.year === currentYear - 1
+      );
+      if (lastYearData && !lastYearData.simulatedCo2Emission) {
+        lastYearData.simulatedCo2Emission = lastYearData.co2Emission || null;
+      }
+      setTransportEmissionData(updatedData);
+    }
+  }, [data, totalCo2Emission.percentage, hypothesisMode]);
+  const isFetching = false;
 
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
   const currentYearEmissionStatus = checkEmissionsStatus(
     lastYearData?.co2Emission,
     lastYearData?.targetCo2Emission
   );
+
   return (
-    <div className="min-h-screen bg-background p-6 mx-16">
-      <div className="flex items-start justify-between mb-8">
-        <GoalIndexDescription />
-      </div>
+    <div>
       {isFetching ? (
-        <Skeleton className="h-[540px]" />
+        <Skeleton className="h-[495px]" />
       ) : (
-        <Card className="p-6">
-          <div className="mb-8 space-y-2">
+        <Card className="p-6 h-full">
+          <div className="mb-8 space-y-2 ">
             <div className="text-sm text-muted-foreground">
               Grau de aderência a meta
             </div>
@@ -242,10 +226,10 @@ export default function TransportEmissionTargets() {
             </div>
           </div>
 
-          <div className="h-[400px] ">
+          <div className="h-[380px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={data}
+                data={transportEmissionData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
               >
                 <XAxis
@@ -268,7 +252,7 @@ export default function TransportEmissionTargets() {
                   type="monotone"
                   dataKey="co2Emission"
                   stroke={"#22ccb2"}
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                   dot={{
                     fill: "#059669",
                     stroke: "#fff",
@@ -286,20 +270,40 @@ export default function TransportEmissionTargets() {
                   type="monotone"
                   dataKey="targetCo2Emission"
                   strokeDasharray="3 3"
-                  stroke="#bab8b8"
-                  strokeWidth={0.8}
+                  stroke="#3C3744"
+                  strokeWidth={1.5}
                   dot={{
-                    fill: "#bab8b8",
+                    fill: "#84828F",
                     stroke: "#fff",
-                    r: 2,
-                  }}
-                  activeDot={{
+                    strokeWidth: 2,
                     r: 4,
                   }}
+                  activeDot={{
+                    strokeWidth: 2,
+                    r: 6,
+                  }}
                 />
+                {hypothesisMode && totalCo2Emission.percentage && (
+                  <Line
+                    type="monotone"
+                    dataKey="simulatedCo2Emission"
+                    stroke="#5117ff"
+                    strokeWidth={1.5}
+                    dot={{
+                      fill: "#794dfa",
+                      stroke: "#fff",
+                      strokeWidth: 2,
+                      r: 4,
+                    }}
+                    activeDot={{
+                      strokeWidth: 2,
+                      r: 6,
+                    }}
+                  />
+                )}
 
-                <ReferenceLine
-                  x={2019}
+                {/* <ReferenceLine
+                  x={2018}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
@@ -308,7 +312,7 @@ export default function TransportEmissionTargets() {
                     fill: "#bab8b8",
                     fontSize: 12,
                   }}
-                />
+                /> */}
                 <ReferenceLine
                   x={2030}
                   stroke="#bab8b8"
