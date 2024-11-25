@@ -37,10 +37,8 @@ export async function GET(req: NextRequest) {
       );
     } catch (error) {
       console.error("FederatedLogout - Error on Keycloak logout", (error as Error).message);
-      // return handleError("Error on Keycloak logout", 500);
     }
   } catch (error) {
     console.error("FederatedLogout - Error retrieving token", (error as Error).message);
-    // return handleError("Unable to logout from the session", 500);
   }
 }

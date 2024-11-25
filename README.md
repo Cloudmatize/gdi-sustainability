@@ -12,12 +12,11 @@ This monorepo includes several tools and packages to help streamline the develop
 - `@cloudmatize/ts-utils`: A utility package that provides helper functions and utilities for TypeScript, enhancing productivity and reducing repetitive code.
 
 
-
-### 1. Install the dependencies
-`pnpm install`
-
-### 2. Install the submodule 
+### 1. Install the submodule 
 `git submodule update --init`
+
+### 2. Install the dependencies
+`pnpm install`
 
 ### 3. Run the project
 `pnpm run dev`

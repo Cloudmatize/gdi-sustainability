@@ -25,15 +25,6 @@ function buildRedirectUrl({
 export default withAuth(
   async function middleware(req) {
     const token = req.nextauth.token;
-
-    // if (token?.error) {
-    //   const redirectUrl = buildRedirectUrl({
-    //     req,
-    //     path: "/auth/signout",
-    //   });
-    //   return NextResponse.redirect(redirectUrl);
-    // }
-
     const autoSignIn = req.nextUrl.search.includes("autoSignIn=true");
 
     if (!token) {

@@ -29,7 +29,6 @@ export const authOptions: AuthOptions = {
   providers: [KeycloakProvider(keycloakOptions)],
   pages: {
     signIn: "/auth/login",
-    // signOut: "/auth/signout",
   },
   session: {
     maxAge: 60 * 30,

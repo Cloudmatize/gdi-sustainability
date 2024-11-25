@@ -1,41 +1,42 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import InfoTooltip from "@/components/ui/info-tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
+import { mappedTravelMode } from "@/constants/transports";
 import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
 } from "@/hooks/transports";
+import type { TravelMode } from "@/types/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
+import { formatNumber } from "@/utils/format-number";
 import {
+  Bike,
   Bus,
   Car,
-  RailSymbol,
-  Bike,
-  TrainFront,
-  Plane,
   Footprints,
-  TrendingUp,
+  Plane,
+  RailSymbol,
+  TrainFront,
   TrendingDown,
+  TrendingUp
 } from "lucide-react";
-import { TravelMode } from "@/types/transports";
+import { RiMotorbikeFill } from "react-icons/ri";
 import {
-  LineChart,
   Legend,
   Line,
+  LineChart,
+  Tooltip as RechartTooltip,
   ResponsiveContainer,
   XAxis,
-  Tooltip as RechartTooltip,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
-import { RiMotorbikeFill } from "react-icons/ri";
-import { mappedTravelMode } from "@/constants/transports";
-import { formatNumber } from "@/utils/format-number";
-import InfoTooltip from "@/components/ui/info-tooltip";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const mappedTravelModeIcons: {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   [key in TravelMode]: any;
 } = {
   AUTOMOBILE: Car,
@@ -132,14 +133,14 @@ const ModalEmissionAnalysisCard = ({
   const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
 
   return loading ? (
-    <Skeleton className="h-[200px]  rounded-xl" />
+    <Skeleton className="h-60 w-full lg:w-96 rounded-xl" />
   ) : (
-    <Card className="p-6 hover:shadow-lg transition-shadow">
+    <Card className="h-60 w-full lg:w-96 px-4 py-4 hover:shadow-lg transition-shadow">
       <div className="space-y-5">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-2xl font-bold text-teal-500">{title}</h3>
+              <h3 className="text-xl md:text-2xl break-words font-bold text-teal-500">{title}</h3>
             </div>
           </div>
           <div className="rounded-lg bg-teal-100 p-2">
@@ -150,9 +151,8 @@ const ModalEmissionAnalysisCard = ({
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${
-                trend === "up" ? "text-red-400" : "text-teal-500"
-              }`}
+              className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
+                }`}
             >
               {data.contributionStatus}
             </p>
@@ -168,9 +168,8 @@ const ModalEmissionAnalysisCard = ({
                 <TrendingDown className="h-4 w-4 text-teal-500" />
               )}
               <span
-                className={` font-bold ${
-                  trend === "up" ? "text-red-400" : "text-teal-500"
-                }`}
+                className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
+                  }`}
               >
                 {data.avgPercentageYearly}%
               </span>
@@ -219,31 +218,29 @@ export default function Co2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        {modalAnalysis &&
-          modalAnalysis.modalsData &&
-          modalAnalysis.modalsData.map((modal, index) => {
-            const formattedModal = {
-              ...modal,
-              contributionStatus: modal.contributionStatus as
-                | "Redução"
-                | "Elevação",
-            };
-            return (
-              <div key={index}>
-                <ModalEmissionAnalysisCard
-                  data={formattedModal}
-                  loading={isLoadingModalAnalysis}
-                />
-              </div>
-            );
-          })}
+      <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
+        {modalAnalysis?.modalsData?.map((modal, index) => {
+          const formattedModal = {
+            ...modal,
+            contributionStatus: modal.contributionStatus as
+              | "Redução"
+              | "Elevação",
+          };
+          return (
+            <div key={index}>
+              <ModalEmissionAnalysisCard
+                data={formattedModal}
+                loading={isLoadingModalAnalysis}
+              />
+            </div>
+          );
+        })}
       </div>
 
       {isFetching ? (
-        <Skeleton className="h-[530px]  rounded-xl" />
+        <Skeleton className="h-[240px] rounded-xl" />
       ) : (
-        <Card className="p-6">
+        <Card className="p-4 h-fit">
           <h3 className="font-semibold text-slate-700 text-sm mb-6">
             Emsisão CO₂ (tons)
           </h3>
@@ -280,6 +277,7 @@ export default function Co2EmissionPerTransport() {
                 <Legend content={<CustomLegend />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     key={index}
                     type="monotone"
                     label={{
