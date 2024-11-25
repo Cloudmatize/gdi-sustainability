@@ -143,8 +143,8 @@ const ModalEmissionAnalysisCard = ({
               <h3 className="text-xl md:text-2xl break-words font-bold text-teal-500">{title}</h3>
             </div>
           </div>
-          <div className="rounded-lg bg-teal-100 p-2">
-            <Icon className="h-5 w-5 text-teal-500" />
+          <div className="rounded bg-teal-400 p-3">
+            <Icon className="h-6 w-6 text-white" />
           </div>
         </div>
 
