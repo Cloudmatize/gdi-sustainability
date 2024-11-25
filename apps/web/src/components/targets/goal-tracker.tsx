@@ -111,7 +111,7 @@ export default function GoalTracker() {
             }}
             id="hypothesis-mode"
           />
-          <Label htmlFor="hypothesis-mode">Modo Hipótese</Label>
+          <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
         </div>
       </div>
       <div className="space-y-3 py-1 w-full">

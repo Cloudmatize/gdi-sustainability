@@ -302,8 +302,8 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                   />
                 )}
 
-                <ReferenceLine
-                  x={2019}
+                {/* <ReferenceLine
+                  x={2018}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
@@ -312,7 +312,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                     fill: "#bab8b8",
                     fontSize: 12,
                   }}
-                />
+                /> */}
                 <ReferenceLine
                   x={2030}
                   stroke="#bab8b8"
