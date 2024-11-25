@@ -16,6 +16,19 @@ export const getTotalCO2EmissionQuery = ({
     }
   }
 `;
+export const getSumCo2Emissions = ({
+  filters,
+}: {
+  filters?: TransportFilters;
+}) => gql`
+  query CubeQuery {
+    cube(where: { transportation_emission: { year: { equals: ${filters?.date} } } }) {
+      transportation_emission {
+        sum_full_co2e_tons
+      }
+    }
+  }
+`;
 
 export const getCO2EmissionByTravelBoundsQuery = ({
   filters,

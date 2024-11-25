@@ -80,7 +80,7 @@ export function useTransportCO2EmissionByYear({
   filters,
 }: {
   filters?: {
-    date: number[]
+    date: number[];
   };
 }) {
   return useQuery({
