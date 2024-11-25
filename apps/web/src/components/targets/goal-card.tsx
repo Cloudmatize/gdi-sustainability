@@ -32,7 +32,7 @@ export default function GoalCard({
           <p className="text-sm font-medium text-slate-600 uppercase tracking-wide">
             {subLabel}
           </p>
-          <p className="text-xl font-bold text-teal-500">
+          <p className="text-xl font-bold text-primary-foreground">
             {subValue}{" "}
             <span className="text-base font-normal text-slate-600">
               {subUnit}

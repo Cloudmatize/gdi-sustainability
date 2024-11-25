@@ -62,7 +62,7 @@ const CustomTooltip = ({
                     className="w-[14px] h-[14px] rounded-xs"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-slate-800 font-bold  text-center">
+                  <span className="text-foreground font-bold  text-center">
                     {item.dataKey &&
                       ENERGY_FRACTIONS[
                       item.dataKey as keyof typeof ENERGY_FRACTIONS
@@ -106,7 +106,7 @@ const CustomPieChartTooltip = ({
               className="w-[14px] h-[14px] rounded-xs"
               style={{ backgroundColor: item.payload?.fill }}
             />
-            <span className="text-slate-800 font-bold  w-24 text-center">
+            <span className="text-foreground font-bold  w-24 text-center">
               {
                 ENERGY_FRACTIONS[
                 item.payload.name as keyof typeof ENERGY_FRACTIONS

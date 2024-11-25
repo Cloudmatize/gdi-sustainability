@@ -37,7 +37,7 @@ export default function TargetAdherenceCard({
           <div className="w-full space-y-2  h-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4 text-primary" />
+                <Target className="h-4 w-4 text-primary-foreground" />
                 <span className="font-medium">Atual</span>
               </div>
               <span className="text-2xl font-bold text-slate-700">
@@ -52,8 +52,8 @@ export default function TargetAdherenceCard({
             </div>
             {baseAdherence ? (<Progress
               value={Math.min(baseAdherence, 100)}
-              className="h-2 bg-gray-100"
-              indicatorClassName="bg-teal-500"
+              className="h-2 bg-primary"
+              indicatorClassName="bg-primary-foreground"
             />) : (
               <Skeleton className="w-full h-2">
               </Skeleton>

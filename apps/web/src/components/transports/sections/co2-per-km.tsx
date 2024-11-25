@@ -1,17 +1,17 @@
 "use client";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
+import { useTransportsStore } from "@/store/transports";
 import {
   Bar,
   BarChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
 } from "recharts";
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
-import { useTransportsStore } from "@/store/transports";
 
 const CustomTooltip = ({
   active,
@@ -32,7 +32,7 @@ const CustomTooltip = ({
               className="w-[14px] h-[14px] rounded-xs"
               style={{ backgroundColor: item.color }}
             />
-            <span className="text-slate-800 font-bold  w-24 text-center">
+            <span className="text-foreground font-bold  w-24 text-center">
               {label}
             </span>
           </div>
@@ -81,7 +81,7 @@ export default function Co2EmissionPerKilometer() {
               <BarChart
                 data={data}
                 layout="vertical"
-                margin={{ top: 20, bottom:30, left: 50, right: 30}}
+                margin={{ top: 20, bottom: 30, left: 50, right: 30 }}
               >
                 <XAxis
                   type="number"

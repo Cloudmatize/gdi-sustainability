@@ -45,7 +45,7 @@ const CustomTooltip = ({
                   className="w-[14px] h-[14px] rounded-xs"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-slate-800 font-bold   text-center">
+                <span className="text-foreground font-bold   text-center">
                   {mapped[item?.dataKey as string] || ""}
                 </span>
               </div>

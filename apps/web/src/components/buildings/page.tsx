@@ -18,7 +18,7 @@ export default function BuildingsPage() {
 
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
-            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-slate-800">
+            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-foreground">
               Emissões de edifícios <Building size={48} />
             </h1>
           </div>
@@ -44,7 +44,7 @@ export default function BuildingsPage() {
               </Button>
             </Link> */}
 
-        {/* <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
+        {/* <h1 className="flex items-center gap-2 text-3xl font-bold text-foreground">
               Emissões de edifícios <Building className="h-7 w-7 ml-1 mt-0.5" />
             </h1>
           </div>

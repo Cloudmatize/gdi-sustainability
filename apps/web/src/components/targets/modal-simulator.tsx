@@ -2,14 +2,14 @@
 
 import { CardContent } from "@/components/ui/card";
 import { useTargetsStore } from "@/store/targets";
-import { ArrowDown, Target, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Target } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
 
 export default function ModalSimulator() {
   const {
     totalCo2Emission: { original, percentage, simulated },
   } = useTargetsStore();
-  const percentageColor = percentage > 0 ? "text-teal-500" : "text-red-500";
+  const percentageColor = percentage > 0 ? "text-primary-foreground" : "text-red-500";
   return (
     <div className="w-full border-b  border-gray-200">
       <CardContent className=" space-y-4 flex  items-center">

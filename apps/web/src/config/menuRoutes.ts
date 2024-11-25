@@ -17,7 +17,7 @@ export const routes = [
       {
         id: 3,
         title: "Rastreador de Metas",
-        path: "#metas",
+        path: "/targets",
         icon: Goal,
       },
     {

@@ -2,12 +2,10 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTransportCO2EmissionByYear } from "@/hooks/transports";
-import { CO2_EMISSION_BY_YEAR_MOCK } from "@/mock/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
 import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
-import { CalendarClock, Percent, Target } from "lucide-react";
+import { Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Legend,
@@ -51,7 +49,7 @@ function checkEmissionsStatus(
       sugestion:
         targetEmission !== undefined
           ? targetEmission !== null &&
-            `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
+          `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
           : undefined,
     };
   }
@@ -120,7 +118,7 @@ const CustomTooltip = ({
                     className="w-[14px] h-[14px] rounded-xs"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-slate-800 font-bold  text-center">
+                  <span className="text-foreground font-bold  text-center">
                     {mappedGoal[item?.dataKey as keyof typeof mappedGoal] || ""}
                   </span>
                 </div>

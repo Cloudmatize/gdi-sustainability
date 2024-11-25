@@ -1,6 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import CardIcons from "@/components/ui/card-icons";
 import InfoTooltip from "@/components/ui/info-tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
@@ -74,7 +75,7 @@ const CustomTooltip = ({
                     className="w-[14px] h-[14px] rounded-xs"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-slate-800 font-bold  text-center">
+                  <span className="text-foreground font-bold  text-center">
                     {String(item?.dataKey) || ""}
                   </span>
                 </div>
@@ -140,18 +141,18 @@ const ModalEmissionAnalysisCard = ({
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl md:text-2xl break-words font-bold text-teal-500">{title}</h3>
+              <h3 className="text-xl md:text-2xl break-words font-bold text-primary-foreground">{title}</h3>
             </div>
           </div>
-          <div className="rounded bg-teal-400 p-3">
-            <Icon className="h-6 w-6 text-white" />
-          </div>
+          <CardIcons>
+            <Icon />
+          </CardIcons>
         </div>
 
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
+              className={` font-bold ${trend === "up" ? "text-destructive-foreground" : "text-primary-foreground"
                 }`}
             >
               {data.contributionStatus}
@@ -163,12 +164,12 @@ const ModalEmissionAnalysisCard = ({
             </p>
             <div className="flex items-center gap-1">
               {trend === "up" ? (
-                <TrendingUp className="h-4 w-4 text-red-400" />
+                <TrendingUp className="h-4 w-4 text-destructive-foreground" />
               ) : (
-                <TrendingDown className="h-4 w-4 text-teal-500" />
+                <TrendingDown className="h-4 w-4 text-primary-foreground" />
               )}
               <span
-                className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
+                className={` font-bold ${trend === "up" ? "text-destructive-foreground" : "text-primary-foreground"
                   }`}
               >
                 {data.avgPercentageYearly}%
@@ -191,7 +192,7 @@ const ModalEmissionAnalysisCard = ({
             <p className="text-sm text-muted-foreground">
               Contribuição no total:
             </p>
-            <p className=" font-bold text-teal-500">
+            <p className=" font-bold text-primary-foreground">
               {data.percentageContribution}%
             </p>
           </div>

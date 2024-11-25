@@ -7,11 +7,10 @@ import { useBuildingsEnergyIntensitiesBySector } from "@/hooks/buildings";
 import {
   PolarAngleAxis,
   PolarGrid,
-  PolarRadiusAxis,
   Radar,
   RadarChart,
   ResponsiveContainer,
-  Tooltip,
+  Tooltip
 } from "recharts";
 
 const CustomTooltip = ({
@@ -38,7 +37,7 @@ const CustomTooltip = ({
               className="w-[14px] h-[14px] rounded-xs"
               style={{ backgroundColor: item.color }}
             />
-            <span className="text-slate-800 font-bold  w-24 text-center">
+            <span className="text-foreground font-bold  w-24 text-center">
               {ENERGY_FRACTIONS[label as keyof typeof ENERGY_FRACTIONS]}
             </span>
           </div>

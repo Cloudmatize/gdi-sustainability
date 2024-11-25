@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Car } from 'lucide-react'
+import CardIcons from "../ui/card-icons"
 
 export default function DashboardSection3() {
 
@@ -28,7 +29,7 @@ export default function DashboardSection3() {
                 <TableRow key={item.mode}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
-                      <item.icon className="w-4 h-4 text-teal-400" />
+                      <item.icon className="w-4 h-4 text-primary-foreground" />
                       {item.mode}
                     </div>
                   </TableCell>
@@ -50,16 +51,18 @@ export default function DashboardSection3() {
               <CardTitle className="text-sm font-medium">
                 Emissões/Passageiro (kgCO₂) - Carro
               </CardTitle>
-              <Car size={32} className="text-teal-400" />
+              <CardIcons>
+                <Car />
+              </CardIcons>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-end">
                 <div>
-                  <div className="text-2xl font-bold text-teal-400">1.22</div>
+                  <div className="text-2xl font-bold text-primary-foreground">1.22</div>
                   <div className="text-sm text-muted-foreground">2022</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-teal-400">1.18</div>
+                  <div className="text-2xl font-bold text-primary-foreground">1.18</div>
                   <div className="text-sm text-muted-foreground">2023</div>
                 </div>
               </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft, Goal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft, Goal } from "lucide-react";
+import Link from "next/link";
 import GoalTracker from "./goal-tracker";
 
 export default function TargetsPage() {
@@ -20,7 +20,7 @@ export default function TargetsPage() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
+            <h1 className="flex items-center gap-2 text-3xl font-bold text-foreground">
               Metas <Goal className="h-7 w-7 ml-1 mt-0.5" />
             </h1>
           </div>
