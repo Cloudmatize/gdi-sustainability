@@ -31,7 +31,6 @@ export default function DashboardSection1() {
 
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
-  console.log("buildingsInfo", buildingsInfo);
 
   function formatBuildingsFloorAreasBySector(data?: any) {
     if (!data) return {};
@@ -64,7 +63,6 @@ export default function DashboardSection1() {
   const formattedBuildingsInfo =
     formatBuildingsFloorAreasBySector(buildingsInfo);
 
-  console.log("formattedBuildingsInfo", formattedBuildingsInfo);
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Visão Geral das Emissões de CO₂ </h2>

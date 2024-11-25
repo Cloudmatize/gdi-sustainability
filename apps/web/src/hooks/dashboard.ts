@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 export function useDashboardCO2EmissionByModal({
   filters,
 }: {
-  filters: TransportFilters;
+  filters?: TransportFilters;
 }) {
   return useQuery({
     queryKey: ["(dashboard): co2-emission-by-modal", filters],

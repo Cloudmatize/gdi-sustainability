@@ -16,7 +16,7 @@ import { mappedSectors } from "@/constants/buildings";
 export const getDashboardCO2EmissionByModal = async ({
   filters,
 }: {
-  filters: TransportFilters;
+  filters?: TransportFilters;
 }) => {
   try {
     const query = getCO2EmissionByYearAndModalQuery({ filters });
