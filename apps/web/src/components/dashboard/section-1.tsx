@@ -4,25 +4,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function DashboardSection1() {
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <h2 className="text-2xl font-bold">Visão Geral das Emissões de CO₂</h2>
-      
-      <div className="grid gap-6 md:grid-cols-4 lg:grid-cols-4">
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {/* Total Emissions Card */}
         <Card className="border-teal-400/20">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Emissões Totais de CO₂</CardTitle>
-            <Scale className="w-4 h-4 text-teal-400" />
+            <Scale size={32} className=" text-teal-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-teal-400">193.000t</div>
-            <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="flex flex-col gap-4 mt-4">
               <div className="flex items-center gap-2">
-                <CarFront className="w-4 h-4 text-teal-400/70" />
+                <CarFront size={20} className="text-teal-400/70" />
                 <span className="text-sm text-muted-foreground">Transportes: 145.000t</span>
               </div>
               <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-teal-400/70" />
+                <Building2 size={20} className="text-teal-400/70" />
                 <span className="text-sm text-muted-foreground">Edifícios: 78.000t</span>
               </div>
             </div>
@@ -33,7 +33,7 @@ export default function DashboardSection1() {
         <Card className="border-teal-400/20">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Variação Total (2022 vs. 2023)</CardTitle>
-            <LineChart className="w-4 h-4 text-teal-400" />
+            <LineChart size={32} className="text-teal-400" />
           </CardHeader>
           <CardContent>
             <div className="text-sm font-medium text-teal-400 mb-4">
@@ -42,11 +42,11 @@ export default function DashboardSection1() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Transporte</span>
-                <span className="text-sm font-medium text-teal-400">+3%</span>
+                <span className="text-lg font-medium text-teal-400">+3%</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Edifícios</span>
-                <span className="text-sm font-medium text-teal-400">-6%</span>
+                <span className="text-lg font-medium text-teal-400">-6%</span>
               </div>
             </div>
           </CardContent>
@@ -56,7 +56,7 @@ export default function DashboardSection1() {
         <Card className="border-teal-400/20">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Métricas por edifício residencial</CardTitle>
-            <PercentSquare className="w-4 h-4 text-teal-400" />
+            <PercentSquare size={32} className="text-teal-400" />
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -74,7 +74,7 @@ export default function DashboardSection1() {
         <Card className="border-teal-400/20">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Métricas por edifício não residencial</CardTitle>
-            <PercentSquare className="w-4 h-4 text-teal-400" />
+            <PercentSquare size={32} className="text-teal-400" />
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -91,7 +91,7 @@ export default function DashboardSection1() {
         </Card>
 
         {/* Residential Area Card */}
-        <Card className="border-teal-400/20 md:col-span-2 lg:col-span-4">
+        {/* <Card className="border-teal-400/20 md:col-span-2 lg:col-span-4">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Distribuição por Área</CardTitle>
             <Building2 className="w-4 h-4 text-teal-400" />
@@ -110,7 +110,7 @@ export default function DashboardSection1() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   )

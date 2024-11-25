@@ -1,114 +1,102 @@
-import { Bus, Car, BikeIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { BikeIcon, Bus, Car } from 'lucide-react'
+import { MdTrendingDown, MdTrendingUp } from "react-icons/md"
 
 export default function DashboardSection2() {
+  const transports = [
+    {
+      id: 1,
+      title: 'Carro',
+      ajusteAnual: '+32.1',
+      icon: Car,
+      positive: false,
+      totalDeEmissaoPorTransporte: '82.51'
+    },
+    {
+      id: 2,
+      title: 'Ônibus',
+      icon: Bus,
+      ajusteAnual: '-43.71',
+      positive: true,
+      totalDeEmissaoPorTransporte: '13.97'
+    },
+    {
+      id: 3,
+      title: 'Motocicleta',
+      icon: BikeIcon,
+      ajusteAnual: '-8.78',
+      positive: true,
+      totalDeEmissaoPorTransporte: '3.52'
+    },
+  ]
+
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <h2 className="text-2xl font-bold">Comparativo de Emissões por Transporte</h2>
-      
-      <div className="grid gap-6 md:grid-cols-3">
+
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Transport Mode Cards */}
-        <Card className="border-teal-400/20">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <Car className="w-5 h-5 text-teal-400" />
-                  <span className="text-lg font-medium">Carro</span>
+        {transports.map((transport) => (
+          <Card className="border-teal-400/20 w-full" key={transport.id}>
+            <CardHeader>
+              <CardTitle className="gap-2 flex">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 flex-row">
+                    <transport.icon size={32} className="text-teal-400" />
+                    <span className="text-lg font-medium">{transport.title}</span>
+                  </div>
+                  <div className="flex gap-2 items-center md:items-end w-full h-full md:justify-items-end">
+                    <p className="text-sm font-normal text-muted-foreground flex flex-row gap-1">
+                      <div className="text-sm font-bold text-teal-500">{transport.totalDeEmissaoPorTransporte}%</div>
+                      do total de transportes</p>
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground">Aumento anual médio nas emissões</p>
-              </div>
-              <div className="text-rose-500 text-sm font-medium">+32.1%</div>
-            </div>
-            <div className="mt-4">
-              <div className="text-2xl font-bold text-teal-400">82.51%</div>
-              <p className="text-sm text-muted-foreground">do total de transportes</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-teal-400/20">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <Bus className="w-5 h-5 text-teal-400" />
-                  <span className="text-lg font-medium">Ônibus</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
+              <div className="flex items-end justify-between w-full h-full gap-2">
+                <div className="space-y-1 w-full h-full gap-4">
+                  <p className="text-sm text-muted-foreground text-wrap">{transport.positive ? 'Redução' : 'Aumento'} anual médio nas emissões</p>
+                  <div className="flex items-center flex-row gap-2 w-full">
+                    {transport.positive ? <MdTrendingDown className="text-teal-500 fill-teal-400 text-xl" /> : <MdTrendingUp className="text-rose-500 fill-rose-500 text-xl" />}
+                    <div className={`${transport.positive ? 'text-teal-500' : 'text-rose-500'} text-2xl font-medium`}>{transport.ajusteAnual}%</div>
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground">Redução anual médio nas emissões</p>
               </div>
-              <div className="text-emerald-500 text-sm font-medium">-43.71%</div>
-            </div>
-            <div className="mt-4">
-              <div className="text-2xl font-bold text-teal-400">13.97%</div>
-              <p className="text-sm text-muted-foreground">do total de transportes</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-teal-400/20">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <BikeIcon className="w-5 h-5 text-teal-400" />
-                  <span className="text-lg font-medium">Motocicleta</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Redução anual médio nas emissões</p>
-              </div>
-              <div className="text-emerald-500 text-sm font-medium">-8.78%</div>
-            </div>
-            <div className="mt-4">
-              <div className="text-2xl font-bold text-teal-400">3.52%</div>
-              <p className="text-sm text-muted-foreground">do total de transportes</p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Comparison Section */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="border-teal-400/20">
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Modal com maior aumento</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Car className="w-5 h-5 text-teal-400" />
-                <span className="font-medium">Carros</span>
-              </div>
-              <div className="text-rose-500 font-medium">+5% em relação ao ano anterior</div>
-            </div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              em relação aos anos anteriores (2018-2023)
-            </div>
-          </CardContent>
-        </Card>
+      <h2 className="text-2xl font-bold">Maiores altas e quedas</h2>
 
-        <Card className="border-teal-400/20">
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Setor com maior redução</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Bus className="w-5 h-5 text-teal-400" />
-                <span className="font-medium">Ônibus</span>
+      {/* Comparison Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        {transports.filter((transport, index) => index < 2).map((transport) => (
+          <Card className="border-teal-400/20 w-full" key={transport.id}>
+            <CardHeader>
+              <CardTitle className="text-base font-medium">Setor com {transport.positive ? 'maior aumento' : 'maior redução'}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-row items-center gap-2">
+                    <transport.icon size={32} className="text-teal-400" />
+                    <span className="font-medium">{transport.title}</span>
+                  </div>
+                  <div className={`${transport.positive ? 'text-teal-500' : 'text-rose-500'} text-rose-500 font-medium flex items-center gap-2`}>
+                    <MdTrendingUp /> {transport.ajusteAnual}% em relação ao ano anterior ({new Date().getFullYear() - 1})</div>
+                </div>
               </div>
-              <div className="text-emerald-500 font-medium">-15% em relação ao ano anterior</div>
-            </div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              em relação aos anos anteriores (2018-2023)
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Emission Comparison Cards */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="border-teal-400/20">
+          <Card key={i} className="border-teal-400/20 w-full">
             <CardHeader>
               <CardTitle className="text-sm font-medium">Emissão Média de CO2 por Ano - Ônibus</CardTitle>
             </CardHeader>
