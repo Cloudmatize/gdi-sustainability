@@ -5,7 +5,7 @@ export const routes = [
     {
         id: 1,
         title: "Visão Geral",
-        path: "/transports",
+        path: "/dashboard",
         icon: Home,
       },
       {
