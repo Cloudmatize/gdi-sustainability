@@ -18,6 +18,7 @@ import GoalCard from "./goal-card";
 import GoalTrackerTable from "./goal-tracker-table";
 import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
+import TargetAdherenceCard from "./target-adherence-card";
 
 const transformData = (
   data: {
@@ -157,7 +158,7 @@ export default function GoalTracker() {
             )}
           </div>
 
-          {/* <div
+          <div
             className={cx(
               "md:col-span-2",
               hypothesisMode ? "md:col-span-2" : ""
@@ -166,9 +167,15 @@ export default function GoalTracker() {
             {loadingCo2EmissionByYear ? (
               <Skeleton className="h-[185px]" />
             ) : (
-              <></>
+              <TargetAdherenceCard
+                targetYear={2030}
+                baseEmissions={lastYearCo2Emission || 0}
+                targetEmissions={
+                  targetCo2EmissionsFinalYear.targetCo2Emission || 0
+                }
+              />
             )}
-          </div> */}
+          </div>
         </div>
       </div>
       {hypothesisMode && (

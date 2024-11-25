@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useTargetsStore } from "@/store/targets";
 import { Target, TrendingDown } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 interface Props {
   targetEmissions: number;
@@ -40,14 +41,25 @@ export default function TargetAdherenceCard({
                 <span className="font-medium">Atual</span>
               </div>
               <span className="text-2xl font-bold text-slate-700">
-                {baseAdherence.toFixed(2)}%
+                {baseAdherence?.toFixed(2) ?
+                  (<>{baseAdherence.toFixed(2)}%</>)
+                  : (
+                    <Skeleton className="w-24 h-8 flex flex-row justify-end">
+                      %
+                    </Skeleton>
+                  )}
               </span>
             </div>
-            <Progress
+            {baseAdherence ? (<Progress
               value={Math.min(baseAdherence, 100)}
               className="h-2 bg-gray-100"
               indicatorClassName="bg-teal-500"
-            />
+            />) : (
+              <Skeleton className="w-full h-2">
+              </Skeleton>
+            )}
+
+
             <div className="text-xs text-muted-foreground">
               da meta de redução de emissões para {targetYear}
             </div>
