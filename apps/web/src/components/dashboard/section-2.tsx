@@ -37,7 +37,7 @@ export default function DashboardSection2() {
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Transport Mode Cards */}
         {transports.map((transport) => (
-          <Card className="border-teal-400/20 w-full" key={transport.id}>
+          <Card className="border w-full" key={transport.id}>
             <CardHeader>
               <CardTitle className="gap-2 flex">
                 <div className="flex flex-col gap-2">
@@ -73,7 +73,7 @@ export default function DashboardSection2() {
       {/* Comparison Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {transports.filter((transport, index) => index < 2).map((transport) => (
-          <Card className="border-teal-400/20 w-full" key={transport.id}>
+          <Card className="border w-full" key={transport.id}>
             <CardHeader>
               <CardTitle className="text-base font-medium">Setor com {transport.positive ? 'maior aumento' : 'maior redução'}</CardTitle>
             </CardHeader>
@@ -96,7 +96,7 @@ export default function DashboardSection2() {
       {/* Emission Comparison Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="border-teal-400/20 w-full">
+          <Card key={i} className="border w-full">
             <CardHeader>
               <CardTitle className="text-sm font-medium">Emissão Média de CO2 por Ano - Ônibus</CardTitle>
             </CardHeader>

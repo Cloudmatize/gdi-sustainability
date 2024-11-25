@@ -8,7 +8,7 @@ export default function DashboardSection3() {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Emissões por Modo de Transporte</h2>
 
-      {/* <Card className="border-teal-400/20">
+      {/* <Card className="border">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Dados por Modo de Transporte</CardTitle>
         </CardHeader>
@@ -45,7 +45,7 @@ export default function DashboardSection3() {
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="border-teal-400/20">
+          <Card key={i} className="border">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">
                 Emissões/Passageiro (kgCO₂) - Carro

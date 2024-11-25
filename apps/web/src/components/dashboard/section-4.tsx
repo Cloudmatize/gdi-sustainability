@@ -8,7 +8,7 @@ export default function DashboardSection4() {
 
       <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
         {/* Main Contributor Card */}
-        <Card className="border-teal-400/20">
+        <Card className="border">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Zap size={28} className=" text-teal-400" />
@@ -33,7 +33,7 @@ export default function DashboardSection4() {
         </Card>
 
         {/* Efficiency Comparison Card */}
-        <Card className="border-teal-400/20">
+        <Card className="border">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center  gap-2">
               <ArrowDownUp size={32} className=" text-teal-400" />

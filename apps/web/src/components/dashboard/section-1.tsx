@@ -9,7 +9,7 @@ export default function DashboardSection1() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {/* Total Emissions Card */}
-        <Card className="border-teal-400/20">
+        <Card className="border">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Emissões Totais de CO₂</CardTitle>
             <Scale size={32} className=" text-teal-400" />
@@ -30,7 +30,7 @@ export default function DashboardSection1() {
         </Card>
 
         {/* Variation Card */}
-        <Card className="border-teal-400/20">
+        <Card className="border">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Variação Total (2022 vs. 2023)</CardTitle>
             <LineChart size={32} className="text-teal-400" />
@@ -53,7 +53,7 @@ export default function DashboardSection1() {
         </Card>
 
         {/* Metrics Per Building Card */}
-        <Card className="border-teal-400/20">
+        <Card className="border">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Métricas por edifício residencial</CardTitle>
             <PercentSquare size={32} className="text-teal-400" />
@@ -71,7 +71,7 @@ export default function DashboardSection1() {
             </div>
           </CardContent>
         </Card>
-        <Card className="border-teal-400/20">
+        <Card className="border">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Métricas por edifício não residencial</CardTitle>
             <PercentSquare size={32} className="text-teal-400" />
@@ -91,7 +91,7 @@ export default function DashboardSection1() {
         </Card>
 
         {/* Residential Area Card */}
-        {/* <Card className="border-teal-400/20 md:col-span-2 lg:col-span-4">
+        {/* <Card className="border md:col-span-2 lg:col-span-4">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Distribuição por Área</CardTitle>
             <Building2 className="w-4 h-4 text-teal-400" />
