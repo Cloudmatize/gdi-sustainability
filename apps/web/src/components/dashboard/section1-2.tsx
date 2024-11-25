@@ -1,7 +1,7 @@
 
 import { useTransportCO2EmissionByYear } from '@/hooks/transports';
 import { calculateCityEmissionTargets } from '@/services/transports/graphql';
-import TargetAdherenceCard from './target-adherence-card';
+import TargetAdherenceCard from '../targets/target-adherence-card';
 
 const transformData = (
   data: {
@@ -51,7 +51,7 @@ export default function DashboardSection12() {
     transformDataTest?.[transformDataTest.length - 1];
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Metas</h2>
+      {/* <h2 className="text-2xl font-bold">Metas</h2> */}
 
       <div className="gap-6 flex flex-col lg:flex-row w-full">
         <TargetAdherenceCard
