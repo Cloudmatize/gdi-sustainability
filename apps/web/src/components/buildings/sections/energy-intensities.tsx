@@ -55,7 +55,7 @@ export default function EnergyIntensities() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold text-slate-700 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Intensidade de consumo por fonte de energia
         </h2>
         <p className="text-muted-foreground max-w-lg">

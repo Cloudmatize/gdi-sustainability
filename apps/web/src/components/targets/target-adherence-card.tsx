@@ -40,7 +40,7 @@ export default function TargetAdherenceCard({
                 <Target className="h-4 w-4 text-primary-foreground" />
                 <span className="font-medium">Atual</span>
               </div>
-              <span className="text-2xl font-bold text-slate-700">
+              <span className="text-2xl font-bold text-foreground">
                 {baseAdherence?.toFixed(2) ?
                   (<>{baseAdherence.toFixed(2)}%</>)
                   : (
@@ -69,10 +69,10 @@ export default function TargetAdherenceCard({
             <div className="space-y-2 w-full h-full ">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <TrendingDown className="h-4 w-4 text-slate-700" />
-                  <span className="font-medium text-slate-700">Simulado</span>
+                  <TrendingDown className="h-4 w-4 text-foreground" />
+                  <span className="font-medium text-foreground">Simulado</span>
                 </div>
-                <span className="text-2xl font-bold text-slate-700">
+                <span className="text-2xl font-bold text-foreground">
                   {simulatedAdherence.toFixed(2)}%
                 </span>
               </div>

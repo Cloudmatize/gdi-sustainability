@@ -342,7 +342,7 @@ const SidebarTrigger = forwardRef<
       }}
       {...props}
       variant="ghost"
-      className="text-slate-700 bg-transparent"
+      className="text-foreground bg-transparent"
       size="icon"
     >
       {props.children}
@@ -370,7 +370,7 @@ const SidebarTriggerOnPage = forwardRef<
         }}
         {...props}
         variant="ghost"
-        className="text-slate-700 bg-transparent"
+        className="text-foreground bg-transparent"
         size="icon"
       >
         <HamburgerMenuIcon className="h-5 w-5" />
@@ -705,7 +705,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}
@@ -880,5 +880,6 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   SidebarTriggerOnPage,
-  useSidebar,
+  useSidebar
 };
+

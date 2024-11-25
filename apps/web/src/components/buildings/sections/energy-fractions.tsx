@@ -29,7 +29,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-slate-700 text-center">
+          <span className="text-sm text-foreground text-center">
             {ENERGY_FRACTIONS[d.value as keyof typeof ENERGY_FRACTIONS]}
           </span>
         </div>
@@ -145,7 +145,7 @@ export default function EnergyFractions() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold text-slate-700 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Análise da matriz energética do município
         </h2>
         <p className="text-muted-foreground max-w-lg">

@@ -21,13 +21,13 @@ export default function GoalCard({
   return (
     <Card className="overflow-hidden">
       <div className={` p-4`}>
-        <div className="flex items-center gap-2 text-slate-700">
+        <div className="flex items-center gap-2 text-foreground">
           <Icon className="h-6 w-6" />
           <h3 className="text-lg font-semibold">{title}</h3>
         </div>
       </div>
       <div className="p-5 pt-0 space-y-5">
-        <p className="text-2xl font-bold text-slate-700">{value}</p>
+        <p className="text-2xl font-bold text-foreground">{value}</p>
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-slate-600 uppercase tracking-wide">
             {subLabel}

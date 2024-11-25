@@ -63,7 +63,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-slate-700 text-center">
+          <span className="text-sm text-foreground text-center">
             {mappedGoal[d?.value as keyof typeof mappedGoal]}
           </span>
         </div>

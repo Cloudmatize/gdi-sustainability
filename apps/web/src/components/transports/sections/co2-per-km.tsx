@@ -53,7 +53,7 @@ export default function Co2EmissionPerKilometer() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold mb-2 text-slate-700">
+        <h2 className="text-2xl font-semibold mb-2 text-foreground">
           Média de CO₂ emitido por KM por tipo de transporte
         </h2>
         <p className="text-muted-foreground max-w-lg">
@@ -72,7 +72,7 @@ export default function Co2EmissionPerKilometer() {
         <Skeleton className="h-[450px]" />
       ) : (
         <Card className="p-6">
-          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+          <h3 className="font-semibold text-foreground text-sm mb-6">
             Emsisão CO₂ (kgCO2e/km)
           </h3>
 

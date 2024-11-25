@@ -14,7 +14,7 @@ export default function TargetsPage() {
             <Link href="#" className="absolute left-6">
               <Button
                 variant="default"
-                className="bg-gray-100 text-slate-700 hover:text-white"
+                className="bg-gray-100 text-foreground hover:text-white"
                 size="icon"
               >
                 <ArrowLeft className="h-5 w-5" />

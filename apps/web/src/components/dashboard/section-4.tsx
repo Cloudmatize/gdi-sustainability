@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowDownUp, Droplet, Zap } from 'lucide-react'
+import CardIcons from "../ui/card-icons"
 
 export default function DashboardSection4() {
   return (
@@ -10,8 +11,10 @@ export default function DashboardSection4() {
         {/* Main Contributor Card */}
         <Card className="border">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Zap size={28} className=" text-primary-foreground" />
+            <CardTitle className="flex items-center gap-2">
+              <CardIcons>
+                <Zap />
+              </CardIcons>
               Fonte Principal de Emissões de CO₂
             </CardTitle>
           </CardHeader>
@@ -35,8 +38,10 @@ export default function DashboardSection4() {
         {/* Efficiency Comparison Card */}
         <Card className="border">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center  gap-2">
-              <ArrowDownUp size={32} className=" text-primary-foreground" />
+            <CardTitle className="flex items-center gap-2">
+              <CardIcons>
+                <ArrowDownUp />
+              </CardIcons>
               Comparativo de Eficiência
             </CardTitle>
           </CardHeader>

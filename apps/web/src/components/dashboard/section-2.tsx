@@ -78,17 +78,19 @@ export default function DashboardSection2() {
         {transports.filter((transport, index) => index < 2).map((transport) => (
           <Card className="border w-full" key={transport.id}>
             <CardHeader>
-              <CardTitle className="text-base font-medium">Setor com {transport.positive ? 'maior aumento' : 'maior redução'}</CardTitle>
+              <CardTitle className="flex flex-col gap-4">Setor com {transport.positive ? 'maior aumento' : 'maior redução'}
+                <div className="flex flex-row items-center gap-2">
+                  <CardIcons>
+                    <transport.icon />
+                  </CardIcons>
+                  <span className="font-medium">{transport.title}</span>
+                </div>
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-2">
-                  <div className="flex flex-row items-center gap-2">
-                    <CardIcons>
-                      <transport.icon />
-                    </CardIcons>
-                    <span className="font-medium">{transport.title}</span>
-                  </div>
+
                   <div className={`${transport.positive ? 'text-primary-foreground' : 'text-destructive-foreground'} text-destructive-foreground font-medium flex items-center gap-2`}>
                     <MdTrendingUp /> {transport.ajusteAnual}% em relação ao ano anterior ({new Date().getFullYear() - 1})</div>
                 </div>
@@ -103,7 +105,14 @@ export default function DashboardSection2() {
         {[1, 2, 3].map((i) => (
           <Card key={i} className="border w-full">
             <CardHeader>
-              <CardTitle className="text-sm font-medium">Emissão Média de CO2 por Ano - Ônibus</CardTitle>
+              <CardTitle className="flex flex-col gap-4">Emissão Média de CO2 por Ano
+                <div className="flex flex-row items-center gap-2">
+                  <CardIcons>
+                    <Bus />
+                  </CardIcons>
+                  <span className="font-medium">Ônibus</span>
+                </div>
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-center gap-4">

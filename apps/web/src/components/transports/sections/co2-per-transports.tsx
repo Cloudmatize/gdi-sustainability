@@ -98,7 +98,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-slate-700 text-center">{d?.value}</span>
+          <span className="text-sm text-foreground text-center">{d?.value}</span>
         </div>
       ))}
     </div>
@@ -209,7 +209,7 @@ export default function Co2EmissionPerTransport() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold mb-2 text-slate-700">
+        <h2 className="text-2xl font-semibold mb-2 text-foreground">
           Comparação de emissões de CO₂ por tipo de transporte
         </h2>
         <p className="text-muted-foreground max-w-lg">
@@ -242,7 +242,7 @@ export default function Co2EmissionPerTransport() {
         <Skeleton className="h-[240px] rounded-xl" />
       ) : (
         <Card className="p-4 h-fit">
-          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+          <h3 className="font-semibold text-foreground text-sm mb-6">
             Emsisão CO₂ (tons)
           </h3>
           <div className="h-[400px]">

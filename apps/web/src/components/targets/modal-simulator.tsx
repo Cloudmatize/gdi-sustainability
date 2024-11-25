@@ -16,10 +16,10 @@ export default function ModalSimulator() {
         <div className=" flex gap-12 items-center justify-center  w-full text-xl">
           <div className="flex items-center space-x-2">
             <div className=" w-10">
-              <MdCo2 size={40} className="text-slate-700" />
+              <MdCo2 size={40} className="text-foreground" />
             </div>
             <div className="flex-col flex items-center">
-              <span className="font-semibold text-slate-700">
+              <span className="font-semibold text-foreground">
                 {original.toLocaleString()} tCo2
               </span>
               <span className="text-sm text-muted-foreground ">
@@ -46,10 +46,10 @@ export default function ModalSimulator() {
           </div>
           <div className="flex items-center space-x-2 ">
             <div className=" w-10">
-              <Target className="text-slate-700" />
+              <Target className="text-foreground" />
             </div>
             <div className="flex-col flex items-center ">
-              <span className="font-semibold text-slate-700">
+              <span className="font-semibold text-foreground">
                 {simulated.toLocaleString()} tCo2
               </span>
               <span className="text-sm text-muted-foreground ">

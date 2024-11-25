@@ -1,10 +1,10 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { useBuildingsCO2EmissionsBySector } from "@/hooks/buildings";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useBuildingsCO2EmissionsBySector } from "@/hooks/buildings";
 import { formatNumber } from "@/utils/format-number";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 export default function CO2Emissions() {
   const { data, isFetching } = useBuildingsCO2EmissionsBySector({});
@@ -18,7 +18,7 @@ export default function CO2Emissions() {
     <div className="space-y-12 py-6">
       <div>
         <div className="flex flex-col gap-4">
-          <h2 className="text-2xl font-semibold text-slate-700 mb-2">
+          <h2 className="text-2xl font-semibold text-foreground mb-2">
             Emissões de CO₂
           </h2>
           <p className="text-muted-foreground max-w-lg">
@@ -69,7 +69,7 @@ export default function CO2Emissions() {
                     <div className="space-y-1">
                       <div className="text-sm font-medium">{item.sector}</div>
                       <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold text-slate-700">
+                        <span className="text-2xl font-bold text-foreground">
                           {formatNumber(item.co2e)}
                         </span>
                         <span className="text-sm text-muted-foreground">

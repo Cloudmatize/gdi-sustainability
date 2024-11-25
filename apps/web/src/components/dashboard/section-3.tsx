@@ -11,7 +11,7 @@ export default function DashboardSection3() {
 
       {/* <Card className="border">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">Dados por Modo de Transporte</CardTitle>
+          <CardTitle>Dados por Modo de Transporte</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -48,12 +48,15 @@ export default function DashboardSection3() {
         {[1, 2, 3].map((i) => (
           <Card key={i} className="border">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Emissões/Passageiro (kgCO₂) - Carro
+              <CardTitle className="flex flex-col gap-4">
+                Emissões/Passageiro (kgCO₂)
+                <div className="flex flex-row items-center gap-2">
+                  <CardIcons>
+                    <Car />
+                  </CardIcons>
+                  <span className="font-medium">Carro</span>
+                </div>
               </CardTitle>
-              <CardIcons>
-                <Car />
-              </CardIcons>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-end">
