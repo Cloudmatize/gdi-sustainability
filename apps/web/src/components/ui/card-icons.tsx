@@ -6,7 +6,7 @@ interface CardIconsProps {
 
 function CardIcons({ children }: CardIconsProps) {
     return (
-        <div className="rounded-md shadow-inner bg-primary p-2">
+        <div className="rounded-md shadow-inner bg-primary p-2 w-fit max-w-fit">
             {React.isValidElement(children) &&
                 React.cloneElement(children as React.ReactElement<LucideProps>, { size: 20, className: "text-primary-foreground font-bold" })}
         </div>

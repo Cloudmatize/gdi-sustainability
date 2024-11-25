@@ -1,7 +1,11 @@
 
 import { useTransportCO2EmissionByYear } from '@/hooks/transports';
 import { calculateCityEmissionTargets } from '@/services/transports/graphql';
+import { MapPinnedIcon, Target, TreePine } from 'lucide-react';
+import Link from 'next/link';
 import TargetAdherenceCard from '../targets/target-adherence-card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import CardIcons from '../ui/card-icons';
 
 const transformData = (
   data: {
@@ -53,7 +57,7 @@ export default function DashboardSection12() {
     <div className="space-y-6">
       {/* <h2 className="text-2xl font-bold">Metas</h2> */}
 
-      <div className="gap-6 flex flex-col lg:flex-row w-full">
+      <div className="gap-6 flex flex-col lg:flex-row w-full justify-between">
         <TargetAdherenceCard
           targetYear={2030}
           baseEmissions={lastYearCo2Emission || 0}
@@ -61,7 +65,33 @@ export default function DashboardSection12() {
             targetCo2EmissionsFinalYear.targetCo2Emission || 0
           }
         />
-        <div className='w-full' />
+        <div className='w-full flex justify-end'>
+          <Card className='w-fit h-fit'>
+            <CardHeader>
+              <CardTitle>Mapas</CardTitle>
+            </CardHeader>
+            <CardContent className='flex flex-row gap-4 justify-between'>
+              <Link href="/green_area" className="w-fit max-w-fit flex flex-col items-center  border-b border-primary-foreground">
+                <CardIcons>
+                  <TreePine />
+                </CardIcons>
+                Áreas verdes
+              </Link>
+              <Link href="/map" className='w-fit max-w-fit flex flex-col items-center border-b border-primary-foreground'>
+                <CardIcons>
+                  <MapPinnedIcon />
+                </CardIcons>
+                Mapa
+              </Link>
+              <Link href="/targets" className="w-fit max-w-fit flex flex-col items-center  border-b border-primary-foreground">
+                <CardIcons>
+                  <Target />
+                </CardIcons>
+                Metas
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
 
