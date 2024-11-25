@@ -2,8 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { TrendingDown, Target } from "lucide-react";
 import { useTargetsStore } from "@/store/targets";
+import { Target, TrendingDown } from "lucide-react";
 
 interface Props {
   targetEmissions: number;
@@ -21,7 +21,7 @@ export default function TargetAdherenceCard({
   const baseAdherence = (targetEmissions / baseEmissions) * 100;
   const simulatedAdherence = (targetEmissions / simulatedEmissions) * 100;
   return (
-    <Card className="w-full h-full ">
+    <Card className="w-full h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-xl font-semibold flex flex-col">
           Índice de aderência à meta para {targetYear}

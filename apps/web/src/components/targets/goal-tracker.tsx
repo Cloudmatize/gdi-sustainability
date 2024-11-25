@@ -1,24 +1,23 @@
 "use client";
 
-import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { CalendarClock, Target } from "lucide-react";
-import TransportEmissionTargets from "./sections/transport-emissions-targets";
-import { useTargetsStore } from "@/store/targets";
-import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
-import GoalCard from "./goal-card";
-import { Sidebar } from "../sidebar";
+import { mappedTravelMode } from "@/constants/transports";
+import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
-import TargetAdherenceCard from "./target-adherence-card";
-import { cx } from "class-variance-authority";
-import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
-import { mappedTravelMode } from "@/constants/transports";
-import { TravelMode } from "@/types/transports";
+import { useTargetsStore } from "@/store/targets";
+import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
-import GoalTrackerTable from "./goal-tracker-table";
+import { cx } from "class-variance-authority";
+import { CalendarClock, Target } from "lucide-react";
+import { useState } from "react";
+import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
+import GoalCard from "./goal-card";
+import GoalTrackerTable from "./goal-tracker-table";
+import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
+import TransportEmissionTargets from "./sections/transport-emissions-targets";
 
 const transformData = (
   data: {
@@ -38,9 +37,10 @@ const transformData = (
 
   const allYears = new Set([
     ...data.map((item) => item.year),
-    ...Object.keys(targetEmissions).map((year) => parseInt(year, 10)),
+    ...Object.keys(targetEmissions).map((year) => Number.parseInt(year, 10)),
   ]);
 
+  // biome-ignore lint/complexity/noForEach: <explanation>
   allYears.forEach((year) => {
     const co2Emission =
       data.find((item) => item.year === year)?.co2Emission || null;
@@ -82,7 +82,7 @@ export default function GoalTracker() {
     )?.co2Emission || 0;
 
   const targetCo2EmissionsFinalYear =
-    transformDataTest && transformDataTest[transformDataTest.length - 1];
+    transformDataTest?.[transformDataTest.length - 1];
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
   const yearBase = co2EmissionByYear?.[0]?.year || 0;
@@ -157,7 +157,7 @@ export default function GoalTracker() {
             )}
           </div>
 
-          <div
+          {/* <div
             className={cx(
               "md:col-span-2",
               hypothesisMode ? "md:col-span-2" : ""
@@ -166,15 +166,9 @@ export default function GoalTracker() {
             {loadingCo2EmissionByYear ? (
               <Skeleton className="h-[185px]" />
             ) : (
-              <TargetAdherenceCard
-                targetYear={2030}
-                baseEmissions={lastYearCo2Emission || 0}
-                targetEmissions={
-                  targetCo2EmissionsFinalYear.targetCo2Emission || 0
-                }
-              />
+              <></>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
       {hypothesisMode && (
