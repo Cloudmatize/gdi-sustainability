@@ -153,12 +153,14 @@ export default function CO2InboundAndOutbound() {
                   label={{
                     position: "top",
                     formatter: (value: number) =>
-                      `${`${formatNumber(Number(value.toFixed(0)))}`}`,
+                      value
+                        ? `${`${formatNumber(Number(value.toFixed(0)))}`}`
+                        : 0,
                     fontSize: 14,
                     offset: 10,
                   }}
                   dataKey="withinLimit"
-                  name="Dentro do limite"
+                  name="Inbound"
                   legendType="circle"
                   fill="#1ba18d"
                   radius={[4, 4, 0, 0]}
@@ -167,12 +169,14 @@ export default function CO2InboundAndOutbound() {
                   label={{
                     position: "top",
                     formatter: (value: number) =>
-                      `${`${formatNumber(Number(value.toFixed(0)))}`}`,
+                      value
+                        ? `${`${formatNumber(Number(value.toFixed(0)))}`}`
+                        : 0,
                     fontSize: 14,
                     offset: 10,
                   }}
                   dataKey="outsideLimit"
-                  name="Fora do limite"
+                  name="Outbound"
                   legendType="circle"
                   fill="#9aeee2"
                   radius={[4, 4, 0, 0]}

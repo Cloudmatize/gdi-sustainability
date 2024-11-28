@@ -14,13 +14,40 @@ import {
 import { Skeleton } from "../ui/skeleton";
 import { useBuildingsFloorAreasBySector } from "@/hooks/buildings";
 
+function generateComparisonMessage(
+  value1: number,
+  value2: number
+): {
+  formattedPercentageChange: number;
+  trend: string;
+} {
+  const difference = value2 - value1;
+  const percentageChange = ((difference / value1) * 100).toFixed(2);
+  const trend = difference > 0 ? "aumentaram" : "diminuiram";
+
+  const formattedPercentageChange = Math.abs(Number(percentageChange));
+
+  return {
+    formattedPercentageChange,
+    trend,
+  };
+}
+
 export default function DashboardSection1() {
   const {
     data: transportsCo2Emission,
     isFetching: isLoadingTransportsCo2Emission,
   } = useDashboardTransportsTotalCO2Emission({
     filters: {
-      date: `${2023}`,
+      date: [2023],
+    },
+  });
+  const {
+    data: transportsCo2EmissionPreviusYear,
+    isFetching: isLoadingTransportsCo2EmissionPreviousYear,
+  } = useDashboardTransportsTotalCO2Emission({
+    filters: {
+      date: [2022],
     },
   });
 
@@ -28,6 +55,11 @@ export default function DashboardSection1() {
     data: buildingsCo2Emission,
     isFetching: isLoadingBuildingsCo2Emission,
   } = useDashboardBuildingsTotalCO2Emission({});
+
+  const transportsComparissonInfo = generateComparisonMessage(
+    transportsCo2EmissionPreviusYear?.totalCO2Emission || 0,
+    transportsCo2Emission?.totalCO2Emission || 0
+  );
 
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
@@ -70,7 +102,7 @@ export default function DashboardSection1() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {/* Total Emissions Card */}
         {isLoadingTransportsCo2Emission || isLoadingBuildingsCo2Emission ? (
-          <Skeleton className="h-[200px]" />
+          <Skeleton className="h-[270px]" />
         ) : (
           <Card className="border-teal-400/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -111,35 +143,51 @@ export default function DashboardSection1() {
         )}
 
         {/* Variation Card */}
-        <Card className="border-teal-400/20">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">
-              Variação Total (2022 vs. 2023)
-            </CardTitle>
-            <LineChart size={32} className="text-teal-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm font-medium text-teal-400 mb-4">
-              Emissões totais aumentaram 3% em relação a 2022
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between mt-10">
-                <span className="text-sm text-muted-foreground">
-                  Transporte
-                </span>
-                <span className="text-lg font-medium text-teal-400">+3%</span>
+        {isLoadingTransportsCo2Emission ||
+        isLoadingTransportsCo2EmissionPreviousYear ? (
+          <Skeleton className="h-[270px]" />
+        ) : (
+          <Card className="border-teal-400/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+              <CardTitle className="text-sm font-medium">
+                Comparação emissões transporte (tCO2e)
+              </CardTitle>
+              <LineChart size={32} className="text-teal-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-sm text-start w-64 font-medium text-muted-foreground mb-4">
+                Emissões totais {transportsComparissonInfo?.trend}{" "}
+                <span className="text-teal-400 font-bold text-lg">
+                  {transportsComparissonInfo?.formattedPercentageChange}%
+                </span>{" "}
+                em relação ao ano anterior
               </div>
-              {/* <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Edifícios</span>
-                <span className="text-lg font-medium text-teal-400">-6%</span>
-              </div> */}
-            </div>
-          </CardContent>
-        </Card>
+              <div className="space-y-2">
+                <div className="flex justify-between mt-10">
+                  <span className="text-sm text-muted-foreground">2022</span>
+                  <span className="text-lg font-medium text-teal-400">
+                    {" "}
+                    {Math.trunc(
+                      transportsCo2EmissionPreviusYear?.totalCO2Emission || 0
+                    ).toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex justify-between mt-10">
+                  <span className="text-sm text-muted-foreground">2023</span>
+                  <span className="text-lg font-medium text-teal-400">
+                    {Math.trunc(
+                      transportsCo2Emission?.totalCO2Emission || 0
+                    ).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Metrics Per Building Card */}
         {isLoadingBuildingsInfo ? (
-          <Skeleton className="h-[200px]" />
+          <Skeleton className="h-[270px]" />
         ) : (
           <Card className="border-teal-400/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -170,7 +218,7 @@ export default function DashboardSection1() {
         )}
 
         {isLoadingBuildingsInfo ? (
-          <Skeleton className="h-[200px]" />
+          <Skeleton className="h-[270px]" />
         ) : (
           <Card className="border-teal-400/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -204,7 +252,7 @@ export default function DashboardSection1() {
         )}
 
         {/* Residential Area Card */}
-        {/* <Card className="border-teal-400/20 md:col-span-2 lg:col-span-4">
+        <Card className="border-teal-400/20 md:col-span-2 lg:col-span-4">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Distribuição por Área</CardTitle>
             <Building2 className="w-4 h-4 text-teal-400" />
@@ -223,7 +271,7 @@ export default function DashboardSection1() {
               </div>
             </div>
           </CardContent>
-        </Card> */}
+        </Card>
       </div>
     </div>
   );

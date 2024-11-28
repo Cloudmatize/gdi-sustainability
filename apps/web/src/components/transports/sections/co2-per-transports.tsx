@@ -104,7 +104,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   );
 };
 
-const ModalEmissionAnalysisCard = ({
+export const ModalEmissionAnalysisCard = ({
   data,
   loading,
 }: {
@@ -120,11 +120,11 @@ const ModalEmissionAnalysisCard = ({
 }) => {
   const modalWithLowestYearlyReductionDescription =
     data?.isLowestYearlyReduction
-      ? `O modal ${mappedTravelMode[data?.mode as TravelMode]} foi o maior responsável pelo aumento de emissões, contribuindo de forma significativa para o total de emissões no período analisado`
+      ? `O modal ${mappedTravelMode[data?.mode as TravelMode]} foi o maior responsável pelo aumento de emissões, contribuindo de forma significativa para o total de emissões no período analisado (2018-2023)`
       : null;
   const modalWithHighestYearlyReductionDescription =
     data?.isHighestYearlyReduction
-      ? `As emissões do modal ${mappedTravelMode[data?.mode as TravelMode]} apresentaram a maior redução anual, indicando uma tendência positiva no período analisado`
+      ? `As emissões do modal ${mappedTravelMode[data?.mode as TravelMode]} apresentaram a maior redução anual, indicando uma tendência positiva no período analisado (2018-2023)`
       : null;
 
   const title = mappedTravelMode[data?.mode as TravelMode];
@@ -206,7 +206,7 @@ const ModalEmissionAnalysisCard = ({
 };
 
 export default function Co2EmissionPerTransport() {
-  const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
+  const { data, isFetching } = useTransportsCO2EmissionByYearAndModal({});
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
   return (

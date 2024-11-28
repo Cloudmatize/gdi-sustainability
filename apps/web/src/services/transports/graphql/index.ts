@@ -298,13 +298,22 @@ export const getTransportsCO2EmissionPerKM = async ({
   }
 };
 
-export const getTransportsCO2EmissionByYearAndModal = async () => {
+export const getTransportsCO2EmissionByYearAndModal = async ({
+  filters,
+}: {
+  filters?: {
+    date: number[];
+    mode: TravelMode[];
+  };
+}) => {
   try {
-    const query = getCO2EmissionByYearAndModalQuery({});
+    const query = getCO2EmissionByYearAndModalQuery({ filters });
     const data = await graphQLClient.request<CO2EmissionByYearAndModalResponse>(
       query,
       { queryName: "getCO2EmissionByYearAndModalQuery" }
     );
+
+    console.log("query by year and modal", query, "data", data);
 
     if (data) {
       const uniqueYears = Array.from(
@@ -420,7 +429,6 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
         queryName: "getTransportsCO2EmissionModalAnalysisQuery",
       }
     );
-
     if (data) {
       const modalsData: {
         mode: string;

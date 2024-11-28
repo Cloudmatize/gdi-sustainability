@@ -3,12 +3,12 @@ import { TravelMode } from "@/types/transports";
 export const mappedTravelMode: {
   [key in TravelMode]: string;
 } = {
-  AUTOMOBILE: "Carro",
-  BUS: "Ônibus",
+  AUTOMOBILE: "Automóvel",
+  BUS: "Onibus",
   MOTORCYCLE: "Motocicleta",
   RAIL: "Trem",
   SUBWAY: "Metrô",
-  "ON FOOT": "A Pé",
-  CYCLING: "Bicicleta",
+  "ON FOOT": "A pé",
+  CYCLING: "Ciclismo",
   PLANE: "Avião",
 };

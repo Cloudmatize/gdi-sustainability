@@ -1,4 +1,5 @@
 import { TransportFilters } from "@/store/transports";
+import { TravelMode } from "@/types/transports";
 import { gql } from "graphql-request";
 
 export const getTotalCO2EmissionQuery = ({
@@ -68,13 +69,14 @@ export const getCO2EmissionPerKMQuery = ({
 export const getCO2EmissionByYearAndModalQuery = ({
   filters,
 }: {
-  filters?: TransportFilters;
+  filters?: { date?: number[]; mode?: TravelMode[] };
 }) => gql`
   query CubeQuery {
     cube(
       where: { 
         transportation_emission: {
-            year: ${filters?.date ? `{ equals: ${filters.date} }` : "{}"}
+            mode: ${!!filters?.mode?.length ? `{ in: ${JSON.stringify(filters.mode)} }` : "{}"}
+            year: ${!!filters?.date?.length ? `{ in: ${JSON.stringify(filters.date)} }` : "{}"}
         }
       }) {
       transportation_emission {
