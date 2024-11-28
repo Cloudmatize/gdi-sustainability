@@ -1,11 +1,7 @@
 
 import { useTransportCO2EmissionByYear } from '@/hooks/transports';
 import { calculateCityEmissionTargets } from '@/services/transports/graphql';
-import { TreePine } from 'lucide-react';
-import Link from 'next/link';
 import TargetAdherenceCard from '../targets/target-adherence-card';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import CardIcons from '../ui/card-icons';
 
 const transformData = (
   data: {
@@ -66,7 +62,7 @@ export default function DashboardSection12() {
           }
         />
         <div className='w-full flex justify-end'>
-          <Card className='w-fit h-fit'>
+          {/* <Card className='w-fit h-fit'>
             <CardHeader>
               <CardTitle>Mapas</CardTitle>
             </CardHeader>
@@ -79,7 +75,7 @@ export default function DashboardSection12() {
               </Link>
 
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>
