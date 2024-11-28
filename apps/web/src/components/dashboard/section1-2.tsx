@@ -1,7 +1,7 @@
 
 import { useTransportCO2EmissionByYear } from '@/hooks/transports';
 import { calculateCityEmissionTargets } from '@/services/transports/graphql';
-import { MapPinnedIcon, Target, TreePine } from 'lucide-react';
+import { TreePine } from 'lucide-react';
 import Link from 'next/link';
 import TargetAdherenceCard from '../targets/target-adherence-card';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -77,18 +77,7 @@ export default function DashboardSection12() {
                 </CardIcons>
                 Áreas verdes
               </Link>
-              <Link href="/map" className='w-fit max-w-fit flex flex-col items-center border-b border-primary-foreground'>
-                <CardIcons>
-                  <MapPinnedIcon />
-                </CardIcons>
-                Mapa
-              </Link>
-              <Link href="/targets" className="w-fit max-w-fit flex flex-col items-center  border-b border-primary-foreground">
-                <CardIcons>
-                  <Target />
-                </CardIcons>
-                Metas
-              </Link>
+
             </CardContent>
           </Card>
         </div>
