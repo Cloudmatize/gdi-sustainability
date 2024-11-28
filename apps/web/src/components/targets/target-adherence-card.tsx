@@ -2,8 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { TrendingDown, Target } from "lucide-react";
 import { useTargetsStore } from "@/store/targets";
+import { Target, TrendingDown } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 interface Props {
   targetEmissions: number;
@@ -21,7 +22,7 @@ export default function TargetAdherenceCard({
   const baseAdherence = (targetEmissions / baseEmissions) * 100;
   const simulatedAdherence = (targetEmissions / simulatedEmissions) * 100;
   return (
-    <Card className="w-full h-full ">
+    <Card className="w-full h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-xl font-semibold flex flex-col">
           Índice de aderência à meta para {targetYear}
@@ -36,18 +37,29 @@ export default function TargetAdherenceCard({
           <div className="w-full space-y-2  h-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4 text-primary" />
+                <Target className="h-4 w-4 text-primary-foreground" />
                 <span className="font-medium">Atual</span>
               </div>
-              <span className="text-2xl font-bold text-slate-700">
-                {baseAdherence.toFixed(2)}%
+              <span className="text-2xl font-bold text-foreground">
+                {baseAdherence?.toFixed(2) ?
+                  (<>{baseAdherence.toFixed(2)}%</>)
+                  : (
+                    <Skeleton className="w-24 h-8 flex flex-row justify-end">
+                      %
+                    </Skeleton>
+                  )}
               </span>
             </div>
-            <Progress
+            {baseAdherence ? (<Progress
               value={Math.min(baseAdherence, 100)}
-              className="h-2 bg-gray-100"
-              indicatorClassName="bg-teal-500"
-            />
+              className="h-2 bg-primary"
+              indicatorClassName="bg-primary-foreground"
+            />) : (
+              <Skeleton className="w-full h-2">
+              </Skeleton>
+            )}
+
+
             <div className="text-xs text-muted-foreground">
               da meta de redução de emissões para {targetYear}
             </div>
@@ -57,10 +69,10 @@ export default function TargetAdherenceCard({
             <div className="space-y-2 w-full h-full ">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <TrendingDown className="h-4 w-4 text-slate-700" />
-                  <span className="font-medium text-slate-700">Simulado</span>
+                  <TrendingDown className="h-4 w-4 text-foreground" />
+                  <span className="font-medium text-foreground">Simulado</span>
                 </div>
-                <span className="text-2xl font-bold text-slate-700">
+                <span className="text-2xl font-bold text-foreground">
                   {simulatedAdherence.toFixed(2)}%
                 </span>
               </div>

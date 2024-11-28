@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Car } from 'lucide-react'
+import CardIcons from "../ui/card-icons"
 
 export default function DashboardSection3() {
 
@@ -8,9 +9,9 @@ export default function DashboardSection3() {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Emissões por Modo de Transporte</h2>
 
-      {/* <Card className="border-teal-400/20">
+      {/* <Card className="border">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">Dados por Modo de Transporte</CardTitle>
+          <CardTitle>Dados por Modo de Transporte</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -28,7 +29,7 @@ export default function DashboardSection3() {
                 <TableRow key={item.mode}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
-                      <item.icon className="w-4 h-4 text-teal-400" />
+                      <item.icon className="w-4 h-4 text-primary-foreground" />
                       {item.mode}
                     </div>
                   </TableCell>
@@ -45,21 +46,26 @@ export default function DashboardSection3() {
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="border-teal-400/20">
+          <Card key={i} className="border">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Emissões/Passageiro (kgCO₂) - Carro
+              <CardTitle className="flex flex-col gap-4">
+                Emissões/Passageiro (kgCO₂)
+                <div className="flex flex-row items-center gap-2">
+                  <CardIcons>
+                    <Car />
+                  </CardIcons>
+                  <span className="font-medium">Carro</span>
+                </div>
               </CardTitle>
-              <Car size={32} className="text-teal-400" />
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-end">
                 <div>
-                  <div className="text-2xl font-bold text-teal-400">1.22</div>
+                  <div className="text-2xl font-bold text-primary-foreground">1.22</div>
                   <div className="text-sm text-muted-foreground">2022</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-teal-400">1.18</div>
+                  <div className="text-2xl font-bold text-primary-foreground">1.18</div>
                   <div className="text-sm text-muted-foreground">2023</div>
                 </div>
               </div>

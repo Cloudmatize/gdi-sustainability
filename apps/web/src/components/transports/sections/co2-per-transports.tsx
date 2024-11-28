@@ -1,6 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import CardIcons from "@/components/ui/card-icons";
 import InfoTooltip from "@/components/ui/info-tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
@@ -74,7 +75,7 @@ const CustomTooltip = ({
                     className="w-[14px] h-[14px] rounded-xs"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-slate-800 font-bold  text-center">
+                  <span className="text-foreground font-bold  text-center">
                     {String(item?.dataKey) || ""}
                   </span>
                 </div>
@@ -97,7 +98,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-slate-700 text-center">{d?.value}</span>
+          <span className="text-sm text-foreground text-center">{d?.value}</span>
         </div>
       ))}
     </div>
@@ -140,18 +141,18 @@ const ModalEmissionAnalysisCard = ({
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl md:text-2xl break-words font-bold text-teal-500">{title}</h3>
+              <h3 className="text-xl md:text-2xl break-words font-bold text-primary-foreground">{title}</h3>
             </div>
           </div>
-          <div className="rounded-lg bg-teal-100 p-2">
-            <Icon className="h-5 w-5 text-teal-500" />
-          </div>
+          <CardIcons>
+            <Icon />
+          </CardIcons>
         </div>
 
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
+              className={` font-bold ${trend === "up" ? "text-destructive-foreground" : "text-primary-foreground"
                 }`}
             >
               {data.contributionStatus}
@@ -163,12 +164,12 @@ const ModalEmissionAnalysisCard = ({
             </p>
             <div className="flex items-center gap-1">
               {trend === "up" ? (
-                <TrendingUp className="h-4 w-4 text-red-400" />
+                <TrendingUp className="h-4 w-4 text-destructive-foreground" />
               ) : (
-                <TrendingDown className="h-4 w-4 text-teal-500" />
+                <TrendingDown className="h-4 w-4 text-primary-foreground" />
               )}
               <span
-                className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
+                className={` font-bold ${trend === "up" ? "text-destructive-foreground" : "text-primary-foreground"
                   }`}
               >
                 {data.avgPercentageYearly}%
@@ -191,7 +192,7 @@ const ModalEmissionAnalysisCard = ({
             <p className="text-sm text-muted-foreground">
               Contribuição no total:
             </p>
-            <p className=" font-bold text-teal-500">
+            <p className=" font-bold text-primary-foreground">
               {data.percentageContribution}%
             </p>
           </div>
@@ -208,7 +209,7 @@ export default function Co2EmissionPerTransport() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold mb-2 text-slate-700">
+        <h2 className="text-2xl font-semibold mb-2 text-foreground">
           Comparação de emissões de CO₂ por tipo de transporte
         </h2>
         <p className="text-muted-foreground max-w-lg">
@@ -241,7 +242,7 @@ export default function Co2EmissionPerTransport() {
         <Skeleton className="h-[240px] rounded-xl" />
       ) : (
         <Card className="p-4 h-fit">
-          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+          <h3 className="font-semibold text-foreground text-sm mb-6">
             Emsisão CO₂ (tons)
           </h3>
           <div className="h-[400px]">

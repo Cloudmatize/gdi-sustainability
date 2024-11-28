@@ -7,11 +7,10 @@ import { useBuildingsEnergyIntensitiesBySector } from "@/hooks/buildings";
 import {
   PolarAngleAxis,
   PolarGrid,
-  PolarRadiusAxis,
   Radar,
   RadarChart,
   ResponsiveContainer,
-  Tooltip,
+  Tooltip
 } from "recharts";
 
 const CustomTooltip = ({
@@ -38,7 +37,7 @@ const CustomTooltip = ({
               className="w-[14px] h-[14px] rounded-xs"
               style={{ backgroundColor: item.color }}
             />
-            <span className="text-slate-800 font-bold  w-24 text-center">
+            <span className="text-foreground font-bold  w-24 text-center">
               {ENERGY_FRACTIONS[label as keyof typeof ENERGY_FRACTIONS]}
             </span>
           </div>
@@ -56,7 +55,7 @@ export default function EnergyIntensities() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold text-slate-700 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Intensidade de consumo por fonte de energia
         </h2>
         <p className="text-muted-foreground max-w-lg">
