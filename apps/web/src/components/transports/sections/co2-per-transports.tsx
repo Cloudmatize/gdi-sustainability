@@ -21,7 +21,7 @@ import {
   RailSymbol,
   TrainFront,
   TrendingDown,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import { RiMotorbikeFill } from "react-icons/ri";
 import {
@@ -133,14 +133,16 @@ const ModalEmissionAnalysisCard = ({
   const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
 
   return loading ? (
-    <Skeleton className="h-60 w-full lg:w-96 rounded-xl" />
+    <Skeleton className="h-60 w-full rounded-xl" />
   ) : (
-    <Card className="h-60 w-full lg:w-96 px-4 py-4 hover:shadow-lg transition-shadow">
+    <Card className="h-60  w-full px-4 py-4 hover:shadow-lg transition-shadow">
       <div className="space-y-5">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl md:text-2xl break-words font-bold text-teal-500">{title}</h3>
+              <h3 className="text-xl md:text-2xl break-words font-bold text-teal-500">
+                {title}
+              </h3>
             </div>
           </div>
           <div className="rounded-lg bg-teal-100 p-2">
@@ -151,8 +153,9 @@ const ModalEmissionAnalysisCard = ({
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
-                }`}
+              className={` font-bold ${
+                trend === "up" ? "text-red-400" : "text-teal-500"
+              }`}
             >
               {data.contributionStatus}
             </p>
@@ -168,8 +171,9 @@ const ModalEmissionAnalysisCard = ({
                 <TrendingDown className="h-4 w-4 text-teal-500" />
               )}
               <span
-                className={` font-bold ${trend === "up" ? "text-red-400" : "text-teal-500"
-                  }`}
+                className={` font-bold ${
+                  trend === "up" ? "text-red-400" : "text-teal-500"
+                }`}
               >
                 {data.avgPercentageYearly}%
               </span>
@@ -227,7 +231,7 @@ export default function Co2EmissionPerTransport() {
               | "Elevação",
           };
           return (
-            <div key={index}>
+            <div className="w-full" key={index}>
               <ModalEmissionAnalysisCard
                 data={formattedModal}
                 loading={isLoadingModalAnalysis}

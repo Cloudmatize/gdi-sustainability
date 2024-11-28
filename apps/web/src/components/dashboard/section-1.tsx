@@ -123,16 +123,16 @@ export default function DashboardSection1() {
               Emissões totais aumentaram 3% em relação a 2022
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between">
+              <div className="flex justify-between mt-10">
                 <span className="text-sm text-muted-foreground">
                   Transporte
                 </span>
                 <span className="text-lg font-medium text-teal-400">+3%</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Edifícios</span>
                 <span className="text-lg font-medium text-teal-400">-6%</span>
-              </div>
+              </div> */}
             </div>
           </CardContent>
         </Card>
