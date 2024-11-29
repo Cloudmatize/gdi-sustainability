@@ -8,31 +8,31 @@ import {
   Train,
 } from "lucide-react";
 
-export const getIconByTransportMode = (mode: string) => {
+export const getIconByTransportMode = (mode: string, asChild = false) => {
   switch (mode) {
     case "AUTOMOBILE":
-      return <CardIcons><Car /></CardIcons>
+      return <CardIcons asChild={asChild}><Car /></CardIcons>
     case "CARRO":
-      return <CardIcons><Car /></CardIcons>
+      return <CardIcons asChild={asChild}><Car /></CardIcons>
     case "BUS":
-      return <CardIcons><Bus /></CardIcons>
+      return <CardIcons asChild={asChild}><Bus /></CardIcons>
     case "ÔNIBUS":
-      return <CardIcons><Bus /></CardIcons>
+      return <CardIcons asChild={asChild}><Bus /></CardIcons>
     case "MOTORCYCLE":
-      return <CardIcons><Bike /></CardIcons>
+      return <CardIcons asChild={asChild}><Bike /></CardIcons>
     case "MOTOCICLETA":
-      return <CardIcons><Bike /></CardIcons>
+      return <CardIcons asChild={asChild}><Bike /></CardIcons>
     case "RAIL":
-      return <CardIcons><Train /></CardIcons>
+      return <CardIcons asChild={asChild}><Train /></CardIcons>
     case "TREM":
-      return <CardIcons><Train /></CardIcons>
+      return <CardIcons asChild={asChild}><Train /></CardIcons>
     case "ON FOOT":
-      return <CardIcons><PersonStanding /></CardIcons>
+      return <CardIcons asChild={asChild}><PersonStanding /></CardIcons>
     case "A PÉ":
-      return <CardIcons><Train /></CardIcons>
+      return <CardIcons asChild={asChild}><Train /></CardIcons>
     case "CYCLING":
-      return <CardIcons><Bicycle /></CardIcons>
+      return <CardIcons asChild={asChild}><Bicycle /></CardIcons>
     case "CICLISMO":
-      return <CardIcons><Bicycle /></CardIcons>
+      return <CardIcons asChild={asChild}><Bicycle /></CardIcons>
   }
 };

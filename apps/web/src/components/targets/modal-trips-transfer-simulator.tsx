@@ -1,5 +1,7 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -9,11 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2 } from "lucide-react";
 import { useTargetsStore } from "@/store/targets";
-import { TravelMode } from "@/types/transports";
+import type { TravelMode } from "@/types/transports";
+import { Plus, Trash2 } from "lucide-react";
 
 interface Distribution {
   id: string;
