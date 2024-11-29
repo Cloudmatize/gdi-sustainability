@@ -67,13 +67,40 @@ export default function DashboardSection1() {
     transportsCo2EmissionPreviusYear?.totalCO2Emission || 0,
     transportsCo2Emission?.totalCO2Emission || 0
   );
-
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
 
-  function formatBuildingsFloorAreasBySector(data?: any) {
+  function formatBuildingsFloorAreasBySector(
+    data:
+      | {
+          residential: {
+            area: number;
+            count: number;
+            co2Emission: number;
+            percentage: number;
+          };
+          notResidential: {
+            area: number;
+            count: number;
+            co2Emission: number;
+            percentage: number;
+          };
+          total: {
+            area: number;
+            count: number;
+            co2Emission: number;
+          };
+        }
+      | undefined
+  ) {
     if (!data) return {};
     const residentialMetrics = {
+      areaPercentage: Number(
+        ((data.residential.area / data.total.area) * 100).toFixed(1)
+      ),
+      totalCo2EmissionPercentage: Number(
+        (data.residential.percentage * 100).toFixed(1)
+      ),
       tCO2PerBuilding: (
         data.residential.co2Emission / data.residential.count
       ).toFixed(2),
@@ -84,6 +111,12 @@ export default function DashboardSection1() {
     };
 
     const nonResidentialMetrics = {
+      areaPercentage: Number(
+        ((data.notResidential.area / data.total.area) * 100).toFixed(1)
+      ),
+      totalCo2EmissionPercentage: Number(
+        (data.notResidential.percentage * 100).toFixed(1)
+      ),
       tCO2PerBuilding: (
         data.notResidential.co2Emission / data.notResidential.count
       ).toFixed(2),
@@ -101,6 +134,7 @@ export default function DashboardSection1() {
 
   const formattedBuildingsInfo =
     formatBuildingsFloorAreasBySector(buildingsInfo);
+  console.log("formattedBuildingsInfo", formattedBuildingsInfo);
 
   return (
     <div className="space-y-6 text-foreground">
@@ -207,8 +241,11 @@ export default function DashboardSection1() {
           </CardHeader>
           <CardContent>
             <CardDescription className="mb-2">
-              Os edifícios residenciais possuem 65.7% da área total e contribuem
-              com 47.4% das emissões
+              Os edifícios residenciais possuem{" "}
+              {formattedBuildingsInfo.residential?.areaPercentage}% da área
+              total e contribuem com{" "}
+              {formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}%
+              das emissões
             </CardDescription>
             <div className="space-y-4">
               <div>
@@ -242,8 +279,14 @@ export default function DashboardSection1() {
           </CardHeader>
           <CardContent>
             <CardDescription className="mb-2">
-              Os edifícios não residenciais possuem 65.7% da área total e contribuem
-              com 47.4% das emissões
+              Os edifícios não residenciais possuem{" "}
+              {formattedBuildingsInfo.nonResidential?.areaPercentage}% da área
+              total e contribuem com{" "}
+              {
+                formattedBuildingsInfo.nonResidential
+                  ?.totalCo2EmissionPercentage
+              }
+              % das emissões
             </CardDescription>
             <div className="space-y-4">
               <div>
