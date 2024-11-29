@@ -79,7 +79,7 @@ function Co2EmissionComparissonCard(emission: Co2ComparissonCardProps) {
   return (
     <Card key={emission.mode} className="border w-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">
+        <CardTitle>
           Emissão Média de CO2 por Ano -{" "}
           {mappedTravelMode[emission.mode as TravelMode]} (tCo2)
         </CardTitle>
@@ -87,16 +87,16 @@ function Co2EmissionComparissonCard(emission: Co2ComparissonCardProps) {
       <CardContent>
         <div className="flex items-center justify-center gap-4">
           <div className="text-center">
-            <div className="text-3xl font-bold text-teal-400">
+            <div className="text-3xl md:text-xl font-bold text-primary-foreground">
               {emission.firstYear.co2Emissions.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
               {emission.firstYear.year}
             </div>
           </div>
-          <div className="text-2xl text-muted-foreground">×</div>
+          <div className="text-2xl md:text-xl text-muted-foreground">×</div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-400">
+            <div className="text-3xl md:text-xl font-bold text-secondary-foreground">
               {emission.secondYear.co2Emissions.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
@@ -115,7 +115,7 @@ function EmissionPerPassengerCard(emission: Co2ComparissonCardProps) {
   return (
     <Card className="border">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle className="text-sm font-medium">
+        <CardTitle>
           Emissões/Passageiro (kgCO₂) - {emission.mode}
         </CardTitle>
 
@@ -124,13 +124,13 @@ function EmissionPerPassengerCard(emission: Co2ComparissonCardProps) {
       <CardContent className="space-y-4">
         <div className="flex justify-between items-end">
           <div>
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl md:text-xl font-bold text-primary-foreground">
               {emission.firstYear.emissionsPerPassenger}
             </div>
             <div className="text-sm text-muted-foreground">{firstYear}</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl md:text-xl font-bold text-primary-foreground">
               {emission.secondYear.emissionsPerPassenger}
             </div>
             <div className="text-sm text-muted-foreground">{secondYear}</div>
@@ -285,7 +285,7 @@ export default function DashboardSection2() {
         Comparativo de Emissões por Transporte
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {/* Transport Mode Cards */}
 
         {/* LEMBRA DE PASSAR OS DADOS DA API PRO FORMATO DESSE transports */}
@@ -361,7 +361,7 @@ export default function DashboardSection2() {
       {/* <h2 className="text-2xl font-bold">Maiores altas e quedas</h2> */}
 
       {/* Comparison Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
@@ -383,7 +383,7 @@ export default function DashboardSection2() {
                     </span>
                   </div>
                   <div
-                    className={" text-rose-500 font-medium flex items-center gap-2"}
+                    className={" text-destructive-foreground font-medium flex items-center gap-2"}
                   >
                     <MdTrendingUp />{" "}
                     {comparissonSectorData?.highestIncrease?.percentageChange.toFixed(
@@ -418,7 +418,7 @@ export default function DashboardSection2() {
                     </span>
                   </div>
                   <div
-                    className={"text-teal-500  font-medium flex items-center gap-2"}
+                    className={"text-primary-foreground  font-medium flex items-center gap-2"}
                   >
                     <MdTrendingDown />
                     {comparissonSectorData?.highestReduction?.percentageChange.toFixed(
@@ -435,7 +435,7 @@ export default function DashboardSection2() {
       </div>
 
       {/* Emission Comparison Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
           isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
@@ -448,7 +448,7 @@ export default function DashboardSection2() {
           ))}
       </div>
       {/* Emission Per Passenger Card */}
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
           isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
