@@ -134,7 +134,6 @@ export default function DashboardSection1() {
 
   const formattedBuildingsInfo =
     formatBuildingsFloorAreasBySector(buildingsInfo);
-  console.log("formattedBuildingsInfo", formattedBuildingsInfo);
 
   return (
     <div className="space-y-6 text-foreground">
