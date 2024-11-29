@@ -1,7 +1,7 @@
 "use client";
-import { Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Leaf } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { Spinner } from "../spinner";
 
@@ -18,11 +18,11 @@ export default function Login() {
         <Card className="w-full max-w-md space-y-8 p-8">
           <div className="text-center">
             <div className="mb-2 flex justify-center">
-              <div className="rounded-full bg-green-100 p-3">
-                <Leaf className="h-8 w-8 text-green-600" />
+              <div className="rounded-full bg-primary p-3">
+                <Leaf className="h-8 w-8 text-primary-foreground" />
               </div>
             </div>
-            <h1 className="text-2xl font-semibold text-green-800">
+            <h1 className="text-2xl font-semibold text-primary-foreground">
               Bem vindo ao <br /> GDI Sustentabilidade
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -33,14 +33,14 @@ export default function Login() {
 
           <div className="space-y-4">
             <Button
-              className="w-full bg-green-600 hover:bg-green-700"
+              className="w-full bg-primary-foreground hover:bg-primary text-primary hover:text-primary-foreground"
               onClick={handleLogin}
             >
               {status === "loading" ? <Spinner /> : "Entrar"}
             </Button>
             <Button
               variant="outline"
-              className="w-full border-green-200 text-green-700 hover:bg-green-50"
+              className="w-full border-primary-foreground/20 text-primary-foreground hover:text-primary-foreground hover:bg-primary"
             >
               Solicitar Acesso
             </Button>
