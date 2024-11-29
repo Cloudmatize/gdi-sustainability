@@ -32,8 +32,8 @@ export default function TargetAdherenceCard({
           </span>
         </CardTitle>
       </CardHeader>
-      <CardContent className=" py-3">
-        <div className=" flex items-center justify-center gap-12 h-20  ">
+      <CardContent className=" py-3 ">
+        <div className=" flex items-center flex-col md:flex-row justify-center gap-3 md:gap-12 ">
           <div className="w-full space-y-2  h-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">

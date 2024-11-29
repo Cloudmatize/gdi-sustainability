@@ -1,4 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ENERGY_FRACTIONS } from "@/constants/buildings";
 import {
   useBuildingsEnergyFractionsBySector,
@@ -80,8 +87,8 @@ export default function DashboardSection4() {
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border">
-            <CardHeader className="pb-2">
+          <Card className="border ">
+            <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CardIcons>
                   <Zap />
@@ -89,20 +96,20 @@ export default function DashboardSection4() {
                 Fonte Principal de Emissões de CO₂
               </CardTitle>
             </CardHeader>
-            <CardContent className="mt-2">
-              <div className="text-3xl font-bold text-foreground">
+            <CardContent className="mt-4 ">
+              <div className="text-2xl font-bold text-foreground mb-2">
                 {
                   ENERGY_FRACTIONS[
-                  highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
+                    highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }
               </div>
-              <div className="space-y-2 border-b">
+              <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">
                     Contribuição nas emissões dos edifícios
                   </span>
-                  <span className="font-medium text-lg text-primary-foreground">
+                  <span className="font-bold text-end text-lg text-primary-foreground">
                     {((highestCO2Emission?.percentage || 0) * 100).toFixed(2)}%
                   </span>
                 </div>
@@ -110,7 +117,7 @@ export default function DashboardSection4() {
                   <span className="text-sm text-muted-foreground">
                     Total de CO₂ emitido (tCO2e)
                   </span>
-                  <span className="font-medium text-lg text-primary-foreground">
+                  <span className="font-bold text-lg text-primary-foreground">
                     {Math.trunc(
                       highestCO2Emission?.co2Emission || 0
                     ).toLocaleString()}
@@ -128,37 +135,20 @@ export default function DashboardSection4() {
           <Card className="border">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center  gap-2">
-                <ArrowDownUp size={32} className=" text-primary-foreground" />
+                <CardIcons>
+                  <ArrowDownUp />
+                </CardIcons>
                 Comparativo de Eficiência
               </CardTitle>
             </CardHeader>
-            <CardContent className="mt-2 gap-2 flex flex-col">
-              <div className="text-sm text-muted-foreground">
-                {
-                  ENERGY_FRACTIONS[
-                  efficiencyComparison?.lowest
-                    .name as keyof typeof ENERGY_FRACTIONS
-                  ]
-                }{" "}
-                tem o menor impacto por kWh com (
-                {efficiencyComparison?.lowest.value} kgCO₂/kWh), sendo{" "}
-                {efficiencyComparison?.differenceFactor?.toFixed(2)} vezes mais
-                eficiente que{" "}
-                {
-                  ENERGY_FRACTIONS[
-                  efficiencyComparison?.highest
-                    .name as keyof typeof ENERGY_FRACTIONS
-                  ]
-                }{" "}
-                com ({efficiencyComparison?.highest.value} kgCO₂/kWh).
-              </div>
+            <CardContent className="mt-2 gap-2 flex flex-col ">
               <div className="my-2 gap-1 flex flex-col">
                 <div className="flex items-center">
-                  <p className="text-2xl font-bold text-foreground min-w-36">
+                  <p className="text-xl font-bold text-foreground min-w-36">
                     {
                       ENERGY_FRACTIONS[
-                      efficiencyComparison?.lowest
-                        .name as keyof typeof ENERGY_FRACTIONS
+                        efficiencyComparison?.lowest
+                          .name as keyof typeof ENERGY_FRACTIONS
                       ]
                     }
                   </p>
@@ -168,11 +158,11 @@ export default function DashboardSection4() {
                   </div>
                 </div>
                 <div className="flex items-center ">
-                  <div className="text-2xl font-bold text-foreground min-w-36">
+                  <div className="text-xl font-bold text-foreground min-w-36">
                     {
                       ENERGY_FRACTIONS[
-                      efficiencyComparison?.highest
-                        .name as keyof typeof ENERGY_FRACTIONS
+                        efficiencyComparison?.highest
+                          .name as keyof typeof ENERGY_FRACTIONS
                       ]
                     }
                   </div>
@@ -183,6 +173,27 @@ export default function DashboardSection4() {
                 </div>
               </div>
             </CardContent>
+            <CardFooter>
+              <CardDescription>
+                {
+                  ENERGY_FRACTIONS[
+                    efficiencyComparison?.lowest
+                      .name as keyof typeof ENERGY_FRACTIONS
+                  ]
+                }{" "}
+                tem o menor impacto por kWh com (
+                {efficiencyComparison?.lowest.value} kgCO₂/kWh), sendo{" "}
+                {efficiencyComparison?.differenceFactor?.toFixed(2)} vezes mais
+                eficiente que{" "}
+                {
+                  ENERGY_FRACTIONS[
+                    efficiencyComparison?.highest
+                      .name as keyof typeof ENERGY_FRACTIONS
+                  ]
+                }{" "}
+                com ({efficiencyComparison?.highest.value} kgCO₂/kWh).
+              </CardDescription>
+            </CardFooter>
           </Card>
         )}
       </div>
