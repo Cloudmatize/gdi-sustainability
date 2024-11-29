@@ -1,25 +1,38 @@
+import CardIcons from "@/components/ui/card-icons";
 import {
+  BikeIcon as Bicycle,
   Bike,
   Bus,
   Car,
   PersonStanding,
   Train,
-  BikeIcon as Bicycle,
 } from "lucide-react";
 
 export const getIconByTransportMode = (mode: string) => {
   switch (mode) {
     case "AUTOMOBILE":
-      return <Car className="h-4 w-4" />;
+      return <CardIcons><Car /></CardIcons>
+    case "CARRO":
+      return <CardIcons><Car /></CardIcons>
     case "BUS":
-      return <Bus className="h-4 w-4" />;
+      return <CardIcons><Bus /></CardIcons>
+    case "ÔNIBUS":
+      return <CardIcons><Bus /></CardIcons>
     case "MOTORCYCLE":
-      return <Bike className="h-4 w-4" />;
+      return <CardIcons><Bike /></CardIcons>
+    case "MOTOCICLETA":
+      return <CardIcons><Bike /></CardIcons>
     case "RAIL":
-      return <Train className="h-4 w-4" />;
+      return <CardIcons><Train /></CardIcons>
+    case "TREM":
+      return <CardIcons><Train /></CardIcons>
     case "ON FOOT":
-      return <PersonStanding className="h-4 w-4" />;
+      return <CardIcons><PersonStanding /></CardIcons>
+    case "A PÉ":
+      return <CardIcons><Train /></CardIcons>
     case "CYCLING":
-      return <Bicycle className="h-4 w-4" />;
+      return <CardIcons><Bicycle /></CardIcons>
+    case "CICLISMO":
+      return <CardIcons><Bicycle /></CardIcons>
   }
 };
