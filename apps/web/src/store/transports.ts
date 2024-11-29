@@ -2,8 +2,8 @@ import { TravelMode } from "@/types/transports";
 import { create } from "zustand";
 
 export type TransportFilters = {
-  date: string;
-  mode?: TravelMode
+  date?: number[];
+  mode?: TravelMode[];
 };
 interface TransportsState {
   filters: TransportFilters;
@@ -14,7 +14,7 @@ const lastYear = new Date().getFullYear() - 1;
 
 export const useTransportsStore = create<TransportsState>()((set, get) => ({
   filters: {
-    date: String(lastYear),
+    date: [lastYear],
   },
   setFilters: (filters) =>
     set((state) => ({

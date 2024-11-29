@@ -7,7 +7,7 @@ export const getTargetsCO2EmissionByModal = async () => {
   try {
     const query = getCO2EmissionByYearAndModalQuery({
       filters: {
-        date: `${lastYear}`,
+        date: [lastYear],
       },
     });
     const data = await graphQLClient.request<CO2EmissionByYearResponse>(query, {
@@ -25,8 +25,8 @@ export const getTargetsCO2EmissionByModal = async () => {
         };
       });
 
-      const filteredData = formattedData.filter((item) =>
-        !["ON FOOT", "CYCLING"].includes(item.mode)
+      const filteredData = formattedData.filter(
+        (item) => !["ON FOOT", "CYCLING"].includes(item.mode)
       );
       return filteredData;
     }

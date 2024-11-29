@@ -12,6 +12,6 @@ export const ENERGY_FRACTIONS: {
 } = {
   PROPANE: "Propano",
   ELECTRICITY: "Eletricidade",
-  DIESEL_OIL: "Óleo diesel",
+  DIESEL_OIL: "Óleo Diesel",
   NATURAL_GAS: "Gás Natural",
 };

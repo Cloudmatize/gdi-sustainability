@@ -42,11 +42,14 @@ const EmissionCard = ({
     </Card>
   );
 
+
+
+  
 export default function TransportsPage() {
   const { filters, setFilters } = useTransportsStore();
 
   const handleYearChange = (value: string) => {
-    setFilters({ date: value });
+    setFilters({ date: [Number(value)] });
   };
   const { date } = filters;
 
@@ -68,7 +71,7 @@ export default function TransportsPage() {
             <YearSelect
               endYear={2023}
               startYear={2018}
-              value={date}
+              value={String(date ? date[0] : new Date().getFullYear() - 1)}
               onValueChange={handleYearChange}
             />
           </div>

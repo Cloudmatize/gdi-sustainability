@@ -2,7 +2,6 @@
 
 import DashboardSection1 from "./section-1";
 import DashboardSection2 from "./section-2";
-import DashboardSection3 from "./section-3";
 import DashboardSection4 from "./section-4";
 import DashboardSection12 from "./section1-2";
 
@@ -12,7 +11,6 @@ export default function ComprehensiveDashboard() {
       <DashboardSection12 />
       <DashboardSection1 />
       <DashboardSection2 />
-      <DashboardSection3 />
       <DashboardSection4 />
     </div>
   );

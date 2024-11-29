@@ -147,7 +147,7 @@ export default function GoalTracker() {
             ) : (
               <GoalCard
                 icon={Target}
-                title="Meta"
+                title="Target"
                 value="2030"
                 subLabel="Emissão estimada (-20%)"
                 subValue={Math.trunc(

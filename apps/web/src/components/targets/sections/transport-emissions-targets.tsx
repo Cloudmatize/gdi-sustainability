@@ -316,7 +316,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: "Ano de conclusão da meta",
+                    value: "Target completion year",
                     position: "left",
                     fill: "#bab8b8",
                     fontSize: 12,

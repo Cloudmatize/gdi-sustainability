@@ -22,7 +22,7 @@ import {
   RailSymbol,
   TrainFront,
   TrendingDown,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import { RiMotorbikeFill } from "react-icons/ri";
 import {
@@ -105,7 +105,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   );
 };
 
-const ModalEmissionAnalysisCard = ({
+export const ModalEmissionAnalysisCard = ({
   data,
   loading,
 }: {
@@ -121,11 +121,11 @@ const ModalEmissionAnalysisCard = ({
 }) => {
   const modalWithLowestYearlyReductionDescription =
     data?.isLowestYearlyReduction
-      ? `O modal ${mappedTravelMode[data?.mode as TravelMode]} foi o maior responsável pelo aumento de emissões, contribuindo de forma significativa para o total de emissões no período analisado`
+      ? `O modal ${mappedTravelMode[data?.mode as TravelMode]} foi o maior responsável pelo aumento de emissões, contribuindo de forma significativa para o total de emissões no período analisado (2018-2023)`
       : null;
   const modalWithHighestYearlyReductionDescription =
     data?.isHighestYearlyReduction
-      ? `As emissões do modal ${mappedTravelMode[data?.mode as TravelMode]} apresentaram a maior redução anual, indicando uma tendência positiva no período analisado`
+      ? `As emissões do modal ${mappedTravelMode[data?.mode as TravelMode]} apresentaram a maior redução anual, indicando uma tendência positiva no período analisado (2018-2023)`
       : null;
 
   const title = mappedTravelMode[data?.mode as TravelMode];
@@ -134,9 +134,9 @@ const ModalEmissionAnalysisCard = ({
   const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
 
   return loading ? (
-    <Skeleton className="h-60 w-full lg:w-96 rounded-xl" />
+    <Skeleton className="h-60 w-full rounded-xl" />
   ) : (
-    <Card className="h-60 w-full lg:w-96 px-4 py-4 hover:shadow-lg transition-shadow">
+    <Card className="h-60  w-full px-4 py-4 hover:shadow-lg transition-shadow">
       <div className="space-y-5">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
@@ -203,7 +203,7 @@ const ModalEmissionAnalysisCard = ({
 };
 
 export default function Co2EmissionPerTransport() {
-  const { data, isFetching } = useTransportsCO2EmissionByYearAndModal();
+  const { data, isFetching } = useTransportsCO2EmissionByYearAndModal({});
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
   return (
@@ -228,7 +228,7 @@ export default function Co2EmissionPerTransport() {
               | "Elevação",
           };
           return (
-            <div key={index}>
+            <div className="w-full" key={index}>
               <ModalEmissionAnalysisCard
                 data={formattedModal}
                 loading={isLoadingModalAnalysis}

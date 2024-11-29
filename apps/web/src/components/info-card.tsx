@@ -24,9 +24,9 @@ export function InfoCard({
   infoTooltip,
 }: InfoCardProps) {
   return loading || !value ? (
-    <Skeleton className="h-60 w-full md:w-96 rounded-xl" />
+    <Skeleton className="h-60 w-full  rounded-xl" />
   ) : (
-    <Card className="p-4 h-60 md:w-96">
+    <Card className="p-4 h-60 w-full ">
       <div className="gap-2 h-full flex flex-col">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center max-w-[75%] gap-2 ">
