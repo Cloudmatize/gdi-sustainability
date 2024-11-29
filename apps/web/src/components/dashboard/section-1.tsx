@@ -4,6 +4,7 @@ import {
   CarFront,
   House,
   LineChart,
+  PercentSquare,
   Scale
 } from "lucide-react";
 
@@ -68,13 +69,40 @@ export default function DashboardSection1() {
     transportsCo2EmissionPreviusYear?.totalCO2Emission || 0,
     transportsCo2Emission?.totalCO2Emission || 0
   );
-
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
 
-  function formatBuildingsFloorAreasBySector(data?: any) {
+  function formatBuildingsFloorAreasBySector(
+    data:
+      | {
+          residential: {
+            area: number;
+            count: number;
+            co2Emission: number;
+            percentage: number;
+          };
+          notResidential: {
+            area: number;
+            count: number;
+            co2Emission: number;
+            percentage: number;
+          };
+          total: {
+            area: number;
+            count: number;
+            co2Emission: number;
+          };
+        }
+      | undefined
+  ) {
     if (!data) return {};
     const residentialMetrics = {
+      areaPercentage: Number(
+        ((data.residential.area / data.total.area) * 100).toFixed(1)
+      ),
+      totalCo2EmissionPercentage: Number(
+        (data.residential.percentage * 100).toFixed(1)
+      ),
       tCO2PerBuilding: (
         data.residential.co2Emission / data.residential.count
       ).toFixed(2),
@@ -85,6 +113,12 @@ export default function DashboardSection1() {
     };
 
     const nonResidentialMetrics = {
+      areaPercentage: Number(
+        ((data.notResidential.area / data.total.area) * 100).toFixed(1)
+      ),
+      totalCo2EmissionPercentage: Number(
+        (data.notResidential.percentage * 100).toFixed(1)
+      ),
       tCO2PerBuilding: (
         data.notResidential.co2Emission / data.notResidential.count
       ).toFixed(2),
@@ -280,6 +314,129 @@ export default function DashboardSection1() {
             </Card>)
         )}
       </div>
+
+      {/* Variation Card */}
+      {isLoadingTransportsCo2Emission ||
+      isLoadingTransportsCo2EmissionPreviousYear ? (
+        <Skeleton className="h-[270px]" />
+      ) : (
+        <Card className="border-teal-400/20">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">
+              Comparação emissões transporte (tCO2e)
+            </CardTitle>
+            <LineChart size={32} className="text-teal-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm text-start w-64 font-medium text-muted-foreground mb-4">
+              Emissões totais {transportsComparissonInfo?.trend}{" "}
+              <span className="text-teal-400 font-bold text-lg">
+                {transportsComparissonInfo?.formattedPercentageChange}%
+              </span>{" "}
+              em relação ao ano anterior
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between mt-10">
+                <span className="text-sm text-muted-foreground">2022</span>
+                <span className="text-lg font-medium text-teal-400">
+                  {" "}
+                  {Math.trunc(
+                    transportsCo2EmissionPreviusYear?.totalCO2Emission || 0
+                  ).toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between mt-10">
+                <span className="text-sm text-muted-foreground">2023</span>
+                <span className="text-lg font-medium text-teal-400">
+                  {Math.trunc(
+                    transportsCo2Emission?.totalCO2Emission || 0
+                  ).toLocaleString()}
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Metrics Per Building Card */}
+      {isLoadingBuildingsInfo ? (
+        <Skeleton className="h-[270px]" />
+      ) : (
+        <Card className="border-teal-400/20">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">
+              Métricas por edifício residencial
+            </CardTitle>
+            <PercentSquare size={32} className="text-teal-400" />
+          </CardHeader>
+          <CardContent>
+            <CardDescription className="mb-2">
+              Os edifícios residenciais possuem{" "}
+              {formattedBuildingsInfo.residential?.areaPercentage}% da área
+              total e contribuem com{" "}
+              {formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}%
+              das emissões
+            </CardDescription>
+            <div className="space-y-4">
+              <div>
+                <div className="text-2xl font-bold text-teal-400">
+                  {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  tCO₂/edifício
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-teal-400">
+                  {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
+                </div>
+                <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {isLoadingBuildingsInfo ? (
+        <Skeleton className="h-[270px]" />
+      ) : (
+        <Card className="border-teal-400/20">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">
+              Métricas por edifício não residencial
+            </CardTitle>
+            <PercentSquare size={32} className="text-teal-400" />
+          </CardHeader>
+          <CardContent>
+            <CardDescription className="mb-2">
+              Os edifícios não residenciais possuem{" "}
+              {formattedBuildingsInfo.nonResidential?.areaPercentage}% da área
+              total e contribuem com{" "}
+              {
+                formattedBuildingsInfo.nonResidential
+                  ?.totalCo2EmissionPercentage
+              }
+              % das emissões
+            </CardDescription>
+            <div className="space-y-4">
+              <div>
+                <div className="text-2xl font-bold text-teal-400">
+                  {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  tCO₂/edifício
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-teal-400">
+                  {formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter}
+                </div>
+                <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

@@ -12,21 +12,16 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 
-import { mappedTravelMode } from "@/constants/transports";
+import {
+  mappedTravelMode,
+  passengersPerTripMapping,
+} from "@/constants/transports";
 import { useTargetsStore } from "@/store/targets";
 import { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { RotateCcw, TrendingDown, TrendingUp } from "lucide-react";
 import ModalSimulator from "./modal-simulator";
-
-const passengersPerTripMapping: { [key: string]: number } = {
-  AUTOMOBILE: 1.5,
-  BUS: 40,
-  MOTORCYCLE: 1,
-  RAIL: 1000,
-  "ON FOOT": 1,
-  CYCLING: 1,
-};
+import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 
 interface TransportModeReal {
   mode: string;
@@ -68,18 +63,6 @@ type Transfer = {
   fromMode: string;
   distributions: Distribution[];
 };
-
-function calculateEmissionsForSingleMode(
-  data: TransportModeReal,
-  passengersPerTripData: { [key: string]: number }
-): number {
-  if (data.trips <= 0 || passengersPerTripMapping[data.mode] <= 0) {
-    return 0;
-  }
-  const totalPassengers = data.trips * passengersPerTripData[data.mode];
-  const emissionsInKg = data.co2Emissions * 1000;
-  return totalPassengers > 0 ? Math.max(emissionsInKg / totalPassengers, 0) : 0;
-}
 
 const transformData = (
   data: TransportModeReal[],
@@ -150,13 +133,13 @@ function simulateTransfers(
       fromMode.emissionsPerPassenger =
         fromMode.baseTrips > 0
           ? (fromMode.totalEmissions * 1000) /
-          (fromMode.baseTrips * fromMode.passengersPerTrip)
+            (fromMode.baseTrips * fromMode.passengersPerTrip)
           : 0;
 
       toMode.emissionsPerPassenger =
         toMode.baseTrips > 0
           ? (toMode.totalEmissions * 1000) /
-          (toMode.baseTrips * toMode.passengersPerTrip)
+            (toMode.baseTrips * toMode.passengersPerTrip)
           : 0;
 
       fromMode.transferLogs?.push({
@@ -304,9 +287,13 @@ export default function GoalTrackerTable({ data }: Props) {
                 hasDistributionToMode || hasTransferFromMode;
 
               const totalCo2VariationColor =
-                totalCo2Variation > 0 ? "text-red-500" : "text-primary-foreground";
+                totalCo2Variation > 0
+                  ? "text-red-500"
+                  : "text-primary-foreground";
               const percentageVariationColor =
-                percentageVariation < 0 ? "text-primary-foreground" : "text-red-500";
+                percentageVariation < 0
+                  ? "text-primary-foreground"
+                  : "text-red-500";
               return (
                 <TableRow className="w-full" key={`${mode.id}-${index}`}>
                   <TableCell>
@@ -368,19 +355,18 @@ export default function GoalTrackerTable({ data }: Props) {
                     <div className="flex items-center justify-end ">
                       {mode.passengersPerTrip !==
                         passengersPerTripMapping[mode.id] && (
-                          // biome-ignore lint/a11y/useButtonType: <explanation>
-                          <button
-                            onClick={() =>
-                              handlePassengerChange(
-                                mode.id,
-                                passengersPerTripMapping[mode.id]
-                              )
-                            }
-                            className="mr-3 text-gray-500 hover:text-gray-700  "
-                          >
-                            <RotateCcw className="ml-1 h-3 w-3" />
-                          </button>
-                        )}
+                        <button
+                          onClick={() =>
+                            handlePassengerChange(
+                              mode.id,
+                              passengersPerTripMapping[mode.id]
+                            )
+                          }
+                          className="mr-3 text-gray-500 hover:text-gray-700  "
+                        >
+                          <RotateCcw className="ml-1 h-3 w-3" />
+                        </button>
+                      )}
                       <Input
                         type="text"
                         pattern="\d*"

@@ -12,3 +12,14 @@ export const mappedTravelMode: {
   CYCLING: "Ciclismo",
   PLANE: "Avião",
 };
+
+
+
+export const passengersPerTripMapping: { [key: string]: number } = {
+  AUTOMOBILE: 1.5,
+  BUS: 40,
+  MOTORCYCLE: 1,
+  RAIL: 1000,
+  "ON FOOT": 1,
+  CYCLING: 1,
+};
