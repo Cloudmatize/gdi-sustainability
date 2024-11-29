@@ -1,7 +1,10 @@
-
-import { useTransportCO2EmissionByYear } from '@/hooks/transports';
-import { calculateCityEmissionTargets } from '@/services/transports/graphql';
-import TargetAdherenceCard from '../targets/target-adherence-card';
+import { useTransportCO2EmissionByYear } from "@/hooks/transports";
+import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import TargetAdherenceCard from "../targets/target-adherence-card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Link, TreePine } from "lucide-react";
+import CardIcons from "../ui/card-icons";
+import { Skeleton } from "../ui/skeleton";
 
 const transformData = (
   data: {
@@ -39,7 +42,7 @@ const transformData = (
   return formattedData;
 };
 
-export default function DashboardSection12() {
+export default function TargetAdherenceSection() {
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
     useTransportCO2EmissionByYear({});
   const lastYearCo2Emission =
@@ -50,19 +53,19 @@ export default function DashboardSection12() {
   const targetCo2EmissionsFinalYear =
     transformDataTest?.[transformDataTest.length - 1];
   return (
-    <div className="space-y-6">
-      {/* <h2 className="text-2xl font-bold">Metas</h2> */}
-
-      <div className="gap-6 flex flex-col lg:flex-row w-full justify-between">
+    <div className="w-full h-full">
+      {loadingCo2EmissionByYear ? (
+        <Skeleton className="h-[200px]" />
+      ) : (
         <TargetAdherenceCard
           targetYear={2030}
           baseEmissions={lastYearCo2Emission || 0}
-          targetEmissions={
-            targetCo2EmissionsFinalYear.targetCo2Emission || 0
-          }
+          targetEmissions={targetCo2EmissionsFinalYear.targetCo2Emission || 0}
         />
-        <div className='w-full flex justify-end'>
-          {/* <Card className='w-fit h-fit'>
+      )}
+
+      {/* <div className='w-full flex justify-end'>
+          <Card className='w-fit h-fit'>
             <CardHeader>
               <CardTitle>Mapas</CardTitle>
             </CardHeader>
@@ -75,10 +78,8 @@ export default function DashboardSection12() {
               </Link>
 
             </CardContent>
-          </Card> */}
-        </div>
-      </div>
+          </Card>
+        </div> */}
     </div>
-
-  )
+  );
 }

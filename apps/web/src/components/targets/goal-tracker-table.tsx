@@ -72,7 +72,7 @@ const transformData = (
     return {
       id: item.mode,
       name: item.mode,
-      icon: getIconByTransportMode(item.mode),
+      icon: getIconByTransportMode(item.mode, true),
       baseTrips: item.trips,
       tripPercentage: 0,
       passengersPerTrip: passengersPerTripData[item.mode] || 1,
@@ -328,7 +328,8 @@ export default function GoalTrackerTable({ data }: Props) {
                               <span>{"->"}</span>
                               <span>
                                 {getIconByTransportMode(
-                                  log?.from as TravelMode
+                                  log?.from as TravelMode,
+                                  true
                                 )}
                               </span>
                               <span>{`${log.trips.toLocaleString()}`}</span>
@@ -342,7 +343,10 @@ export default function GoalTrackerTable({ data }: Props) {
                           >
                             <span>{"->"}</span>
                             <span>
-                              {getIconByTransportMode(log?.to as TravelMode)}
+                              {getIconByTransportMode(
+                                log?.to as TravelMode,
+                                true
+                              )}
                             </span>
 
                             <span>{`${log.trips.toLocaleString()} (${log.percentage}%)`}</span>
