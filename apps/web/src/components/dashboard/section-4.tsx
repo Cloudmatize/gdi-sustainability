@@ -71,7 +71,6 @@ export default function DashboardSection4() {
   const efficiencyComparison = energyIntensitiesBySector
     ? compareEfficiency(energyIntensitiesBySector)
     : null;
-  console.log("efficiencyComparison", efficiencyComparison);
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Emissões por Fonte de Energia</h2>

@@ -1,5 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mappedTravelMode } from "@/constants/transports";
+import {
+  mappedTravelMode,
+  passengersPerTripMapping,
+} from "@/constants/transports";
 import { useDashboardCO2EmissionByModal } from "@/hooks/dashboard";
 import { TravelMode } from "@/types/transports";
 import { BikeIcon, Bus, Car } from "lucide-react";
@@ -13,24 +16,35 @@ import {
 import { ModalEmissionAnalysisCard } from "../transports/sections/co2-per-transports";
 import { Fragment } from "react";
 import CardIcons from "../ui/card-icons";
+import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 
-const firstYear = new Date().getFullYear() - 1;
-const secondYear = new Date().getFullYear() - 2;
+const firstYear = new Date().getFullYear() - 2;
+const secondYear = new Date().getFullYear() - 1;
 
 type Co2ComparissonCardProps = {
   mode: string;
   firstYear: {
     year: number;
     co2Emissions: number;
-    emissionsPerPassenger: number;
   };
   secondYear: {
     year: number;
     co2Emissions: number;
+  };
+  description: string;
+};
+
+type Co2EmissionPerPassengerComparissonCardProps = {
+  mode: string;
+  firstYear: {
+    year: number;
     emissionsPerPassenger: number;
   };
-  differenceTotalCo2EmissionPercentageDescription: string;
-  differencePercentageEmissionPerPassengerDescription: string;
+  secondYear: {
+    year: number;
+    emissionsPerPassenger: number;
+  };
+  description: string;
 };
 
 type SectorData = {
@@ -106,13 +120,15 @@ function Co2EmissionComparissonCard(emission: Co2ComparissonCardProps) {
           </div>
         </div>
         <div className="mt-4 text-center text-sm text-muted-foreground">
-          {emission.differenceTotalCo2EmissionPercentageDescription}
+          {emission.description}
         </div>
       </CardContent>
     </Card>
   );
 }
-function EmissionPerPassengerCard(emission: Co2ComparissonCardProps) {
+function EmissionPerPassengerCard(
+  emission: Co2EmissionPerPassengerComparissonCardProps
+) {
   return (
     <Card className="border-teal-400/20">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -137,8 +153,8 @@ function EmissionPerPassengerCard(emission: Co2ComparissonCardProps) {
             <div className="text-sm text-muted-foreground">{secondYear}</div>
           </div>
         </div>
-        <div className="text-sm text-muted-foreground">
-          {emission.differencePercentageEmissionPerPassengerDescription}
+        <div className="text-sm text-muted-foreground text-center">
+          {emission.description}
         </div>
       </CardContent>
     </Card>
@@ -161,83 +177,106 @@ export default function DashboardSection2() {
 
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
-
-  const co2EmissionsByModals: {
-    mode: string;
-    firstYear: {
-      year: number;
-      co2Emissions: number;
-      emissionsPerPassenger: number;
-    };
-    secondYear: {
-      year: number;
-      co2Emissions: number;
-      emissionsPerPassenger: number;
-    };
-    differenceTotalCo2EmissionPercentageDescription: string;
-    differencePercentageEmissionPerPassengerDescription: string;
-  }[] =
+  const co2EmissionsByModals: Co2ComparissonCardProps[] =
     co2EmissionByModalFirstYear?.map((firstYearData) => {
       const secondYearData = co2EmissionByModalSecondYear?.find(
         (item) => item.mode === firstYearData.mode
       );
 
-      const emissionsPerPassengerFirstYear = firstYearData.trips
-        ? firstYearData.co2Emissions / firstYearData.trips
-        : 0;
-
-      const emissionsPerPassengerSecondYear = secondYearData?.trips
-        ? secondYearData.co2Emissions / secondYearData.trips
-        : 0;
-
       const differenceTotalCo2EmissionPercentage = secondYearData
-        ? ((firstYearData.co2Emissions - secondYearData.co2Emissions) /
-            secondYearData.co2Emissions) *
+        ? ((secondYearData.co2Emissions - firstYearData.co2Emissions) /
+            firstYearData.co2Emissions) *
           100
         : null;
 
-      const differenceEmissionPerPassengerPercentage =
-        emissionsPerPassengerSecondYear > 0
-          ? ((emissionsPerPassengerFirstYear -
-              emissionsPerPassengerSecondYear) /
-              emissionsPerPassengerSecondYear) *
-            100
-          : null;
-
-      const differenceTotalCo2EmissionPercentageDescription =
-        differenceTotalCo2EmissionPercentage
-          ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${
-              differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
-            } que o ano anterior`
-          : "Sem dados para comparação";
-
-      const differencePercentageEmissionPerPassengerDescription =
-        differenceEmissionPerPassengerPercentage !== null
-          ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${
-              differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
-            } que o ano anterior`
-          : "Sem dados para comparação";
+      const description = differenceTotalCo2EmissionPercentage
+        ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${
+            differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
+          } que o ano anterior`
+        : "Sem dados para comparação";
 
       return {
         mode: firstYearData?.mode,
         firstYear: {
           year: firstYear,
           co2Emissions: Math.trunc(firstYearData.co2Emissions),
-          emissionsPerPassenger: parseFloat(
-            emissionsPerPassengerFirstYear.toFixed(5)
-          ),
         },
         secondYear: {
           year: secondYear,
           co2Emissions: secondYearData
             ? Math.trunc(secondYearData?.co2Emissions)
             : 0,
-          emissionsPerPassenger: secondYearData
-            ? parseFloat(emissionsPerPassengerSecondYear.toFixed(5))
+        },
+        description,
+      };
+    }) || [];
+
+  const co2EmissionsByModalsEmissionsByPassenger: {
+    mode: string;
+    firstYear: {
+      year: number;
+      emissionsPerPassenger: number;
+    };
+    secondYear: {
+      year: number;
+      emissionsPerPassenger: number;
+    };
+
+    description: string;
+  }[] =
+    co2EmissionByModalFirstYear?.map((firstYearData) => {
+      const secondYearData = co2EmissionByModalSecondYear?.find(
+        (item) => item.mode === firstYearData.mode
+      );
+
+      const emissionsPerPassengerFirstYear = Number(
+        calculateEmissionsForSingleMode(
+          {
+            co2Emissions: firstYearData.co2Emissions,
+            mode: firstYearData.mode,
+            trips: firstYearData.trips,
+          },
+          passengersPerTripMapping
+        ).toFixed(2)
+      );
+      const emissionsPerPassengerSecondYear = Number(
+        calculateEmissionsForSingleMode(
+          {
+            co2Emissions: secondYearData?.co2Emissions || 0,
+            mode: firstYearData.mode,
+            trips: secondYearData?.trips || 0,
+          },
+          passengersPerTripMapping
+        ).toFixed(2)
+      );
+
+      const differenceEmissionPerPassengerPercentage =
+        emissionsPerPassengerSecondYear > 0
+          ? ((emissionsPerPassengerSecondYear -
+              emissionsPerPassengerFirstYear) /
+              emissionsPerPassengerFirstYear) *
+            100
+          : 0;
+
+      const description = differenceEmissionPerPassengerPercentage
+        ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${
+            differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
+          } que o ano anterior`
+        : "Manteve o mesmo valor";
+
+      return {
+        mode: firstYearData?.mode,
+        firstYear: {
+          year: firstYear,
+          emissionsPerPassenger: emissionsPerPassengerFirstYear,
+        },
+        secondYear: {
+          year: secondYear,
+          emissionsPerPassenger: emissionsPerPassengerSecondYear
+            ? Number(emissionsPerPassengerSecondYear.toFixed(2))
             : 0,
         },
-        differenceTotalCo2EmissionPercentageDescription,
-        differencePercentageEmissionPerPassengerDescription,
+        description,
       };
     }) || [];
 
@@ -457,7 +496,7 @@ export default function DashboardSection2() {
           ? [1, 2, 3].map((index) => (
               <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
             ))
-          : co2EmissionsByModals?.map((emission, index) => (
+          : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
               <Fragment key={`${emission.mode}-${index}`}>
                 <EmissionPerPassengerCard {...emission} />
               </Fragment>
