@@ -319,7 +319,6 @@ export default function DashboardSection2() {
       totalDeEmissaoPorTransporte: "3.52",
     },
   ];
-
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">
@@ -329,74 +328,60 @@ export default function DashboardSection2() {
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Transport Mode Cards */}
 
-        {/* LEMBRA DE PASSAR OS DADOS DA API PRO FORMATO DESSE transports */}
-
-        {/* {modalAnalysis?.modalsData?.map((modal, index) => {
-          const formattedModal = {
-            ...modal,
-            contributionStatus: modal.contributionStatus as
-              | "Redução"
-              | "Elevação",
-          };
-          return (
-            <div className="w-full" key={index}>
-              <ModalEmissionAnalysisCard
-                data={formattedModal}
-                loading={isLoadingModalAnalysis}
-              />
-            </div>
-          );
-        })} */}
-
-        {/* Adicionar loading aqui também */}
-        {transports.map((transport) => (
-          <Card className="border w-full" key={transport.id}>
-            <CardHeader>
-              <CardTitle className="gap-2 flex">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2 flex-row">
-                    <CardIcons>
-                      <transport.icon />
-                    </CardIcons>
-                    <span className="text-lg font-medium">
-                      {transport.title}
-                    </span>
-                  </div>
-                  <div className="flex gap-2 items-center md:items-end w-full h-full md:justify-items-end">
-                    <p className="text-sm font-normal text-muted-foreground flex flex-row gap-1">
-                      <div className="text-sm font-bold text-primary-foreground">
-                        {transport.totalDeEmissaoPorTransporte}%
+        {isLoadingModalAnalysis
+          ? [1, 2, 3].map((index) => (
+              <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
+            ))
+          : modalAnalysis?.modalsData?.map((transport, index) => (
+              <Card className="border w-full" key={index}>
+                <CardHeader>
+                  <CardTitle className="gap-2 flex">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2 flex-row">
+                        <CardIcons>
+                          {getIconByTransportMode(transport?.mode) as any}
+                        </CardIcons>
+                        <span className="text-lg font-medium">
+                          {mappedTravelMode[transport.mode as TravelMode]}
+                        </span>
                       </div>
-                      do total de transportes
-                    </p>
-                  </div>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
-              <div className="flex items-end justify-between w-full h-full gap-2">
-                <div className="space-y-1 w-full h-full gap-4">
-                  <p className="text-sm text-muted-foreground text-wrap">
-                    {transport.positive ? "Redução" : "Aumento"} anual médio nas
-                    emissões
-                  </p>
-                  <div className="flex items-center flex-row gap-2 w-full">
-                    {transport.positive ? (
-                      <MdTrendingDown className="text-primary-foreground fill-teal-400 text-xl" />
-                    ) : (
-                      <MdTrendingUp className="text-destructive-foreground fill-destructive-foreground text-xl" />
-                    )}
-                    <div
-                      className={`${transport.positive ? "text-primary-foreground" : "text-destructive-foreground"} text-2xl font-medium`}
-                    >
-                      {transport.ajusteAnual}%
+                      <div className="flex gap-2 items-center md:items-end w-full h-full md:justify-items-end">
+                        <p className="text-sm font-normal text-muted-foreground flex flex-row gap-1">
+                          <div className="text-sm font-bold text-primary-foreground">
+                            {transport.percentageContribution}%
+                          </div>
+                          do total de transportes
+                        </p>
+                      </div>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
+                  <div className="flex items-end justify-between w-full h-full gap-2">
+                    <div className="space-y-1 w-full h-full gap-4">
+                      <p className="text-sm text-muted-foreground text-wrap">
+                        {transport.contributionStatus === "Redução"
+                          ? "Redução"
+                          : "Aumento"}{" "}
+                        anual médio nas emissões
+                      </p>
+                      <div className="flex items-center flex-row gap-2 w-full">
+                        {transport.contributionStatus === "Redução" ? (
+                          <MdTrendingDown className="text-primary-foreground fill-teal-400 text-xl" />
+                        ) : (
+                          <MdTrendingUp className="text-destructive-foreground fill-destructive-foreground text-xl" />
+                        )}
+                        <div
+                          className={`${transport.contributionStatus === "Redução" ? "text-primary-foreground" : "text-destructive-foreground"} text-2xl font-medium`}
+                        >
+                          {transport.avgPercentageYearly}%
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                </CardContent>
+              </Card>
+            ))}
       </div>
 
       {/* <h2 className="text-2xl font-bold">Maiores altas e quedas</h2> */}
