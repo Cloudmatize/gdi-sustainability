@@ -1,18 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { mappedTravelMode } from "@/constants/transports";
 import { useDashboardCO2EmissionByModal } from "@/hooks/dashboard";
-import { TravelMode } from "@/types/transports";
-import { BikeIcon, Bus, Car } from "lucide-react";
-import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
-import { Skeleton } from "../ui/skeleton";
-import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
 } from "@/hooks/transports";
-import { ModalEmissionAnalysisCard } from "../transports/sections/co2-per-transports";
+import type { TravelMode } from "@/types/transports";
+import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
+import { BikeIcon, Bus, Car } from "lucide-react";
 import { Fragment } from "react";
+import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 import CardIcons from "../ui/card-icons";
+import { Skeleton } from "../ui/skeleton";
 
 const firstYear = new Date().getFullYear() - 1;
 const secondYear = new Date().getFullYear() - 2;
@@ -44,8 +43,8 @@ function calculateSectorChanges(data: SectorData[]): {
 } {
   if (!data.length)
     return {
-      highestIncrease: { sector: "", percentageChange: -Infinity },
-      highestReduction: { sector: "", percentageChange: Infinity },
+      highestIncrease: { sector: "", percentageChange: Number.NEGATIVE_INFINITY },
+      highestReduction: { sector: "", percentageChange: Number.POSITIVE_INFINITY },
     };
   const year2022 = data.find((item) => item.year === "2022");
   const year2023 = data.find((item) => item.year === "2023");
@@ -54,8 +53,8 @@ function calculateSectorChanges(data: SectorData[]): {
     throw new Error("Data for both years must be provided.");
   }
 
-  let highestIncrease = { sector: "", percentageChange: -Infinity };
-  let highestReduction = { sector: "", percentageChange: Infinity };
+  let highestIncrease = { sector: "", percentageChange: Number.NEGATIVE_INFINITY };
+  let highestReduction = { sector: "", percentageChange: Number.POSITIVE_INFINITY };
 
   for (const sector in year2022) {
     if (sector !== "year") {
@@ -192,30 +191,28 @@ export default function DashboardSection2() {
 
       const differenceTotalCo2EmissionPercentage = secondYearData
         ? ((firstYearData.co2Emissions - secondYearData.co2Emissions) /
-            secondYearData.co2Emissions) *
-          100
+          secondYearData.co2Emissions) *
+        100
         : null;
 
       const differenceEmissionPerPassengerPercentage =
         emissionsPerPassengerSecondYear > 0
           ? ((emissionsPerPassengerFirstYear -
-              emissionsPerPassengerSecondYear) /
-              emissionsPerPassengerSecondYear) *
-            100
+            emissionsPerPassengerSecondYear) /
+            emissionsPerPassengerSecondYear) *
+          100
           : null;
 
       const differenceTotalCo2EmissionPercentageDescription =
         differenceTotalCo2EmissionPercentage
-          ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${
-              differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
-            } que o ano anterior`
+          ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
+          } que o ano anterior`
           : "Sem dados para comparação";
 
       const differencePercentageEmissionPerPassengerDescription =
         differenceEmissionPerPassengerPercentage !== null
-          ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${
-              differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
-            } que o ano anterior`
+          ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
+          } que o ano anterior`
           : "Sem dados para comparação";
 
       return {
@@ -223,7 +220,7 @@ export default function DashboardSection2() {
         firstYear: {
           year: firstYear,
           co2Emissions: Math.trunc(firstYearData.co2Emissions),
-          emissionsPerPassenger: parseFloat(
+          emissionsPerPassenger: Number.parseFloat(
             emissionsPerPassengerFirstYear.toFixed(5)
           ),
         },
@@ -233,7 +230,7 @@ export default function DashboardSection2() {
             ? Math.trunc(secondYearData?.co2Emissions)
             : 0,
           emissionsPerPassenger: secondYearData
-            ? parseFloat(emissionsPerPassengerSecondYear.toFixed(5))
+            ? Number.parseFloat(emissionsPerPassengerSecondYear.toFixed(5))
             : 0,
         },
         differenceTotalCo2EmissionPercentageDescription,
@@ -252,6 +249,7 @@ export default function DashboardSection2() {
   });
 
   const comparissonSectorData = calculateSectorChanges(
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     (co2EmissionByYearAndModal?.data as any) || []
   );
   const transports = [
@@ -386,7 +384,7 @@ export default function DashboardSection2() {
                     </span>
                   </div>
                   <div
-                    className={` text-rose-500 font-medium flex items-center gap-2`}
+                    className={" text-rose-500 font-medium flex items-center gap-2"}
                   >
                     <MdTrendingUp />{" "}
                     {comparissonSectorData?.highestIncrease?.percentageChange.toFixed(
@@ -421,7 +419,7 @@ export default function DashboardSection2() {
                     </span>
                   </div>
                   <div
-                    className={`text-teal-500  font-medium flex items-center gap-2`}
+                    className={"text-teal-500  font-medium flex items-center gap-2"}
                   >
                     <MdTrendingDown />
                     {comparissonSectorData?.highestReduction?.percentageChange.toFixed(
@@ -440,28 +438,28 @@ export default function DashboardSection2() {
       {/* Emission Comparison Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoadingCo2EmissionByModalFirstYear ||
-        isLoadingCo2EmissionByModalSecondYear
+          isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
-              <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
-            ))
+            <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
+          ))
           : co2EmissionsByModals?.map((emission, index) => (
-              <Fragment key={`${emission.mode}-${index}`}>
-                <Co2EmissionComparissonCard {...emission} />
-              </Fragment>
-            ))}
+            <Fragment key={`${emission.mode}-${index}`}>
+              <Co2EmissionComparissonCard {...emission} />
+            </Fragment>
+          ))}
       </div>
       {/* Emission Per Passenger Card */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
-        isLoadingCo2EmissionByModalSecondYear
+          isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
-              <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
-            ))
+            <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
+          ))
           : co2EmissionsByModals?.map((emission, index) => (
-              <Fragment key={`${emission.mode}-${index}`}>
-                <EmissionPerPassengerCard {...emission} />
-              </Fragment>
-            ))}
+            <Fragment key={`${emission.mode}-${index}`}>
+              <EmissionPerPassengerCard {...emission} />
+            </Fragment>
+          ))}
       </div>
     </div>
   );
