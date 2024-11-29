@@ -313,7 +313,6 @@ export const getTransportsCO2EmissionByYearAndModal = async ({
       { queryName: "getCO2EmissionByYearAndModalQuery" }
     );
 
-    console.log("query by year and modal", query, "data", data);
 
     if (data) {
       const uniqueYears = Array.from(
