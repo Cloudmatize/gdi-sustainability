@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,13 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useEffect, useState } from "react";
 
-import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
-import { useTargetsStore } from "@/store/targets";
-import { TrendingDown, TrendingUp, RotateCcw } from "lucide-react";
-import ModalSimulator from "./modal-simulator";
 import { mappedTravelMode } from "@/constants/transports";
+import { useTargetsStore } from "@/store/targets";
 import { TravelMode } from "@/types/transports";
+import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
+import { RotateCcw, TrendingDown, TrendingUp } from "lucide-react";
+import ModalSimulator from "./modal-simulator";
 
 const passengersPerTripMapping: { [key: string]: number } = {
   AUTOMOBILE: 1.5,
@@ -150,13 +150,13 @@ function simulateTransfers(
       fromMode.emissionsPerPassenger =
         fromMode.baseTrips > 0
           ? (fromMode.totalEmissions * 1000) /
-            (fromMode.baseTrips * fromMode.passengersPerTrip)
+          (fromMode.baseTrips * fromMode.passengersPerTrip)
           : 0;
 
       toMode.emissionsPerPassenger =
         toMode.baseTrips > 0
           ? (toMode.totalEmissions * 1000) /
-            (toMode.baseTrips * toMode.passengersPerTrip)
+          (toMode.baseTrips * toMode.passengersPerTrip)
           : 0;
 
       fromMode.transferLogs?.push({
@@ -304,9 +304,9 @@ export default function GoalTrackerTable({ data }: Props) {
                 hasDistributionToMode || hasTransferFromMode;
 
               const totalCo2VariationColor =
-                totalCo2Variation > 0 ? "text-red-500" : "text-teal-500";
+                totalCo2Variation > 0 ? "text-red-500" : "text-primary-foreground";
               const percentageVariationColor =
-                percentageVariation < 0 ? "text-teal-500" : "text-red-500";
+                percentageVariation < 0 ? "text-primary-foreground" : "text-red-500";
               return (
                 <TableRow className="w-full" key={`${mode.id}-${index}`}>
                   <TableCell>
@@ -325,7 +325,7 @@ export default function GoalTrackerTable({ data }: Props) {
                         {showBaseTrips && (
                           <>
                             {"->"}
-                            <span className="text-teal-500 font-bold">
+                            <span className="text-primary-foreground font-bold">
                               {baseTrips}
                             </span>
                           </>
@@ -368,18 +368,18 @@ export default function GoalTrackerTable({ data }: Props) {
                     <div className="flex items-center justify-end ">
                       {mode.passengersPerTrip !==
                         passengersPerTripMapping[mode.id] && (
-                        <button
-                          onClick={() =>
-                            handlePassengerChange(
-                              mode.id,
-                              passengersPerTripMapping[mode.id]
-                            )
-                          }
-                          className="mr-3 text-gray-500 hover:text-gray-700  "
-                        >
-                          <RotateCcw className="ml-1 h-3 w-3" />
-                        </button>
-                      )}
+                          <button
+                            onClick={() =>
+                              handlePassengerChange(
+                                mode.id,
+                                passengersPerTripMapping[mode.id]
+                              )
+                            }
+                            className="mr-3 text-gray-500 hover:text-gray-700  "
+                          >
+                            <RotateCcw className="ml-1 h-3 w-3" />
+                          </button>
+                        )}
                       <Input
                         type="text"
                         pattern="\d*"
@@ -404,7 +404,7 @@ export default function GoalTrackerTable({ data }: Props) {
                       {showTotalEmissions && !!totalEmissions && (
                         <>
                           {"->"}
-                          <span className="text-teal-500 font-bold">
+                          <span className="text-primary-foreground font-bold">
                             {totalEmissions.toLocaleString()}
                           </span>
                         </>
@@ -420,9 +420,9 @@ export default function GoalTrackerTable({ data }: Props) {
 
                           <span className="flex gap-1 items-center">
                             {percentageVariation > 0 ? (
-                              <TrendingUp className="h-4 w-4 text-red-400  " />
+                              <TrendingUp className="h-4 w-4 text-destructive-foreground  " />
                             ) : (
-                              <TrendingDown className="h-4 w-4 text-teal-500 " />
+                              <TrendingDown className="h-4 w-4 text-primary-foreground " />
                             )}
                             <div className={`${percentageVariationColor}`}>
                               ({percentageVariation.toFixed(1)}

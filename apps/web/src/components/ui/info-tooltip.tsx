@@ -1,5 +1,3 @@
-import React from "react";
-import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -7,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface InfoTooltipProps {
   content: string;
@@ -22,7 +21,7 @@ export default function InfoTooltip({
   return (
     <TooltipProvider>
       <Tooltip delayDuration={0} >
-        <TooltipTrigger  asChild>
+        <TooltipTrigger asChild>
           <Button
             variant="ghost"
             size="icon"
@@ -33,7 +32,7 @@ export default function InfoTooltip({
             />
           </Button>
         </TooltipTrigger>
-        <TooltipContent className="bg-white text-slate-700 p-5 border">
+        <TooltipContent className="bg-white text-foreground p-5 border">
           <p className="max-w-sm text-base"> {content}</p>
         </TooltipContent>
       </Tooltip>

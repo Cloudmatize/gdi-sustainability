@@ -52,6 +52,7 @@ function compareEfficiency(data: EnergyData[]): {
     differenceFactor,
   };
 }
+import CardIcons from "../ui/card-icons"
 
 export default function DashboardSection4() {
   const {

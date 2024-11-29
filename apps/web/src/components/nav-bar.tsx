@@ -1,17 +1,18 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import federatedLogout from "@/utils/auth/federated-logout";
 import {
   Building2,
   Goal,
+  LayoutDashboard,
   Leaf,
   LogOut,
   Truck,
   User,
-  LayoutDashboard,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +20,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import federatedLogout from "@/utils/auth/federated-logout";
 
 interface NavItem {
   title: string;
@@ -57,7 +57,7 @@ export default function NavBar() {
         <div className=" flex h-16 items-center gap-4 px-4">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/">
-              <Leaf className="h-5 w-5 text-teal-500" />
+              <Leaf className="h-5 w-5 text-primary-foreground" />
               <span className="sr-only">Home</span>
             </Link>
           </Button>
@@ -66,11 +66,10 @@ export default function NavBar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-teal-500 ${
-                  item.title === "Building Emission"
-                    ? "text-teal-500"
+                className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary-foreground ${item.title === "Building Emission"
+                    ? "text-primary-foreground"
                     : "text-muted-foreground"
-                }`}
+                  }`}
               >
                 {item.icon}
                 {item.title}

@@ -18,37 +18,11 @@ export default function BuildingsPage() {
 
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
-            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-slate-800">
+            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-foreground">
               Emissões de edifícios <Building size={48} />
             </h1>
           </div>
-          {/* <div className="flex items-center gap-2">
-            <YearSelect
-              endYear={2023}
-              startYear={2018}
-              value={date}
-              onValueChange={handleYearChange}
-            />
-          </div> */}
         </div>
-
-        {/* <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4"> */}
-        {/* <Link href="#" className="absolute left-6">
-              <Button
-                variant="default"
-                className="bg-gray-100 text-slate-700 hover:text-white"
-                size="icon"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link> */}
-
-        {/* <h1 className="flex items-center gap-2 text-3xl font-bold text-slate-800">
-              Emissões de edifícios <Building className="h-7 w-7 ml-1 mt-0.5" />
-            </h1>
-          </div>
-        </div> */}
 
         {/* Description */}
         <p className="text-muted-foreground max-w-lg">

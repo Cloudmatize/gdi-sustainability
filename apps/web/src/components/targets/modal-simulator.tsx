@@ -2,24 +2,24 @@
 
 import { CardContent } from "@/components/ui/card";
 import { useTargetsStore } from "@/store/targets";
-import { ArrowDown, Target, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Target } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
 
 export default function ModalSimulator() {
   const {
     totalCo2Emission: { original, percentage, simulated },
   } = useTargetsStore();
-  const percentageColor = percentage > 0 ? "text-teal-500" : "text-red-500";
+  const percentageColor = percentage > 0 ? "text-primary-foreground" : "text-red-500";
   return (
     <div className="w-full border-b  border-gray-200">
       <CardContent className=" space-y-4 flex  items-center">
         <div className=" flex gap-12 items-center justify-center  w-full text-xl">
           <div className="flex items-center space-x-2">
             <div className=" w-10">
-              <MdCo2 size={40} className="text-slate-700" />
+              <MdCo2 size={40} className="text-foreground" />
             </div>
             <div className="flex-col flex items-center">
-              <span className="font-semibold text-slate-700">
+              <span className="font-semibold text-foreground">
                 {original.toLocaleString()} tCo2
               </span>
               <span className="text-sm text-muted-foreground ">
@@ -46,10 +46,10 @@ export default function ModalSimulator() {
           </div>
           <div className="flex items-center space-x-2 ">
             <div className=" w-10">
-              <Target className="text-slate-700" />
+              <Target className="text-foreground" />
             </div>
             <div className="flex-col flex items-center ">
-              <span className="font-semibold text-slate-700">
+              <span className="font-semibold text-foreground">
                 {simulated.toLocaleString()} tCo2
               </span>
               <span className="text-sm text-muted-foreground ">

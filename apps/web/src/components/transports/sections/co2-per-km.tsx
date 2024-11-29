@@ -1,17 +1,17 @@
 "use client";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
+import { useTransportsStore } from "@/store/transports";
 import {
   Bar,
   BarChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
 } from "recharts";
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
-import { useTransportsStore } from "@/store/transports";
 
 const CustomTooltip = ({
   active,
@@ -32,7 +32,7 @@ const CustomTooltip = ({
               className="w-[14px] h-[14px] rounded-xs"
               style={{ backgroundColor: item.color }}
             />
-            <span className="text-slate-800 font-bold  w-24 text-center">
+            <span className="text-foreground font-bold  w-24 text-center">
               {label}
             </span>
           </div>
@@ -53,7 +53,7 @@ export default function Co2EmissionPerKilometer() {
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold mb-2 text-slate-700">
+        <h2 className="text-2xl font-semibold mb-2 text-foreground">
           Média de CO₂ emitido por KM por tipo de transporte
         </h2>
         <p className="text-muted-foreground max-w-lg">
@@ -72,7 +72,7 @@ export default function Co2EmissionPerKilometer() {
         <Skeleton className="h-[450px]" />
       ) : (
         <Card className="p-6">
-          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+          <h3 className="font-semibold text-foreground text-sm mb-6">
             Emsisão CO₂ (kgCO2e/km)
           </h3>
 
@@ -81,7 +81,7 @@ export default function Co2EmissionPerKilometer() {
               <BarChart
                 data={data}
                 layout="vertical"
-                margin={{ top: 20, bottom:30, left: 50, right: 30}}
+                margin={{ top: 20, bottom: 30, left: 50, right: 30 }}
               >
                 <XAxis
                   type="number"

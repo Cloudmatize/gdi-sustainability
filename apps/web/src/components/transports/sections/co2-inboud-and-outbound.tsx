@@ -45,7 +45,7 @@ const CustomTooltip = ({
                   className="w-[14px] h-[14px] rounded-xs"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-slate-800 font-bold   text-center">
+                <span className="text-foreground font-bold   text-center">
                   {mapped[item?.dataKey as string] || ""}
                 </span>
               </div>
@@ -69,7 +69,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-slate-700 text-center">{d?.value}</span>
+          <span className="text-sm text-foreground text-center">{d?.value}</span>
         </div>
       ))}
     </div>
@@ -86,7 +86,7 @@ export default function CO2InboundAndOutbound() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col md:flex-row justify-between gap-6">
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-slate-700">
+          <h2 className="text-2xl font-semibold text-foreground">
             Comparação de emissões dentro e fora dos limites geográficos
             específicos
           </h2>
@@ -108,7 +108,7 @@ export default function CO2InboundAndOutbound() {
                 <div className="text-sm text-muted-foreground">
                   Perfil do município
                 </div>
-                <div className="font-semibold text-slate-700">Municipio de entrada</div>
+                <div className="font-semibold text-foreground">Municipio de entrada</div>
                 <div className="text-sm text-muted-foreground">
                   Recebe muitos cidadãos locais
                 </div>
@@ -125,7 +125,7 @@ export default function CO2InboundAndOutbound() {
         <Skeleton className="h-[450px]" />
       ) : (
         <Card className="p-6">
-          <h3 className="font-semibold text-slate-700 text-sm mb-6">
+          <h3 className="font-semibold text-foreground text-sm mb-6">
             Emsisão CO₂ (tons)
           </h3>
           <div className="h-[400px]">
