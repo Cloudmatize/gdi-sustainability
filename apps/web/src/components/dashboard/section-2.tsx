@@ -293,32 +293,7 @@ export default function DashboardSection2() {
   const comparissonSectorData = calculateSectorChanges(
     (co2EmissionByYearAndModal?.data as any) || []
   );
-  const transports = [
-    {
-      id: 1,
-      title: "Carro",
-      ajusteAnual: "+32.1",
-      icon: Car,
-      positive: false,
-      totalDeEmissaoPorTransporte: "82.51",
-    },
-    {
-      id: 2,
-      title: "Ônibus",
-      icon: Bus,
-      ajusteAnual: "-43.71",
-      positive: true,
-      totalDeEmissaoPorTransporte: "13.97",
-    },
-    {
-      id: 3,
-      title: "Motocicleta",
-      icon: BikeIcon,
-      ajusteAnual: "-8.78",
-      positive: true,
-      totalDeEmissaoPorTransporte: "3.52",
-    },
-  ];
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">
