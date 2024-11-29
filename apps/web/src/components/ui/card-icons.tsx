@@ -1,12 +1,15 @@
 import type { LucideProps } from "lucide-react";
 import React from "react";
 interface CardIconsProps {
-  children: React.ReactElement // Expect a Lucide icon component as children
+  children: React.ReactElement
+  asChild?: boolean;
 }
 
-function CardIcons({ children }: CardIconsProps) {
+function CardIcons({ children, asChild = false }: CardIconsProps) {
   return (
-    <div className="rounded-md shadow-inner bg-primary p-2 w-fit max-w-fit">
+    <div
+      className={`${asChild ? "bg-none" : "bg-primary rounded-md shadow-inner"} p-2 w-fit max-w-fit`}
+    >
       {React.isValidElement(children) &&
         React.cloneElement(children as React.ReactElement<LucideProps>, {
           size: 20,

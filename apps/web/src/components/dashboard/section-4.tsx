@@ -5,6 +5,7 @@ import {
   useBuildingsEnergyIntensitiesBySector,
 } from "@/hooks/buildings";
 import { ArrowDownUp, Droplet, Zap } from "lucide-react";
+import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
 
 type EmissionData = {
@@ -52,7 +53,6 @@ function compareEfficiency(data: EnergyData[]): {
     differenceFactor,
   };
 }
-import CardIcons from "../ui/card-icons"
 
 export default function DashboardSection4() {
   const {
@@ -80,18 +80,20 @@ export default function DashboardSection4() {
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border-teal-400/20">
+          <Card className="border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Zap size={28} className=" text-teal-400" />
+              <CardTitle className="flex items-center gap-2">
+                <CardIcons>
+                  <Zap />
+                </CardIcons>
                 Fonte Principal de Emissões de CO₂
               </CardTitle>
             </CardHeader>
             <CardContent className="mt-2">
-              <div className="text-3xl font-bold text-teal-400">
+              <div className="text-3xl font-bold text-foreground">
                 {
                   ENERGY_FRACTIONS[
-                    highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
+                  highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }
               </div>
@@ -100,7 +102,7 @@ export default function DashboardSection4() {
                   <span className="text-sm text-muted-foreground">
                     Contribuição nas emissões dos edifícios
                   </span>
-                  <span className="font-medium text-lg text-teal-400">
+                  <span className="font-medium text-lg text-primary-foreground">
                     {((highestCO2Emission?.percentage || 0) * 100).toFixed(2)}%
                   </span>
                 </div>
@@ -108,7 +110,7 @@ export default function DashboardSection4() {
                   <span className="text-sm text-muted-foreground">
                     Total de CO₂ emitido (tCO2e)
                   </span>
-                  <span className="font-medium text-lg text-teal-400">
+                  <span className="font-medium text-lg text-primary-foreground">
                     {Math.trunc(
                       highestCO2Emission?.co2Emission || 0
                     ).toLocaleString()}
@@ -123,10 +125,10 @@ export default function DashboardSection4() {
         {isLoadingEnergyIntensitiesBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border-teal-400/20">
+          <Card className="border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center  gap-2">
-                <ArrowDownUp size={32} className=" text-teal-400" />
+              <CardTitle className="flex items-center  gap-2">
+                <ArrowDownUp size={32} className=" text-primary-foreground" />
                 Comparativo de Eficiência
               </CardTitle>
             </CardHeader>
@@ -134,8 +136,8 @@ export default function DashboardSection4() {
               <div className="text-sm text-muted-foreground">
                 {
                   ENERGY_FRACTIONS[
-                    efficiencyComparison?.lowest
-                      .name as keyof typeof ENERGY_FRACTIONS
+                  efficiencyComparison?.lowest
+                    .name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }{" "}
                 tem o menor impacto por kWh com (
@@ -144,37 +146,37 @@ export default function DashboardSection4() {
                 eficiente que{" "}
                 {
                   ENERGY_FRACTIONS[
-                    efficiencyComparison?.highest
-                      .name as keyof typeof ENERGY_FRACTIONS
+                  efficiencyComparison?.highest
+                    .name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }{" "}
                 com ({efficiencyComparison?.highest.value} kgCO₂/kWh).
               </div>
               <div className="my-2 gap-1 flex flex-col">
                 <div className="flex items-center">
-                  <p className="text-2xl font-bold text-slate-800 min-w-36">
+                  <p className="text-2xl font-bold text-foreground min-w-36">
                     {
                       ENERGY_FRACTIONS[
-                        efficiencyComparison?.lowest
-                          .name as keyof typeof ENERGY_FRACTIONS
+                      efficiencyComparison?.lowest
+                        .name as keyof typeof ENERGY_FRACTIONS
                       ]
                     }
                   </p>
-                  <div className="flex items-center gap-1 text-teal-400">
+                  <div className="flex items-center gap-1 text-primary-foreground">
                     <Droplet size={16} className="" />
                     <span className="font-medium">Fonte mais eficiente</span>
                   </div>
                 </div>
                 <div className="flex items-center ">
-                  <div className="text-2xl font-bold text-slate-800 min-w-36">
+                  <div className="text-2xl font-bold text-foreground min-w-36">
                     {
                       ENERGY_FRACTIONS[
-                        efficiencyComparison?.highest
-                          .name as keyof typeof ENERGY_FRACTIONS
+                      efficiencyComparison?.highest
+                        .name as keyof typeof ENERGY_FRACTIONS
                       ]
                     }
                   </div>
-                  <div className="flex items-center gap-2 text-rose-400">
+                  <div className="flex items-center gap-2 text-destructive-foreground">
                     <Zap size={16} className="" />
                     <span className="font-medium">Fonte menos eficiente</span>
                   </div>

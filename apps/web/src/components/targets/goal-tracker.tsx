@@ -71,7 +71,7 @@ export default function GoalTracker() {
     return {
       id: data?.mode,
       name: mappedTravelMode[data.mode as TravelMode],
-      icon: getIconByTransportMode(data?.mode),
+      icon: getIconByTransportMode(data?.mode, true),
     };
   });
 

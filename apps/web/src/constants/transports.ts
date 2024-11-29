@@ -4,7 +4,7 @@ export const mappedTravelMode: {
   [key in TravelMode]: string;
 } = {
   AUTOMOBILE: "Automóvel",
-  BUS: "Onibus",
+  BUS: "Ônibus",
   MOTORCYCLE: "Motocicleta",
   RAIL: "Trem",
   SUBWAY: "Metrô",

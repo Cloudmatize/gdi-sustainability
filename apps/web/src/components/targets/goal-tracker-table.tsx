@@ -323,7 +323,7 @@ export default function GoalTrackerTable({ data }: Props) {
                           return (
                             <div
                               key={`${log}-${index}`}
-                              className="flex justify-end items-center gap-2 text-teal-600"
+                              className="flex justify-end items-center gap-2 text-primary-foreground"
                             >
                               <span>{"->"}</span>
                               <span>
