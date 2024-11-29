@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { PublicProviders } from "@/providers/public";
 import SessionGuard from "@/components/auth/session-guard";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <PublicProviders>
-          <SessionGuard>{children}</SessionGuard>
+          <Suspense fallback={<div className="h-full bg-red-500 ">Loading...</div>}>
+            <SessionGuard>{children}</SessionGuard>
+          </Suspense>
         </PublicProviders>
       </body>
     </html>

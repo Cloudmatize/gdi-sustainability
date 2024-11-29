@@ -6,7 +6,13 @@ import {
   Scale,
 } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   useDashboardBuildingsTotalCO2Emission,
   useDashboardTransportsTotalCO2Emission,
@@ -200,6 +206,10 @@ export default function DashboardSection1() {
             <PercentSquare size={32} className="text-teal-400" />
           </CardHeader>
           <CardContent>
+            <CardDescription className="mb-2">
+              Os edifícios residenciais possuem 65.7% da área total e contribuem
+              com 47.4% das emissões
+            </CardDescription>
             <div className="space-y-4">
               <div>
                 <div className="text-2xl font-bold text-teal-400">
@@ -231,6 +241,10 @@ export default function DashboardSection1() {
             <PercentSquare size={32} className="text-teal-400" />
           </CardHeader>
           <CardContent>
+            <CardDescription className="mb-2">
+              Os edifícios não residenciais possuem 65.7% da área total e contribuem
+              com 47.4% das emissões
+            </CardDescription>
             <div className="space-y-4">
               <div>
                 <div className="text-2xl font-bold text-teal-400">
@@ -265,7 +279,7 @@ export default function DashboardSection1() {
                 65.7%
               </div>
               <div className="text-sm text-muted-foreground">
-                da área total e contribuem com 47.4% das emissões
+                65.7% da área total e contribuem com 47.4% das emissões
               </div>
             </div>
             <div className="space-y-2">
