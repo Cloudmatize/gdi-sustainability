@@ -307,36 +307,6 @@ export default function DashboardSection1() {
           </CardContent>
         </Card>
       )}
-
-      {/* Residential Area Card */}
-      <Card className="border-teal-400/20 md:col-span-2 lg:col-span-4">
-        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-          <CardTitle>Distribuição por Área</CardTitle>
-          <Building2 className="w-4 h-4 text-primary-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-2">
-              <div className="text-sm font-medium">Residenciais</div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                65.7%
-              </div>
-              <div className="text-sm text-muted-foreground">
-                65.7% da área total e contribuem com 47.4% das emissões
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-sm font-medium">Não Residenciais</div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                34.3%
-              </div>
-              <div className="text-sm text-muted-foreground">
-                da área total e contribuem com 52.6% das emissões
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
