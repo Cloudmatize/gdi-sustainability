@@ -336,7 +336,7 @@ export default function GoalTrackerTable({ data }: Props) {
                           return (
                             <div
                               key={`${log}-${index}`}
-                              className="flex justify-end items-center gap-2 text-teal-600"
+                              className="flex justify-end items-center gap-2 text-primary-foreground"
                             >
                               <span>{"->"}</span>
                               <span>
@@ -368,6 +368,7 @@ export default function GoalTrackerTable({ data }: Props) {
                     <div className="flex items-center justify-end ">
                       {mode.passengersPerTrip !==
                         passengersPerTripMapping[mode.id] && (
+                          // biome-ignore lint/a11y/useButtonType: <explanation>
                           <button
                             onClick={() =>
                               handlePassengerChange(
