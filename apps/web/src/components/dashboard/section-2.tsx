@@ -77,7 +77,7 @@ function calculateSectorChanges(data: SectorData[]): {
 
 function Co2EmissionComparissonCard(emission: Co2ComparissonCardProps) {
   return (
-    <Card key={emission.mode} className="border-teal-400/20 w-full">
+    <Card key={emission.mode} className="border w-full">
       <CardHeader>
         <CardTitle className="text-sm font-medium">
           Emissão Média de CO2 por Ano -{" "}
@@ -113,7 +113,7 @@ function Co2EmissionComparissonCard(emission: Co2ComparissonCardProps) {
 }
 function EmissionPerPassengerCard(emission: Co2ComparissonCardProps) {
   return (
-    <Card className="border-teal-400/20">
+    <Card className="border">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle className="text-sm font-medium">
           Emissões/Passageiro (kgCO₂) - {emission.mode}
@@ -365,7 +365,7 @@ export default function DashboardSection2() {
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
-          <Card className="border-teal-400/20 w-full">
+          <Card className="border w-full">
             <CardHeader>
               <CardTitle className="text-base font-medium">
                 Setor com maior aumento
@@ -378,7 +378,6 @@ export default function DashboardSection2() {
                     {getIconByTransportMode(
                       comparissonSectorData?.highestIncrease?.sector.toUpperCase()
                     )}
-
                     <span className="font-medium">
                       {comparissonSectorData?.highestIncrease?.sector}
                     </span>
@@ -401,7 +400,7 @@ export default function DashboardSection2() {
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
-          <Card className="border-teal-400/20 w-full">
+          <Card className="border w-full">
             <CardHeader>
               <CardTitle className="text-base font-medium">
                 Setor com maior redução

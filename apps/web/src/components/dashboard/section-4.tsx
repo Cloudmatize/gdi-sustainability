@@ -52,7 +52,6 @@ function compareEfficiency(data: EnergyData[]): {
     differenceFactor,
   };
 }
-import CardIcons from "../ui/card-icons"
 
 export default function DashboardSection4() {
   const {
@@ -81,7 +80,7 @@ export default function DashboardSection4() {
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border-teal-400/20">
+          <Card className="border">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Zap size={28} className=" text-teal-400" />
@@ -92,7 +91,7 @@ export default function DashboardSection4() {
               <div className="text-3xl font-bold text-teal-400">
                 {
                   ENERGY_FRACTIONS[
-                    highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
+                  highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }
               </div>
@@ -124,7 +123,7 @@ export default function DashboardSection4() {
         {isLoadingEnergyIntensitiesBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border-teal-400/20">
+          <Card className="border">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center  gap-2">
                 <ArrowDownUp size={32} className=" text-teal-400" />
@@ -135,8 +134,8 @@ export default function DashboardSection4() {
               <div className="text-sm text-muted-foreground">
                 {
                   ENERGY_FRACTIONS[
-                    efficiencyComparison?.lowest
-                      .name as keyof typeof ENERGY_FRACTIONS
+                  efficiencyComparison?.lowest
+                    .name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }{" "}
                 tem o menor impacto por kWh com (
@@ -145,8 +144,8 @@ export default function DashboardSection4() {
                 eficiente que{" "}
                 {
                   ENERGY_FRACTIONS[
-                    efficiencyComparison?.highest
-                      .name as keyof typeof ENERGY_FRACTIONS
+                  efficiencyComparison?.highest
+                    .name as keyof typeof ENERGY_FRACTIONS
                   ]
                 }{" "}
                 com ({efficiencyComparison?.highest.value} kgCO₂/kWh).
@@ -156,8 +155,8 @@ export default function DashboardSection4() {
                   <p className="text-2xl font-bold text-slate-800 min-w-36">
                     {
                       ENERGY_FRACTIONS[
-                        efficiencyComparison?.lowest
-                          .name as keyof typeof ENERGY_FRACTIONS
+                      efficiencyComparison?.lowest
+                        .name as keyof typeof ENERGY_FRACTIONS
                       ]
                     }
                   </p>
@@ -170,8 +169,8 @@ export default function DashboardSection4() {
                   <div className="text-2xl font-bold text-slate-800 min-w-36">
                     {
                       ENERGY_FRACTIONS[
-                        efficiencyComparison?.highest
-                          .name as keyof typeof ENERGY_FRACTIONS
+                      efficiencyComparison?.highest
+                        .name as keyof typeof ENERGY_FRACTIONS
                       ]
                     }
                   </div>
