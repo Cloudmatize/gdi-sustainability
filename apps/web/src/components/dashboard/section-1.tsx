@@ -142,17 +142,17 @@ export default function DashboardSection1() {
         </CardIcons>,
       loading: isLoadingTransportsCo2Emission ||
         isLoadingTransportsCo2EmissionPreviousYear,
-      content: (<><div className="text-sm text-start w-64 font-medium text-muted-foreground mb-4">
+      content: (<><CardDescription>
         Emissões totais {transportsComparissonInfo?.trend}{" "}
-        <span className="text-teal-400 font-bold text-lg">
+        <span className="text-primary-foreground font-bold text-lg">
           {transportsComparissonInfo?.formattedPercentageChange}%
         </span>{" "}
         em relação ao ano anterior
-      </div>
+      </CardDescription>
         <div className="space-y-2">
           <div className="flex justify-between mt-10">
             <span className="text-sm text-muted-foreground">2022</span>
-            <span className="text-lg font-medium text-teal-400">
+            <span className="text-lg font-medium text-primary-foreground">
               {" "}
               {Math.trunc(
                 transportsCo2EmissionPreviusYear?.totalCO2Emission || 0
@@ -161,7 +161,7 @@ export default function DashboardSection1() {
           </div>
           <div className="flex justify-between mt-10">
             <span className="text-sm text-muted-foreground">2023</span>
-            <span className="text-lg font-medium text-teal-400">
+            <span className="text-lg font-medium text-primary-foreground">
               {Math.trunc(
                 transportsCo2Emission?.totalCO2Emission || 0
               ).toLocaleString()}
@@ -183,7 +183,7 @@ export default function DashboardSection1() {
         </CardDescription>
         <div className="space-y-4">
           <div>
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl font-bold text-primary-foreground">
               {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
             </div>
             <div className="text-sm text-muted-foreground">
@@ -191,7 +191,7 @@ export default function DashboardSection1() {
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl font-bold text-primary-foreground">
               {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
             </div>
             <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
@@ -213,7 +213,7 @@ export default function DashboardSection1() {
         </CardDescription>
         <div className="space-y-4">
           <div>
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl font-bold text-primary-foreground">
               {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
             </div>
             <div className="text-sm text-muted-foreground">
@@ -221,7 +221,7 @@ export default function DashboardSection1() {
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-teal-400">
+            <div className="text-2xl font-bold text-primary-foreground">
               {formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter}
             </div>
             <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
