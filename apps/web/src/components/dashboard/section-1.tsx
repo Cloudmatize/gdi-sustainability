@@ -150,7 +150,7 @@ export default function DashboardSection1() {
         isLoadingTransportsCo2Emission ||
         isLoadingTransportsCo2EmissionPreviousYear,
       content: (
-        <div className="flex flex-col ">
+        <div className="flex flex-col w-full">
           <div className="flex items-center justify-evenly gap-3 mb-5">
             <div className="text-center">
               <div className="text-3xl md:text-xl font-bold text-primary-foreground">
@@ -170,12 +170,8 @@ export default function DashboardSection1() {
               <div className="text-sm text-muted-foreground">2023</div>
             </div>
           </div>
-          <CardDescription className="mt-2 text-center">
-            Os edifícios residenciais possuem{" "}
-            {formattedBuildingsInfo.residential?.areaPercentage}% da área total
-            e contribuem com{" "}
-            {formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}%
-            das emissões
+          <CardDescription className="mt-2 text-center ">
+            {`As emissões de transporte ${transportsComparissonInfo.trend} em ${transportsComparissonInfo.formattedPercentageChange}%`}
           </CardDescription>
         </div>
       ),
@@ -189,19 +185,19 @@ export default function DashboardSection1() {
       ),
       loading: isLoadingBuildingsInfo,
       content: (
-        <div className="flex flex-col ">
+        <div className="flex flex-col w-full">
           <div className="flex items-center justify-evenly gap-3 mb-5">
             <div>
-              <div className="text-2xl font-bold text-primary-foreground">
+              <div className="text-2xl font-bold text-primary-foreground text-center">
                 {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
               </div>
-              <div className="text-sm text-muted-foreground">tCO₂/edifício</div>
+              <div className="text-sm text-muted-foreground text-center">tCO₂/edifício</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-primary-foreground">
                 {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
               </div>
-              <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
+              <div className="text-sm text-muted-foreground text-center">kgCO₂/m²</div>
             </div>
           </div>
           <CardDescription className="mt-2 text-center">
@@ -223,10 +219,10 @@ export default function DashboardSection1() {
       ),
       loading: isLoadingBuildingsInfo,
       content: (
-        <div className="flex flex-col ">
+        <div className="flex flex-col w-full ">
           <div className="flex items-center justify-evenly gap-3 mb-5">
             <div>
-              <div className="text-2xl font-bold text-primary-foreground">
+              <div className="text-2xl font-bold text-primary-foreground text-center">
                 {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
               </div>
               <div className="text-sm text-muted-foreground">tCO₂/edifício</div>
