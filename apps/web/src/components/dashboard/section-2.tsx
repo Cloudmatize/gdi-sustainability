@@ -1,51 +1,26 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  mappedTravelMode,
-  passengersPerTripMapping,
-} from "@/constants/transports";
+import { passengersPerTripMapping } from "@/constants/transports";
 import { useDashboardCO2EmissionByModal } from "@/hooks/dashboard";
 import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
 } from "@/hooks/transports";
-import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { Fragment } from "react";
-import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 import { Skeleton } from "../ui/skeleton";
 import InfoTooltip from "../ui/info-tooltip";
 import Link from "next/link";
 import ModalAnalysisYearlyCard from "../transports/cards/modal-anaylsis-yearly-card";
+import TransportSectorAnalysisCard from "./cards/transport-sector-analysis-card";
+import TransportCo2eComparissonCard, {
+  Co2ComparissonCardProps,
+} from "./cards/transport-co2e-comparisson-card";
+import TransportEmissionPerPassengerCard, {
+  Co2EmissionPerPassengerComparissonCardProps,
+} from "./cards/transport-emission-per-passenger-card";
 
 const firstYear = new Date().getFullYear() - 2;
 const secondYear = new Date().getFullYear() - 1;
-
-type Co2ComparissonCardProps = {
-  mode: string;
-  firstYear: {
-    year: number;
-    co2Emissions: number;
-  };
-  secondYear: {
-    year: number;
-    co2Emissions: number;
-  };
-  description: string;
-};
-
-type Co2EmissionPerPassengerComparissonCardProps = {
-  mode: string;
-  firstYear: {
-    year: number;
-    emissionsPerPassenger: number;
-  };
-  secondYear: {
-    year: number;
-    emissionsPerPassenger: number;
-  };
-  description: string;
-};
 
 type SectorData = {
   year: string;
@@ -67,8 +42,8 @@ function calculateSectorChanges(data: SectorData[]): {
         percentageChange: Number.POSITIVE_INFINITY,
       },
     };
-  const year2022 = data.find((item) => item.year === "2022");
-  const year2023 = data.find((item) => item.year === "2023");
+  const year2022 = data.find((item) => item.year === String(firstYear));
+  const year2023 = data.find((item) => item.year === String(secondYear));
 
   if (!year2022 || !year2023) {
     throw new Error("Data for both years must be provided.");
@@ -102,74 +77,6 @@ function calculateSectorChanges(data: SectorData[]): {
   return { highestIncrease, highestReduction };
 }
 
-function Co2EmissionComparissonCard(emission: Co2ComparissonCardProps) {
-  return (
-    <Card key={emission.mode} className="border w-full">
-      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle> {mappedTravelMode[emission.mode as TravelMode]}</CardTitle>
-        {getIconByTransportMode(emission.mode)}
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-center gap-4">
-          <div className="text-center">
-            <div className="text-3xl md:text-xl font-bold text-primary-foreground">
-              {emission.firstYear.co2Emissions.toLocaleString()}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {emission.firstYear.year}
-            </div>
-          </div>
-          <div className="text-2xl md:text-xl text-muted-foreground">×</div>
-          <div className="text-center">
-            <div className="text-3xl md:text-xl font-bold text-primary-slate">
-              {emission.secondYear.co2Emissions.toLocaleString()}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {emission.secondYear.year}
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          {emission.description}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-function EmissionPerPassengerCard(
-  emission: Co2EmissionPerPassengerComparissonCardProps
-) {
-  return (
-    <Card className="border">
-      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle> {mappedTravelMode[emission.mode as TravelMode]}</CardTitle>
-        {getIconByTransportMode(emission.mode)}
-      </CardHeader>
-
-      <CardContent>
-        <div className="flex items-center justify-center gap-4">
-          <div className="text-center">
-            <div className="text-3xl md:text-xl font-bold text-primary-foreground">
-              {emission.firstYear.emissionsPerPassenger}
-            </div>
-            <div className="text-sm text-muted-foreground">{firstYear}</div>
-          </div>
-          <div className="text-2xl md:text-xl text-muted-foreground">×</div>
-          <div className="text-center">
-            <div className="text-3xl md:text-xl font-bold text-primary-slate">
-              {emission.secondYear.emissionsPerPassenger}
-            </div>
-            <div className="text-sm text-muted-foreground">{secondYear}</div>
-          </div>
-        </div>
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          {emission.description}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function DashboardSection2() {
   const {
     data: co2EmissionByModalFirstYear,
@@ -187,6 +94,17 @@ export default function DashboardSection2() {
 
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
+
+  const {
+    data: co2EmissionByYearAndModal,
+    isFetching: isLoadingCo2EmissionByYearAndModal,
+  } = useTransportsCO2EmissionByYearAndModal({
+    filters: {
+      date: [2022, 2023],
+      mode: ["AUTOMOBILE", "BUS", "MOTORCYCLE"],
+    },
+  });
+
   const co2EmissionsByModals: Co2ComparissonCardProps[] =
     co2EmissionByModalFirstYear?.map((firstYearData) => {
       const secondYearData = co2EmissionByModalSecondYear?.find(
@@ -221,19 +139,7 @@ export default function DashboardSection2() {
       };
     }) || [];
 
-  const co2EmissionsByModalsEmissionsByPassenger: {
-    mode: string;
-    firstYear: {
-      year: number;
-      emissionsPerPassenger: number;
-    };
-    secondYear: {
-      year: number;
-      emissionsPerPassenger: number;
-    };
-
-    description: string;
-  }[] =
+  const co2EmissionsByModalsEmissionsByPassenger: Co2EmissionPerPassengerComparissonCardProps[] =
     co2EmissionByModalFirstYear?.map((firstYearData) => {
       const secondYearData = co2EmissionByModalSecondYear?.find(
         (item) => item.mode === firstYearData.mode
@@ -290,16 +196,6 @@ export default function DashboardSection2() {
       };
     }) || [];
 
-  const {
-    data: co2EmissionByYearAndModal,
-    isFetching: isLoadingCo2EmissionByYearAndModal,
-  } = useTransportsCO2EmissionByYearAndModal({
-    filters: {
-      date: [2022, 2023],
-      mode: ["AUTOMOBILE", "BUS", "MOTORCYCLE"],
-    },
-  });
-
   const comparissonSectorData = calculateSectorChanges(
     (co2EmissionByYearAndModal?.data as any) || []
   );
@@ -329,78 +225,26 @@ export default function DashboardSection2() {
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
-          <Card className="border w-full">
-            <CardHeader className="flex ">
-              <CardTitle className=" flex items-center justify-between">
-                <span className="flex  items-center gap-2 ">
-                  {getIconByTransportMode(
-                    comparissonSectorData?.highestIncrease?.sector.toUpperCase()
-                  )}
-                  {comparissonSectorData?.highestIncrease?.sector}
-                </span>
-                Setor com maior aumento
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
-              <div className="flex items-end justify-between w-full h-full gap-2">
-                <div className="space-y-1 w-full h-full gap-4">
-                  <p className="text-sm text-muted-foreground text-wrap">
-                    Aumento dos últimos 2 anos nas emissões
-                  </p>
-                  <div className="flex items-center flex-row gap-2 w-full">
-                    <MdTrendingUp className="text-destructive-foreground fill-destructive-foreground text-xl" />
-                    <div
-                      className={`text-destructive-foreground text-2xl font-bold`}
-                    >
-                      {comparissonSectorData?.highestIncrease?.percentageChange.toFixed(
-                        2
-                      )}
-                      %
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TransportSectorAnalysisCard
+            data={comparissonSectorData?.highestIncrease}
+            title="Setor com maior aumento"
+            icon={getIconByTransportMode(
+              comparissonSectorData?.highestIncrease?.sector.toUpperCase()
+            )}
+            isIncrease
+          />
         )}
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
-          <Card className="border w-full">
-            <CardHeader className="flex ">
-              <CardTitle className=" flex items-center justify-between">
-                <span className="flex  items-center gap-2 ">
-                  {getIconByTransportMode(
-                    comparissonSectorData?.highestReduction?.sector.toUpperCase()
-                  )}
-                  {comparissonSectorData?.highestReduction?.sector}
-                </span>
-                Setor com maior redução
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
-              <div className="flex items-end justify-between w-full h-full gap-2">
-                <div className="space-y-1 w-full h-full gap-4">
-                  <p className="text-sm text-muted-foreground text-wrap">
-                    Redução dos últimos 2 anos nas emissões
-                  </p>
-                  <div className="flex items-center flex-row gap-2 w-full">
-                    <MdTrendingDown className="text-primary-foreground fill-primary-foreground text-xl" />
-                    <div
-                      className={`text-primary-foreground text-2xl font-bold`}
-                    >
-                      {comparissonSectorData?.highestReduction?.percentageChange.toFixed(
-                        2
-                      )}
-                      %
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TransportSectorAnalysisCard
+            data={comparissonSectorData?.highestReduction}
+            title="Setor com maior redução"
+            icon={getIconByTransportMode(
+              comparissonSectorData?.highestReduction?.sector.toUpperCase()
+            )}
+            isIncrease={false}
+          />
         )}
       </div>
 
@@ -415,7 +259,7 @@ export default function DashboardSection2() {
             ))
           : co2EmissionsByModals?.map((emission, index) => (
               <Fragment key={`${emission.mode}-${index}`}>
-                <Co2EmissionComparissonCard {...emission} />
+                <TransportCo2eComparissonCard {...emission} />
               </Fragment>
             ))}
       </div>
@@ -432,7 +276,7 @@ export default function DashboardSection2() {
             ))
           : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
               <Fragment key={`${emission.mode}-${index}`}>
-                <EmissionPerPassengerCard {...emission} />
+                <TransportEmissionPerPassengerCard {...emission} />
               </Fragment>
             ))}
       </div>

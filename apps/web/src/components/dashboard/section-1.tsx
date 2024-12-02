@@ -17,7 +17,7 @@ import { Skeleton } from "../ui/skeleton";
 import TargetAdherenceSection from "./target-adherence-section";
 import { Tooltip } from "../tooltip";
 import Link from "next/link";
-import { TotalCO2EmissionCard } from "./cards/total-co2-emission-card";
+import { TotalCO2eCard } from "./cards/total-co2e-card";
 
 function generateComparisonMessage(
   value1: number,
@@ -290,7 +290,7 @@ export default function DashboardSection1() {
         {isLoadingTransportsCo2Emission || isLoadingBuildingsCo2Emission ? (
           <Skeleton className="h-[200px] w-full" />
         ) : (
-          <TotalCO2EmissionCard
+          <TotalCO2eCard
             buildingsCo2Emission={buildingsCo2Emission?.totalCO2Emission || 0}
             transportsCo2Emission={transportsCo2Emission?.totalCO2Emission || 0}
           />

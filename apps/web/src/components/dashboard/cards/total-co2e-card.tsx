@@ -6,7 +6,7 @@ interface Props {
   transportsCo2Emission: number;
   buildingsCo2Emission: number;
 }
-export function TotalCO2EmissionCard({
+export function TotalCO2eCard({
   buildingsCo2Emission,
   transportsCo2Emission,
 }: Props) {
