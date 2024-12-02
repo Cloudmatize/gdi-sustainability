@@ -1,0 +1,15 @@
+# Project GCP ------------------------------------------------------------
+PROJECT_ID: "<project_id>"
+REGION: "<region>"
+FOLDER_ID: <folder_id>
+TIME_ZONE: "<timezone>"
+
+# Municipality ------------------------------------------------------------
+MUNICIPALITY_ID: "2307304"
+MUNICIPALITY_UF: "CE"
+MUNICIPALITY_NAME: "Juazeiro do Norte"
+MUNICIPALITY_SLUG: "juazeiro-do-norte-ce"
+MUNICIPALITY_BASE_YEAR: "2023"
+MUNICIPALITY_COMPLETION_YEAR: "2035"
+MUNICIPALITY_TARGET_REDUCTION: ""
+        

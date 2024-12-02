@@ -1,0 +1,16 @@
+
+# Project GCP ------------------------------------------------------------
+PROJECT_ID: "<project_id>"
+REGION: "<region>"
+FOLDER_ID: <folder_id>
+TIME_ZONE: "<timezone>"
+
+# Municipality ------------------------------------------------------------
+MUNICIPALITY_ID: "1702109"
+MUNICIPALITY_UF: "TO"
+MUNICIPALITY_NAME: "Araguaína"
+MUNICIPALITY_SLUG: "araguaina-to"
+MUNICIPALITY_BASE_YEAR: "2021"
+MUNICIPALITY_COMPLETION_YEAR: "2028"
+MUNICIPALITY_TARGET_REDUCTION: "25"
+        

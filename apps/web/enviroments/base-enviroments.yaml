@@ -1,0 +1,23 @@
+# Project GCP ------------------------------------------------------------
+PROJECT_ID: "<project_id>"
+REGION: "<region>"
+FOLDER_ID: <folder_id>
+TIME_ZONE: "<timezone>"
+
+# Municipality ------------------------------------------------------------
+MUNICIPALITY_ID: "3548807"
+MUNICIPALITY_UF: "SP"
+MUNICIPALITY_NAME: "São Caetano Do Sul"
+MUNICIPALITY_BASE_YEAR: "2019"
+MUNICIPALITY_COMPLETION_YEAR: "2030"
+MUNICIPALITY_TARGET_REDUCION: "20"
+MUNICIPALITY_SLUG: "sao-caetano-do-sul-sp"
+
+# GDS API ----------------------------------------------------------------
+SECRET_KEY: "e$u4sz!pvqjn+p^841bm&_wm1w@su_$mkpct7#d)i5!(7_ko:x"
+CM_API_KEY: 'X5!PcHMv3*Z6K6anJXJvPzafBKwWcsMf9K8e$T*Q7kCTANna!W'
+BQ_CREDENTIALS: ""
+
+# CubeJS -----------------------------------------------------------------
+CUBE_JS_URL: "<url_cubejs_compute_engine>:<port>"
+CUBE_JS_API_SECRET: "<cubejs_api_secret>"
