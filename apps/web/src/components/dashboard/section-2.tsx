@@ -16,6 +16,7 @@ import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-em
 import { Skeleton } from "../ui/skeleton";
 import InfoTooltip from "../ui/info-tooltip";
 import Link from "next/link";
+import ModalAnalysisYearlyCard from "../transports/cards/modal-anaylsis-yearly-card";
 
 const firstYear = new Date().getFullYear() - 2;
 const secondYear = new Date().getFullYear() - 1;
@@ -300,7 +301,6 @@ export default function DashboardSection2() {
   });
 
   const comparissonSectorData = calculateSectorChanges(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     (co2EmissionByYearAndModal?.data as any) || []
   );
 
@@ -309,74 +309,22 @@ export default function DashboardSection2() {
       <div className="text-xl font-bold">
         Comparativo de emissões por transporte de 2018 à {secondYear}
       </div>
-
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-        {/* Transport Mode Cards */}
-
         {isLoadingModalAnalysis
           ? [1, 2, 3].map((index) => (
               <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
             ))
           : modalAnalysis?.modalsData?.map((transport, index) => (
-            <Link href='/transports'>
-              <Card  className="border w-full card-hover" key={index}>
-                <CardHeader>
-                  <CardTitle className="gap-2 flex">
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2 flex-row">
-                        {getIconByTransportMode(transport?.mode) as any}
-                        <span className="">
-                          {mappedTravelMode[transport.mode as TravelMode]}
-                        </span>
-                      </div>
-                      <div className="flex gap-2 items-center md:items-end w-full h-full md:justify-items-end">
-                        <p className="text-sm font-normal text-muted-foreground flex flex-row gap-1">
-                          <div className="text-sm font-bold text-primary-slate">
-                            {transport.percentageContribution}%
-                          </div>
-                          do total de transportes
-                        </p>
-                      </div>
-                    </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
-                  <div className="flex items-end justify-between w-full h-full gap-2">
-                    <div className="space-y-1 w-full h-full gap-4">
-                      <p className="text-sm text-muted-foreground text-wrap">
-                        {transport.contributionStatus === "Redução"
-                          ? "Redução"
-                          : "Aumento"}{" "}
-                        anual médio nas emissões
-                      </p>
-                      <div className="flex items-center flex-row gap-2 w-full">
-                        {transport.contributionStatus === "Redução" ? (
-                          <MdTrendingDown className="text-primary-foreground fill-teal-400 text-xl" />
-                        ) : (
-                          <MdTrendingUp className="text-destructive-foreground fill-destructive-foreground text-xl" />
-                        )}
-                        <div
-                          className={`${transport.contributionStatus === "Redução" ? "text-primary-foreground" : "text-destructive-foreground"} text-2xl font-bold`}
-                        >
-                          {transport.avgPercentageYearly}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-
+              <Link href="/transports" key={index}>
+                <ModalAnalysisYearlyCard transport={transport} />
+              </Link>
             ))}
       </div>
-
-      {/* <h2 className="text-2xl font-bold">Maiores altas e quedas</h2> */}
 
       <div className="text-xl font-bold">
         Comparativo de emissões por transporte dos últimos 2 anos
       </div>
 
-      {/* Comparison Section */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
@@ -455,10 +403,10 @@ export default function DashboardSection2() {
           </Card>
         )}
       </div>
+
       <div className="text-lg font-medium">
         Emissões médias por transporte (tCO2e)
       </div>
-      {/* Emission Comparison Cards */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
         isLoadingCo2EmissionByModalSecondYear
@@ -475,7 +423,7 @@ export default function DashboardSection2() {
         Emissões por passageiro (kgCO2e)
         <InfoTooltip content="Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte." />
       </div>
-      {/* Emission Per Passenger Card */}
+
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
         isLoadingCo2EmissionByModalSecondYear

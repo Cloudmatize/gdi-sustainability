@@ -1,15 +1,7 @@
-import {
-  Building,
-  Building2,
-  CarFront,
-  House,
-  LineChart,
-  Scale,
-} from "lucide-react";
+import { Building, House, LineChart } from "lucide-react";
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -319,7 +311,7 @@ export default function DashboardSection1() {
             <Link href={card.href}>
               <Card
                 key={`${card.title}-${index}`}
-                className="border card-hover"
+                className="border card-hover h-full "
               >
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                   <CardTitle>{card.title}</CardTitle>
