@@ -28,7 +28,7 @@ export default function TargetAdherenceCard({
           Índice de aderência à meta para {targetYear}
           <span className="text-sm font-medium text-muted-foreground">
             Baseado nas emissões do último ano: {baseEmissions.toLocaleString()}{" "}
-            tCO₂
+            (tCO2e)
           </span>
         </CardTitle>
       </CardHeader>

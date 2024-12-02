@@ -13,7 +13,7 @@ export function Tooltip({ children, triggerContent }: Props) {
   return (
     <ShadTooltip>
       <TooltipTrigger>{triggerContent}</TooltipTrigger>
-      <TooltipContent>{children}</TooltipContent>
+      <TooltipContent  className="bg-white border text-slate-700 text-sm">{children}</TooltipContent>
     </ShadTooltip>
   );
 }

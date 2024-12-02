@@ -1,15 +1,7 @@
-import {
-  Building,
-  Building2,
-  CarFront,
-  House,
-  LineChart,
-  Scale,
-} from "lucide-react";
+import { Building, House, LineChart } from "lucide-react";
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -23,6 +15,9 @@ import {
 import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
 import TargetAdherenceSection from "./target-adherence-section";
+import { Tooltip } from "../tooltip";
+import Link from "next/link";
+import { TotalCO2eCard } from "./cards/total-co2e-card";
 
 function generateComparisonMessage(
   value1: number,
@@ -40,6 +35,67 @@ function generateComparisonMessage(
   return {
     formattedPercentageChange,
     trend,
+  };
+}
+function formatBuildingsFloorAreasBySector(
+  data:
+    | {
+        residential: {
+          area: number;
+          count: number;
+          co2Emission: number;
+          percentage: number;
+        };
+        notResidential: {
+          area: number;
+          count: number;
+          co2Emission: number;
+          percentage: number;
+        };
+        total: {
+          area: number;
+          count: number;
+          co2Emission: number;
+        };
+      }
+    | undefined
+) {
+  if (!data) return {};
+  const residentialMetrics = {
+    areaPercentage: Number(
+      ((data.residential.area / data.total.area) * 100).toFixed(1)
+    ),
+    totalCo2EmissionPercentage: Number(
+      (data.residential.percentage * 100).toFixed(1)
+    ),
+    tCO2PerBuilding: (
+      data.residential.co2Emission / data.residential.count
+    ).toFixed(2),
+    kgCO2PerSquareMeter: (
+      (data.residential.co2Emission * 1000) /
+      data.residential.area
+    ).toFixed(2),
+  };
+
+  const nonResidentialMetrics = {
+    areaPercentage: Number(
+      ((data.notResidential.area / data.total.area) * 100).toFixed(1)
+    ),
+    totalCo2EmissionPercentage: Number(
+      (data.notResidential.percentage * 100).toFixed(1)
+    ),
+    tCO2PerBuilding: (
+      data.notResidential.co2Emission / data.notResidential.count
+    ).toFixed(2),
+    kgCO2PerSquareMeter: (
+      (data.notResidential.co2Emission * 1000) /
+      data.notResidential.area
+    ).toFixed(2),
+  };
+
+  return {
+    residential: residentialMetrics,
+    nonResidential: nonResidentialMetrics,
   };
 }
 
@@ -66,74 +122,13 @@ export default function DashboardSection1() {
     isFetching: isLoadingBuildingsCo2Emission,
   } = useDashboardBuildingsTotalCO2Emission({});
 
+  const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
+    useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
+
   const transportsComparissonInfo = generateComparisonMessage(
     transportsCo2EmissionPreviusYear?.totalCO2Emission || 0,
     transportsCo2Emission?.totalCO2Emission || 0
   );
-  const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
-    useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
-
-  function formatBuildingsFloorAreasBySector(
-    data:
-      | {
-          residential: {
-            area: number;
-            count: number;
-            co2Emission: number;
-            percentage: number;
-          };
-          notResidential: {
-            area: number;
-            count: number;
-            co2Emission: number;
-            percentage: number;
-          };
-          total: {
-            area: number;
-            count: number;
-            co2Emission: number;
-          };
-        }
-      | undefined
-  ) {
-    if (!data) return {};
-    const residentialMetrics = {
-      areaPercentage: Number(
-        ((data.residential.area / data.total.area) * 100).toFixed(1)
-      ),
-      totalCo2EmissionPercentage: Number(
-        (data.residential.percentage * 100).toFixed(1)
-      ),
-      tCO2PerBuilding: (
-        data.residential.co2Emission / data.residential.count
-      ).toFixed(2),
-      kgCO2PerSquareMeter: (
-        (data.residential.co2Emission * 1000) /
-        data.residential.area
-      ).toFixed(2),
-    };
-
-    const nonResidentialMetrics = {
-      areaPercentage: Number(
-        ((data.notResidential.area / data.total.area) * 100).toFixed(1)
-      ),
-      totalCo2EmissionPercentage: Number(
-        (data.notResidential.percentage * 100).toFixed(1)
-      ),
-      tCO2PerBuilding: (
-        data.notResidential.co2Emission / data.notResidential.count
-      ).toFixed(2),
-      kgCO2PerSquareMeter: (
-        (data.notResidential.co2Emission * 1000) /
-        data.notResidential.area
-      ).toFixed(2),
-    };
-
-    return {
-      residential: residentialMetrics,
-      nonResidential: nonResidentialMetrics,
-    };
-  }
 
   const formattedBuildingsInfo =
     formatBuildingsFloorAreasBySector(buildingsInfo);
@@ -146,11 +141,12 @@ export default function DashboardSection1() {
           <LineChart />
         </CardIcons>
       ),
+      href: "/transports",
       loading:
         isLoadingTransportsCo2Emission ||
         isLoadingTransportsCo2EmissionPreviousYear,
       content: (
-        <div className="flex flex-col ">
+        <div className="flex flex-col w-full">
           <div className="flex items-center justify-evenly gap-3 mb-5">
             <div className="text-center">
               <div className="text-3xl md:text-xl font-bold text-primary-foreground">
@@ -170,12 +166,8 @@ export default function DashboardSection1() {
               <div className="text-sm text-muted-foreground">2023</div>
             </div>
           </div>
-          <CardDescription className="mt-2 text-center">
-            Os edifícios residenciais possuem{" "}
-            {formattedBuildingsInfo.residential?.areaPercentage}% da área total
-            e contribuem com{" "}
-            {formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}%
-            das emissões
+          <CardDescription className="mt-2 text-center ">
+            {`As emissões de transporte ${transportsComparissonInfo.trend} em ${transportsComparissonInfo.formattedPercentageChange}%`}
           </CardDescription>
         </div>
       ),
@@ -187,22 +179,40 @@ export default function DashboardSection1() {
           <House />
         </CardIcons>
       ),
+      href: "/buildings",
       loading: isLoadingBuildingsInfo,
       content: (
-        <div className="flex flex-col ">
+        <div className="flex flex-col w-full">
           <div className="flex items-center justify-evenly gap-3 mb-5">
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
-              </div>
-              <div className="text-sm text-muted-foreground">tCO₂/edifício</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
-              </div>
-              <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
-            </div>
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    tCO2e/edifício
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} toneladas de CO2 emitidos por edifício.`}
+            </Tooltip>
+
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    kgCO2e/m²
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} kilogramas de CO2 emitidos por metro quadrado.`}
+            </Tooltip>
           </div>
           <CardDescription className="mt-2 text-center">
             Os edifícios residenciais possuem{" "}
@@ -216,6 +226,7 @@ export default function DashboardSection1() {
     },
     {
       title: "Métricas por edifício não residencial",
+      href: "/buildings",
       icon: (
         <CardIcons>
           <Building />
@@ -223,20 +234,39 @@ export default function DashboardSection1() {
       ),
       loading: isLoadingBuildingsInfo,
       content: (
-        <div className="flex flex-col ">
+        <div className="flex flex-col w-full ">
           <div className="flex items-center justify-evenly gap-3 mb-5">
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
-              </div>
-              <div className="text-sm text-muted-foreground">tCO₂/edifício</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                {formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter}
-              </div>
-              <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
-            </div>
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    tCO2e/edifício
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} toneladas de CO2 emitidos por edifício.`}
+            </Tooltip>
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {
+                      formattedBuildingsInfo?.nonResidential
+                        ?.kgCO2PerSquareMeter
+                    }
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    kgCO2e/m²
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} kilogramas de CO2 emitidos por metro quadrado.`}
+            </Tooltip>
           </div>
           <CardDescription className="mt-2 text-center">
             Os edifícios não residenciais possuem{" "}
@@ -253,58 +283,24 @@ export default function DashboardSection1() {
   return (
     <div className="space-y-6 text-foreground">
       <h2 className="text-2xl font-bold">
-        Visão geral de emissões de CO₂ do ano de {new Date().getFullYear() - 1}
+        Visão geral de emissões de CO2 do ano de {new Date().getFullYear() - 1}
       </h2>
 
       <div className="flex gap-6 flex-col md:flex-row">
         {isLoadingTransportsCo2Emission || isLoadingBuildingsCo2Emission ? (
           <Skeleton className="h-[200px] w-full" />
         ) : (
-          <Card className="border w-full">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle>Emissões Totais de CO₂</CardTitle>
-              <CardIcons>
-                <Scale />
-              </CardIcons>
-            </CardHeader>
-            <CardContent>
-              {" "}
-              <>
-                <div className="text-2xl font-bold text-foreground">
-                  {Math.trunc(
-                    (transportsCo2Emission?.totalCO2Emission || 0) +
-                      (buildingsCo2Emission?.totalCO2Emission || 0)
-                  ).toLocaleString()}{" "}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex flex-col gap-4 mt-4">
-                    <div className="flex items-center gap-2">
-                      <CarFront size={20} className="text-primary-foreground" />
-                      <span className="text-sm text-muted-foreground">
-                        Transportes:{" "}
-                        {Math.trunc(
-                          transportsCo2Emission?.totalCO2Emission || 0
-                        ).toLocaleString()}{" "}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Building2 size={20} className="text-primary-foreground" />
-                    <span className="text-sm text-muted-foreground">
-                      Edifícios:{" "}
-                      {Math.trunc(
-                        buildingsCo2Emission?.totalCO2Emission || 0
-                      ).toLocaleString()}{" "}
-                    </span>
-                  </div>
-                </div>
-              </>
-            </CardContent>
-          </Card>
+          <TotalCO2eCard
+            buildingsCo2Emission={buildingsCo2Emission?.totalCO2Emission || 0}
+            transportsCo2Emission={transportsCo2Emission?.totalCO2Emission || 0}
+          />
         )}
-        <div className="h-80  md:h-64 xl:h-52 w-full ">
+        <Link
+          href={"/targets"}
+          className="h-80  md:h-64 xl:h-52 w-full  card-hover"
+        >
           <TargetAdherenceSection />
-        </div>
+        </Link>
       </div>
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
@@ -312,13 +308,18 @@ export default function DashboardSection1() {
           card?.loading ? (
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
-            <Card key={`${card.title}-${index}`} className="border">
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle>{card.title}</CardTitle>
-                {card.icon}
-              </CardHeader>
-              <CardFooter className="mt-5">{card.content}</CardFooter>
-            </Card>
+            <Link href={card.href}>
+              <Card
+                key={`${card.title}-${index}`}
+                className="border card-hover h-full "
+              >
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <CardTitle>{card.title}</CardTitle>
+                  {card.icon}
+                </CardHeader>
+                <CardFooter className="mt-5">{card.content}</CardFooter>
+              </Card>
+            </Link>
           )
         )}
       </div>

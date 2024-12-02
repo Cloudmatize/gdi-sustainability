@@ -430,10 +430,10 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
     );
     if (data) {
       const modalsData: {
-        mode: string;
+        mode: TravelMode;
         percentageContribution: number;
         avgPercentageYearly: number;
-        contributionStatus: string;
+        contributionStatus: 'Redução' | 'Elevação';
       }[] = data?.cube?.map(({ transportation_emission_cards }) => {
         return {
           mode: transportation_emission_cards.mode,
