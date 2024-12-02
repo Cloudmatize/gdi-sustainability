@@ -25,6 +25,7 @@ import { Skeleton } from "../ui/skeleton";
 import TargetAdherenceSection from "./target-adherence-section";
 import { Tooltip } from "../tooltip";
 import Link from "next/link";
+import { TotalCO2EmissionCard } from "./cards/total-co2-emission-card";
 
 function generateComparisonMessage(
   value1: number,
@@ -42,6 +43,67 @@ function generateComparisonMessage(
   return {
     formattedPercentageChange,
     trend,
+  };
+}
+function formatBuildingsFloorAreasBySector(
+  data:
+    | {
+        residential: {
+          area: number;
+          count: number;
+          co2Emission: number;
+          percentage: number;
+        };
+        notResidential: {
+          area: number;
+          count: number;
+          co2Emission: number;
+          percentage: number;
+        };
+        total: {
+          area: number;
+          count: number;
+          co2Emission: number;
+        };
+      }
+    | undefined
+) {
+  if (!data) return {};
+  const residentialMetrics = {
+    areaPercentage: Number(
+      ((data.residential.area / data.total.area) * 100).toFixed(1)
+    ),
+    totalCo2EmissionPercentage: Number(
+      (data.residential.percentage * 100).toFixed(1)
+    ),
+    tCO2PerBuilding: (
+      data.residential.co2Emission / data.residential.count
+    ).toFixed(2),
+    kgCO2PerSquareMeter: (
+      (data.residential.co2Emission * 1000) /
+      data.residential.area
+    ).toFixed(2),
+  };
+
+  const nonResidentialMetrics = {
+    areaPercentage: Number(
+      ((data.notResidential.area / data.total.area) * 100).toFixed(1)
+    ),
+    totalCo2EmissionPercentage: Number(
+      (data.notResidential.percentage * 100).toFixed(1)
+    ),
+    tCO2PerBuilding: (
+      data.notResidential.co2Emission / data.notResidential.count
+    ).toFixed(2),
+    kgCO2PerSquareMeter: (
+      (data.notResidential.co2Emission * 1000) /
+      data.notResidential.area
+    ).toFixed(2),
+  };
+
+  return {
+    residential: residentialMetrics,
+    nonResidential: nonResidentialMetrics,
   };
 }
 
@@ -68,74 +130,13 @@ export default function DashboardSection1() {
     isFetching: isLoadingBuildingsCo2Emission,
   } = useDashboardBuildingsTotalCO2Emission({});
 
+  const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
+    useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
+
   const transportsComparissonInfo = generateComparisonMessage(
     transportsCo2EmissionPreviusYear?.totalCO2Emission || 0,
     transportsCo2Emission?.totalCO2Emission || 0
   );
-  const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
-    useBuildingsFloorAreasBySector({ extraKey: "dashboard" });
-
-  function formatBuildingsFloorAreasBySector(
-    data:
-      | {
-          residential: {
-            area: number;
-            count: number;
-            co2Emission: number;
-            percentage: number;
-          };
-          notResidential: {
-            area: number;
-            count: number;
-            co2Emission: number;
-            percentage: number;
-          };
-          total: {
-            area: number;
-            count: number;
-            co2Emission: number;
-          };
-        }
-      | undefined
-  ) {
-    if (!data) return {};
-    const residentialMetrics = {
-      areaPercentage: Number(
-        ((data.residential.area / data.total.area) * 100).toFixed(1)
-      ),
-      totalCo2EmissionPercentage: Number(
-        (data.residential.percentage * 100).toFixed(1)
-      ),
-      tCO2PerBuilding: (
-        data.residential.co2Emission / data.residential.count
-      ).toFixed(2),
-      kgCO2PerSquareMeter: (
-        (data.residential.co2Emission * 1000) /
-        data.residential.area
-      ).toFixed(2),
-    };
-
-    const nonResidentialMetrics = {
-      areaPercentage: Number(
-        ((data.notResidential.area / data.total.area) * 100).toFixed(1)
-      ),
-      totalCo2EmissionPercentage: Number(
-        (data.notResidential.percentage * 100).toFixed(1)
-      ),
-      tCO2PerBuilding: (
-        data.notResidential.co2Emission / data.notResidential.count
-      ).toFixed(2),
-      kgCO2PerSquareMeter: (
-        (data.notResidential.co2Emission * 1000) /
-        data.notResidential.area
-      ).toFixed(2),
-    };
-
-    return {
-      residential: residentialMetrics,
-      nonResidential: nonResidentialMetrics,
-    };
-  }
 
   const formattedBuildingsInfo =
     formatBuildingsFloorAreasBySector(buildingsInfo);
@@ -297,47 +298,10 @@ export default function DashboardSection1() {
         {isLoadingTransportsCo2Emission || isLoadingBuildingsCo2Emission ? (
           <Skeleton className="h-[200px] w-full" />
         ) : (
-          <Card className="border w-full">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle>Emissões totais (tCO2e)</CardTitle>
-              <CardIcons>
-                <Scale />
-              </CardIcons>
-            </CardHeader>
-            <CardContent>
-              {" "}
-              <>
-                <div className="text-2xl font-bold text-foreground">
-                  {Math.trunc(
-                    (transportsCo2Emission?.totalCO2Emission || 0) +
-                      (buildingsCo2Emission?.totalCO2Emission || 0)
-                  ).toLocaleString()}{" "}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex flex-col gap-4 mt-4">
-                    <div className="flex items-center gap-2">
-                      <CarFront size={20} className="text-primary-foreground" />
-                      <span className="text-sm text-muted-foreground">
-                        Transportes:{" "}
-                        {Math.trunc(
-                          transportsCo2Emission?.totalCO2Emission || 0
-                        ).toLocaleString()}{" "}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Building2 size={20} className="text-primary-foreground" />
-                    <span className="text-sm text-muted-foreground">
-                      Edifícios:{" "}
-                      {Math.trunc(
-                        buildingsCo2Emission?.totalCO2Emission || 0
-                      ).toLocaleString()}{" "}
-                    </span>
-                  </div>
-                </div>
-              </>
-            </CardContent>
-          </Card>
+          <TotalCO2EmissionCard
+            buildingsCo2Emission={buildingsCo2Emission?.totalCO2Emission || 0}
+            transportsCo2Emission={transportsCo2Emission?.totalCO2Emission || 0}
+          />
         )}
         <Link
           href={"/targets"}
