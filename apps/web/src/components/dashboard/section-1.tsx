@@ -23,6 +23,7 @@ import {
 import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
 import TargetAdherenceSection from "./target-adherence-section";
+import { Tooltip } from "../tooltip";
 
 function generateComparisonMessage(
   value1: number,
@@ -187,22 +188,35 @@ export default function DashboardSection1() {
       content: (
         <div className="flex flex-col w-full">
           <div className="flex items-center justify-evenly gap-3 mb-5">
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground text-center">
-                {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
-              </div>
-              <div className="text-sm text-muted-foreground text-center">
-                tCO₂/edifício
-              </div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
-              </div>
-              <div className="text-sm text-muted-foreground text-center">
-                kgCO₂/m²
-              </div>
-            </div>
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    tCO2e/edifício
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} toneladas de CO2 emitidos por edifício.`}
+            </Tooltip>
+
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    kgCO2e/m²
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} kilogramas de CO2 emitidos por metro quadrado.`}
+            </Tooltip>
           </div>
           <CardDescription className="mt-2 text-center">
             Os edifícios residenciais possuem{" "}
@@ -225,18 +239,37 @@ export default function DashboardSection1() {
       content: (
         <div className="flex flex-col w-full ">
           <div className="flex items-center justify-evenly gap-3 mb-5">
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground text-center">
-                {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
-              </div>
-              <div className="text-sm text-muted-foreground">tCO₂/edifício</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary-foreground">
-                {formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter}
-              </div>
-              <div className="text-sm text-muted-foreground">kgCO₂/m²</div>
-            </div>
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    tCO2e/edifício
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} toneladas de CO2 emitidos por edifício.`}
+            </Tooltip>
+            <Tooltip
+              triggerContent={
+                <div>
+                  <div className="text-2xl font-bold text-primary-foreground text-center">
+                    {
+                      formattedBuildingsInfo?.nonResidential
+                        ?.kgCO2PerSquareMeter
+                    }
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    kgCO2e/m²
+                  </div>
+                </div>
+              }
+            >
+              {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} kilogramas de CO2 emitidos por metro quadrado.`}
+            </Tooltip>
           </div>
           <CardDescription className="mt-2 text-center">
             Os edifícios não residenciais possuem{" "}
@@ -253,7 +286,7 @@ export default function DashboardSection1() {
   return (
     <div className="space-y-6 text-foreground">
       <h2 className="text-2xl font-bold">
-        Visão geral de emissões de CO₂ do ano de {new Date().getFullYear() - 1}
+        Visão geral de emissões de CO2 do ano de {new Date().getFullYear() - 1}
       </h2>
 
       <div className="flex gap-6 flex-col md:flex-row">
@@ -262,7 +295,7 @@ export default function DashboardSection1() {
         ) : (
           <Card className="border w-full">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle>Emissões Totais de CO₂</CardTitle>
+              <CardTitle>Emissões totais (tCO2e)</CardTitle>
               <CardIcons>
                 <Scale />
               </CardIcons>

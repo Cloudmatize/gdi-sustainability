@@ -93,7 +93,7 @@ export default function DashboardSection3() {
                 <CardIcons>
                   <Zap />
                 </CardIcons>
-                Fonte Principal de Emissões de CO₂
+                Fonte principal de emissões de CO2
               </CardTitle>
             </CardHeader>
             <CardContent className="mt-4 ">
@@ -138,7 +138,7 @@ export default function DashboardSection3() {
                 <CardIcons>
                   <ArrowDownUp />
                 </CardIcons>
-                Comparativo de Eficiência
+                Comparativo de eficiência
               </CardTitle>
             </CardHeader>
             <CardContent className="mt-2 gap-2 flex flex-col ">

@@ -14,6 +14,7 @@ import { Fragment } from "react";
 import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 import { Skeleton } from "../ui/skeleton";
+import InfoTooltip from "../ui/info-tooltip";
 
 const firstYear = new Date().getFullYear() - 2;
 const secondYear = new Date().getFullYear() - 1;
@@ -166,6 +167,7 @@ function EmissionPerPassengerCard(
     </Card>
   );
 }
+
 export default function DashboardSection2() {
   const {
     data: co2EmissionByModalFirstYear,
@@ -460,13 +462,14 @@ export default function DashboardSection2() {
               <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
             ))
           : co2EmissionsByModals?.map((emission, index) => (
-              <Fragment  key={`${emission.mode}-${index}`}>
+              <Fragment key={`${emission.mode}-${index}`}>
                 <Co2EmissionComparissonCard {...emission} />
               </Fragment>
             ))}
       </div>
-      <div className="text-lg font-medium">
+      <div className="text-lg font-medium flex items-center gap-1 ">
         Emissões por passageiro (kgCO2e)
+        <InfoTooltip content="Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte." />
       </div>
       {/* Emission Per Passenger Card */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
