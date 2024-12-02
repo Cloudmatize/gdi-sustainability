@@ -14,6 +14,7 @@ import {
 import { ArrowDownUp, Droplet, Zap } from "lucide-react";
 import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
+import Link from "next/link";
 
 type EmissionData = {
   name: any;
@@ -87,114 +88,119 @@ export default function DashboardSection3() {
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border card-hover ">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CardIcons>
-                  <Zap />
-                </CardIcons>
-                Fonte principal de emissões de CO2
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="mt-4 ">
-              <div className="text-2xl font-bold text-foreground mb-2">
-                {
-                  ENERGY_FRACTIONS[
-                    highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
-                  ]
-                }
-              </div>
-              <div className="space-y-1">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    Contribuição nas emissões dos edifícios
-                  </span>
-                  <span className="font-bold text-end text-lg text-primary-foreground">
-                    {((highestCO2Emission?.percentage || 0) * 100).toFixed(2)}%
-                  </span>
+          <Link href='/buildings'>
+            <Card className="border card-hover ">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CardIcons>
+                    <Zap />
+                  </CardIcons>
+                  Fonte principal de emissões de CO2
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="mt-4 ">
+                <div className="text-2xl font-bold text-foreground mb-2">
+                  {
+                    ENERGY_FRACTIONS[
+                      highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
+                    ]
+                  }
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    Total de CO₂ emitido (tCO2e)
-                  </span>
-                  <span className="font-bold text-lg text-primary-foreground">
-                    {Math.trunc(
-                      highestCO2Emission?.co2Emission || 0
-                    ).toLocaleString()}
-                  </span>
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      Contribuição nas emissões dos edifícios
+                    </span>
+                    <span className="font-bold text-end text-lg text-primary-foreground">
+                      {((highestCO2Emission?.percentage || 0) * 100).toFixed(2)}
+                      %
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      Total de CO₂ emitido (tCO2e)
+                    </span>
+                    <span className="font-bold text-lg text-primary-foreground">
+                      {Math.trunc(
+                        highestCO2Emission?.co2Emission || 0
+                      ).toLocaleString()}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Link>
         )}
 
         {/* Efficiency Comparison Card */}
         {isLoadingEnergyIntensitiesBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border card-hover">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center  gap-2">
-                <CardIcons>
-                  <ArrowDownUp />
-                </CardIcons>
-                Comparativo de eficiência
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="mt-2 gap-2 flex flex-col ">
-              <div className="my-2 gap-1 flex flex-col">
-                <div className="flex items-center">
-                  <p className="text-xl font-bold text-foreground min-w-36">
-                    {
-                      ENERGY_FRACTIONS[
-                        efficiencyComparison?.lowest
-                          .name as keyof typeof ENERGY_FRACTIONS
-                      ]
-                    }
-                  </p>
-                  <div className="flex items-center gap-1 text-primary-foreground">
-                    <Droplet size={16} className="" />
-                    <span className="font-medium">Fonte mais eficiente</span>
+          <Link href={"/buildings"}>
+            <Card className="border card-hover">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center  gap-2">
+                  <CardIcons>
+                    <ArrowDownUp />
+                  </CardIcons>
+                  Comparativo de eficiência
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="mt-2 gap-2 flex flex-col ">
+                <div className="my-2 gap-1 flex flex-col">
+                  <div className="flex items-center">
+                    <p className="text-xl font-bold text-foreground min-w-36">
+                      {
+                        ENERGY_FRACTIONS[
+                          efficiencyComparison?.lowest
+                            .name as keyof typeof ENERGY_FRACTIONS
+                        ]
+                      }
+                    </p>
+                    <div className="flex items-center gap-1 text-primary-foreground">
+                      <Droplet size={16} className="" />
+                      <span className="font-medium">Fonte mais eficiente</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center ">
+                    <div className="text-xl font-bold text-foreground min-w-36">
+                      {
+                        ENERGY_FRACTIONS[
+                          efficiencyComparison?.highest
+                            .name as keyof typeof ENERGY_FRACTIONS
+                        ]
+                      }
+                    </div>
+                    <div className="flex items-center gap-2 text-destructive-foreground">
+                      <Zap size={16} className="" />
+                      <span className="font-medium">Fonte menos eficiente</span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center ">
-                  <div className="text-xl font-bold text-foreground min-w-36">
-                    {
-                      ENERGY_FRACTIONS[
-                        efficiencyComparison?.highest
-                          .name as keyof typeof ENERGY_FRACTIONS
-                      ]
-                    }
-                  </div>
-                  <div className="flex items-center gap-2 text-destructive-foreground">
-                    <Zap size={16} className="" />
-                    <span className="font-medium">Fonte menos eficiente</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <CardDescription>
-                {
-                  ENERGY_FRACTIONS[
-                    efficiencyComparison?.lowest
-                      .name as keyof typeof ENERGY_FRACTIONS
-                  ]
-                }{" "}
-                tem o menor impacto por kWh com (
-                {efficiencyComparison?.lowest.value} kgCO₂/kWh), sendo{" "}
-                {efficiencyComparison?.differenceFactor?.toFixed(2)} vezes mais
-                eficiente que{" "}
-                {
-                  ENERGY_FRACTIONS[
-                    efficiencyComparison?.highest
-                      .name as keyof typeof ENERGY_FRACTIONS
-                  ]
-                }{" "}
-                com ({efficiencyComparison?.highest.value} kgCO₂/kWh).
-              </CardDescription>
-            </CardFooter>
-          </Card>
+              </CardContent>
+              <CardFooter>
+                <CardDescription>
+                  {
+                    ENERGY_FRACTIONS[
+                      efficiencyComparison?.lowest
+                        .name as keyof typeof ENERGY_FRACTIONS
+                    ]
+                  }{" "}
+                  tem o menor impacto por kWh com (
+                  {efficiencyComparison?.lowest.value} kgCO₂/kWh), sendo{" "}
+                  {efficiencyComparison?.differenceFactor?.toFixed(2)} vezes
+                  mais eficiente que{" "}
+                  {
+                    ENERGY_FRACTIONS[
+                      efficiencyComparison?.highest
+                        .name as keyof typeof ENERGY_FRACTIONS
+                    ]
+                  }{" "}
+                  com ({efficiencyComparison?.highest.value} kgCO₂/kWh).
+                </CardDescription>
+              </CardFooter>
+            </Card>
+          </Link>
         )}
       </div>
     </div>

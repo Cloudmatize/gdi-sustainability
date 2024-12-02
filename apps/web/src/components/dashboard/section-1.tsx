@@ -24,6 +24,7 @@ import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
 import TargetAdherenceSection from "./target-adherence-section";
 import { Tooltip } from "../tooltip";
+import Link from "next/link";
 
 function generateComparisonMessage(
   value1: number,
@@ -147,6 +148,7 @@ export default function DashboardSection1() {
           <LineChart />
         </CardIcons>
       ),
+      href: "/transports",
       loading:
         isLoadingTransportsCo2Emission ||
         isLoadingTransportsCo2EmissionPreviousYear,
@@ -184,6 +186,7 @@ export default function DashboardSection1() {
           <House />
         </CardIcons>
       ),
+      href: "/buildings",
       loading: isLoadingBuildingsInfo,
       content: (
         <div className="flex flex-col w-full">
@@ -230,6 +233,7 @@ export default function DashboardSection1() {
     },
     {
       title: "Métricas por edifício não residencial",
+      href: "/buildings",
       icon: (
         <CardIcons>
           <Building />
@@ -335,9 +339,12 @@ export default function DashboardSection1() {
             </CardContent>
           </Card>
         )}
-        <div className="h-80  md:h-64 xl:h-52 w-full  card-hover">
+        <Link
+          href={"/targets"}
+          className="h-80  md:h-64 xl:h-52 w-full  card-hover"
+        >
           <TargetAdherenceSection />
-        </div>
+        </Link>
       </div>
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
@@ -345,13 +352,18 @@ export default function DashboardSection1() {
           card?.loading ? (
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
-            <Card key={`${card.title}-${index}`} className="border ">
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle>{card.title}</CardTitle>
-                {card.icon}
-              </CardHeader>
-              <CardFooter className="mt-5">{card.content}</CardFooter>
-            </Card>
+            <Link href={card.href}>
+              <Card
+                key={`${card.title}-${index}`}
+                className="border card-hover"
+              >
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <CardTitle>{card.title}</CardTitle>
+                  {card.icon}
+                </CardHeader>
+                <CardFooter className="mt-5">{card.content}</CardFooter>
+              </Card>
+            </Link>
           )
         )}
       </div>

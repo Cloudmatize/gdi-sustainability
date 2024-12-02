@@ -15,6 +15,7 @@ import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 import { Skeleton } from "../ui/skeleton";
 import InfoTooltip from "../ui/info-tooltip";
+import Link from "next/link";
 
 const firstYear = new Date().getFullYear() - 2;
 const secondYear = new Date().getFullYear() - 1;
@@ -317,7 +318,8 @@ export default function DashboardSection2() {
               <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
             ))
           : modalAnalysis?.modalsData?.map((transport, index) => (
-              <Card className="border w-full card-hover" key={index}>
+            <Link href='/transports'>
+              <Card  className="border w-full card-hover" key={index}>
                 <CardHeader>
                   <CardTitle className="gap-2 flex">
                     <div className="flex flex-col gap-2">
@@ -363,6 +365,8 @@ export default function DashboardSection2() {
                   </div>
                 </CardContent>
               </Card>
+            </Link>
+
             ))}
       </div>
 
