@@ -61,7 +61,7 @@ function compareEfficiency(data: EnergyData[]): {
   };
 }
 
-export default function DashboardSection4() {
+export default function DashboardSection3() {
   const {
     data: energyFractionsBySector,
     isFetching: isLoadingEnergyFractionsBySector,
