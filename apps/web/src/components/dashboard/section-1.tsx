@@ -191,13 +191,17 @@ export default function DashboardSection1() {
               <div className="text-2xl font-bold text-primary-foreground text-center">
                 {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
               </div>
-              <div className="text-sm text-muted-foreground text-center">tCO₂/edifício</div>
+              <div className="text-sm text-muted-foreground text-center">
+                tCO₂/edifício
+              </div>
             </div>
             <div>
               <div className="text-2xl font-bold text-primary-foreground">
                 {formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}
               </div>
-              <div className="text-sm text-muted-foreground text-center">kgCO₂/m²</div>
+              <div className="text-sm text-muted-foreground text-center">
+                kgCO₂/m²
+              </div>
             </div>
           </div>
           <CardDescription className="mt-2 text-center">
@@ -298,7 +302,7 @@ export default function DashboardSection1() {
             </CardContent>
           </Card>
         )}
-        <div className="h-80  md:h-64 xl:h-52 w-full ">
+        <div className="h-80  md:h-64 xl:h-52 w-full  card-hover">
           <TargetAdherenceSection />
         </div>
       </div>
@@ -308,7 +312,7 @@ export default function DashboardSection1() {
           card?.loading ? (
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
-            <Card key={`${card.title}-${index}`} className="border">
+            <Card key={`${card.title}-${index}`} className="border ">
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle>{card.title}</CardTitle>
                 {card.icon}

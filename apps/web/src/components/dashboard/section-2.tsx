@@ -315,7 +315,7 @@ export default function DashboardSection2() {
               <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
             ))
           : modalAnalysis?.modalsData?.map((transport, index) => (
-              <Card className="border w-full" key={index}>
+              <Card className="border w-full card-hover" key={index}>
                 <CardHeader>
                   <CardTitle className="gap-2 flex">
                     <div className="flex flex-col gap-2">
@@ -460,7 +460,7 @@ export default function DashboardSection2() {
               <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
             ))
           : co2EmissionsByModals?.map((emission, index) => (
-              <Fragment key={`${emission.mode}-${index}`}>
+              <Fragment  key={`${emission.mode}-${index}`}>
                 <Co2EmissionComparissonCard {...emission} />
               </Fragment>
             ))}

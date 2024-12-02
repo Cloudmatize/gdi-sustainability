@@ -87,7 +87,7 @@ export default function DashboardSection3() {
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border ">
+          <Card className="border card-hover ">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CardIcons>
@@ -132,7 +132,7 @@ export default function DashboardSection3() {
         {isLoadingEnergyIntensitiesBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Card className="border">
+          <Card className="border card-hover">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center  gap-2">
                 <CardIcons>
