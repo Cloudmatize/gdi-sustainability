@@ -3,7 +3,7 @@ import { Building, Bus, Cloud, Goal, Home, MapIcon } from "lucide-react";
 export const routes = [
   {
     id: 1,
-    title: "Visão Geral",
+    title: "Visão geral",
     path: "/dashboard",
     icon: Home,
   },
@@ -22,7 +22,7 @@ export const routes = [
 
   {
     id: 4,
-    title: "Rastreador de Metas",
+    title: "Rastreador de metas",
     path: "/targets",
     icon: Goal,
   },

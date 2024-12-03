@@ -64,7 +64,7 @@ export default function TransportsPage() {
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
             <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-foreground">
-              Emissões de transporte <Bus size={48} />
+              Emissão de transportes <Bus size={48} />
             </h1>
           </div>
           <div className="flex items-center gap-2">

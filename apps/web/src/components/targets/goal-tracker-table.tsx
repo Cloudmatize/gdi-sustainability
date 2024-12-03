@@ -72,7 +72,11 @@ const transformData = (
     return {
       id: item.mode,
       name: item.mode,
-      icon: getIconByTransportMode({ mode: item.mode, asChild: true, className:'text-slate-700 h-4 w-4'}),
+      icon: getIconByTransportMode({
+        mode: item.mode,
+        asChild: true,
+        className: "text-slate-700 h-4 w-4",
+      }),
       baseTrips: item.trips,
       tripPercentage: 0,
       passengersPerTrip: passengersPerTripData[item.mode] || 1,
@@ -219,7 +223,10 @@ export default function GoalTrackerTable({ data }: Props) {
   return (
     <Card className="h-full  overflow-y-auto">
       <CardHeader>
-        <CardTitle>Dados por Modo de Transporte</CardTitle>
+        <CardTitle>
+          Relatório de emissões por transporte no último ano (
+          {new Date().getFullYear() - 1})
+        </CardTitle>
       </CardHeader>
       <ModalSimulator />
 
@@ -298,7 +305,7 @@ export default function GoalTrackerTable({ data }: Props) {
                 <TableRow className="w-full" key={`${mode.id}-${index}`}>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <span  >{mode.icon}</span>
+                      <span>{mode.icon}</span>
                       <span>{mappedTravelMode[mode.name as TravelMode]}</span>
                     </div>
                   </TableCell>
