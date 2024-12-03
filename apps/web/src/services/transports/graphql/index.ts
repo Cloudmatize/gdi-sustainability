@@ -135,10 +135,31 @@ function getEmissionAnalysisByYears(input: InputData): {
     increase: highestIncrease!,
   };
 }
+export const calculateSimulatedCO2Emissions = (
+  startEmissionData: number,
+  targetEmission: number
+) => {
+  const startYear = new Date().getFullYear() - 1;
+  const years = TARGET_YEAR - startYear;
+  const annualReductionRate = Math.pow(
+    targetEmission / startEmissionData,
+    1 / years
+  );
+
+  const simulatedEmissions: { [year: number]: number } = {};
+  let currentEmission = startEmissionData;
+
+  for (let year = startYear; year <= TARGET_YEAR; year++) {
+    simulatedEmissions[year] = currentEmission;
+    currentEmission *= annualReductionRate;
+  }
+
+  return simulatedEmissions;
+};
 
 export const calculateCityEmissionTargets = (
   startEmissionData: number,
-  startYear: number = 2018
+  startYear: number = BASE_YEAR
 ) => {
   const INITIAL_EMISSION_YEAR = startYear;
 

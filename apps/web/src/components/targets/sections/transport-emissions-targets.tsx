@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
-import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { calculateSimulatedCO2Emissions } from "@/services/transports/graphql";
 import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { Target } from "lucide-react";
@@ -173,11 +173,10 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
     if (data || !hypothesisMode) {
       setTransportEmissionData(data);
     }
-
     if (hypothesisMode && totalCo2Emission.percentage) {
-      const simulatedCo2Emission = calculateCityEmissionTargets(
-        totalCo2Emission?.simulated,
-        2024
+      const simulatedCo2Emission = calculateSimulatedCO2Emissions(
+        totalCo2Emission?.original,
+        totalCo2Emission?.simulated
       );
 
       let updatedData = updateSimulatedEmissions(data, simulatedCo2Emission);
@@ -198,7 +197,6 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
     lastYearData?.co2Emission,
     lastYearData?.targetCo2Emission
   );
-
   return (
     <div>
       {isFetching ? (
@@ -295,28 +293,30 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                   />
                 )}
 
-                {/* <ReferenceLine
+                <ReferenceLine
                   x={BASE_YEAR}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
                     value: "Ano de referência",
-                    position: "top",
+                    position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,
+                    offset: 45,
                   }}
-                /> */}
-                {/* <ReferenceLine
+                />
+                <ReferenceLine
                   x={TARGET_YEAR}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: "Target completion year",
-                    position: "left",
+                    value: "Ano de conclusão da meta",
+                    position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,
+                    offset: 45,
                   }}
-                /> */}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
