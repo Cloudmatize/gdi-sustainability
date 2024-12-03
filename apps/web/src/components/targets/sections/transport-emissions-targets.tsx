@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
 import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
@@ -49,7 +50,7 @@ function checkEmissionsStatus(
       sugestion:
         targetEmission !== undefined
           ? targetEmission !== null &&
-          `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
+            `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
           : undefined,
     };
   }
@@ -138,26 +139,20 @@ type DataEntry = {
   simulatedCo2Emission?: number | null;
 };
 
-
 interface Props {
   data?: {
     year: number;
     co2Emission: number | null;
     targetCo2Emission: number | null;
     simulatedCo2Emission?: number | null;
-
   }[];
 }
 export default function TransportEmissionTargets({ data = [] }: Props) {
-  // const { data, isFetching } = useTransportCO2EmissionByYear();
-  // const data = CO2_EMISSION_BY_YEAR_MOCK;
-
   const [transportEmissionData, setTransportEmissionData] = useState<
     DataEntry[]
   >([]);
 
   const { totalCo2Emission, hypothesisMode } = useTargetsStore();
-
   function updateSimulatedEmissions(
     data: DataEntry[],
     simulatedRaw: Record<string, number>
@@ -301,7 +296,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                 )}
 
                 {/* <ReferenceLine
-                  x={2018}
+                  x={BASE_YEAR}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
@@ -311,8 +306,8 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                     fontSize: 12,
                   }}
                 /> */}
-                <ReferenceLine
-                  x={2030}
+                {/* <ReferenceLine
+                  x={TARGET_YEAR}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
@@ -321,7 +316,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                     fill: "#bab8b8",
                     fontSize: 12,
                   }}
-                />
+                /> */}
               </LineChart>
             </ResponsiveContainer>
           </div>

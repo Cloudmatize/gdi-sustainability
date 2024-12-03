@@ -5,7 +5,7 @@ import CardIcons from "../ui/card-icons";
 interface GoalCardProps {
   icon: React.ElementType;
   title: string;
-  value: string;
+  value: string | number;
   subLabel: string;
   subValue: string;
   subUnit: string;

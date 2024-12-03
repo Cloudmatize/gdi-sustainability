@@ -19,6 +19,7 @@ import GoalTrackerTable from "./goal-tracker-table";
 import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
+import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
 
 const transformData = (
   data: {
@@ -66,7 +67,6 @@ export default function GoalTracker() {
   const [openSidebar, setOpenSidebar] = useState(false);
 
   const transformDataTest = transformData(co2EmissionByYear || []);
-
   const modalData = targetsCo2EmissionByModal?.map((data) => {
     return {
       id: data?.mode,
@@ -86,7 +86,6 @@ export default function GoalTracker() {
     transformDataTest?.[transformDataTest.length - 1];
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
-  const yearBase = co2EmissionByYear?.[0]?.year || 0;
   return (
     <div className="container mx-auto space-y-6">
       {hypothesisMode && (
@@ -116,7 +115,9 @@ export default function GoalTracker() {
         </div>
       </div>
       <div className="space-y-3 py-1 w-full">
-        <div className={cx("grid gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-4")}>
+        <div
+          className={cx("grid gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-4")}
+        >
           <div
             className={cx(
               "h-full col-span-2 lg:col-span-1",
@@ -129,7 +130,7 @@ export default function GoalTracker() {
               <GoalCard
                 icon={CalendarClock}
                 title="Ano base"
-                value={String(yearBase)}
+                value={String(BASE_YEAR)}
                 subLabel="Emissão inicial de CO2"
                 subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
                 subUnit="toneladas de CO2"
@@ -148,10 +149,10 @@ export default function GoalTracker() {
               <GoalCard
                 icon={Target}
                 title="Target"
-                value="2030"
-                subLabel="Emissão estimada (-20%)"
+                value={TARGET_YEAR}
+                subLabel={`Emissão estimada (-${REDUCTION_RATE}%)`}
                 subValue={Math.trunc(
-                  yearBaseCo2Emission * 0.8
+                  yearBaseCo2Emission * ((100 - REDUCTION_RATE) / 100)
                 ).toLocaleString()}
                 subUnit="toneladas de CO2"
               />
@@ -168,7 +169,7 @@ export default function GoalTracker() {
               <Skeleton className="h-[185px]" />
             ) : (
               <TargetAdherenceCard
-                targetYear={2030}
+                targetYear={TARGET_YEAR}
                 baseEmissions={lastYearCo2Emission || 0}
                 targetEmissions={
                   targetCo2EmissionsFinalYear.targetCo2Emission || 0

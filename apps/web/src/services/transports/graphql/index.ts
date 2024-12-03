@@ -20,6 +20,7 @@ import { graphQLClient } from "@/services/graphql";
 import { convertTons } from "@/utils/convert-tons";
 import { mappedTravelMode } from "@/constants/transports";
 import { TransportFilters } from "@/store/transports";
+import { TARGET_YEAR, REDUCTION_RATE, BASE_YEAR } from "@/constants/targets";
 
 interface TransportationEmission {
   sum_full_co2e_tons: number;
@@ -140,12 +141,9 @@ export const calculateCityEmissionTargets = (
   startYear: number = 2018
 ) => {
   const INITIAL_EMISSION_YEAR = startYear;
-  const REDUCTION_RATE = 0.2; // 20%
-  const TARGET_YEAR = 2030;
 
   const years = TARGET_YEAR - INITIAL_EMISSION_YEAR;
-
-  const annualReductionRate = (1 - REDUCTION_RATE) ** (1 / years);
+  const annualReductionRate = (1 - REDUCTION_RATE / 100) ** (1 / years);
 
   const targets: { [key: number]: number } = {};
   let currentTarget = startEmissionData;
@@ -313,7 +311,6 @@ export const getTransportsCO2EmissionByYearAndModal = async ({
       { queryName: "getCO2EmissionByYearAndModalQuery" }
     );
 
-
     if (data) {
       const uniqueYears = Array.from(
         new Set(
@@ -405,12 +402,14 @@ export const getTransportsCO2EmissionByYear = async ({
     });
 
     if (data) {
-      const emissionsByYear = data.cube.map(({ transportation_emission }) => {
-        return {
-          year: transportation_emission.year,
-          co2Emission: transportation_emission.sum_full_co2e_tons,
-        };
-      });
+      const emissionsByYear = data.cube
+        .map(({ transportation_emission }) => {
+          return {
+            year: transportation_emission.year,
+            co2Emission: transportation_emission.sum_full_co2e_tons,
+          };
+        })
+        .filter((item) => item.year >= BASE_YEAR);
 
       return emissionsByYear;
     }
@@ -433,7 +432,7 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
         mode: TravelMode;
         percentageContribution: number;
         avgPercentageYearly: number;
-        contributionStatus: 'Redução' | 'Elevação';
+        contributionStatus: "Redução" | "Elevação";
       }[] = data?.cube?.map(({ transportation_emission_cards }) => {
         return {
           mode: transportation_emission_cards.mode,
