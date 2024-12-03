@@ -11,7 +11,7 @@ import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { cx } from "class-variance-authority";
 import { CalendarClock, Target } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
@@ -66,16 +66,27 @@ export default function GoalTracker() {
   } = useTargetsCO2EmissionByModal();
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const transformDataTest = transformData(co2EmissionByYear || []);
+  const transportEmissionsTarget = transformData(co2EmissionByYear || []);
   const modalData = targetsCo2EmissionByModal?.map((data) => {
     return {
       id: data?.mode,
       name: mappedTravelMode[data.mode as TravelMode],
-      icon: getIconByTransportMode({ mode: data.mode, asChild: true, className:'text-slate-700 h-4 w-4' }),
+      icon: getIconByTransportMode({
+        mode: data.mode,
+        asChild: true,
+        className: "text-slate-700 h-4 w-4",
+      }),
     };
   });
 
   const { hypothesisMode, setHypothesisMode } = useTargetsStore();
+
+  useEffect(() => {
+    return () => {
+      setHypothesisMode(false);
+      setOpenSidebar(false);
+    };
+  }, []);
 
   const lastYearCo2Emission =
     co2EmissionByYear?.find(
@@ -83,7 +94,7 @@ export default function GoalTracker() {
     )?.co2Emission || 0;
 
   const targetCo2EmissionsFinalYear =
-    transformDataTest?.[transformDataTest.length - 1];
+    transportEmissionsTarget?.[transportEmissionsTarget.length - 1];
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
   return (
@@ -187,7 +198,7 @@ export default function GoalTracker() {
       {loadingCo2EmissionByYear ? (
         <Skeleton className="h-[500px]" />
       ) : (
-        <TransportEmissionTargets data={transformDataTest} />
+        <TransportEmissionTargets data={transportEmissionsTarget} />
       )}
     </div>
   );
