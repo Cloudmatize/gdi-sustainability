@@ -82,31 +82,9 @@ const CustomTooltip = ({
   label?: string;
 }) => {
   if (active && payload && payload.length) {
-    const currentItem = payload[0].payload;
-    const emissionsStatus = checkEmissionsStatus(
-      (currentItem as any)?.co2Emission,
-      (currentItem as any)?.targetCo2Emission
-    );
-    const { status, differencePercentage, sugestion } = emissionsStatus || {};
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
         {label}
-        <div className="flex flex-col">
-          <div
-            style={{
-              color: !differencePercentage ? "" : "#e53e3e",
-            }}
-            className={`my-1 text-teal-700 font-semibold `}
-          >
-            {status && status}
-          </div>
-          {!!differencePercentage && (
-            <div>{differencePercentage}% de diferença</div>
-          )}
-          {!!sugestion && (
-            <div className="text-muted-foreground text-sm">{sugestion}</div>
-          )}
-        </div>
         {payload.map((item, index) => {
           return (
             !!item.value && (

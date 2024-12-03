@@ -89,7 +89,7 @@ export default function DashboardSection3() {
           <Skeleton className="h-[200px]" />
         ) : (
           <Link href='/buildings'>
-            <Card className="border card-hover ">
+            <Card className="border card-hove h-full ">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CardIcons>
@@ -137,7 +137,7 @@ export default function DashboardSection3() {
           <Skeleton className="h-[200px]" />
         ) : (
           <Link href={"/buildings"}>
-            <Card className="border card-hover">
+            <Card className="border h-full card-hover">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center  gap-2">
                   <CardIcons>

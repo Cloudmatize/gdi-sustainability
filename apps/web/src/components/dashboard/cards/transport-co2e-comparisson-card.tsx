@@ -23,7 +23,7 @@ export default function TransportCo2eComparissonCard(
     <Card key={emission.mode} className="border w-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle> {mappedTravelMode[emission.mode as TravelMode]}</CardTitle>
-        {getIconByTransportMode(emission.mode)}
+        {getIconByTransportMode({ mode: emission.mode })}
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-center gap-4">

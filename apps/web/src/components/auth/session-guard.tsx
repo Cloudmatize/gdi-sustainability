@@ -29,7 +29,7 @@ export default function SessionGuard({ children }: { children: ReactNode }) {
     }
 
     if (status === "authenticated" && path === "/auth/login") {
-      redirect("/transports");
+      redirect("/dashboard");
     }
   }, [data, status, autoSignInParam]);
 

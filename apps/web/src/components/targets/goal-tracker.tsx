@@ -16,7 +16,7 @@ import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
 import GoalTrackerTable from "./goal-tracker-table";
-import MultiModalSimulatorTransferTest from "./modal-trips-transfer-simulator";
+import MultiModalSimulatorTransferSimulator from "./modal-trips-transfer-simulator";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
 import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
@@ -71,7 +71,7 @@ export default function GoalTracker() {
     return {
       id: data?.mode,
       name: mappedTravelMode[data.mode as TravelMode],
-      icon: getIconByTransportMode(data?.mode, true),
+      icon: getIconByTransportMode({ mode: data.mode, asChild: true, className:'text-slate-700 h-4 w-4' }),
     };
   });
 
@@ -94,7 +94,7 @@ export default function GoalTracker() {
           isOpen={openSidebar}
           setIsOpen={setOpenSidebar}
         >
-          <MultiModalSimulatorTransferTest data={modalData || []} />
+          <MultiModalSimulatorTransferSimulator data={modalData || []} />
         </Sidebar>
       )}
 
@@ -148,7 +148,7 @@ export default function GoalTracker() {
             ) : (
               <GoalCard
                 icon={Target}
-                title="Target"
+                title="Meta"
                 value={TARGET_YEAR}
                 subLabel={`Emissão estimada (-${REDUCTION_RATE}%)`}
                 subValue={Math.trunc(

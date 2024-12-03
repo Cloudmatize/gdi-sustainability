@@ -2,36 +2,26 @@ import { Building, Bus, Cloud, Goal, Home, MapIcon } from "lucide-react";
 
 export const routes = [
   {
-    id: "dashboard",
+    id: 1,
     title: "Visão Geral",
     path: "/dashboard",
     icon: Home,
   },
-
   {
-    id: "emissions",
-    title: "Emissões de CO2",
-    path: "/",
-    icon: Cloud,
-    children: [
-      {
-        id: 5,
-        parent: 4,
-        title: " Transportes",
-        path: "transports",
-        icon: Bus,
-      },
-      {
-        id: 6,
-        parent: 4,
-        title: "Edifícios",
-        path: "buildings",
-        icon: Building,
-      },
-    ],
+    id: 2,
+    title: "Emissão de transportes",
+    path: "/transports",
+    icon: Bus,
   },
   {
-    id: "targets",
+    id: 3,
+    title: "Emissão de edifícios",
+    path: "/buildings",
+    icon: Building,
+  },
+
+  {
+    id: 4,
     title: "Rastreador de Metas",
     path: "/targets",
     icon: Goal,

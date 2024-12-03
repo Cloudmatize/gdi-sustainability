@@ -228,9 +228,9 @@ export default function DashboardSection2() {
           <TransportSectorAnalysisCard
             data={comparissonSectorData?.highestIncrease}
             title="Setor com maior aumento"
-            icon={getIconByTransportMode(
-              comparissonSectorData?.highestIncrease?.sector.toUpperCase()
-            )}
+            icon={getIconByTransportMode({
+              mode: comparissonSectorData?.highestIncrease?.sector.toUpperCase(),
+            })}
             isIncrease
           />
         )}
@@ -240,9 +240,9 @@ export default function DashboardSection2() {
           <TransportSectorAnalysisCard
             data={comparissonSectorData?.highestReduction}
             title="Setor com maior redução"
-            icon={getIconByTransportMode(
-              comparissonSectorData?.highestReduction?.sector.toUpperCase()
-            )}
+            icon={getIconByTransportMode({
+              mode: comparissonSectorData?.highestReduction?.sector.toUpperCase(),
+            })}
             isIncrease={false}
           />
         )}
