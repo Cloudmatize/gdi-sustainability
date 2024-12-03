@@ -56,41 +56,23 @@ export function DesktopSideBar() {
   };
   return (
     <Sidebar collapsible="icon" className="justify-center items-center">
-      <SidebarHeader className="border-b py-4 gap-2 justify-center flex flex-col items-center w-full">
+      <SidebarHeader className="border-b h-[65px]  gap-2 justify-center flex flex-col items-center w-full">
         <SidebarMenu className="p-0 m-0 flex flex-col justify-center items-center">
           <SidebarMenuItem className="flex flex-col justify-center items-center w-full">
-            <SidebarMenuButton
-              asChild
-              tooltip={open ? "Clique para esconder" : "Clique para abrir"}
-              className="bg-transparent p-0 m-0 justify-center flex flex-row duration-200"
+            <div
+              className="bg-transparent p-0 m-0 justify-center flex flex-row cursor-pointer"
               onClick={handleToggleSideBar}
             >
               <div
-                className={`flex h-full w-full flex-row gap-2  items-center ${open ? " justify-center" : " justify-start"}`}
+                className={`flex  h-full w-full flex-row gap-2  items-center ${open ? " justify-center" : " justify-start"}`}
               >
-                <Image
-                  src="./icon.svg"
-                  alt="GDI Sustainability"
-                  width={24}
-                  height={24}
-                  className={`${!open ? "w-5" : "w-5"} rounded-md `}
+                <img
+                  src={`/logos/logo-go-sustainability${open ? "" : "-smaller"}.png`}
+                  alt="GS Logo"
+                  className="w-40  "
                 />
-                <div>
-                  <p
-                    className={`${open ? "text-base" : "text-[0px] hidden"} font-bold text-primary-foreground
-                     transition-all ease-in-out delay-150 duration-1000  text-wrap  `}
-                  >
-                    GDS
-                  </p>
-                  <p
-                    className={`${open ? "text-sm" : "text-[0px] hidden"} font-bold  text-slate-600
-                     transition-all ease-in-out delay-150 duration-1000  text-wrap  `}
-                  >
-                    {process.env.NEXT_PUBLIC_MUNICIPALITY_NAME}
-                  </p>
-                </div>
               </div>
-            </SidebarMenuButton>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

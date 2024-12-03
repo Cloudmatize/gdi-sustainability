@@ -20,7 +20,7 @@ export default function ModalSimulator() {
             </div>
             <div className="flex-col flex items-center">
               <span className="font-semibold text-foreground">
-                {original.toLocaleString()} tCo2
+                {original.toLocaleString()} tCO2e
               </span>
               <span className="text-sm text-muted-foreground ">
                 total de emissão inicial
@@ -39,7 +39,7 @@ export default function ModalSimulator() {
                   {percentage.toFixed(2)}%{" "}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  {(simulated - original).toLocaleString()} tCo2
+                  {(simulated - original).toLocaleString()} tCO2e
                 </span>
               </div>
             </div>
@@ -50,7 +50,7 @@ export default function ModalSimulator() {
             </div>
             <div className="flex-col flex items-center ">
               <span className="font-semibold text-foreground">
-                {simulated.toLocaleString()} tCo2
+                {simulated.toLocaleString()} tCO2e
               </span>
               <span className="text-sm text-muted-foreground ">
                 total de emissão prevista
