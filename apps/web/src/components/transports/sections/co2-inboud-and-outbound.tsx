@@ -160,7 +160,7 @@ export default function CO2InboundAndOutbound() {
                     offset: 10,
                   }}
                   dataKey="withinLimit"
-                  name="Inbound"
+                  name="Dentro da fronteira"
                   legendType="circle"
                   fill="#1ba18d"
                   radius={[4, 4, 0, 0]}
@@ -176,7 +176,7 @@ export default function CO2InboundAndOutbound() {
                     offset: 10,
                   }}
                   dataKey="outsideLimit"
-                  name="Outbound"
+                  name="Fora da fronteira"
                   legendType="circle"
                   fill="#9aeee2"
                   radius={[4, 4, 0, 0]}

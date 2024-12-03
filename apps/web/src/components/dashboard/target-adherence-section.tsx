@@ -1,10 +1,8 @@
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
 import TargetAdherenceCard from "../targets/target-adherence-card";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Link, TreePine } from "lucide-react";
-import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
+import { TARGET_YEAR } from "@/constants/targets";
 
 const transformData = (
   data: {
@@ -13,7 +11,7 @@ const transformData = (
   }[]
 ) => {
   const targetEmissions = calculateCityEmissionTargets(
-    data[0]?.co2Emission || 0
+    data[0]?.co2Emission || 0,
   );
 
   const formattedData: {
@@ -58,7 +56,7 @@ export default function TargetAdherenceSection() {
         <Skeleton className="h-[200px]" />
       ) : (
         <TargetAdherenceCard
-          targetYear={2030}
+          targetYear={TARGET_YEAR}
           baseEmissions={lastYearCo2Emission || 0}
           targetEmissions={targetCo2EmissionsFinalYear.targetCo2Emission || 0}
         />

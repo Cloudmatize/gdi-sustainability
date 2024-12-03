@@ -33,16 +33,10 @@ export default function Login() {
 
           <div className="space-y-4">
             <Button
-              className="w-full bg-primary-foreground hover:bg-primary text-primary hover:text-primary-foreground"
+              className="w-full bg-primary-foreground hover:bg-primary text-white hover:text-primary-foreground"
               onClick={handleLogin}
             >
               {status === "loading" ? <Spinner /> : "Entrar"}
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full border-primary-foreground/20 text-primary-foreground hover:text-primary-foreground hover:bg-primary"
-            >
-              Solicitar Acesso
             </Button>
           </div>
         </Card>

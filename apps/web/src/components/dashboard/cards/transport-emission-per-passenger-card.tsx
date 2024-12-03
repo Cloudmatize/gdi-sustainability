@@ -23,7 +23,7 @@ export default function TransportEmissionPerPassengerCard(
     <Card className="border">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle> {mappedTravelMode[emission.mode as TravelMode]}</CardTitle>
-        {getIconByTransportMode(emission.mode)}
+        {getIconByTransportMode({ mode: emission.mode })}
       </CardHeader>
 
       <CardContent>

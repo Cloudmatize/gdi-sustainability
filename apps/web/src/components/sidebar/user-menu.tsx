@@ -1,24 +1,10 @@
-import {
-  LifeBuoy,
-  Link,
-  LogOut,
-  Mail,
-  Settings,
-  User,
-  UserPlus,
-} from "lucide-react";
-import Image from "next/image";
+import { LogOut, User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton } from "../ui/sidebar";
@@ -31,13 +17,7 @@ export function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarMenuButton className="text-wrap  " tooltip={"Menu de usuário"}>
-          <Image
-            src="/jorjinho.png"
-            width={16}
-            height={16}
-            alt="Imagem de perfil"
-            className="rounded-full"
-          />
+          <User2 />
           <p className=" w-full text-wrap">{data?.user?.name}</p>
         </SidebarMenuButton>
       </DropdownMenuTrigger>

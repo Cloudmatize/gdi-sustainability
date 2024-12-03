@@ -72,7 +72,11 @@ const transformData = (
     return {
       id: item.mode,
       name: item.mode,
-      icon: getIconByTransportMode(item.mode, true),
+      icon: getIconByTransportMode({
+        mode: item.mode,
+        asChild: true,
+        className: "text-slate-700 h-4 w-4",
+      }),
       baseTrips: item.trips,
       tripPercentage: 0,
       passengersPerTrip: passengersPerTripData[item.mode] || 1,
@@ -219,7 +223,10 @@ export default function GoalTrackerTable({ data }: Props) {
   return (
     <Card className="h-full  overflow-y-auto">
       <CardHeader>
-        <CardTitle>Dados por Modo de Transporte</CardTitle>
+        <CardTitle>
+          Relatório de emissões por transporte no último ano (
+          {new Date().getFullYear() - 1})
+        </CardTitle>
       </CardHeader>
       <ModalSimulator />
 
@@ -323,14 +330,15 @@ export default function GoalTrackerTable({ data }: Props) {
                           return (
                             <div
                               key={`${log}-${index}`}
-                              className="flex justify-end items-center gap-2 text-primary-foreground"
+                              className="flex justify-end items-center gap-1 text-primary-foreground"
                             >
                               <span>{"->"}</span>
                               <span>
-                                {getIconByTransportMode(
-                                  log?.from as TravelMode,
-                                  true
-                                )}
+                                {getIconByTransportMode({
+                                  mode: log?.from as TravelMode,
+                                  asChild: true,
+                                  className: " w-4 h-4",
+                                })}
                               </span>
                               <span>{`${log.trips.toLocaleString()}`}</span>
                             </div>
@@ -339,14 +347,15 @@ export default function GoalTrackerTable({ data }: Props) {
                         return (
                           <div
                             key={`${log}-${index}`}
-                            className="flex justify-end items-center gap-2 text-red-500 "
+                            className="flex justify-end items-center gap-1 text-red-500 "
                           >
                             <span>{"->"}</span>
-                            <span>
-                              {getIconByTransportMode(
-                                log?.to as TravelMode,
-                                true
-                              )}
+                            <span className="text-red-500">
+                              {getIconByTransportMode({
+                                mode: log?.to as TravelMode,
+                                asChild: true,
+                                className: "text-red-500 w-4 h-4",
+                              })}
                             </span>
 
                             <span>{`${log.trips.toLocaleString()} (${log.percentage}%)`}</span>
@@ -366,7 +375,7 @@ export default function GoalTrackerTable({ data }: Props) {
                               passengersPerTripMapping[mode.id]
                             )
                           }
-                          className="mr-3 text-gray-500 hover:text-gray-700  "
+                          className="mr-4 text-gray-500 hover:text-gray-700  "
                         >
                           <RotateCcw className="ml-1 h-3 w-3" />
                         </button>

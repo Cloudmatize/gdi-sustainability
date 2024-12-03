@@ -20,18 +20,18 @@ export default function ModalAnalysisYearlyCard({ transport }: Props) {
         <CardTitle className="gap-2 flex">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 flex-row">
-              {getIconByTransportMode(transport?.mode) as any}
+              {getIconByTransportMode({ mode: transport?.mode }) as any}
               <span className="">
                 {mappedTravelMode[transport.mode as TravelMode]}
               </span>
             </div>
             <div className="flex gap-2 items-center md:items-end w-full h-full md:justify-items-end">
-              <p className="text-sm font-normal text-muted-foreground flex flex-row gap-1">
+              <div className="text-sm font-normal text-muted-foreground flex flex-row gap-1">
                 <div className="text-sm font-bold text-primary-slate">
                   {transport.percentageContribution}%
                 </div>
                 do total de transportes
-              </p>
+              </div>
             </div>
           </div>
         </CardTitle>

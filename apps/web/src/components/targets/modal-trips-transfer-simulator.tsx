@@ -121,7 +121,7 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
         {transfers.map((transfer) => (
           <div key={transfer.id} className="space-y-4 p-4  rounded-lg">
             <div className="flex items-center gap-5">
-              <Badge variant="default" className="h-8 mr-3 ">
+              <Badge variant="outline" className="h-8 mr-3 bg-slate-600 text-white font-normal ">
                 De:
               </Badge>
               <Select
@@ -148,7 +148,7 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
                       key={mode.id}
                       value={mode.id}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 ">
                         {mode.icon}
                         <span>{mode.name}</span>
                       </div>
@@ -166,7 +166,7 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
                     className="flex flex-col items-center justify-between gap-4"
                   >
                     <div className="flex gap-3 items-center w-full">
-                      <Badge variant="secondary" className="h-8 mr-3">
+                      <Badge variant="outline" className="h-8 mr-3">
                         Para:
                       </Badge>
                       <Select

@@ -308,11 +308,8 @@ export default function DashboardSection1() {
           card?.loading ? (
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
-            <Link href={card.href}>
-              <Card
-                key={`${card.title}-${index}`}
-                className="border card-hover h-full "
-              >
+            <Link href={card.href} key={`${card.title}-${index}`}>
+              <Card className="border card-hover h-full ">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                   <CardTitle>{card.title}</CardTitle>
                   {card.icon}

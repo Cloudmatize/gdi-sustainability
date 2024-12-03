@@ -2,7 +2,8 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
+import { calculateSimulatedCO2Emissions } from "@/services/transports/graphql";
 import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { Target } from "lucide-react";
@@ -49,7 +50,7 @@ function checkEmissionsStatus(
       sugestion:
         targetEmission !== undefined
           ? targetEmission !== null &&
-          `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
+            `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
           : undefined,
     };
   }
@@ -81,31 +82,9 @@ const CustomTooltip = ({
   label?: string;
 }) => {
   if (active && payload && payload.length) {
-    const currentItem = payload[0].payload;
-    const emissionsStatus = checkEmissionsStatus(
-      (currentItem as any)?.co2Emission,
-      (currentItem as any)?.targetCo2Emission
-    );
-    const { status, differencePercentage, sugestion } = emissionsStatus || {};
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
         {label}
-        <div className="flex flex-col">
-          <div
-            style={{
-              color: !differencePercentage ? "" : "#e53e3e",
-            }}
-            className={`my-1 text-teal-700 font-semibold `}
-          >
-            {status && status}
-          </div>
-          {!!differencePercentage && (
-            <div>{differencePercentage}% de diferença</div>
-          )}
-          {!!sugestion && (
-            <div className="text-muted-foreground text-sm">{sugestion}</div>
-          )}
-        </div>
         {payload.map((item, index) => {
           return (
             !!item.value && (
@@ -138,26 +117,20 @@ type DataEntry = {
   simulatedCo2Emission?: number | null;
 };
 
-
 interface Props {
   data?: {
     year: number;
     co2Emission: number | null;
     targetCo2Emission: number | null;
     simulatedCo2Emission?: number | null;
-
   }[];
 }
 export default function TransportEmissionTargets({ data = [] }: Props) {
-  // const { data, isFetching } = useTransportCO2EmissionByYear();
-  // const data = CO2_EMISSION_BY_YEAR_MOCK;
-
   const [transportEmissionData, setTransportEmissionData] = useState<
     DataEntry[]
   >([]);
 
   const { totalCo2Emission, hypothesisMode } = useTargetsStore();
-
   function updateSimulatedEmissions(
     data: DataEntry[],
     simulatedRaw: Record<string, number>
@@ -178,11 +151,10 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
     if (data || !hypothesisMode) {
       setTransportEmissionData(data);
     }
-
     if (hypothesisMode && totalCo2Emission.percentage) {
-      const simulatedCo2Emission = calculateCityEmissionTargets(
-        totalCo2Emission?.simulated,
-        2024
+      const simulatedCo2Emission = calculateSimulatedCO2Emissions(
+        totalCo2Emission?.original,
+        totalCo2Emission?.simulated
       );
 
       let updatedData = updateSimulatedEmissions(data, simulatedCo2Emission);
@@ -203,7 +175,6 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
     lastYearData?.co2Emission,
     lastYearData?.targetCo2Emission
   );
-
   return (
     <div>
       {isFetching ? (
@@ -300,26 +271,28 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                   />
                 )}
 
-                {/* <ReferenceLine
-                  x={2018}
+                <ReferenceLine
+                  x={BASE_YEAR}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
                     value: "Ano de referência",
-                    position: "top",
+                    position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,
+                    offset: 45,
                   }}
-                /> */}
+                />
                 <ReferenceLine
-                  x={2030}
+                  x={TARGET_YEAR}
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: "Target completion year",
-                    position: "left",
+                    value: "Ano de conclusão da meta",
+                    position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,
+                    offset: 45,
                   }}
                 />
               </LineChart>
