@@ -33,12 +33,11 @@ export function MobileSideBar() {
         <SidebarHeader className="border-b py-4 gap-2 justify-between flex flex-row items-center">
             <SidebarMenu className="p-0 m-0">
                 <SidebarMenuButton asChild tooltip={open ? "Clique para esconder" : "Clique para abrir"} className="bg-transparent hover:bg-none p-0 m-0 justify-center flex flex-row" onClick={handleToggleSideBar}>
-                    <div className="flex flex-row gap-2 justify-center w-full items-center">
-                        <Image src="./icon.svg" alt="GDI Sustainability" width={open ? 50 : 30} height={40} className="rounded-md h-5 w-5 cursor-none" />
-                        <p className="overflow-hidden font-medium text-lg">
-                            GDI Sustainability
-                        </p>
-                    </div>
+                  <img
+                    src={`/logos/logo-go-sustainability.png`}
+                    alt="GS Logo"
+                    className="w-40"
+                    />
                 </SidebarMenuButton>
             </SidebarMenu>
         </SidebarHeader>

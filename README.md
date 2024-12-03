@@ -1,4 +1,4 @@
-# 🌍 GDI Sustainability
+# 🌍 Go Data Sustainability
 This project is designed to monitor and evaluate the sustainability metrics of a municipality, with a focus on factors such as Human Development Index (IDH), public health infrastructure, environmental sustainability, and resource management.
 
 ## What's inside?

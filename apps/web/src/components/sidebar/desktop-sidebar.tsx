@@ -68,7 +68,7 @@ export function DesktopSideBar() {
               >
                 <img
                   src={`/logos/logo-go-sustainability${open ? "" : "-smaller"}.png`}
-                  alt="GDI Logo"
+                  alt="GS Logo"
                   className="w-40  "
                 />
               </div>
