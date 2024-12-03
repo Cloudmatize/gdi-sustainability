@@ -15,19 +15,18 @@ export default function Login() {
       <div className="absolute inset-0 bg-[url('/login-background.jpg?height=1080&width=1920')] bg-cover bg-center opacity-20 animate-[wiggle_40s_infinite]" />
 
       <div className="relative flex min-h-screen items-center justify-center p-4">
-        <Card className="w-full max-w-md space-y-8 p-8">
+        <Card className="w-full max-w-md space-y-12 p-8">
           <div className="text-center">
-            <div className="mb-2 flex justify-center">
-              <div className="rounded-full bg-primary p-3">
-                <Leaf className="h-8 w-8 text-primary-foreground" />
-              </div>
-            </div>
-            <h1 className="text-2xl font-semibold text-primary-foreground">
-              Bem vindo ao <br /> GDI Sustentabilidade
+            <h1 className="text-base my-5 font-semibold text-slate-700">
+              Bem vindo ao
+              <br />
             </h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Monitorando e avaliando métricas de sustentabilidade para um
-              município melhor
+
+            <div className="flex justify-center mb-4">
+              <img src="/logos/logo-go-sustainability.png" alt="GDI Logo" />
+            </div>
+            <p className="mt-2 text-sm text-slate-700">
+              Transformando dados em ações sustentáveis.
             </p>
           </div>
 
