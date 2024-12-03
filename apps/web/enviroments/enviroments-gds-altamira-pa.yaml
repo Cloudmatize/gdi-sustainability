@@ -1,0 +1,16 @@
+
+# Project GCP ------------------------------------------------------------
+PROJECT_ID: "<project_id>"
+REGION: "<region>"
+FOLDER_ID: <folder_id>
+TIME_ZONE: "<timezone>"
+
+# Municipality ------------------------------------------------------------
+MUNICIPALITY_ID: "1500602"
+MUNICIPALITY_UF: "PA"
+MUNICIPALITY_NAME: "Altamira"
+MUNICIPALITY_SLUG: "altamira-pa"
+MUNICIPALITY_BASE_YEAR: "2021"
+MUNICIPALITY_COMPLETION_YEAR: "2030"
+MUNICIPALITY_TARGET_REDUCTION: ""
+        

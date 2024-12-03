@@ -1,0 +1,15 @@
+# Project GCP ------------------------------------------------------------
+PROJECT_ID: "<project_id>"
+REGION: "<region>"
+FOLDER_ID: <folder_id>
+TIME_ZONE: "<timezone>"
+
+# Municipality ------------------------------------------------------------
+MUNICIPALITY_ID: "2304202"
+MUNICIPALITY_UF: "CE"
+MUNICIPALITY_NAME: "Crato"
+MUNICIPALITY_SLUG: "crato-ce"
+MUNICIPALITY_BASE_YEAR: "2021"
+MUNICIPALITY_COMPLETION_YEAR: "2028"
+MUNICIPALITY_TARGET_REDUCTION: "25"
+        
