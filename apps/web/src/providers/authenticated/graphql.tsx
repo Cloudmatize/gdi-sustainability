@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, ReactNode, useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import LoadingPage from "@/components/loading-page";
 import { GraphQLClient } from "graphql-request";
 
