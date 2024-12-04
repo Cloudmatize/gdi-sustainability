@@ -2,10 +2,13 @@
 
 import { Goal } from "lucide-react";
 import GoalTracker from "./goal-tracker";
+import { useTargetsStore } from "@/store/targets";
+import { cx } from "class-variance-authority";
 
 export default function TargetsPage() {
+  const { hypothesisMode } = useTargetsStore()
   return (
-    <div className="min-h-screen bg-background p-6 md:mx-16">
+    <div className={cx("min-h-screen bg-background p-4 md:p-6 lg:px-16", hypothesisMode? "mr-12": '')}>
       <div className="mx-auto space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">

@@ -31,12 +31,12 @@ export function MobileSideBar() {
 
     return (<Sidebar className="justify-center items-center">
         <SidebarHeader className="border-b py-4 gap-2 justify-between flex flex-row items-center">
-            <SidebarMenu className="p-0 m-0">
-                <SidebarMenuButton asChild tooltip={open ? "Clique para esconder" : "Clique para abrir"} className="bg-transparent hover:bg-none p-0 m-0 justify-center flex flex-row" onClick={handleToggleSideBar}>
+            <SidebarMenu className="p-0 m-0 items-center">
+                <SidebarMenuButton  asChild tooltip={open ? "Clique para esconder" : "Clique para abrir"} className="bg-transparent hover:bg-none p-0 m-0 justify-center flex flex-row" onClick={handleToggleSideBar}>
                   <img
                     src={`/logos/logo-go-sustainability.png`}
                     alt="GS Logo"
-                    className="w-40"
+                    className="w-32  "
                     />
                 </SidebarMenuButton>
             </SidebarMenu>

@@ -42,9 +42,6 @@ const EmissionCard = ({
     </Card>
   );
 
-
-
-  
 export default function TransportsPage() {
   const { filters, setFilters } = useTransportsStore();
 
@@ -57,17 +54,17 @@ export default function TransportsPage() {
     filters,
   });
   return (
-    <div className="min-h-screen bg-background p-6 md:mx-16">
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
       <div className="mx-auto space-y-6">
         {/* Header */}
 
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
-            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-foreground">
-              Emissão de transportes <Bus size={48} />
+            <h1 className="flex flex-nowrap break-keep items-center gap-3 text-3xl font-bold text-foreground">
+              Emissão de transportes <Bus size={36} />
             </h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 my-3 xl:my-0">
             <YearSelect
               endYear={2023}
               startYear={2018}
@@ -85,12 +82,12 @@ export default function TransportsPage() {
         </p>
         <DataSourceInfo />
         <div className="border-t border-gray-200 py-6" />
-        <p className="text-muted-foreground ">Emissões de CO₂ em toneladas</p>
+        <p className="text-muted-foreground ">Emissão de CO2 em toneladas</p>
         {/* Metrics */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
+        <div className="flex flex-col xl:flex-row gap-6">
           <InfoCard
             icon={MdCo2}
-            title="Emissão total de CO₂"
+            title="Emissão total"
             value={formatCO2Emission(data?.total.co2Emission)}
             percentage={"100%"}
             description={`
@@ -98,7 +95,7 @@ export default function TransportsPage() {
           />
           <InfoCard
             icon={MdCo2}
-            title="Emissão de CO₂ dentro da fronteira"
+            title="Dentro da fronteira"
             value={formatCO2Emission(data?.inbound.co2Emission)}
             percentage={data?.inbound?.percentage}
             infoTooltip={
@@ -110,7 +107,7 @@ export default function TransportsPage() {
           <InfoCard
             icon={MdCo2}
             value={formatCO2Emission(data?.outbound.co2Emission)}
-            title="Emissão de CO₂ fora da fronteira"
+            title="Fora da fronteira"
             percentage={data?.outbound?.percentage}
             infoTooltip={
               "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade"

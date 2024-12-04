@@ -11,18 +11,18 @@ export default function ModalSimulator() {
   } = useTargetsStore();
   const percentageColor = percentage > 0 ? "text-primary-foreground" : "text-red-500";
   return (
-    <div className="w-full border-b  border-gray-200">
+    <div className="border-b  border-gray-200 overflow-auto">
       <CardContent className=" space-y-4 flex  items-center">
-        <div className=" flex gap-12 items-center justify-center  w-full text-xl">
+        <div className=" flex gap-12 items-center md:justify-center  w-full text-xl">
           <div className="flex items-center space-x-2">
             <div className=" w-10">
               <MdCo2 size={40} className="text-foreground" />
             </div>
-            <div className="flex-col flex items-center">
-              <span className="font-semibold text-foreground">
+            <div className="flex-col flex items-center text-center">
+              <span className="font-semibold text-foreground ">
                 {original.toLocaleString()} tCO2e
               </span>
-              <span className="text-sm text-muted-foreground ">
+              <span className="text-sm text-muted-foreground  ">
                 total de emissão inicial
               </span>
             </div>
@@ -34,7 +34,7 @@ export default function ModalSimulator() {
               ) : (
                 <ArrowUp className={`h-6 w-6 ${percentageColor}`} />
               )}
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center text-center">
                 <span className={`text-3xl font-semibold ${percentageColor}`}>
                   {percentage.toFixed(2)}%{" "}
                 </span>
@@ -48,7 +48,7 @@ export default function ModalSimulator() {
             <div className=" w-10">
               <Target className="text-foreground" />
             </div>
-            <div className="flex-col flex items-center ">
+            <div className="flex-col flex items-center  text-center">
               <span className="font-semibold text-foreground">
                 {simulated.toLocaleString()} tCO2e
               </span>

@@ -35,6 +35,7 @@ import {
   YAxis,
 } from "recharts";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
+import ModalAnalysisYearlyCard from "../cards/modal-anaylsis-yearly-card";
 
 const mappedTravelModeIcons: {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -98,7 +99,9 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-foreground text-center">{d?.value}</span>
+          <span className="text-sm text-foreground text-center">
+            {d?.value}
+          </span>
         </div>
       ))}
     </div>
@@ -141,7 +144,9 @@ export const ModalEmissionAnalysisCard = ({
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl md:text-2xl break-words font-bold text-primary-foreground">{title}</h3>
+              <h3 className="text-xl md:text-2xl break-words font-bold text-primary-foreground">
+                {title}
+              </h3>
             </div>
           </div>
           <CardIcons>
@@ -152,8 +157,11 @@ export const ModalEmissionAnalysisCard = ({
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${trend === "up" ? "text-destructive-foreground" : "text-primary-foreground"
-                }`}
+              className={` font-bold ${
+                trend === "up"
+                  ? "text-destructive-foreground"
+                  : "text-primary-foreground"
+              }`}
             >
               {data.contributionStatus}
             </p>
@@ -169,8 +177,11 @@ export const ModalEmissionAnalysisCard = ({
                 <TrendingDown className="h-4 w-4 text-primary-foreground" />
               )}
               <span
-                className={` font-bold ${trend === "up" ? "text-destructive-foreground" : "text-primary-foreground"
-                  }`}
+                className={` font-bold ${
+                  trend === "up"
+                    ? "text-destructive-foreground"
+                    : "text-primary-foreground"
+                }`}
               >
                 {data.avgPercentageYearly}%
               </span>
@@ -210,16 +221,16 @@ export default function Co2EmissionPerTransport() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold mb-2 text-foreground">
-          Comparação de emissões de CO₂ por tipo de transporte
+          Comparação de emissões por tipo de transporte
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Esta seção de comparação divide as emissões de CO2 por tipos
-          específicos de transporte, proporcionando uma visão sobre a eficiência
-          de cada modalidade ao longo dos últimos 5 anos.
+          Compara as emissões de CO2 divididas por tipos específicos de
+          transporte, proporcionando uma visão sobre a eficiência de cada
+          modalidade ao longo dos anos.
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
+      <div className="flex flex-col xl:flex-row gap-6 ">
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
@@ -229,10 +240,11 @@ export default function Co2EmissionPerTransport() {
           };
           return (
             <div className="w-full" key={index}>
-              <ModalEmissionAnalysisCard
-                data={formattedModal}
-                loading={isLoadingModalAnalysis}
-              />
+              {isLoadingModalAnalysis ? (
+                <Skeleton className="h-[300px]" />
+              ) : (
+                <ModalAnalysisYearlyCard transport={formattedModal} />
+              )}
             </div>
           );
         })}
@@ -241,11 +253,11 @@ export default function Co2EmissionPerTransport() {
       {isFetching ? (
         <Skeleton className="h-[240px] rounded-xl" />
       ) : (
-        <Card className="p-4 h-fit">
+        <Card className="p-4 h-fit overflow-auto" >
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emsisão CO₂ (tons)
+            Emissão CO2 (tCO2e)
           </h3>
-          <div className="h-[400px]">
+          <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 width={500}
