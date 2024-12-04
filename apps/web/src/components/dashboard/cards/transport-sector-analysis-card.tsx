@@ -19,23 +19,25 @@ export default function TransportSectorAnalysisCard({
   return (
     <Card className="border w-full">
       <CardHeader className="flex ">
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle className="text-sm md:text-base flex items-center justify-between">
           <span className="flex items-center gap-2">
             {icon}
             {data?.sector}
           </span>
+          <div className="text-end">
           {title}
+          </div>
         </CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
         <div className="flex items-end justify-between w-full h-full gap-2">
           <div className="space-y-1 w-full h-full gap-4">
-            <p className="text-sm text-muted-foreground text-wrap">
+            <span className="text-xs md:text-sm text-muted-foreground">
               {isIncrease
                 ? "Aumento dos últimos 2 anos nas emissões"
                 : "Redução dos últimos 2 anos nas emissões"}
-            </p>
+            </span>
             <div className="flex items-center flex-row gap-2 w-full">
               {isIncrease ? (
                 <MdTrendingUp className="text-destructive-foreground fill-destructive-foreground text-xl" />

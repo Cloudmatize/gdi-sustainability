@@ -205,13 +205,28 @@ export default function DashboardSection2() {
       <div className="text-xl font-bold">
         Comparativo de emissões por transporte de 2018 à {secondYear}
       </div>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingModalAnalysis
           ? [1, 2, 3].map((index) => (
-              <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
+              <Skeleton
+                key={index}
+                className={` w-full h-[200px] rounded-xl${
+                  index === [1, 2, 3].length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
+                }`}
+              />
             ))
           : modalAnalysis?.modalsData?.map((transport, index) => (
-              <Link href="/transports" key={index}>
+              <Link
+                href="/transports"
+                key={index}
+                className={`${
+                  index === modalAnalysis.modalsData.length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
+                }`}
+              >
                 <ModalAnalysisYearlyCard transport={transport} />
               </Link>
             ))}
@@ -221,7 +236,7 @@ export default function DashboardSection2() {
         Comparativo de emissões por transporte dos últimos 2 anos
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
@@ -251,16 +266,30 @@ export default function DashboardSection2() {
       <div className="text-lg font-medium">
         Emissões médias por transporte (tCO2e)
       </div>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
         isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
-              <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
+              <Skeleton
+                key={index}
+                className={` w-full h-[200px] rounded-xl${
+                  index === [1, 2, 3].length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
+                }`}
+              />
             ))
           : co2EmissionsByModals?.map((emission, index) => (
-              <Fragment key={`${emission.mode}-${index}`}>
+              <div
+                className={`${
+                  index === co2EmissionsByModals.length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
+                }`}
+                key={`${emission.mode}-${index}`}
+              >
                 <TransportCo2eComparissonCard {...emission} />
-              </Fragment>
+              </div>
             ))}
       </div>
       <div className="text-lg font-medium flex items-center gap-1 ">
@@ -268,16 +297,30 @@ export default function DashboardSection2() {
         <InfoTooltip content="Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte." />
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
         isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
-              <Skeleton key={index} className="w-full h-[200px] rounded-xl" />
+              <Skeleton
+                className={`w-full h-[200px] rounded-xl ${
+                  index === [1, 2, 3].length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
+                }`}
+                key={index}
+              />
             ))
           : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
-              <Fragment key={`${emission.mode}-${index}`}>
+              <div
+                className={`${
+                  index === co2EmissionsByModalsEmissionsByPassenger.length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
+                }`}
+                key={`${emission.mode}-${index}`}
+              >
                 <TransportEmissionPerPassengerCard {...emission} />
-              </Fragment>
+              </div>
             ))}
       </div>
     </div>

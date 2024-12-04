@@ -147,9 +147,12 @@ export default function DashboardSection1() {
         isLoadingTransportsCo2EmissionPreviousYear,
       content: (
         <div className="flex flex-col w-full">
-          <div className="flex items-center justify-evenly gap-3 mb-5">
+          <div
+            className="flex items-center justify-evenly gap-3 mb-5 text-xl md:text-2xl 2xl:text-3xl 
+ "
+          >
             <div className="text-center">
-              <div className="text-3xl md:text-xl font-bold text-primary-foreground">
+              <div className="font-bold text-primary-foreground">
                 {Math.trunc(
                   transportsCo2EmissionPreviusYear?.totalCO2Emission || 0
                 ).toLocaleString()}
@@ -158,7 +161,7 @@ export default function DashboardSection1() {
             </div>
             <div className="text-2xl md:text-xl text-muted-foreground">×</div>
             <div className="text-center">
-              <div className="text-3xl md:text-xl font-bold text-primary-slate">
+              <div className="font-bold text-primary-slate">
                 {Math.trunc(
                   transportsCo2Emission?.totalCO2Emission || 0
                 ).toLocaleString()}
@@ -183,7 +186,7 @@ export default function DashboardSection1() {
       loading: isLoadingBuildingsInfo,
       content: (
         <div className="flex flex-col w-full">
-          <div className="flex items-center justify-evenly gap-3 mb-5">
+          <div className="flex items-center justify-evenly gap-3 mb-5  text-xl md:text-2xl 2xl:text-3xl ">
             <Tooltip
               triggerContent={
                 <div>
@@ -235,7 +238,7 @@ export default function DashboardSection1() {
       loading: isLoadingBuildingsInfo,
       content: (
         <div className="flex flex-col w-full ">
-          <div className="flex items-center justify-evenly gap-3 mb-5">
+          <div className="flex items-center justify-evenly gap-3 mb-5  text-xl md:text-2xl 2xl:text-3xl ">
             <Tooltip
               triggerContent={
                 <div>
@@ -286,7 +289,7 @@ export default function DashboardSection1() {
         Visão geral de emissões de CO2 do ano de {new Date().getFullYear() - 1}
       </h2>
 
-      <div className="flex gap-6 flex-col md:flex-row">
+      <div className="flex gap-6 flex-col lg:flex-row">
         {isLoadingTransportsCo2Emission || isLoadingBuildingsCo2Emission ? (
           <Skeleton className="h-[200px] w-full" />
         ) : (
@@ -303,12 +306,20 @@ export default function DashboardSection1() {
         </Link>
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {cards?.map((card, index) =>
           card?.loading ? (
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
-            <Link href={card.href} key={`${card.title}-${index}`}>
+            <Link
+              className={`${
+                index === cards.length - 1
+                  ? "lg:col-span-2 xl:col-span-1"
+                  : ""
+              }`}
+              href={card.href}
+              key={`${card.title}-${index}`}
+            >
               <Card className="border card-hover h-full ">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                   <CardTitle>{card.title}</CardTitle>

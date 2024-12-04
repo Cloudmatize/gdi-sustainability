@@ -26,9 +26,9 @@ export default function TransportCo2eComparissonCard(
         {getIconByTransportMode({ mode: emission.mode })}
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-4 text-xl md:text-2xl 2xl:text-3xl">
           <div className="text-center">
-            <div className="text-3xl md:text-xl font-bold text-primary-foreground">
+            <div className=" font-bold text-primary-foreground">
               {emission.firstYear.co2Emissions.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
@@ -37,7 +37,7 @@ export default function TransportCo2eComparissonCard(
           </div>
           <div className="text-2xl md:text-xl text-muted-foreground">×</div>
           <div className="text-center">
-            <div className="text-3xl md:text-xl font-bold text-primary-slate">
+            <div className=" font-bold text-primary-slate">
               {emission.secondYear.co2Emissions.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground">
