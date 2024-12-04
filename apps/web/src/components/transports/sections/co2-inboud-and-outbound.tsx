@@ -69,7 +69,9 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             className="w-[12px] h-[12px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-sm text-foreground text-center">{d?.value}</span>
+          <span className="text-sm text-foreground text-center">
+            {d?.value}
+          </span>
         </div>
       ))}
     </div>
@@ -88,49 +90,29 @@ export default function CO2InboundAndOutbound() {
         <div className="space-y-6">
           <h2 className="text-2xl font-semibold text-foreground">
             Comparação de emissões dentro e fora dos limites geográficos
-            específicos
           </h2>
           <p className="text-muted-foreground max-w-lg">
-            Esta seção compara a média de emissão de CO2 por quilômetro entre
-            diferentes tipos de transporte, diferenciando as emissões dentro e
-            fora dos limites geográficos
+            Compara a média de emissão de CO2 por quilômetro entre diferentes
+            tipos de transporte, diferenciando as emissões dentro e fora dos
+            limites geográficos.
           </p>
         </div>
-
-        {/* Está comentado pra ver qual será a métrica de comparação, talvez entre em uma V2 */}
-
-        {/* {isFetching ? (
-          <Skeleton className="h-[130px]  min-w-[250px]" />
-        ) : (
-          <Card className="p-4 min-w-[250px]">
-            <div className="flex justify-between items-start">
-              <div className="space-y-1">
-                <div className="text-sm text-muted-foreground">
-                  Perfil do município
-                </div>
-                <div className="font-semibold text-foreground">Municipio de entrada</div>
-                <div className="text-sm text-muted-foreground">
-                  Recebe muitos cidadãos locais
-                </div>
-              </div>
-              <div className="rounded-lg bg-teal-400 p-2">
-                <Building2 className="h-5 w-5 text-white" />
-              </div>
-            </div>
-          </Card>
-        )} */}
       </div>
 
       {isFetching ? (
         <Skeleton className="h-[450px]" />
       ) : (
-        <Card className="p-6">
+        <Card className="p-6 overflow-auto">
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emsisão CO₂ (tons)
+            Emissão CO2 (tCO2e)
           </h3>
-          <div className="h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} margin={{ top: 30 }}>
+          <div className="h-[400px]  w-[400px] sm:w-full">
+            <ResponsiveContainer height="100%">
+              <BarChart
+                data={data}
+                margin={{ top: 30 }}
+                className="overflow-scroll"
+              >
                 <XAxis
                   stroke="#888888"
                   fontSize={12}

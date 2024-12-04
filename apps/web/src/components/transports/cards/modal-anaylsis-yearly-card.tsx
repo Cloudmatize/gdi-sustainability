@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { mappedTravelMode } from "@/constants/transports";
 import { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
+import { cx } from "class-variance-authority";
 import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 
 interface Props {
@@ -11,11 +12,12 @@ interface Props {
     contributionStatus: "Redução" | "Elevação";
     avgPercentageYearly: number;
   };
+  hover?: boolean;
 }
 
-export default function ModalAnalysisYearlyCard({ transport }: Props) {
+export default function ModalAnalysisYearlyCard({ transport, hover }: Props) {
   return (
-    <Card className="border w-full card-hover">
+    <Card className={cx("border w-full", hover ? "card-hover" : "")}>
       <CardHeader>
         <CardTitle className="gap-2 flex">
           <div className="flex flex-col gap-2">

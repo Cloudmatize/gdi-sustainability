@@ -54,29 +54,23 @@ export default function Co2EmissionPerKilometer() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold mb-2 text-foreground">
-          Média de CO₂ emitido por KM por tipo de transporte
+          Comparação de emissões por quilômetro e tipo de transporte
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Esta seção apresenta a média de emissão de CO₂ por quilômetro para
-          diferentes tipos de transporte
+          Compara as emissões de CO2 por quilômetro entre diferentes tipos de
+          transporte, destacando as variações entre as modalidades.
         </p>
       </div>
 
-      {/* <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <div className="h-px w-4 border-t-2 border-dotted border-purple-400" />
-          Referência de sustentabilidade: 0.05
-        </div>
-      </div> */}
       {isFetching ? (
         <Skeleton className="h-[450px]" />
       ) : (
-        <Card className="p-6">
+        <Card className="p-6  overflow-auto">
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emsisão CO₂ (kgCO2e/km)
+            Emissão CO2 (kgCO2e/km)
           </h3>
 
-          <div className="h-[400px]">
+          <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={data}
@@ -86,7 +80,9 @@ export default function Co2EmissionPerKilometer() {
                 <XAxis
                   type="number"
                   tickSize={1}
-                  tickFormatter={(value: number) => `${value.toFixed(2)} kgCO2e/km`}
+                  tickFormatter={(value: number) =>
+                    `${value.toFixed(2)} kgCO2e/km`
+                  }
                   stroke="#888888"
                   fontSize={12}
                   strokeWidth={0.3}

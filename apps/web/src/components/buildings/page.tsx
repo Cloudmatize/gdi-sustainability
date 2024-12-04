@@ -18,8 +18,8 @@ export default function BuildingsPage() {
 
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
-            <h1 className="flex flex-nowrap break-keep items-center gap-2 text-3xl font-bold text-foreground">
-              Emissão de edifícios <Building size={48} />
+            <h1 className="flex flex-nowrap break-keep items-center gap-3 text-3xl font-bold text-foreground">
+              Emissão de edifícios <Building size={36} />
             </h1>
           </div>
         </div>
@@ -37,7 +37,7 @@ export default function BuildingsPage() {
         <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
           <InfoCard
             icon={MdCo2}
-            title="Emissão total de CO₂"
+            title="Emissão total "
             value={formatCO2Emission(data?.total?.co2Emission)}
             percentage={"100%"}
             description={`

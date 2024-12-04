@@ -221,13 +221,13 @@ export default function DashboardSection2() {
               <Link
                 href="/transports"
                 key={index}
-                className={`${
+                className={`  ${
                   index === modalAnalysis.modalsData.length - 1
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
                 }`}
               >
-                <ModalAnalysisYearlyCard transport={transport} />
+                <ModalAnalysisYearlyCard transport={transport} hover />
               </Link>
             ))}
       </div>
