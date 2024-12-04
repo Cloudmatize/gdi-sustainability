@@ -12,7 +12,7 @@ export default function BuildingsPage() {
   const { data } = useBuildingsFloorAreasBySector({});
 
   return (
-    <div className="min-h-screen bg-background p-6 md:mx-16">
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
       <div className="mx-auto space-y-6">
         {/* Header */}
 
@@ -33,8 +33,10 @@ export default function BuildingsPage() {
         <DataSourceInfo />
 
         <div className="border-t border-gray-200 py-6" />
+        <p className="text-muted-foreground ">Emissão de CO2 em toneladas</p>
+
         {/* Metrics */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:overflow-x-scroll 2xl:overflow-hidden">
+        <div className="flex flex-col xl:flex-row gap-6 ">
           <InfoCard
             icon={MdCo2}
             title="Emissão total "
@@ -45,7 +47,7 @@ export default function BuildingsPage() {
           />
           <InfoCard
             icon={MdCo2}
-            title="Emissão de CO₂ de edifícios residenciais"
+            title="Emissão de edifícios residenciais"
             value={formatCO2Emission(data?.residential?.co2Emission)}
             percentage={data?.residential?.percentage}
             description={`
@@ -54,7 +56,7 @@ export default function BuildingsPage() {
           <InfoCard
             icon={MdCo2}
             value={formatCO2Emission(data?.notResidential?.co2Emission)}
-            title="Emissão de CO₂ de edifícios não residenciais"
+            title="Emissão de edifícios não residenciais"
             percentage={data?.notResidential?.percentage}
             description={`
               ${formatNumber(data?.notResidential?.count)} edifícios (${formatNumber(data?.notResidential.area)}m²)`}

@@ -81,14 +81,14 @@ export default function DashboardSection3() {
     : null;
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Emissões por Fonte de Energia</h2>
+      <h2 className="text-2xl font-bold">Emissões por fonte de energia</h2>
 
       <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
         {/* Main Contributor Card */}
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Link href='/buildings'>
+          <Link href="/buildings">
             <Card className="border card-hove h-full ">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function DashboardSection3() {
                   <CardIcons>
                     <ArrowDownUp />
                   </CardIcons>
-                  Comparativo de eficiência
+                  Intensidade de emissões por fonte de energia
                 </CardTitle>
               </CardHeader>
               <CardContent className="mt-2 gap-2 flex flex-col ">

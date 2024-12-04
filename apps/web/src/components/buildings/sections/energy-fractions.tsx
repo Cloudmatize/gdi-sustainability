@@ -65,7 +65,7 @@ const CustomTooltip = ({
                   <span className="text-foreground font-bold  text-center">
                     {item.dataKey &&
                       ENERGY_FRACTIONS[
-                      item.dataKey as keyof typeof ENERGY_FRACTIONS
+                        item.dataKey as keyof typeof ENERGY_FRACTIONS
                       ]}
                   </span>
                 </div>
@@ -109,7 +109,7 @@ const CustomPieChartTooltip = ({
             <span className="text-foreground font-bold  w-24 text-center">
               {
                 ENERGY_FRACTIONS[
-                item.payload.name as keyof typeof ENERGY_FRACTIONS
+                  item.payload.name as keyof typeof ENERGY_FRACTIONS
                 ]
               }
             </span>
@@ -137,30 +137,30 @@ export default function EnergyFractions() {
   const { data, isFetching } = useBuildingsEnergyFractionsBySector({});
   const barData = data
     ? Object.entries(data.energyFractions[0])
-      .filter(([key, value]) => key !== "sector")
-      .map(([key]) => key)
-      .flat()
+        .filter(([key, value]) => key !== "sector")
+        .map(([key]) => key)
+        .flat()
     : [];
 
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
-          Análise da matriz energética do município
+          Composição energética e impacto de emissões no município
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Esta seção de comparação divide as emissões de CO2 por tipos
-          específicos de transporte, proporcionando uma visão sobre a eficiência
-          de cada modalidade ao longo do tempo.
+          Análise da composição das fontes de energia utilizadas no município e
+          avalia o impacto das emissões de CO2 geradas por diferentes
+          tipos de energia.
         </p>
       </div>
-      <div className="flex flex-col xl:flex-row gap-6">
+      <div className="flex flex-col xl:flex-row gap-6 ">
         {isFetching ? (
-          <Skeleton className="h-[490px] w-full first: rounded-xl" />
+          <Skeleton className="h-[490px] w-full first:rounded-xl" />
         ) : (
-          <Card className="p-6 w-full">
-            <div className="space-y-4">
-              <h3 className="font-semibold">Fração da fonte de energia</h3>
+          <Card className="p-6  overflow-auto  xl:w-2/3  ">
+            <div className="space-y-4 w-[400px] sm:w-full"> 
+              <h3 className="font-semibold">Composição das fontes energéticas por setor</h3>
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
@@ -219,8 +219,8 @@ export default function EnergyFractions() {
         {isFetching ? (
           <Skeleton className="h-[490px] w-full" />
         ) : (
-          <Card className="p-6 w-full">
-            <h3 className="font-semibold mb-4">Emissão de CO2</h3>
+          <Card className="p-6  w-full xl:w-1/3">
+            <h3 className="font-semibold mb-4">Impacto das fontes de energia nas emissões</h3>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>

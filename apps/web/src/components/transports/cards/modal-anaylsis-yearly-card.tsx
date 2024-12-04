@@ -38,7 +38,7 @@ export default function ModalAnalysisYearlyCard({ transport, hover }: Props) {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col lg:flex-col gap-8 items-end w-96">
+      <CardContent className="flex flex-col lg:flex-col gap-8 items-end max-w-96">
         <div className="flex items-end justify-between w-full h-full gap-2">
           <div className="space-y-1 w-full h-full gap-4">
             <p className="text-sm text-muted-foreground text-wrap">

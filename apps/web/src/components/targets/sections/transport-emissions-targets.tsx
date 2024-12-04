@@ -176,11 +176,11 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
     lastYearData?.targetCo2Emission
   );
   return (
-    <div>
+    <div className="overflow-y-auto">
       {isFetching ? (
         <Skeleton className="h-[495px]" />
       ) : (
-        <Card className="p-6 h-full">
+        <Card className="p-6 h-full w-[500px] sm:w-full">
           <div className="mb-8 space-y-2 ">
             <div className="text-sm text-muted-foreground">
               Grau de aderência a meta

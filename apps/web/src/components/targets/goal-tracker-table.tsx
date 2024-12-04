@@ -221,17 +221,17 @@ export default function GoalTrackerTable({ data }: Props) {
     setSimulatedCo2Emissions(simulatedCo2EmissionsData);
   }, [transfers, passengersPerTripData]);
   return (
-    <Card className="h-full  overflow-y-auto">
+    <Card className="h-full w-full  ">
       <CardHeader>
         <CardTitle>
           Relatório de emissões por transporte no último ano (
           {new Date().getFullYear() - 1})
         </CardTitle>
       </CardHeader>
-      <ModalSimulator />
 
+      <ModalSimulator />
       <CardContent>
-        <Table className="w-full ">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Modal</TableHead>

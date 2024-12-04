@@ -54,7 +54,7 @@ export default function TransportsPage() {
     filters,
   });
   return (
-    <div className="min-h-screen bg-background p-6 md:mx-16">
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
       <div className="mx-auto space-y-6">
         {/* Header */}
 

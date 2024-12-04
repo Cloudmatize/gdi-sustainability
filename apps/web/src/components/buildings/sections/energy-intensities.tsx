@@ -10,7 +10,7 @@ import {
   Radar,
   RadarChart,
   ResponsiveContainer,
-  Tooltip
+  Tooltip,
 } from "recharts";
 
 const CustomTooltip = ({
@@ -56,11 +56,12 @@ export default function EnergyIntensities() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
-          Intensidade de consumo por fonte de energia
+          Intensidade de emissões por fonte de energia
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Esta seção mostra a média de emissão de CO2 por quilowatt-hora para
-          diferentes fontes de energia.
+          Compara a quantidade de CO2 emitida por quilowatt-hora entre
+          diferentes fontes de energia, destacando o impacto ambiental de cada
+          uma.
         </p>
       </div>
 

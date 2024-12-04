@@ -172,8 +172,8 @@ export default function GoalTracker() {
 
           <div
             className={cx(
-              "h-full md:col-span-2",
-              hypothesisMode ? "md:col-span-2" : ""
+              "h-full col-span-2 md:col-span-2",
+              hypothesisMode ? "" : ""
             )}
           >
             {loadingCo2EmissionByYear ? (
@@ -191,9 +191,7 @@ export default function GoalTracker() {
         </div>
       </div>
       {hypothesisMode && (
-        <div className="flex flex-col gap-6">
-          <GoalTrackerTable data={targetsCo2EmissionByModal || []} />
-        </div>
+        <GoalTrackerTable data={targetsCo2EmissionByModal || []} />
       )}
       {loadingCo2EmissionByYear ? (
         <Skeleton className="h-[500px]" />
