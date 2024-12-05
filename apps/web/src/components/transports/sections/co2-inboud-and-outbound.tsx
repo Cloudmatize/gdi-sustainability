@@ -111,7 +111,6 @@ export default function CO2InboundAndOutbound() {
               <BarChart
                 data={data}
                 margin={{ top: 30 }}
-                className="overflow-scroll"
               >
                 <XAxis
                   stroke="#888888"
