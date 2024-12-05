@@ -1,6 +1,20 @@
-import { Building, Bus, Cloud, Goal, Home, MapIcon } from "lucide-react";
+import {
+  FLIPT_BUILDINGS_FLAG,
+  FLIPT_TARGETS_FLAG,
+  FLIPT_TRANSPORTS_FLAG,
+  IS_FLIPT_ACTIVE,
+} from "@/constants/flipt";
+import { Building, Bus, Goal, Home } from "lucide-react";
+interface Route {
+  id: number;
+  title: string;
+  path: string;
+  icon: any;
+  fliptFlag?: string;
+  children?: Route[];
+}
 
-export const routes = [
+export const routes: Route[] = [
   {
     id: 1,
     title: "Visão geral",
@@ -12,12 +26,14 @@ export const routes = [
     title: "Emissão de transportes",
     path: "/transports",
     icon: Bus,
+    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_TRANSPORTS_FLAG : undefined,
   },
   {
     id: 3,
     title: "Emissão de edifícios",
     path: "/buildings",
     icon: Building,
+    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_BUILDINGS_FLAG : undefined,
   },
 
   {
@@ -25,5 +41,6 @@ export const routes = [
     title: "Rastreador de metas",
     path: "/targets",
     icon: Goal,
+    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_TARGETS_FLAG : undefined,
   },
 ];

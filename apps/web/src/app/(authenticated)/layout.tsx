@@ -9,7 +9,7 @@ interface Props {
 }
 export default async function AuthenticatedLayout({ children }: Props) {
   return (
-    <>
+    <AuthenticatedProviders>
       <SidebarProvider defaultOpen={true}>
         <div className="flex flex-row w-full h-full p-0 m-0">
           <AppSidebar />
@@ -27,10 +27,10 @@ export default async function AuthenticatedLayout({ children }: Props) {
                 </div>
               </Link>
             </div>
-            <AuthenticatedProviders>{children}</AuthenticatedProviders>
+            {children}
           </div>
         </div>
       </SidebarProvider>
-    </>
+    </AuthenticatedProviders>
   );
 }
