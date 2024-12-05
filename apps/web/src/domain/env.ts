@@ -12,6 +12,8 @@ export const envSchema = z.object({
   NEXT_PUBLIC_MUNICIPALITY_COMPLETION_YEAR: z.string(),
   NEXT_PUBLIC_MUNICIPALITY_TARGET_REDUCION: z.string(),
   NEXT_PUBLIC_MUNICIPALITY_SLUG: z.string(),
+  NEXT_PUBLIC_REST_API_URL: z.string().url(),
+  NEXT_PUBLIC_FLIPT_NAMESPACE: z.string(),
 });
 
 /**
@@ -51,4 +53,9 @@ export const AppRuntimeEnv = envSchema.parse({
   NEXT_PUBLIC_MUNICIPALITY_SLUG:
     loadEnv("NEXT_PUBLIC_MUNICIPALITY_SLUG") ||
     process.env.NEXT_PUBLIC_MUNICIPALITY_SLUG,
+  NEXT_PUBLIC_REST_API_URL:
+    loadEnv("NEXT_PUBLIC_REST_API_URL") || process.env.NEXT_PUBLIC_REST_API_URL,
+  NEXT_PUBLIC_FLIPT_NAMESPACE:
+    loadEnv("NEXT_PUBLIC_FLIPT_NAMESPACE") ||
+    process.env.NEXT_PUBLIC_FLIPT_NAMESPACE,
 });
