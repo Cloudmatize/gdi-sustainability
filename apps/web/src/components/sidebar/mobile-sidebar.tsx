@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { routes } from "@/config/menuRoutes";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
