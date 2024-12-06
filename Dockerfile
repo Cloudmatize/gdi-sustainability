@@ -34,6 +34,5 @@ RUN npm install -g pnpm
 WORKDIR /app/apps/web
 
 EXPOSE 3000
-EXPOSE 8080
 
 CMD sh -c "pnpm start"
