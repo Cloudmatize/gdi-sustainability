@@ -1,6 +1,13 @@
 import { Building, Bus, Cloud, Goal, Home, MapIcon } from "lucide-react";
 
-export const routes = [
+type Route = {
+  id: number;
+  title: string;
+  path: string;
+  icon: React.ComponentType;
+  children?: Route[];
+};
+export const routes: Route[] = [
   {
     id: 1,
     title: "Visão geral",

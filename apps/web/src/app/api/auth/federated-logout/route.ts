@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
