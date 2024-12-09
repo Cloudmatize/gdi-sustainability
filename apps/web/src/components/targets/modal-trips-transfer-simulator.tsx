@@ -13,7 +13,8 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { useTargetsStore } from "@/store/targets";
 import type { TravelMode } from "@/types/transports";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Save, Trash2 } from "lucide-react";
+import SaveSimulationModal from "./save-simulation-modal";
 
 interface Distribution {
   id: string;
@@ -117,11 +118,14 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
           Simulador de transferência de viagens entre modais
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6 mt-4">
+      <CardContent className="space-y-6 mt-4  h-[80%]">
         {transfers.map((transfer) => (
-          <div key={transfer.id} className="space-y-4 p-4  rounded-lg">
+          <div key={transfer.id} className="space-y-4 p-4  rounded-lg h-full">
             <div className="flex items-center gap-5">
-              <Badge variant="outline" className="h-8 mr-3 bg-slate-600 text-white font-normal ">
+              <Badge
+                variant="outline"
+                className="h-8 mr-3 bg-slate-600 text-white font-normal "
+              >
                 De:
               </Badge>
               <Select
@@ -158,7 +162,7 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
               </Select>
             </div>
 
-            <div className="space-y-4 ">
+            <div className="space-y-4  h-[90%]">
               {transfer.distributions.map((dist, index) => {
                 return (
                   <div
@@ -258,6 +262,8 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
                   </Button>
                 )}
             </div>
+            <SaveSimulationModal/>
+         
           </div>
         ))}
         {transfers.length < 1 && (

@@ -11,7 +11,7 @@ import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { cx } from "class-variance-authority";
 import { CalendarClock, Target } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
@@ -20,6 +20,8 @@ import MultiModalSimulatorTransferSimulator from "./modal-trips-transfer-simulat
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
 import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
+import { PrintButton } from "../print-button";
+import PrintTargetReportPage from "./print-target-report-page";
 
 const transformData = (
   data: {
@@ -88,6 +90,8 @@ export default function GoalTracker() {
     };
   }, []);
 
+  const contentRef = useRef(null);
+
   const lastYearCo2Emission =
     co2EmissionByYear?.find(
       (item) => item.year === new Date().getFullYear() - 1
@@ -97,6 +101,25 @@ export default function GoalTracker() {
     transportEmissionsTarget?.[transportEmissionsTarget.length - 1];
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
+
+  return (
+    <>
+      <PrintButton
+        title="Imprimir Metas de Emissão de CO2"
+        disabled={loadingCo2EmissionByYear}
+        contentToPrint={contentRef}
+      />
+      <PrintTargetReportPage
+        componentRef={contentRef}
+        data={{
+          lastYearCo2Emission,
+          loadingCo2EmissionByYear,
+          targetCo2EmissionsFinalYear,
+          yearBaseCo2Emission,
+        }}
+      />
+    </>
+  );
   return (
     <div className="container mx-auto space-y-6">
       {hypothesisMode && (
@@ -124,6 +147,20 @@ export default function GoalTracker() {
           />
           <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
         </div>
+        <PrintButton
+          title="Imprimir Metas de Emissão de CO2"
+          disabled={loadingCo2EmissionByYear}
+          contentToPrint={contentRef}
+        />
+        <PrintTargetReportPage
+          componentRef={contentRef}
+          data={{
+            lastYearCo2Emission,
+            loadingCo2EmissionByYear,
+            targetCo2EmissionsFinalYear,
+            yearBaseCo2Emission,
+          }}
+        />
       </div>
       <div className="space-y-3 py-1 w-full">
         <div
