@@ -1,0 +1,57 @@
+{
+  "routes": {
+    "dashboard": {
+      "title": "Overview",
+      "router_title": "dashboard"
+    },
+    "transports": {
+      "title": "Transport issuance",
+      "router_title": "transports"
+    },
+    "buildings": {
+      "title": "Building issuance",
+      "router_title": "buildings"
+    },
+    "targets": {
+      "title": "Goal Tracker",
+      "router_title": "targets"
+    }
+  },
+  "sidebar": {
+    "userMenu": {
+        "settings": "Settings",
+        "logout": "Logout"
+      }
+    },
+    "dashboard": {
+      "firstSection": {
+        "title": "CO2 emissions overview for the year "
+      },
+      "langSwitch": {
+        "title": "Change language",
+        "pt": "Brazilian Portuguese",
+        "en": "English"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Changes made here will be saved only on this device."
+    },
+    "login": {
+      "title": "Welcome to ",
+      "description": "Transforming data into sustainable actions.",
+      "action": "Sign in"
+    },
+    "themeSwitch": {
+      "title": "Toggle theme",
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System"
+    },
+    "themeColorSwitch": {
+      "title": "Change colors",
+      "primary": "Button colors",
+      "text": "Text colors",
+      "standard": "Reset"
+    }
+  }

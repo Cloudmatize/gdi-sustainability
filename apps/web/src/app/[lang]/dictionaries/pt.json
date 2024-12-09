@@ -1,0 +1,57 @@
+{
+  "routes": {
+    "dashboard": {
+      "title": "Visão geral",
+      "router_title": "dashboard"
+    },
+    "transports": {
+      "title": "Emissão de transportes",
+      "router_title": "transports"
+    },
+    "buildings": {
+      "title": "Emissão de edifícios",
+      "router_title": "buildings"
+    },
+    "targets": {
+      "title": "Rastreador de metas",
+      "router_title": "targets"
+    }
+  },
+  "sidebar": {
+    "userMenu": {
+        "settings": "Configurações",
+        "logout": "Sair"
+      }
+    },
+    "dashboard": {
+      "firstSection": {
+        "title": "Visão geral de emissões de CO2 do ano de "
+      },
+      "langSwitch": {
+        "title": "Alterar idioma",
+        "pt": "Português Brasileiro",
+        "en": "Inglês"
+      }
+    },
+    "settings": {
+      "title": "Configurações",
+      "description": "Alterações realizadas aqui ficarão salvas apenas neste dispositivo"
+    },
+    "login": {
+      "title": "Bem vindo ao ",
+      "description": "Transformando dados em ações sustentáveis.",
+      "action": "Entrar"
+    },
+    "themeSwitch": {
+      "title": "Alterar tema",
+      "dark": "Escuro",
+      "light": "Claro",
+      "system": "Cor do sistema"
+    },
+    "themeColorSwitch": {
+      "title": "Alterar cores",
+      "primary": "Cores dos botões",
+      "text": "Cores dos textos",
+      "standard": "Redefinir"
+    }
+  }
