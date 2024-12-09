@@ -1,16 +1,18 @@
-// @ts-nocheck
-
-import { routes } from "@/config/menuRoutes";
+import { getRoutes } from "@/config/menuRoutes";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
 
-export function MobileSideBar() {
+interface MobileSideBarProps {
+    dict: any
+}
+
+export function MobileSideBar({ dict }: MobileSideBarProps) {
     const [openRoute, setOpenRoute] = useState([0])
     const { open, toggleSidebar } = useSidebar()
+    const routes = getRoutes(dict.routes)
 
     const handleChangeOpenState = (route: { id: number, parent?: number }) => {
         if (!openRoute.includes(route.id)) {
@@ -34,18 +36,18 @@ export function MobileSideBar() {
     return (<Sidebar className="justify-center items-center">
         <SidebarHeader className="border-b py-4 gap-2 justify-between flex flex-row items-center">
             <SidebarMenu className="p-0 m-0 items-center">
-                <SidebarMenuButton  asChild tooltip={open ? "Clique para esconder" : "Clique para abrir"} className="bg-transparent hover:bg-none p-0 m-0 justify-center flex flex-row" onClick={handleToggleSideBar}>
-                  <img
-                    src={`/logos/logo-go-sustainability.png`}
-                    alt="GS Logo"
-                    className="w-32  "
+                <SidebarMenuButton asChild tooltip={open ? "Clique para esconder" : "Clique para abrir"} className="bg-transparent hover:bg-none p-0 m-0 justify-center flex flex-row" onClick={handleToggleSideBar}>
+                    <img
+                        src={`/logos/logo-go-sustainability.png`}
+                        alt="GS Logo"
+                        className="w-32  "
                     />
                 </SidebarMenuButton>
             </SidebarMenu>
         </SidebarHeader>
         <SidebarContent className="py-2 flex flex-col gap-0 px-2 overflow-clip">
             {routes?.map((route) => (
-                route.children ? (
+                route?.children ? (
                     <Collapsible key={route.id} open={openRoute.includes(route.id)} className="group/collapsible">
                         <SidebarGroup className="p-1 my-1 flex flex-col items-center">
                             <SidebarGroupLabel asChild className="w-full p-0">
@@ -99,7 +101,7 @@ export function MobileSideBar() {
         <SidebarFooter className="border-t py-4 flex flex-row gap-4 px-2">
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <UserMenu />
+                    <UserMenu dict={dict.sidebar.userMenu} />
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarFooter>

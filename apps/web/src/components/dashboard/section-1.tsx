@@ -12,12 +12,12 @@ import {
   useDashboardBuildingsTotalCO2Emission,
   useDashboardTransportsTotalCO2Emission,
 } from "@/hooks/dashboard";
+import Link from "next/link";
+import { Tooltip } from "../tooltip";
 import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
-import TargetAdherenceSection from "./target-adherence-section";
-import { Tooltip } from "../tooltip";
-import Link from "next/link";
 import { TotalCO2eCard } from "./cards/total-co2e-card";
+import TargetAdherenceSection from "./target-adherence-section";
 
 function generateComparisonMessage(
   value1: number,
@@ -40,24 +40,24 @@ function generateComparisonMessage(
 function formatBuildingsFloorAreasBySector(
   data:
     | {
-        residential: {
-          area: number;
-          count: number;
-          co2Emission: number;
-          percentage: number;
-        };
-        notResidential: {
-          area: number;
-          count: number;
-          co2Emission: number;
-          percentage: number;
-        };
-        total: {
-          area: number;
-          count: number;
-          co2Emission: number;
-        };
-      }
+      residential: {
+        area: number;
+        count: number;
+        co2Emission: number;
+        percentage: number;
+      };
+      notResidential: {
+        area: number;
+        count: number;
+        co2Emission: number;
+        percentage: number;
+      };
+      total: {
+        area: number;
+        count: number;
+        co2Emission: number;
+      };
+    }
     | undefined
 ) {
   if (!data) return {};
@@ -99,7 +99,8 @@ function formatBuildingsFloorAreasBySector(
   };
 }
 
-export default function DashboardSection1() {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export default function DashboardSection1({ dict }: any) {
   const {
     data: transportsCo2Emission,
     isFetching: isLoadingTransportsCo2Emission,
@@ -286,7 +287,7 @@ export default function DashboardSection1() {
   return (
     <div className="space-y-6 text-foreground">
       <h2 className="text-2xl font-bold">
-        Visão geral de emissões de CO2 do ano de {new Date().getFullYear() - 1}
+        {dict.title} {new Date().getFullYear() - 1}
       </h2>
 
       <div className="flex gap-6 flex-col lg:flex-row">
@@ -312,11 +313,10 @@ export default function DashboardSection1() {
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
             <Link
-              className={`${
-                index === cards.length - 1
-                  ? "lg:col-span-2 xl:col-span-1"
-                  : ""
-              }`}
+              className={`${index === cards.length - 1
+                ? "lg:col-span-2 xl:col-span-1"
+                : ""
+                }`}
               href={card.href}
               key={`${card.title}-${index}`}
             >
