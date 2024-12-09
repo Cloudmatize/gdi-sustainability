@@ -1,6 +1,5 @@
-import { routes } from "@/config/menuRoutes";
+import { getRoutes } from "@/config/menuRoutes";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Collapsible,
@@ -33,8 +32,13 @@ import {
 } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
 
-export function DesktopSideBar() {
+interface DesktopSideBarProps {
+  dict: any
+}
+
+export function DesktopSideBar({ dict }: DesktopSideBarProps) {
   const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
+  const routes = getRoutes(dict.routes)
 
   const handleChangeOpenState = (route: { id: number; parent?: number }) => {
     if (!openRoute.includes(route.id)) {
@@ -78,7 +82,7 @@ export function DesktopSideBar() {
       </SidebarHeader>
       <SidebarContent className="py-2 flex flex-col gap-0 px-2 overflow-clip">
         {routes?.map((route) =>
-          route.children ? (
+          route?.children ? (
             <DropdownMenu key={route.id}>
               <Collapsible
                 open={openRoute.includes(Number(route.id))}
@@ -218,7 +222,7 @@ export function DesktopSideBar() {
       <SidebarFooter className="border-t py-4 flex flex-row gap-4 px-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <UserMenu />
+            <UserMenu dict={dict.sidebar.userMenu} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
