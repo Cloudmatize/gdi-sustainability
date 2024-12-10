@@ -1,4 +1,5 @@
 import { passengersPerTripMapping } from "@/constants/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useDashboardCO2EmissionByModal } from "@/hooks/dashboard";
 import {
   useTransportsCO2EmissionByYearAndModal,
@@ -76,12 +77,8 @@ function calculateSectorChanges(data: SectorData[]): {
   return { highestIncrease, highestReduction };
 }
 
-interface DashboardSection2Props {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  dict: any
-}
 
-export default function DashboardSection2({ dict }: DashboardSection2Props) {
+export default function DashboardSection2({ dict }: DictionaryContextType) {
   const {
     data: co2EmissionByModalFirstYear,
     isFetching: isLoadingCo2EmissionByModalFirstYear,

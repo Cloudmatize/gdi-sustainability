@@ -15,5 +15,5 @@ export default async function LoginPage({
   searchParams: { callbackUrl, error },
 }: SignInPageProp) {
   const dict = await getDictionary(lang)
-  return <Login dict={dict.login} />;
+  return <Login dict={dict?.login} />;
 }

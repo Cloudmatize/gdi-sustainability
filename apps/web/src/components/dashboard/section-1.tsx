@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useBuildingsFloorAreasBySector } from "@/hooks/buildings";
 import {
   useDashboardBuildingsTotalCO2Emission,
@@ -99,8 +100,7 @@ function formatBuildingsFloorAreasBySector(
   };
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function DashboardSection1({ dict }: any) {
+export default function DashboardSection1({ dict }: DictionaryContextType) {
   const {
     data: transportsCo2Emission,
     isFetching: isLoadingTransportsCo2Emission,
@@ -136,7 +136,7 @@ export default function DashboardSection1({ dict }: any) {
 
   const cards = [
     {
-      title: dict.dashboard.firstSection.cards.totalCO2Emission.title,
+      title: dict?.dashboard?.firstSection.cards.totalCO2Emission.title,
       icon: (
         <CardIcons>
           <LineChart />
@@ -171,16 +171,16 @@ export default function DashboardSection1({ dict }: any) {
             </div>
           </div>
           <CardDescription className="mt-2 text-center ">
-            {dict.dashboard.firstSection.cards.totalCO2Emission.description1}
-            {dict.dashboard.firstSection.cards.totalCO2Emission.trends[transportsComparissonInfo.trend]}
-            {dict.dashboard.firstSection.cards.totalCO2Emission.description2}
+            {dict?.dashboard?.firstSection.cards.totalCO2Emission.description1}
+            {dict?.dashboard?.firstSection.cards.totalCO2Emission.trends[transportsComparissonInfo.trend]}
+            {dict?.dashboard?.firstSection.cards.totalCO2Emission.description2}
             {transportsComparissonInfo.formattedPercentageChange}%
           </CardDescription>
         </div>
       ),
     },
     {
-      title: dict.dashboard.firstSection.cards.tCO2PerBuilding.title,
+      title: dict?.dashboard?.firstSection.cards.tCO2PerBuilding.title,
       icon: (
         <CardIcons>
           <House />
@@ -198,12 +198,12 @@ export default function DashboardSection1({ dict }: any) {
                     {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
                   </div>
                   <div className="text-sm text-muted-foreground text-center">
-                    {dict.dashboard.firstSection.cards.tCO2PerBuilding.tooltipContent}
+                    {dict?.dashboard?.firstSection.cards.tCO2PerBuilding.tooltipContent}
                   </div>
                 </div>
               }
             >
-              {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} ${dict.dashboard.firstSection.cards.tCO2PerBuilding.tCO2PerBuilding}`}
+              {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.tCO2PerBuilding}`}
             </Tooltip>
 
             <Tooltip
@@ -222,15 +222,15 @@ export default function DashboardSection1({ dict }: any) {
             </Tooltip>
           </div>
           <CardDescription className="mt-2 text-center">
-            {`${dict.dashboard.firstSection.cards.tCO2PerBuilding.description1}
-            ${formattedBuildingsInfo.residential?.areaPercentage}% ${dict.dashboard.firstSection.cards.tCO2PerBuilding.description2}
-            ${formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}% ${dict.dashboard.firstSection.cards.tCO2PerBuilding.description3}`}
+            {`${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description1}
+            ${formattedBuildingsInfo.residential?.areaPercentage}% ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description2}
+            ${formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}% ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description3}`}
           </CardDescription>
         </div>
       ),
     },
     {
-      title: dict.dashboard.firstSection.cards.nonResidential.title,
+      title: dict?.dashboard?.firstSection.cards.nonResidential.title,
       href: "/buildings",
       icon: (
         <CardIcons>
@@ -248,12 +248,12 @@ export default function DashboardSection1({ dict }: any) {
                     {formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding}
                   </div>
                   <div className="text-sm text-muted-foreground text-center">
-                    {dict.dashboard.firstSection.cards.nonResidential.tooltipContent}
+                    {dict?.dashboard?.firstSection.cards.nonResidential.tooltipContent}
                   </div>
                 </div>
               }
             >
-              {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} ${dict.dashboard.firstSection.cards.nonResidential.tCO2PerBuilding}`}
+              {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.nonResidential.tCO2PerBuilding}`}
             </Tooltip>
             <Tooltip
               triggerContent={
@@ -270,13 +270,13 @@ export default function DashboardSection1({ dict }: any) {
                 </div>
               }
             >
-              {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} ${dict.dashboard.firstSection.cards.nonResidential.kgCO2PerSquareMeter}`}
+              {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} ${dict?.dashboard?.firstSection.cards.nonResidential.kgCO2PerSquareMeter}`}
             </Tooltip>
           </div>
           <CardDescription className="mt-2 text-center">
-            {`${dict.dashboard.firstSection.cards.nonResidential.description1}
-            ${formattedBuildingsInfo.nonResidential?.areaPercentage}% ${dict.dashboard.firstSection.cards.nonResidential.description2}
-            ${formattedBuildingsInfo.nonResidential?.totalCo2EmissionPercentage}% ${dict.dashboard.firstSection.cards.nonResidential.description3}`}
+            {`${dict?.dashboard?.firstSection.cards.nonResidential.description1}
+            ${formattedBuildingsInfo.nonResidential?.areaPercentage}% ${dict?.dashboard?.firstSection.cards.nonResidential.description2}
+            ${formattedBuildingsInfo.nonResidential?.totalCo2EmissionPercentage}% ${dict?.dashboard?.firstSection.cards.nonResidential.description3}`}
           </CardDescription>
         </div>
       ),
@@ -286,7 +286,7 @@ export default function DashboardSection1({ dict }: any) {
   return (
     <div className="space-y-6 text-foreground">
       <h2 className="text-2xl font-bold">
-        {dict.dashboard.firstSection.title} {new Date().getFullYear() - 1}
+        {dict?.dashboard?.firstSection.title} {new Date().getFullYear() - 1}
       </h2>
 
       <div className="flex gap-6 flex-col lg:flex-row">

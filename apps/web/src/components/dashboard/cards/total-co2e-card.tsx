@@ -15,7 +15,7 @@ export function TotalCO2eCard({
   return (
     <Card className="border w-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle>{dict.dashboard.firstSection.cards.TotalCO2eCard.title}</CardTitle>
+        <CardTitle>{dict?.dashboard?.firstSection.cards.TotalCO2eCard.title}</CardTitle>
         <CardIcons>
           <Scale />
         </CardIcons>
@@ -33,7 +33,7 @@ export function TotalCO2eCard({
               <div className="flex items-center gap-2">
                 <CarFront size={20} className="text-primary-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  {dict.dashboard.firstSection.cards.TotalCO2eCard.transportsCo2Emission}{" "}
+                  {dict?.dashboard?.firstSection.cards.TotalCO2eCard.transportsCo2Emission}{" "}
                   {Math.trunc(transportsCo2Emission || 0).toLocaleString()}{" "}
                 </span>
               </div>
@@ -41,7 +41,7 @@ export function TotalCO2eCard({
             <div className="flex items-center gap-2">
               <Building2 size={20} className="text-primary-foreground" />
               <span className="text-sm text-muted-foreground">
-                {dict.dashboard.firstSection.cards.TotalCO2eCard.buildingsCo2Emission}{" "}
+                {dict?.dashboard?.firstSection.cards.TotalCO2eCard.buildingsCo2Emission}{" "}
                 {Math.trunc(buildingsCo2Emission || 0).toLocaleString()}{" "}
               </span>
             </div>

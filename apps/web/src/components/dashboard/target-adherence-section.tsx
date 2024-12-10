@@ -1,4 +1,5 @@
 import { TARGET_YEAR } from "@/constants/targets";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
 import TargetAdherenceCard from "../targets/target-adherence-card";
@@ -40,7 +41,7 @@ const transformData = (
   return formattedData;
 };
 
-export default function TargetAdherenceSection({ dict }: any) {
+export default function TargetAdherenceSection({ dict }: DictionaryContextType) {
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
     useTransportCO2EmissionByYear({});
   const lastYearCo2Emission =

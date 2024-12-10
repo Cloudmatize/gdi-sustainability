@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { signIn } from "next-auth/react";
 import { Spinner } from "../spinner";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function Login({ dict }: any) {
+export default function Login({ dict }: DictionaryContextType) {
   const handleLogin = () => {
     signIn("keycloak", { redirect: true });
   };
@@ -18,7 +18,7 @@ export default function Login({ dict }: any) {
         <Card className="w-full max-w-md space-y-12 p-8">
           <div className="text-center">
             <h1 className="text-base my-5 font-semibold text-slate-700">
-              {dict.title}
+              {dict?.title}
               <br />
             </h1>
 
@@ -26,7 +26,7 @@ export default function Login({ dict }: any) {
               <img src="/logos/logo-go-sustainability.png" alt="GDI Logo" />
             </div>
             <p className="mt-2 text-sm text-slate-700">
-              {dict.description}
+              {dict?.description}
             </p>
           </div>
 
@@ -35,7 +35,7 @@ export default function Login({ dict }: any) {
               className="w-full bg-primary-foreground hover:bg-primary text-white hover:text-primary-foreground"
               onClick={handleLogin}
             >
-              {status === "loading" ? <Spinner /> : dict.action}
+              {status === "loading" ? <Spinner /> : dict?.action}
             </Button>
           </div>
         </Card>
