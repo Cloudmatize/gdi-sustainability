@@ -1,14 +1,13 @@
 'use client'
 
+import { useDictionary } from "@/context/DictionaryContext"
 import { useSidebar } from "../ui/sidebar"
 import { DesktopSideBar } from "./desktop-sidebar"
 import { MobileSideBar } from "./mobile-sidebar"
 
-interface AppSideBarProps {
-  dict: any
-}
 
-export function AppSidebar({ dict }: AppSideBarProps) {
+export function AppSidebar() {
+  const { dict, loadDictionary } = useDictionary();
   const { isMobile } = useSidebar()
 
   if (isMobile) {
