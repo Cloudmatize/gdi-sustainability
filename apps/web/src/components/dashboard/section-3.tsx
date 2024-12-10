@@ -27,33 +27,41 @@ type EnergyData = {
   value: number;
   percentage: number;
 };
-function getHighestCO2Emission(emissions: EmissionData[]): EmissionData {
+function getHighestCO2Emission(emissions: EmissionData[] = []): EmissionData {
   if (emissions.length === 0) {
-    throw new Error("The emissions array is empty.");
+    return {
+      name: "",
+      co2Emission: 0,
+      percentage: 0,
+    };
   }
 
-  return emissions.reduce((max, current) =>
-    current.co2Emission > max.co2Emission ? current : max
+  return emissions?.reduce((max, current) =>
+    current?.co2Emission > max?.co2Emission ? current : max
   );
 }
 
-function compareEfficiency(data: EnergyData[]): {
+function compareEfficiency(data: EnergyData[] = []): {
   highest: EnergyData;
   lowest: EnergyData;
   differenceFactor: number;
 } {
   if (data.length === 0) {
-    throw new Error("The data array is empty.");
+    return {
+      highest: { name: "", value: 0, percentage: 0 },
+      lowest: { name: "", value: 0, percentage: 0 },
+      differenceFactor: 0,
+    };
   }
 
-  const highest = data.reduce((max, current) =>
-    current.value > max.value ? current : max
+  const highest = data?.reduce((max, current) =>
+    current?.value > max?.value ? current : max
   );
-  const lowest = data.reduce((min, current) =>
-    current.value < min.value ? current : min
+  const lowest = data?.reduce((min, current) =>
+    current?.value < min?.value ? current : min
   );
 
-  const differenceFactor = highest.value / lowest.value;
+  const differenceFactor = highest?.value / lowest?.value;
 
   return {
     highest,
@@ -79,6 +87,8 @@ export default function DashboardSection3() {
   const efficiencyComparison = energyIntensitiesBySector
     ? compareEfficiency(energyIntensitiesBySector)
     : null;
+
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Emissões por fonte de energia</h2>

@@ -1,4 +1,4 @@
-const IS_FLIPT_ACTIVE = true;
+const IS_FLIPT_ACTIVE = false;
 
 const FLIPT_TRANSPORTS_FLAG = "sustainability-transports";
 const FLIPT_BUILDINGS_FLAG = "sustainability-buildings";

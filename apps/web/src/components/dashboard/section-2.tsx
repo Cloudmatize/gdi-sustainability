@@ -45,9 +45,6 @@ function calculateSectorChanges(data: SectorData[]): {
   const year2022 = data.find((item) => item.year === String(firstYear));
   const year2023 = data.find((item) => item.year === String(secondYear));
 
-  if (!year2022 || !year2023) {
-    throw new Error("Data for both years must be provided.");
-  }
 
   let highestIncrease = {
     sector: "",
@@ -61,7 +58,7 @@ function calculateSectorChanges(data: SectorData[]): {
   for (const sector in year2022) {
     if (sector !== "year") {
       const value2022 = year2022[sector] as number;
-      const value2023 = year2023[sector] as number;
+      const value2023 = year2023 ? (year2023[sector] as number) : 0;
 
       const percentageChange = ((value2023 - value2022) / value2022) * 100;
 

@@ -24,7 +24,7 @@ export const getBuildingsFloorAreasBySector = async ({}) => {
         queryName: "getBuildingsFloorAreasBySectorQuery",
       });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const mappedData = data.cube.map(({ buildings }) => {
         return {
           area: buildings.sum_floor_area,
@@ -68,6 +68,7 @@ export const getBuildingsFloorAreasBySector = async ({}) => {
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.error("getBuildingsFloorAreasBySectorQuery", error);
   }
@@ -84,7 +85,7 @@ export const getBuildingsCO2EmissionsBySector = async ({}) => {
         }
       );
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = data.cube.map(({ buildings }, index) => {
         return {
           co2e: buildings.co2e_tons,
@@ -95,6 +96,7 @@ export const getBuildingsCO2EmissionsBySector = async ({}) => {
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.error("getBuildingsCO2EmissionsBySectorQuery", error);
   }
@@ -107,8 +109,8 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
         query
       );
 
-    if (data) {
-      const energyFractions = data.cube.map(({ buildings }) => {
+    if (data && data?.cube?.length > 0) {
+      const energyFractions = data?.cube?.map(({ buildings }) => {
         const fractions = {
           PROPANE: buildings.propane_fraction,
           ELECTRICITY: buildings.diesel_oil_fraction,
@@ -178,6 +180,8 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
 
       return formattedData;
     }
+
+    return null;
   } catch (error) {
     console.error("getBuildingsEnergyFractionsBySectorQuery", error);
   }
@@ -190,7 +194,7 @@ export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
         query
       );
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const mappedData = data.cube.map(({ buildings_intensity }) => {
         const intensities = {
           PROPANE: buildings_intensity.avg_propane_intensity,
@@ -234,6 +238,8 @@ export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
         .flat();
       return formattedData;
     }
+
+    return null;
   } catch (error) {
     console.error("getBuildingsEnergyIntensitiesBySectorQuery", error);
   }
