@@ -60,9 +60,9 @@ const transformData = (
 };
 
 export default function GoalTracker() {
-  const { getCurrentFlag } = useContext(FeatureFlagsContext);
-  const isActiveFliptTargetSimulation =
-    IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_TARGET_SIMULATION)?.enabled;
+  // const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  // const isActiveFliptTargetSimulation =
+  //   IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_TARGET_SIMULATION)?.enabled;
 
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
     useTransportCO2EmissionByYear({});
@@ -116,7 +116,6 @@ export default function GoalTracker() {
       )}
 
       <div className="flex justify-end w-full">
-        {isActiveFliptTargetSimulation && (
           <div className="flex items-center  space-x-2">
             <Switch
               disabled={
@@ -131,7 +130,6 @@ export default function GoalTracker() {
             />
             <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
           </div>
-        )}
       </div>
       <div className="space-y-3 py-1 w-full">
         <div
