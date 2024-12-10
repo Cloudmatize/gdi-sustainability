@@ -35,7 +35,41 @@
     },
     "dashboard": {
       "firstSection": {
-        "title": "Visão geral de emissões de CO2 do ano de "
+        "title": "Visão geral de emissões de CO2 do ano de ",
+        "cards": {
+          "TotalCO2eCard": {
+            "title": "Emissões totais (tCO2e)",
+            "transportsCo2Emission": "Transportes:",
+            "buildingsCo2Emission": "Edifícios:"
+          },
+          "totalCO2Emission": {
+            "title": "Comparação emissões transporte (tCO2e)",
+            "description1": "As emissões de transporte ",
+            "description2": " em ",
+            "trends": {
+              "positive": "aumentaram",
+              "negative": "diminuiram"
+            }
+          },
+          "tCO2PerBuilding": {
+            "title": "Métricas por edifício residencial",
+            "tooltipContent": "tCO2e/edifício",
+            "tCO2PerBuilding": "toneladas de CO2 emitidos por edifício.",
+            "kgCO2PerSquareMeter": "kilogramas de CO2 emitidos por metro quadrado.",
+            "description1": "Os edifícios residenciais possuem ",
+            "description2": "da área total e contribuem com ",
+            "description3": "das emissões"
+          },
+          "nonResidential": {
+            "title": "Métricas por edifício não residencial",
+            "tooltipContent": "tCO2e/edifício",
+            "tCO2PerBuilding": "toneladas de CO2 emitidos por edifício.",
+            "kgCO2PerSquareMeter": "kilogramas de CO2 emitidos por metro quadrado.",
+            "description1": "Os edifícios não residenciais possuem ",
+            "description2": "da área total e contribuem com ",
+            "description3": "das emissões"
+          }
+        }
       },
       "langSwitch": {
         "title": "Alterar idioma",
