@@ -42,7 +42,7 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
     return dataFlipt?.flags?.find((item: any) => item.key === flagKey);
   }
 
-
+  
   if (isFetching) {
     return <LoadingPage />;
   }

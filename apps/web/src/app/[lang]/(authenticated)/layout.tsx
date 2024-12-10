@@ -14,10 +14,10 @@ interface Props {
 
 export default async function AuthenticatedLayout({ children }: Props) {
   return (
-    <>
+    <AuthenticatedProviders>
       <SidebarProvider defaultOpen={true}>
         <div className="flex flex-row w-full h-full min-w-full p-0 m-0">
-          <AppSidebar />
+          <AppSidebar  />
           <div className="w-full p-0 m-0 overflow-hidden flex flex-col gap-4">
             <div className="min-w-full w-full bg-sidebar flex flex-row items-center gap-2 border-b p-2 h-[65px]">
               <div className="flex flex-row items-center w-full ">
@@ -36,10 +36,10 @@ export default async function AuthenticatedLayout({ children }: Props) {
                 <LangSwitch />
               </div>
             </div>
-            <AuthenticatedProviders>{children}</AuthenticatedProviders>
+            {children}
           </div>
         </div>
-      </SidebarProvider >
-    </>
+      </SidebarProvider>
+    </AuthenticatedProviders>
   );
 }

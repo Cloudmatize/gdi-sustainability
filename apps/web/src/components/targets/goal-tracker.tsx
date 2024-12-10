@@ -58,9 +58,8 @@ const transformData = (
 
 export interface GoalTrackerProps {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  dict: any
+  dict: any;
 }
-
 
 export default function GoalTracker({ dict }: GoalTrackerProps) {
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
@@ -110,7 +109,10 @@ export default function GoalTracker({ dict }: GoalTrackerProps) {
           isOpen={openSidebar}
           setIsOpen={setOpenSidebar}
         >
-          <MultiModalSimulatorTransferSimulator dict={dict} data={modalData || []} />
+          <MultiModalSimulatorTransferSimulator
+            dict={dict}
+            data={modalData || []}
+          />
         </Sidebar>
       )}
 
@@ -127,7 +129,9 @@ export default function GoalTracker({ dict }: GoalTrackerProps) {
             }}
             id="hypothesis-mode"
           />
-          <Label htmlFor="hypothesis-mode">{dict.targets.goalsTracker.simulation.title}</Label>
+          <Label htmlFor="hypothesis-mode">
+            {dict.targets.goalsTracker.simulation.title}
+          </Label>
         </div>
       </div>
       <div className="space-y-3 py-1 w-full">
