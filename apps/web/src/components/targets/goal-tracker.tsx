@@ -3,6 +3,7 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
@@ -56,12 +57,7 @@ const transformData = (
   return formattedData;
 };
 
-export interface GoalTrackerProps {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  dict: any;
-}
-
-export default function GoalTracker({ dict }: GoalTrackerProps) {
+export default function GoalTracker({ dict }: DictionaryContextType) {
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
     useTransportCO2EmissionByYear({});
   const {
@@ -74,7 +70,7 @@ export default function GoalTracker({ dict }: GoalTrackerProps) {
   const modalData = targetsCo2EmissionByModal?.map((data) => {
     return {
       id: data?.mode,
-      name: dict.mappedTravelMode[data.mode as TravelMode],
+      name: dict?.mappedTravelMode[data.mode as TravelMode],
       icon: getIconByTransportMode({
         mode: data.mode,
         asChild: true,
@@ -129,9 +125,7 @@ export default function GoalTracker({ dict }: GoalTrackerProps) {
             }}
             id="hypothesis-mode"
           />
-          <Label htmlFor="hypothesis-mode">
-            {dict.targets.goalsTracker.simulation.title}
-          </Label>
+          <Label htmlFor="hypothesis-mode">{dict?.targets?.goalsTracker.simulation.title}</Label>
         </div>
       </div>
       <div className="space-y-3 py-1 w-full">
@@ -149,11 +143,11 @@ export default function GoalTracker({ dict }: GoalTrackerProps) {
             ) : (
               <GoalCard
                 icon={CalendarClock}
-                title={dict.targets.goalsTracker.cards.baseYear.title}
+                title={dict?.targets?.goalsTracker.cards.baseYear.title}
                 value={String(BASE_YEAR)}
-                subLabel={dict.targets.goalsTracker.cards.baseYear.subLabel}
+                subLabel={dict?.targets?.goalsTracker.cards.baseYear.subLabel}
                 subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
-                subUnit={dict.targets.goalsTracker.cards.baseYear.subUnit}
+                subUnit={dict?.targets?.goalsTracker.cards.baseYear.subUnit}
               />
             )}
           </div>
@@ -168,13 +162,13 @@ export default function GoalTracker({ dict }: GoalTrackerProps) {
             ) : (
               <GoalCard
                 icon={Target}
-                title={dict.targets.goalsTracker.cards.target.title}
+                title={dict?.targets?.goalsTracker.cards.target.title}
                 value={TARGET_YEAR}
-                subLabel={`${dict.targets.goalsTracker.cards.target.subLabel} (-${REDUCTION_RATE}%)`}
+                subLabel={`${dict?.targets?.goalsTracker.cards.target.subLabel} (-${REDUCTION_RATE}%)`}
                 subValue={Math.trunc(
                   yearBaseCo2Emission * ((100 - REDUCTION_RATE) / 100)
                 ).toLocaleString()}
-                subUnit={dict.targets.goalsTracker.cards.target.subUnit}
+                subUnit={dict?.targets?.goalsTracker.cards.target.subUnit}
               />
             )}
           </div>

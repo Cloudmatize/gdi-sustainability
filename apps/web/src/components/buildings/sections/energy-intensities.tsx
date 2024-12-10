@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ENERGY_FRACTIONS } from "@/constants/buildings";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useBuildingsEnergyIntensitiesBySector } from "@/hooks/buildings";
 import {
   PolarAngleAxis,
@@ -50,18 +51,16 @@ const CustomTooltip = ({
   return null;
 };
 
-export default function EnergyIntensities() {
+export default function EnergyIntensities({ dict }: DictionaryContextType) {
   const { data, isFetching } = useBuildingsEnergyIntensitiesBySector({});
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
-          Intensidade de emissões por fonte de energia
+          {dict?.buildings.sections.EnergyIntensities.title}
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Compara a quantidade de CO2 emitida por quilowatt-hora entre
-          diferentes fontes de energia, destacando o impacto ambiental de cada
-          uma.
+          {dict?.buildings.sections.EnergyIntensities.description}
         </p>
       </div>
 

@@ -71,6 +71,47 @@
           }
         }
       },
+      "secondSection": {
+        "title": "Comparativo de emissões por transporte de 2018 à ",
+        "cards": {
+          "title": "Comparativo de emissões por transporte dos últimos 2 anos",
+          "TransportSectorAnalysisHighestIncrease": {
+            "title": "Setor com maior aumento",
+            "isIncrease": "Aumento dos últimos 2 anos nas emissões"
+          },
+          "TransportSectorAnalysisHighestReduction": {
+            "title": "Setor com maior redução",
+            "isIncrease": "Redução dos últimos 2 anos nas emissões"
+          },
+          "totalCO2Emission": {
+            "title": "Transportation Emissions Comparison (tCO2e)",
+            "description1": "Transportation emissions ",
+            "description2": " in ",
+            "trends": {
+              "positive": "increased",
+              "negative": "decreased"
+            }
+          },
+          "tCO2PerBuilding": {
+            "title": "Metrics per Residential Building",
+            "tooltipContent": "tCO2e/building",
+            "tCO2PerBuilding": "tons of CO2 emitted per building.",
+            "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+            "description1": "Residential buildings account for ",
+            "description2": " of the total area and contribute to ",
+            "description3": " of emissions"
+          },
+          "nonResidential": {
+            "title": "Metrics per Non-Residential Building",
+            "tooltipContent": "tCO2e/building",
+            "tCO2PerBuilding": "tons of CO2 emitted per building.",
+            "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+            "description1": "Non-residential buildings account for ",
+            "description2": " of the total area and contribute to ",
+            "description3": " of emissions"
+          }
+        }
+      },
       "langSwitch": {
         "title": "Alterar idioma",
         "pt": "Português Brasileiro",

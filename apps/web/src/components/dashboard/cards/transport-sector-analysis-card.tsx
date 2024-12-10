@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MdTrendingUp, MdTrendingDown } from "react-icons/md";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
+import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 
 interface Props {
   data: {
@@ -9,12 +10,14 @@ interface Props {
   title: string;
   icon?: JSX.Element;
   isIncrease: boolean;
+  dict: DictionaryContextType['dict']
 }
 export default function TransportSectorAnalysisCard({
   data,
   title,
   icon,
   isIncrease,
+  dict
 }: Props) {
   return (
     <Card className="border w-full">
@@ -25,7 +28,7 @@ export default function TransportSectorAnalysisCard({
             {data?.sector}
           </span>
           <div className="text-end">
-          {title}
+            {title}
           </div>
         </CardTitle>
       </CardHeader>
@@ -35,8 +38,8 @@ export default function TransportSectorAnalysisCard({
           <div className="space-y-1 w-full h-full gap-4">
             <span className="text-xs md:text-sm text-muted-foreground">
               {isIncrease
-                ? "Aumento dos últimos 2 anos nas emissões"
-                : "Redução dos últimos 2 anos nas emissões"}
+                ? dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestIncrease.isIncrease
+                : dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestReduction.isIncrease}
             </span>
             <div className="flex items-center flex-row gap-2 w-full">
               {isIncrease ? (
@@ -45,11 +48,10 @@ export default function TransportSectorAnalysisCard({
                 <MdTrendingDown className="text-primary-foreground fill-primary-foreground text-xl" />
               )}
               <div
-                className={`${
-                  isIncrease
-                    ? "text-destructive-foreground"
-                    : "text-primary-foreground"
-                } text-2xl font-bold`}
+                className={`${isIncrease
+                  ? "text-destructive-foreground"
+                  : "text-primary-foreground"
+                  } text-2xl font-bold`}
               >
                 {data?.percentageChange.toFixed(2)}%
               </div>

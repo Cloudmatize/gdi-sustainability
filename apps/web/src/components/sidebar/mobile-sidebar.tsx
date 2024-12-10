@@ -1,4 +1,6 @@
 import { getRoutes } from "@/config/menuRoutes";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useContext, useState } from "react";
 import {
@@ -20,17 +22,13 @@ import {
   useSidebar,
 } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
-import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 
-interface MobileSideBarProps {
-  dict: any;
-}
 
-export function MobileSideBar({ dict }: MobileSideBarProps) {
+export function MobileSideBar({ dict }: DictionaryContextType) {
+  const [openRoute, setOpenRoute] = useState([0])
+  const { open, toggleSidebar } = useSidebar()
   const { getCurrentFlag } = useContext(FeatureFlagsContext);
-  const [openRoute, setOpenRoute] = useState([0]);
-  const { open, toggleSidebar } = useSidebar();
-  const routes = getRoutes(dict.routes);
+  const routes = getRoutes(dict?.routes)
 
   const filteredRoutes = routes.filter((route) => {
     if (!route.fliptFlag) return true;
@@ -65,7 +63,7 @@ export function MobileSideBar({ dict }: MobileSideBarProps) {
             onClick={handleToggleSideBar}
           >
             <img
-              src={`/logos/logo-go-sustainability.png`}
+              src={"/logos/logo-go-sustainability.png"}
               alt="GS Logo"
               className="w-40"
             />
@@ -110,15 +108,8 @@ export function MobileSideBar({ dict }: MobileSideBarProps) {
                   <SidebarGroupContent className="mt-2">
                     <SidebarMenu className="border-l-2 px-4">
                       {route?.children?.map((children) => (
-                        <SidebarMenuItem
-                          key={children.title}
-                          className="max-w-56 w-56"
-                        >
-                          <SidebarMenuButton
-                            asChild
-                            className={`max-w-56  w-full ${openRoute.includes(children.id) ? "bg-teal-400 text-white font-bold" : ""}`}
-                            onClick={(e) => handleChangeOpenState(children)}
-                          >
+                        <SidebarMenuItem key={children.title} className="max-w-56 w-56">
+                          <SidebarMenuButton asChild className={`max-w-56  w-full ${openRoute.includes(children.id) ? "bg-teal-400 text-white font-bold" : ""}`} onClick={(e) => handleChangeOpenState(children)}>
                             <a href={children.path}>
                               <children.icon />
                               <span>{children.title}</span>
@@ -136,11 +127,7 @@ export function MobileSideBar({ dict }: MobileSideBarProps) {
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem className="w-full">
-                    <SidebarMenuButton
-                      variant="default"
-                      className={`w-full text-slate-600  ${openRoute.includes(route.id) ? "bg-teal-400 text-white font-bold" : ""}`}
-                      onClick={(e) => handleChangeOpenState(route)}
-                    >
+                    <SidebarMenuButton variant="default" className={`w-full text-slate-600  ${openRoute.includes(route.id) ? "bg-teal-400 text-white font-bold" : ""}`} onClick={(e) => handleChangeOpenState(route)}>
                       <route.icon size={20} />
                       {route.title}
                     </SidebarMenuButton>
@@ -154,10 +141,10 @@ export function MobileSideBar({ dict }: MobileSideBarProps) {
       <SidebarFooter className="border-t py-4 flex flex-row gap-4 px-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <UserMenu dict={dict.sidebar.userMenu} />
+            <UserMenu dict={dict?.sidebar.userMenu} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-    </Sidebar>
-  );
+    </Sidebar >
+  )
 }

@@ -35,42 +35,83 @@
     },
     "dashboard": {
       "firstSection": {
-    "title": "CO2 Emissions Overview for the Year ",
-    "cards": {
-      "TotalCO2eCard": {
-        "title": "Total Emissions (tCO2e)",
-        "transportsCo2Emission": "Transport: ",
-        "buildingsCo2Emission": "Buildings: "
-      },
-      "totalCO2Emission": {
-        "title": "Transportation Emissions Comparison (tCO2e)",
-        "description1": "Transportation emissions ",
-        "description2": " in ",
-        "trends": {
-          "positive": "increased",
-          "negative": "decreased"
+        "title": "CO2 Emissions Overview for the Year ",
+        "cards": {
+          "TotalCO2eCard": {
+            "title": "Total Emissions (tCO2e)",
+            "transportsCo2Emission": "Transport: ",
+            "buildingsCo2Emission": "Buildings: "
+          },
+          "totalCO2Emission": {
+            "title": "Transportation Emissions Comparison (tCO2e)",
+            "description1": "Transportation emissions ",
+            "description2": " in ",
+            "trends": {
+              "positive": "increased",
+              "negative": "decreased"
+            }
+          },
+          "tCO2PerBuilding": {
+            "title": "Metrics per Residential Building",
+            "tooltipContent": "tCO2e/building",
+            "tCO2PerBuilding": "tons of CO2 emitted per building.",
+            "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+            "description1": "Residential buildings account for ",
+            "description2": " of the total area and contribute to ",
+            "description3": " of emissions"
+          },
+          "nonResidential": {
+            "title": "Metrics per Non-Residential Building",
+            "tooltipContent": "tCO2e/building",
+            "tCO2PerBuilding": "tons of CO2 emitted per building.",
+            "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+            "description1": "Non-residential buildings account for ",
+            "description2": " of the total area and contribute to ",
+            "description3": " of emissions"
+          }
         }
       },
-      "tCO2PerBuilding": {
-        "title": "Metrics per Residential Building",
-        "tooltipContent": "tCO2e/building",
-        "tCO2PerBuilding": "tons of CO2 emitted per building.",
-        "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
-        "description1": "Residential buildings account for ",
-        "description2": " of the total area and contribute to ",
-        "description3": " of emissions"
-      },
-      "nonResidential": {
-        "title": "Metrics per Non-Residential Building",
-        "tooltipContent": "tCO2e/building",
-        "tCO2PerBuilding": "tons of CO2 emitted per building.",
-        "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
-        "description1": "Non-residential buildings account for ",
-        "description2": " of the total area and contribute to ",
-        "description3": " of emissions"
-      }
-    }
-  },
+        "secondSection": {
+          "title": "Transportation Emissions Comparison from 2018 to ",
+          "cards": {
+            "title": "Transportation Emissions Comparison of the Last 2 Years",
+            "TransportSectorAnalysisHighestIncrease": {
+              "title": "Sector with Highest Increase",
+              "isIncrease": "Increase in emissions over the last 2 years"
+            },
+            "TransportSectorAnalysisHighestReduction": {
+              "title": "Sector with Highest Reduction",
+              "isIncrease": "Reduction in emissions over the last 2 years"
+            },
+            "totalCO2Emission": {
+              "title": "Transportation Emissions Comparison (tCO2e)",
+              "description1": "Transportation emissions ",
+              "description2": " in ",
+              "trends": {
+                "positive": "increased",
+                "negative": "decreased"
+              }
+            },
+            "tCO2PerBuilding": {
+              "title": "Metrics per Residential Building",
+              "tooltipContent": "tCO2e/building",
+              "tCO2PerBuilding": "tons of CO2 emitted per building.",
+              "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+              "description1": "Residential buildings account for ",
+              "description2": " of the total area and contribute to ",
+              "description3": " of emissions"
+            },
+            "nonResidential": {
+              "title": "Metrics per Non-Residential Building",
+              "tooltipContent": "tCO2e/building",
+              "tCO2PerBuilding": "tons of CO2 emitted per building.",
+              "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+              "description1": "Non-residential buildings account for ",
+              "description2": " of the total area and contribute to ",
+              "description3": " of emissions"
+            }
+          }
+        },
       "langSwitch": {
         "title": "Change language",
         "pt": "Brazilian Portuguese",

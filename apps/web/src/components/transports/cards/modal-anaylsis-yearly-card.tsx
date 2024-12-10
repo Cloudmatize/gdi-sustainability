@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mappedTravelMode } from "@/constants/transports";
-import { TravelMode } from "@/types/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
+import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { cx } from "class-variance-authority";
 import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
@@ -13,9 +13,10 @@ interface Props {
     avgPercentageYearly: number;
   };
   hover?: boolean;
+  dict: DictionaryContextType['dict'];
 }
 
-export default function ModalAnalysisYearlyCard({ transport, hover }: Props) {
+export default function ModalAnalysisYearlyCard({ transport, hover, dict }: Props) {
   return (
     <Card className={cx("border w-full", hover ? "card-hover" : "")}>
       <CardHeader>
@@ -24,7 +25,7 @@ export default function ModalAnalysisYearlyCard({ transport, hover }: Props) {
             <div className="flex items-center gap-2 flex-row">
               {getIconByTransportMode({ mode: transport?.mode }) as any}
               <span className="">
-                {mappedTravelMode[transport.mode as TravelMode]}
+                {dict?.mappedTravelMode[transport.mode]}
               </span>
             </div>
             <div className="flex gap-2 items-center md:items-end w-full h-full md:justify-items-end">
@@ -32,7 +33,7 @@ export default function ModalAnalysisYearlyCard({ transport, hover }: Props) {
                 <div className="text-sm font-bold text-primary-slate">
                   {transport.percentageContribution}%
                 </div>
-                do total de transportes
+                {dict?.transports.sections.Co2EmissionPerTransport.cards.percentageDescription}
               </div>
             </div>
           </div>

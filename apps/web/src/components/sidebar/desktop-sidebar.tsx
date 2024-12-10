@@ -1,6 +1,9 @@
 import { getRoutes } from "@/config/menuRoutes";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
+import { useContext } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -31,25 +34,21 @@ import {
   useSidebar,
 } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
-import { useContext } from "react";
-import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 
-interface DesktopSideBarProps {
-  dict: any
-}
 
-export function DesktopSideBar({ dict }: DesktopSideBarProps) {
+export function DesktopSideBar({ dict }: DictionaryContextType) {
   const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
-  const { getCurrentFlag }  = useContext(FeatureFlagsContext);
+  const { getCurrentFlag } = useContext(FeatureFlagsContext);
   const routes = getRoutes(dict.routes)
 
   const filteredRoutes = routes.filter((route) => {
     if (!route.fliptFlag) return true;
     const flag = getCurrentFlag(route.fliptFlag);
     return flag?.enabled;
-    
+
   });
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleChangeOpenState = (route: { id: number; parent?: number; children?: any[] }) => {
     if (!openRoute.includes(route.id)) {
       if (route.parent) {
@@ -73,9 +72,10 @@ export function DesktopSideBar({ dict }: DesktopSideBarProps) {
       <SidebarHeader className="border-b h-[65px]  gap-2 justify-center flex flex-col items-center w-full">
         <SidebarMenu className="p-0 m-0 flex flex-col justify-center items-center">
           <SidebarMenuItem className="flex flex-col justify-center items-center w-full">
-            <div
+            <button
               className="bg-transparent p-0 m-0 justify-center flex flex-row cursor-pointer"
               onClick={handleToggleSideBar}
+              type="submit"
             >
               <div
                 className={`flex  h-full w-full flex-row gap-2  items-center ${open ? " justify-center" : " justify-start"}`}
@@ -86,7 +86,7 @@ export function DesktopSideBar({ dict }: DesktopSideBarProps) {
                   className="w-40  "
                 />
               </div>
-            </div>
+            </button>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -232,7 +232,7 @@ export function DesktopSideBar({ dict }: DesktopSideBarProps) {
       <SidebarFooter className="border-t py-4 flex flex-row gap-4 px-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <UserMenu dict={dict.sidebar.userMenu} />
+            <UserMenu dict={dict?.sidebar?.userMenu} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

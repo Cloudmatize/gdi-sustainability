@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { calculateSimulatedCO2Emissions } from "@/services/transports/graphql";
 import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
@@ -18,7 +19,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const currentYear = new Date().getFullYear();
 const mappedGoal = {
@@ -38,7 +39,7 @@ function checkEmissionsStatus(
     currentEmission <= targetEmission
   ) {
     return {
-      status: dict.targets.goalsTracker.cards.transportEmissionTargets.inTheGoal,
+      status: dict?.targets?.goalsTracker.cards.transportEmissionTargets.inTheGoal,
       differencePercentage: 0,
     };
   }
@@ -46,7 +47,7 @@ function checkEmissionsStatus(
     ? ((currentEmission - targetEmission) / targetEmission) * 100
     : 0;
   return {
-    status: dict.targets.goalsTracker.cards.transportEmissionTargets.outOfTheGoal,
+    status: dict?.targets?.goalsTracker.cards.transportEmissionTargets.outOfTheGoal,
     differencePercentage: differencePercentage?.toFixed(2),
     sugestion:
       targetEmission !== undefined
@@ -55,7 +56,7 @@ function checkEmissionsStatus(
         : undefined,
   };
 }
-const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: any }) => {
+const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: DictionaryContextType['dict'] }) => {
   return (
     <div className="custom-legend w-full flex gap-3 justify-center items-center mt-8">
       {payload?.map((d, index) => (
@@ -65,7 +66,7 @@ const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: any }) => 
             style={{ backgroundColor: d?.color }}
           />
           <span className="text-sm text-foreground text-center">
-            {dict.mappedGoal[d?.value as keyof typeof dict.mappedGoal]}
+            {dict?.mappedGoal[d?.value as keyof typeof dict.mappedGoal]}
           </span>
         </div>
       ))}
@@ -100,7 +101,7 @@ const CustomTooltip = ({
                     style={{ backgroundColor: item.color }}
                   />
                   <span className="text-foreground font-bold  text-center">
-                    {dict.mappedGoal[item?.dataKey as keyof typeof dict.mappedGoal] || ""}
+                    {dict?.mappedGoal[item?.dataKey as keyof typeof dict.mappedGoal] || ""}
                   </span>
                 </div>
                 {formatCO2Emission(item.value) || 0} tons
@@ -126,7 +127,7 @@ interface Props {
     targetCo2Emission: number | null;
     simulatedCo2Emission?: number | null;
   }[];
-  dict: any;
+  dict: DictionaryContextType['dict'];
 }
 export default function TransportEmissionTargets({ data = [], dict }: Props) {
   const [transportEmissionData, setTransportEmissionData] = useState<
@@ -188,7 +189,7 @@ export default function TransportEmissionTargets({ data = [], dict }: Props) {
         <Card className="p-6 h-full w-[500px] sm:w-full">
           <div className="mb-8 space-y-2 ">
             <div className="text-sm text-muted-foreground">
-              {dict.targets.goalsTracker.cards.transportEmissionTargets.title}
+              {dict?.targets?.goalsTracker.cards.transportEmissionTargets.title}
             </div>
             <div
               className={"flex gap-3 items-center text-3xl font-bold text-gray-500 "}
@@ -220,8 +221,8 @@ export default function TransportEmissionTargets({ data = [], dict }: Props) {
                     return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <Legend content={<CustomLegend dict={dict.targets.goalsTracker.cards.transportEmissionTargets.chart} />} />
-                <Tooltip content={<CustomTooltip dict={dict.targets.goalsTracker.cards.transportEmissionTargets.chart} />} />
+                <Legend content={<CustomLegend dict={dict?.targets?.goalsTracker.cards.transportEmissionTargets.chart} />} />
+                <Tooltip content={<CustomTooltip dict={dict?.targets?.goalsTracker.cards.transportEmissionTargets.chart} />} />
                 <Line
                   type="monotone"
                   dataKey="co2Emission"
@@ -281,7 +282,7 @@ export default function TransportEmissionTargets({ data = [], dict }: Props) {
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: dict.targets.goalsTracker.cards.transportEmissionTargets.chart.ReferenceLine_BASE_YEAR,
+                    value: dict?.targets?.goalsTracker.cards.transportEmissionTargets.chart.ReferenceLine_BASE_YEAR,
                     position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,
@@ -293,7 +294,7 @@ export default function TransportEmissionTargets({ data = [], dict }: Props) {
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: dict.targets.goalsTracker.cards.transportEmissionTargets.chart.ReferenceLine_TARGET_YEAR,
+                    value: dict?.targets?.goalsTracker.cards.transportEmissionTargets.chart.ReferenceLine_TARGET_YEAR,
                     position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,

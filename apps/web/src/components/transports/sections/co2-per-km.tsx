@@ -1,6 +1,7 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTransportsCO2EmissionPerKM } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import {
@@ -11,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const CustomTooltip = ({
   active,
@@ -45,7 +46,7 @@ const CustomTooltip = ({
   return null;
 };
 
-export default function Co2EmissionPerKilometer() {
+export default function Co2EmissionPerKilometer({ dict }: DictionaryContextType) {
   const { filters } = useTransportsStore();
   const { data, isFetching } = useTransportsCO2EmissionPerKM({
     filters,
@@ -54,11 +55,10 @@ export default function Co2EmissionPerKilometer() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold mb-2 text-foreground">
-          Comparação de emissões por quilômetro e tipo de transporte
+          {dict?.title}
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Compara as emissões de CO2 por quilômetro entre diferentes tipos de
-          transporte, destacando as variações entre as modalidades.
+          {dict?.description}
         </p>
       </div>
 
@@ -67,7 +67,7 @@ export default function Co2EmissionPerKilometer() {
       ) : (
         <Card className="p-6  overflow-auto">
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emissão CO2 (kgCO2e/km)
+            {dict?.chart.title}
           </h3>
 
           <div className="h-[400px]  w-[400px] sm:w-full">

@@ -62,7 +62,7 @@ function ThemeColor({ dict, colors }: ThemeColorProps) {
     return (
         <>
             <div className="flex flex-row items-center gap-4">
-                {dict.title} <Button variant="ghost" onClick={reset}>{dict.standard}</Button>
+                {dict?.title} <Button variant="ghost" onClick={reset}>{dict?.standard}</Button>
             </div>
             <div className="grid gap-4 grid-cols-2 grid-rows-2 items-center">
                 {colors?.map((color) => (

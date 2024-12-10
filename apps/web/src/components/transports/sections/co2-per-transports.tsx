@@ -6,6 +6,7 @@ import InfoTooltip from "@/components/ui/info-tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
 import { mappedTravelMode } from "@/constants/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
@@ -157,11 +158,10 @@ export const ModalEmissionAnalysisCard = ({
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${
-                trend === "up"
-                  ? "text-destructive-foreground"
-                  : "text-primary-foreground"
-              }`}
+              className={` font-bold ${trend === "up"
+                ? "text-destructive-foreground"
+                : "text-primary-foreground"
+                }`}
             >
               {data.contributionStatus}
             </p>
@@ -177,11 +177,10 @@ export const ModalEmissionAnalysisCard = ({
                 <TrendingDown className="h-4 w-4 text-primary-foreground" />
               )}
               <span
-                className={` font-bold ${
-                  trend === "up"
-                    ? "text-destructive-foreground"
-                    : "text-primary-foreground"
-                }`}
+                className={` font-bold ${trend === "up"
+                  ? "text-destructive-foreground"
+                  : "text-primary-foreground"
+                  }`}
               >
                 {data.avgPercentageYearly}%
               </span>
@@ -213,7 +212,7 @@ export const ModalEmissionAnalysisCard = ({
   );
 };
 
-export default function Co2EmissionPerTransport() {
+export default function Co2EmissionPerTransport({ dict }: DictionaryContextType) {
   const { data, isFetching } = useTransportsCO2EmissionByYearAndModal({});
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
@@ -221,12 +220,10 @@ export default function Co2EmissionPerTransport() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold mb-2 text-foreground">
-          Comparação de emissões por tipo de transporte
+          {dict?.transports.sections.Co2EmissionPerTransport.title}
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Compara as emissões de CO2 divididas por tipos específicos de
-          transporte, proporcionando uma visão sobre a eficiência de cada
-          modalidade ao longo dos anos.
+          {dict?.transports.sections.Co2EmissionPerTransport.description}
         </p>
       </div>
 
@@ -243,7 +240,7 @@ export default function Co2EmissionPerTransport() {
               {isLoadingModalAnalysis ? (
                 <Skeleton className="h-[300px]" />
               ) : (
-                <ModalAnalysisYearlyCard transport={formattedModal} />
+                <ModalAnalysisYearlyCard transport={formattedModal} dict={dict} />
               )}
             </div>
           );
@@ -255,7 +252,7 @@ export default function Co2EmissionPerTransport() {
       ) : (
         <Card className="p-4 h-fit overflow-auto" >
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emissão CO2 (tCO2e)
+            {dict?.transports.sections.Co2EmissionPerTransport.chart.title}
           </h3>
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer width="100%" height="100%">

@@ -200,7 +200,7 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
   return (
     <div className="space-y-6">
       <div className="text-xl font-bold">
-        Comparativo de emissões por transporte de 2018 à {secondYear}
+        {dict.dashboard.secondSection.title}{secondYear}
       </div>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingModalAnalysis
@@ -230,7 +230,7 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
       </div>
 
       <div className="text-xl font-bold">
-        Comparativo de emissões por transporte dos últimos 2 anos
+        {dict.dashboard.secondSection.cards.title}
       </div>
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
@@ -239,10 +239,11 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
         ) : (
           <TransportSectorAnalysisCard
             data={comparissonSectorData?.highestIncrease}
-            title="Setor com maior aumento"
+            title={dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestIncrease.title}
             icon={getIconByTransportMode({
               mode: comparissonSectorData?.highestIncrease?.sector.toUpperCase(),
             })}
+            dict={dict}
             isIncrease
           />
         )}
@@ -251,10 +252,11 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
         ) : (
           <TransportSectorAnalysisCard
             data={comparissonSectorData?.highestReduction}
-            title="Setor com maior redução"
+            title={dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestReduction.title}
             icon={getIconByTransportMode({
               mode: comparissonSectorData?.highestReduction?.sector.toUpperCase(),
             })}
+            dict={dict}
             isIncrease={false}
           />
         )}

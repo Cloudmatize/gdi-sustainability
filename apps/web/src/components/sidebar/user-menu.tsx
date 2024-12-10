@@ -1,3 +1,4 @@
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import federatedLogout from "@/utils/auth/federated-logout";
 import { LogOut, Settings, User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -12,11 +13,8 @@ import {
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton } from "../ui/sidebar";
 
-interface UserMenuProps {
-  dict: any
-}
 
-export function UserMenu({ dict }: UserMenuProps) {
+export function UserMenu({ dict }: DictionaryContextType) {
   const { data } = useSession();
   return (
     <DropdownMenu>
@@ -34,7 +32,7 @@ export function UserMenu({ dict }: UserMenuProps) {
         >
           <Link href="/settings" className="flex items-center gap-2 justify-between">
             <Settings size={20} />
-            <span>{dict.settings}</span>
+            <span>{dict?.settings}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -43,7 +41,7 @@ export function UserMenu({ dict }: UserMenuProps) {
           className="cursor-pointer"
         >
           <LogOut />
-          <span>{dict.logout}</span>
+          <span>{dict?.logout}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

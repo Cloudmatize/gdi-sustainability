@@ -1,15 +1,12 @@
 "use client";
 
 import { CardContent } from "@/components/ui/card";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsStore } from "@/store/targets";
 import { ArrowDown, ArrowUp, Target } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
 
-interface ModalSimulatorProps {
-  dict: any
-}
-
-export default function ModalSimulator({ dict }: ModalSimulatorProps) {
+export default function ModalSimulator({ dict }: DictionaryContextType) {
   const {
     totalCo2Emission: { original, percentage, simulated },
   } = useTargetsStore();
@@ -27,7 +24,7 @@ export default function ModalSimulator({ dict }: ModalSimulatorProps) {
                 {original.toLocaleString()} tCO2e
               </span>
               <span className="text-sm text-muted-foreground  ">
-                {dict.targets.goalsTracker.cards.goalTrackerTable.modalSimulator.totalInitialIssuance}
+                {dict?.targets?.goalsTracker.cards.goalTrackerTable.modalSimulator.totalInitialIssuance}
               </span>
             </div>
           </div>
@@ -57,7 +54,7 @@ export default function ModalSimulator({ dict }: ModalSimulatorProps) {
                 {simulated.toLocaleString()} tCO2e
               </span>
               <span className="text-sm text-muted-foreground ">
-                {dict.targets.goalsTracker.cards.goalTrackerTable.modalSimulator.totalExpectedIssuance}
+                {dict?.targets?.goalsTracker.cards.goalTrackerTable.modalSimulator.totalExpectedIssuance}
               </span>
             </div>
           </div>

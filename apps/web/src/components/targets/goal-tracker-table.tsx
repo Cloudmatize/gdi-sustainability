@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import {
   passengersPerTripMapping
 } from "@/constants/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsStore } from "@/store/targets";
 import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
@@ -30,7 +31,7 @@ interface TransportModeReal {
 
 interface Props {
   data: TransportModeReal[];
-  dict: string[];
+  dict: DictionaryContextType['dict']
 }
 
 type TransferLog = {
@@ -227,7 +228,7 @@ export default function GoalTrackerTable({ data, dict }: Props) {
     <Card className="h-full w-full  ">
       <CardHeader>
         <CardTitle>
-          {dict.targets.goalsTracker.cards.goalTrackerTable.title} (
+          {dict?.targets?.goalsTracker.cards.goalTrackerTable.title} (
           {new Date().getFullYear() - 1})
         </CardTitle>
       </CardHeader>
@@ -237,12 +238,12 @@ export default function GoalTrackerTable({ data, dict }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{dict.targets.goalsTracker.cards.goalTrackerTable.content.table.th1}</TableHead>
-              <TableHead className="text-end">{dict.targets.goalsTracker.cards.goalTrackerTable.content.table.th2}</TableHead>
-              <TableHead className="text-end">{dict.targets.goalsTracker.cards.goalTrackerTable.content.table.th3}</TableHead>
-              <TableHead className="text-end">{dict.targets.goalsTracker.cards.goalTrackerTable.content.table.th4} (ton)</TableHead>
+              <TableHead>{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th1}</TableHead>
+              <TableHead className="text-end">{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th2}</TableHead>
+              <TableHead className="text-end">{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th3}</TableHead>
+              <TableHead className="text-end">{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th4} (ton)</TableHead>
               <TableHead className="text-end">
-                {dict.targets.goalsTracker.cards.goalTrackerTable.content.table.th5} (kgCO₂)
+                {dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th5} (kgCO₂)
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -309,7 +310,7 @@ export default function GoalTrackerTable({ data, dict }: Props) {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span>{mode.icon}</span>
-                      <span>{dict.mappedTravelMode[mode.name]}</span>
+                      <span>{dict?.mappedTravelMode[mode.name]}</span>
                     </div>
                   </TableCell>
                   <TableCell className="text-right flex-1 ">
@@ -378,6 +379,7 @@ export default function GoalTrackerTable({ data, dict }: Props) {
                                 passengersPerTripMapping[mode.id]
                               )
                             }
+                            type="submit"
                             className="mr-4 text-gray-500 hover:text-gray-700  "
                           >
                             <RotateCcw className="ml-1 h-3 w-3" />

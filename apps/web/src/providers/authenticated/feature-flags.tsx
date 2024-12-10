@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { ReactNode, createContext } from "react";
+import LoadingPage from "@/components/loading-page";
+import { AppRuntimeEnv } from "@/domain/env";
+import { flipt } from "@/services/flipt";
 import { FliptApi } from "@flipt-io/flipt";
 import { FlagList } from "@flipt-io/flipt/api";
-import { flipt } from "@/services/flipt";
-import LoadingPage from "@/components/loading-page";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { AppRuntimeEnv } from "@/domain/env";
+import { ReactNode, createContext } from "react";
 
 type FeatureFlagsContextProps = {
   flags?: FlagList;
@@ -42,7 +42,7 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
     return dataFlipt?.flags?.find((item: any) => item.key === flagKey);
   }
 
-  
+
   if (isFetching) {
     return <LoadingPage />;
   }
