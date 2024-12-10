@@ -28,7 +28,8 @@ const mappedGoal = {
 };
 function checkEmissionsStatus(
   currentEmission: number | undefined | null,
-  targetEmission: number | undefined | null
+  targetEmission: number | undefined | null,
+  dict: any
 ) {
   if (!currentEmission) return null;
   if (
@@ -37,25 +38,24 @@ function checkEmissionsStatus(
     currentEmission <= targetEmission
   ) {
     return {
-      status: "Dentro da meta",
+      status: dict.targets.goalsTracker.cards.transportEmissionTargets.inTheGoal,
       differencePercentage: 0,
     };
-  } else {
-    const differencePercentage = targetEmission
-      ? ((currentEmission - targetEmission) / targetEmission) * 100
-      : 0;
-    return {
-      status: "Fora da meta",
-      differencePercentage: differencePercentage?.toFixed(2),
-      sugestion:
-        targetEmission !== undefined
-          ? targetEmission !== null &&
-            `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
-          : undefined,
-    };
   }
+  const differencePercentage = targetEmission
+    ? ((currentEmission - targetEmission) / targetEmission) * 100
+    : 0;
+  return {
+    status: dict.targets.goalsTracker.cards.transportEmissionTargets.outOfTheGoal,
+    differencePercentage: differencePercentage?.toFixed(2),
+    sugestion:
+      targetEmission !== undefined
+        ? targetEmission !== null &&
+        `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
+        : undefined,
+  };
 }
-const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: any }) => {
   return (
     <div className="custom-legend w-full flex gap-3 justify-center items-center mt-8">
       {payload?.map((d, index) => (
@@ -65,7 +65,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             style={{ backgroundColor: d?.color }}
           />
           <span className="text-sm text-foreground text-center">
-            {mappedGoal[d?.value as keyof typeof mappedGoal]}
+            {dict.mappedGoal[d?.value as keyof typeof dict.mappedGoal]}
           </span>
         </div>
       ))}
@@ -76,10 +76,12 @@ const CustomTooltip = ({
   active,
   payload,
   label,
+  dict
 }: {
   active?: boolean;
   payload?: Payload[];
   label?: string;
+  dict: any;
 }) => {
   if (active && payload && payload.length) {
     return (
@@ -98,7 +100,7 @@ const CustomTooltip = ({
                     style={{ backgroundColor: item.color }}
                   />
                   <span className="text-foreground font-bold  text-center">
-                    {mappedGoal[item?.dataKey as keyof typeof mappedGoal] || ""}
+                    {dict.mappedGoal[item?.dataKey as keyof typeof dict.mappedGoal] || ""}
                   </span>
                 </div>
                 {formatCO2Emission(item.value) || 0} tons
@@ -124,8 +126,9 @@ interface Props {
     targetCo2Emission: number | null;
     simulatedCo2Emission?: number | null;
   }[];
+  dict: any;
 }
-export default function TransportEmissionTargets({ data = [] }: Props) {
+export default function TransportEmissionTargets({ data = [], dict }: Props) {
   const [transportEmissionData, setTransportEmissionData] = useState<
     DataEntry[]
   >([]);
@@ -147,6 +150,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
     });
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (data || !hypothesisMode) {
       setTransportEmissionData(data);
@@ -173,7 +177,8 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
   const currentYearEmissionStatus = checkEmissionsStatus(
     lastYearData?.co2Emission,
-    lastYearData?.targetCo2Emission
+    lastYearData?.targetCo2Emission,
+    dict
   );
   return (
     <div className="overflow-y-auto">
@@ -183,14 +188,14 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
         <Card className="p-6 h-full w-[500px] sm:w-full">
           <div className="mb-8 space-y-2 ">
             <div className="text-sm text-muted-foreground">
-              Grau de aderência a meta
+              {dict.targets.goalsTracker.cards.transportEmissionTargets.title}
             </div>
             <div
-              className={`flex gap-3 items-center text-3xl font-bold text-gray-500 `}
+              className={"flex gap-3 items-center text-3xl font-bold text-gray-500 "}
             >
               {currentYearEmissionStatus?.status}
-              <div className={`rounded-lg bg-gray-200 p-2 `}>
-                <Target className={`h-5 w-5 text-gray-500 `} />
+              <div className={"rounded-lg bg-gray-200 p-2 "}>
+                <Target className={"h-5 w-5 text-gray-500 "} />
               </div>
             </div>
           </div>
@@ -215,8 +220,8 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                     return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <Legend content={<CustomLegend />} />
-                <Tooltip content={<CustomTooltip />} />
+                <Legend content={<CustomLegend dict={dict.targets.goalsTracker.cards.transportEmissionTargets.chart} />} />
+                <Tooltip content={<CustomTooltip dict={dict.targets.goalsTracker.cards.transportEmissionTargets.chart} />} />
                 <Line
                   type="monotone"
                   dataKey="co2Emission"
@@ -276,7 +281,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: "Ano de referência",
+                    value: dict.targets.goalsTracker.cards.transportEmissionTargets.chart.ReferenceLine_BASE_YEAR,
                     position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,
@@ -288,7 +293,7 @@ export default function TransportEmissionTargets({ data = [] }: Props) {
                   stroke="#bab8b8"
                   strokeWidth={1}
                   label={{
-                    value: "Ano de conclusão da meta",
+                    value: dict.targets.goalsTracker.cards.transportEmissionTargets.chart.ReferenceLine_TARGET_YEAR,
                     position: "bottom",
                     fill: "#bab8b8",
                     fontSize: 12,

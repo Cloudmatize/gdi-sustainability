@@ -23,14 +23,225 @@
         "logout": "Sair"
       }
     },
+    "mappedTravelMode": {
+      "AUTOMOBILE": "Automóvel",
+      "BUS": "Ônibus",
+      "MOTORCYCLE": "Motocicleta",
+      "RAIL": "Trem",
+      "SUBWAY": "Metrô",
+      "ON FOOT": "A pé",
+      "CYCLING": "Ciclismo",
+      "PLANE": "Avião"
+    },
     "dashboard": {
       "firstSection": {
-        "title": "Visão geral de emissões de CO2 do ano de "
+        "title": "Visão geral de emissões de CO2 do ano de ",
+        "cards": {
+          "TotalCO2eCard": {
+            "title": "Emissões totais (tCO2e)",
+            "transportsCo2Emission": "Transportes:",
+            "buildingsCo2Emission": "Edifícios:"
+          },
+          "totalCO2Emission": {
+            "title": "Comparação emissões transporte (tCO2e)",
+            "description1": "As emissões de transporte ",
+            "description2": " em ",
+            "trends": {
+              "positive": "aumentaram",
+              "negative": "diminuiram"
+            }
+          },
+          "tCO2PerBuilding": {
+            "title": "Métricas por edifício residencial",
+            "tooltipContent": "tCO2e/edifício",
+            "tCO2PerBuilding": "toneladas de CO2 emitidos por edifício.",
+            "kgCO2PerSquareMeter": "kilogramas de CO2 emitidos por metro quadrado.",
+            "description1": "Os edifícios residenciais possuem ",
+            "description2": "da área total e contribuem com ",
+            "description3": "das emissões"
+          },
+          "nonResidential": {
+            "title": "Métricas por edifício não residencial",
+            "tooltipContent": "tCO2e/edifício",
+            "tCO2PerBuilding": "toneladas de CO2 emitidos por edifício.",
+            "kgCO2PerSquareMeter": "kilogramas de CO2 emitidos por metro quadrado.",
+            "description1": "Os edifícios não residenciais possuem ",
+            "description2": "da área total e contribuem com ",
+            "description3": "das emissões"
+          }
+        }
       },
       "langSwitch": {
         "title": "Alterar idioma",
         "pt": "Português Brasileiro",
         "en": "Inglês"
+      }
+    },
+    "buildings": {
+      "title":"Emissão de edifícios",
+      "description": "As informações sobre emissões de CO2 dos edifícios auxiliam a organização a monitorar, analisar e progredir em direção às metas de sustentabilidade, focando na redução de gases de efeito estufa.",
+      "metrics": {
+        "title": "Emissão de CO2 em toneladas",
+        "totalEmissions": {
+          "title": "Emissão total",
+          "description": "edifícios"
+        },
+        "issuanceOfResidentialBuildings": {
+          "title": "Emissão de edifícios residenciais"
+        },
+        "issuanceOfNonResidentialBuildings": {
+          "title": "Emissão de edifícios não residenciais"
+        }
+      },
+      "sections": {
+        "EnergyFractions": {
+          "title": "Composição energética e impacto de emissões no município",
+          "description": "Análise da composição das fontes de energia utilizadas no município e avalia o impacto das emissões de CO2 geradas por diferentes tipos de energia.",
+          "cards": {
+            "CompositionOfEnergySourcesBySector": {
+              "title": "Composição das fontes energéticas por setor"
+            },
+            "ImpactOfEnergySourcesOnEmissions": {
+              "title": "Impacto das fontes de energia nas emissões"
+            }
+          }
+        },
+        "EnergyIntensities": {
+          "title": "Intensidade de emissões por fonte de energia",
+          "description": "Compara a quantidade de CO2 emitida por quilowatt-hora entre diferentes fontes de energia, destacando o impacto ambiental de cada uma.",
+          "cards": {
+            "CompositionOfEnergySourcesBySector": {
+              "title": "Composição das fontes energéticas por setor"
+            },
+            "ImpactOfEnergySourcesOnEmissions": {
+              "title": "Impacto das fontes de energia nas emissões"
+            }
+          }
+        }
+      }
+    },
+    "targets": {
+      "title": "Metas",
+      "goalsTracker": {
+        "simulation": {
+          "title": "Realizar simulação",
+          "simulator": {
+            "title": "Simulador de transferência de viagens entre modais",
+            "to": "Para",
+            "from": "De",
+            "fromMode": "das viagens de",
+            "toMode": "transferidas para",
+            "addDistribution": "Adicionar distribuição",
+            "addTransferRow": "Adicionar transferência"
+          }
+        },
+        "cards": {
+          "baseYear": {
+            "title": "Ano base",
+            "subLabel": "Emissão inicial de CO2",
+            "subUnit": "toneladas de CO2"
+          },
+          "target": {
+            "title": "Meta",
+            "subLabel": "Emissão estimada",
+            "subUnit": "toneladas de CO2"
+          },
+          "targetAdherence": {
+            "title": "Índice de aderência à meta para",
+            "description": "Baseado nas emissões do último ano:",
+            "contentTitle": "Atual",
+            "content": "da meta de redução de emissões para ",
+            "footerTitle": "Simulado",
+            "footer": "Emissões simuladas: "
+          },
+          "goalTrackerTable": {
+            "title": "Relatório de emissões por transporte no último ano",
+            "content": {
+              "table": {
+                "th1": "Meio de Transporte",
+                "th2": "Viagens Totais",
+                "th3": "Passageiros/Viagem",
+                "th4": "Emissões Totais",
+                "th5": "Emissões/Passageiro"
+              }
+            },
+            "modalSimulator": {
+              "totalInitialIssuance": "total de emissão inicial",
+              "totalExpectedIssuance": "total de emissão prevista"
+            }
+          },
+          "transportEmissionTargets": {
+            "title": "Grau de aderência a meta",
+            "inTheGoal": "Dentro da meta",
+            "outOfTheGoal": "Fora da meta",
+            "chart": {
+              "ReferenceLine_BASE_YEAR": "Ano de referência",
+              "ReferenceLine_TARGET_YEAR": "Ano de conclusão da meta",
+              "mappedGoal": {
+                "targetCo2Emission": "Meta de emissões",
+                "co2Emission": "Total de emissões",
+                "simulatedCo2Emission": "Emissões projetadas"
+              }
+            }
+          }
+        }
+      }
+    },
+    "transports": {
+      "title":"Emissão de transportes",
+      "description": "As informações sobre emissões de CO2 no transporte auxiliam a organização a monitorar, analisar e progredir em direção às metas de sustentabilidade, focando na redução de gases de efeito estufa.",
+      "metrics": {
+        "title": "Emissão de CO2 em toneladas",
+        "totalEmissions": {
+          "title": "Emissão total",
+          "description": "viagens"
+        },
+        "withinTheBorder": {
+          "title": "Dentro da fronteira",
+          "infoTooltip": "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade.",
+          "description": "viagens"
+        },
+        "outOfTheBorder": {
+          "title": "Fora da fronteira",
+          "infoTooltip": "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade",
+          "description": "viagens"
+        }
+      },
+      "sections": {
+        "CO2InboundAndOutbound": {
+          "title": "Comparação de emissões dentro e fora dos limites geográficos",
+          "description": "Compara a média de emissão de CO2 por quilômetro entre diferentes tipos de transporte, diferenciando as emissões dentro e fora dos limites geográficos.",
+          "chart": {
+            "title": "Emissão CO2 (tCO2e)",
+            "legendOne": "Dentro da fronteira",
+            "legendTwo": "Fora da fronteira",
+            "tooltip": {
+              "withinLimit": "Dentro do limite",
+              "outsideLimit": "Fora do limite"
+            }
+          }
+        },
+        "Co2EmissionPerTransport": {
+          "title": "Comparação de emissões por tipo de transporte",
+          "description": "Compara as emissões de CO2 divididas por tipos específicos de transporte, proporcionando uma visão sobre a eficiência de cada modalidade ao longo dos anos.",
+          "chart": {
+            "title": "Emissão CO2 (tCO2e)",
+            "legendOne": "Dentro da fronteira",
+            "legendTwo": "Fora da fronteira"
+          },
+          "cards": {
+            "percentageDescription": "do total de transportes"
+          }
+        },
+        "Co2EmissionPerKilometer": {
+          "title": "Comparação de emissões por quilômetro e tipo de transporte",
+          "description": "Compara as emissões de CO2 por quilômetro entre diferentes tipos de transporte, destacando as variações entre as modalidades.",
+          "chart": {
+            "title": "Emissão CO2 (kgCO2e/km)",
+            "legendOne": "Dentro da fronteira",
+            "legendTwo": "Fora da fronteira"
+          }
+        }
       }
     },
     "settings": {

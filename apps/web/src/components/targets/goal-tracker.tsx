@@ -2,7 +2,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { mappedTravelMode } from "@/constants/transports";
+import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
 import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
@@ -11,7 +11,7 @@ import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { cx } from "class-variance-authority";
 import { CalendarClock, Target } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
@@ -19,9 +19,6 @@ import GoalTrackerTable from "./goal-tracker-table";
 import MultiModalSimulatorTransferSimulator from "./modal-trips-transfer-simulator";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
-import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
-import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
-import { FLIPT_TARGET_SIMULATION, IS_FLIPT_ACTIVE } from "@/constants/flipt";
 
 const transformData = (
   data: {
@@ -59,11 +56,12 @@ const transformData = (
   return formattedData;
 };
 
-export default function GoalTracker() {
-  // const { getCurrentFlag } = useContext(FeatureFlagsContext);
-  // const isActiveFliptTargetSimulation =
-  //   IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_TARGET_SIMULATION)?.enabled;
+export interface GoalTrackerProps {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  dict: any;
+}
 
+export default function GoalTracker({ dict }: GoalTrackerProps) {
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
     useTransportCO2EmissionByYear({});
   const {
@@ -76,7 +74,7 @@ export default function GoalTracker() {
   const modalData = targetsCo2EmissionByModal?.map((data) => {
     return {
       id: data?.mode,
-      name: mappedTravelMode[data.mode as TravelMode],
+      name: dict.mappedTravelMode[data.mode as TravelMode],
       icon: getIconByTransportMode({
         mode: data.mode,
         asChild: true,
@@ -111,25 +109,30 @@ export default function GoalTracker() {
           isOpen={openSidebar}
           setIsOpen={setOpenSidebar}
         >
-          <MultiModalSimulatorTransferSimulator data={modalData || []} />
+          <MultiModalSimulatorTransferSimulator
+            dict={dict}
+            data={modalData || []}
+          />
         </Sidebar>
       )}
 
       <div className="flex justify-end w-full">
-          <div className="flex items-center  space-x-2">
-            <Switch
-              disabled={
-                loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
-              }
-              checked={hypothesisMode}
-              onCheckedChange={(value) => {
-                setHypothesisMode(value);
-                setOpenSidebar(value);
-              }}
-              id="hypothesis-mode"
-            />
-            <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
-          </div>
+        <div className="flex items-center  space-x-2">
+          <Switch
+            disabled={
+              loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
+            }
+            checked={hypothesisMode}
+            onCheckedChange={(value) => {
+              setHypothesisMode(value);
+              setOpenSidebar(value);
+            }}
+            id="hypothesis-mode"
+          />
+          <Label htmlFor="hypothesis-mode">
+            {dict.targets.goalsTracker.simulation.title}
+          </Label>
+        </div>
       </div>
       <div className="space-y-3 py-1 w-full">
         <div
@@ -146,11 +149,11 @@ export default function GoalTracker() {
             ) : (
               <GoalCard
                 icon={CalendarClock}
-                title="Ano base"
+                title={dict.targets.goalsTracker.cards.baseYear.title}
                 value={String(BASE_YEAR)}
-                subLabel="Emissão inicial de CO2"
+                subLabel={dict.targets.goalsTracker.cards.baseYear.subLabel}
                 subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
-                subUnit="toneladas de CO2"
+                subUnit={dict.targets.goalsTracker.cards.baseYear.subUnit}
               />
             )}
           </div>
@@ -165,13 +168,13 @@ export default function GoalTracker() {
             ) : (
               <GoalCard
                 icon={Target}
-                title="Meta"
+                title={dict.targets.goalsTracker.cards.target.title}
                 value={TARGET_YEAR}
-                subLabel={`Emissão estimada (-${REDUCTION_RATE}%)`}
+                subLabel={`${dict.targets.goalsTracker.cards.target.subLabel} (-${REDUCTION_RATE}%)`}
                 subValue={Math.trunc(
                   yearBaseCo2Emission * ((100 - REDUCTION_RATE) / 100)
                 ).toLocaleString()}
-                subUnit="toneladas de CO2"
+                subUnit={dict.targets.goalsTracker.cards.target.subUnit}
               />
             )}
           </div>
@@ -191,18 +194,19 @@ export default function GoalTracker() {
                 targetEmissions={
                   targetCo2EmissionsFinalYear.targetCo2Emission || 0
                 }
+                dict={dict}
               />
             )}
           </div>
         </div>
       </div>
       {hypothesisMode && (
-        <GoalTrackerTable data={targetsCo2EmissionByModal || []} />
+        <GoalTrackerTable dict={dict} data={targetsCo2EmissionByModal || []} />
       )}
       {loadingCo2EmissionByYear ? (
         <Skeleton className="h-[500px]" />
       ) : (
-        <TransportEmissionTargets data={transportEmissionsTarget} />
+        <TransportEmissionTargets dict={dict} data={transportEmissionsTarget} />
       )}
     </div>
   );

@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useBuildingsFloorAreasBySector } from "@/hooks/buildings";
 import {
   useDashboardBuildingsTotalCO2Emission,
@@ -31,7 +32,7 @@ function generateComparisonMessage(
 } {
   const difference = value2 - value1;
   const percentageChange = ((difference / value1) * 100).toFixed(2);
-  const trend = difference > 0 ? "aumentaram" : "diminuiram";
+  const trend = difference > 0 ? "positive" : "negative";
 
   const formattedPercentageChange = Math.abs(Number(percentageChange));
 
@@ -103,7 +104,7 @@ function formatBuildingsFloorAreasBySector(
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function DashboardSection1({ dict }: any) {
+export default function DashboardSection1({ dict }: DictionaryContextType) {
   const { getCurrentFlag } = useContext(FeatureFlagsContext);
 
   const isFliptBuildingsFlagActive =
@@ -144,12 +145,13 @@ export default function DashboardSection1({ dict }: any) {
     transportsCo2Emission?.totalCO2Emission || 0
   );
 
-  const formattedBuildingsInfo =
-    formatBuildingsFloorAreasBySector(buildingsInfo);
+  const formattedBuildingsInfo = formatBuildingsFloorAreasBySector(
+    buildingsInfo as any
+  );
 
   const cards = [
     {
-      title: "Comparação emissões transporte (tCO2e)",
+      title: dict?.dashboard?.firstSection.cards.totalCO2Emission.title,
       icon: (
         <CardIcons>
           <LineChart />
@@ -184,7 +186,14 @@ export default function DashboardSection1({ dict }: any) {
             </div>
           </div>
           <CardDescription className="mt-2 text-center ">
-            {`As emissões de transporte ${transportsComparissonInfo.trend} em ${transportsComparissonInfo.formattedPercentageChange}%`}
+            {dict?.dashboard?.firstSection.cards.totalCO2Emission.description1}
+            {
+              dict?.dashboard?.firstSection.cards.totalCO2Emission.trends[
+                transportsComparissonInfo.trend
+              ]
+            }
+            {dict?.dashboard?.firstSection.cards.totalCO2Emission.description2}
+            {transportsComparissonInfo.formattedPercentageChange}%
           </CardDescription>
         </div>
       ),
@@ -192,7 +201,7 @@ export default function DashboardSection1({ dict }: any) {
     ...(isFliptBuildingsFlagActive
       ? [
           {
-            title: "Métricas por edifício residencial",
+            title: dict?.dashboard?.firstSection.cards.tCO2PerBuilding.title,
             icon: (
               <CardIcons>
                 <House />
@@ -210,12 +219,15 @@ export default function DashboardSection1({ dict }: any) {
                           {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
                         </div>
                         <div className="text-sm text-muted-foreground text-center">
-                          tCO2e/edifício
+                          {
+                            dict?.dashboard?.firstSection.cards.tCO2PerBuilding
+                              .tooltipContent
+                          }
                         </div>
                       </div>
                     }
                   >
-                    {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} toneladas de CO2 emitidos por edifício.`}
+                    {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.tCO2PerBuilding}`}
                   </Tooltip>
 
                   <Tooltip
@@ -233,29 +245,23 @@ export default function DashboardSection1({ dict }: any) {
                       </div>
                     }
                   >
-                    {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} kilogramas de CO2 emitidos por metro quadrado.`}
+                    {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} ${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}`}
                   </Tooltip>
                 </div>
                 <CardDescription className="mt-2 text-center">
-                  Os edifícios residenciais possuem{" "}
-                  {formattedBuildingsInfo.residential?.areaPercentage}% da área
-                  total e contribuem com{" "}
-                  {
-                    formattedBuildingsInfo.residential
-                      ?.totalCo2EmissionPercentage
-                  }
-                  % das emissões
+                  {`${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description1}
+            ${formattedBuildingsInfo.residential?.areaPercentage}% ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description2}
+            ${formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}% ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description3}`}
                 </CardDescription>
               </div>
             ),
           },
         ]
       : []),
-
     ...(isFliptBuildingsFlagActive
       ? [
           {
-            title: "Métricas por edifício não residencial",
+            title: dict?.dashboard?.firstSection.cards.nonResidential.title,
             href: "/buildings",
             icon: (
               <CardIcons>
@@ -276,12 +282,15 @@ export default function DashboardSection1({ dict }: any) {
                           }
                         </div>
                         <div className="text-sm text-muted-foreground text-center">
-                          tCO2e/edifício
+                          {
+                            dict?.dashboard?.firstSection.cards.nonResidential
+                              .tooltipContent
+                          }
                         </div>
                       </div>
                     }
                   >
-                    {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} toneladas de CO2 emitidos por edifício.`}
+                    {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.nonResidential.tCO2PerBuilding}`}
                   </Tooltip>
                   <Tooltip
                     triggerContent={
@@ -298,18 +307,13 @@ export default function DashboardSection1({ dict }: any) {
                       </div>
                     }
                   >
-                    {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} kilogramas de CO2 emitidos por metro quadrado.`}
+                    {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} ${dict?.dashboard?.firstSection.cards.nonResidential.kgCO2PerSquareMeter}`}
                   </Tooltip>
                 </div>
                 <CardDescription className="mt-2 text-center">
-                  Os edifícios não residenciais possuem{" "}
-                  {formattedBuildingsInfo.nonResidential?.areaPercentage}% da
-                  área total e contribuem com{" "}
-                  {
-                    formattedBuildingsInfo.nonResidential
-                      ?.totalCo2EmissionPercentage
-                  }
-                  % das emissões
+                  {`${dict?.dashboard?.firstSection.cards.nonResidential.description1}
+          ${formattedBuildingsInfo.nonResidential?.areaPercentage}% ${dict?.dashboard?.firstSection.cards.nonResidential.description2}
+          ${formattedBuildingsInfo.nonResidential?.totalCo2EmissionPercentage}% ${dict?.dashboard?.firstSection.cards.nonResidential.description3}`}
                 </CardDescription>
               </div>
             ),
@@ -321,7 +325,7 @@ export default function DashboardSection1({ dict }: any) {
   return (
     <div className="space-y-6 text-foreground">
       <h2 className="text-2xl font-bold">
-        {dict.title} {new Date().getFullYear() - 1}
+        {dict?.dashboard?.firstSection.title} {new Date().getFullYear() - 1}
       </h2>
 
       <div className="flex gap-6 flex-col lg:flex-row">
@@ -331,13 +335,14 @@ export default function DashboardSection1({ dict }: any) {
           <TotalCO2eCard
             buildingsCo2Emission={buildingsCo2Emission?.totalCO2Emission || 0}
             transportsCo2Emission={transportsCo2Emission?.totalCO2Emission || 0}
+            dict={dict}
           />
         )}
         <Link
           href={"/targets"}
           className="h-80  md:h-64 xl:h-52 w-full  card-hover"
         >
-          <TargetAdherenceSection />
+          <TargetAdherenceSection dict={dict} />
         </Link>
       </div>
 
@@ -347,9 +352,8 @@ export default function DashboardSection1({ dict }: any) {
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
             <Link
-              className={`${index === cards.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
+              className={`${
+                index === cards.length - 1 ? "lg:col-span-2 xl:col-span-1" : ""
               }`}
               href={card.href}
               key={`${card.title}-${index}`}

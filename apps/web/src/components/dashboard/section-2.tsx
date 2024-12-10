@@ -1,23 +1,23 @@
 import { passengersPerTripMapping } from "@/constants/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useDashboardCO2EmissionByModal } from "@/hooks/dashboard";
 import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
 } from "@/hooks/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
-import { Fragment } from "react";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
-import { Skeleton } from "../ui/skeleton";
-import InfoTooltip from "../ui/info-tooltip";
 import Link from "next/link";
 import ModalAnalysisYearlyCard from "../transports/cards/modal-anaylsis-yearly-card";
-import TransportSectorAnalysisCard from "./cards/transport-sector-analysis-card";
+import InfoTooltip from "../ui/info-tooltip";
+import { Skeleton } from "../ui/skeleton";
 import TransportCo2eComparissonCard, {
-  Co2ComparissonCardProps,
+  type Co2ComparissonCardProps,
 } from "./cards/transport-co2e-comparisson-card";
 import TransportEmissionPerPassengerCard, {
-  Co2EmissionPerPassengerComparissonCardProps,
+  type Co2EmissionPerPassengerComparissonCardProps,
 } from "./cards/transport-emission-per-passenger-card";
+import TransportSectorAnalysisCard from "./cards/transport-sector-analysis-card";
 
 const firstYear = new Date().getFullYear() - 2;
 const secondYear = new Date().getFullYear() - 1;
@@ -74,7 +74,8 @@ function calculateSectorChanges(data: SectorData[]): {
   return { highestIncrease, highestReduction };
 }
 
-export default function DashboardSection2() {
+
+export default function DashboardSection2({ dict }: DictionaryContextType) {
   const {
     data: co2EmissionByModalFirstYear,
     isFetching: isLoadingCo2EmissionByModalFirstYear,
@@ -110,14 +111,13 @@ export default function DashboardSection2() {
 
       const differenceTotalCo2EmissionPercentage = secondYearData
         ? ((secondYearData.co2Emissions - firstYearData.co2Emissions) /
-            firstYearData.co2Emissions) *
-          100
+          firstYearData.co2Emissions) *
+        100
         : null;
 
       const description = differenceTotalCo2EmissionPercentage
-        ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${
-            differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
-          } que o ano anterior`
+        ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
+        } que o ano anterior`
         : "Sem dados para comparação";
 
       return {
@@ -166,15 +166,14 @@ export default function DashboardSection2() {
       const differenceEmissionPerPassengerPercentage =
         emissionsPerPassengerSecondYear > 0
           ? ((emissionsPerPassengerSecondYear -
-              emissionsPerPassengerFirstYear) /
-              emissionsPerPassengerFirstYear) *
-            100
+            emissionsPerPassengerFirstYear) /
+            emissionsPerPassengerFirstYear) *
+          100
           : 0;
 
       const description = differenceEmissionPerPassengerPercentage
-        ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${
-            differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
-          } que o ano anterior`
+        ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
+        } que o ano anterior`
         : "Manteve o mesmo valor";
 
       return {
@@ -194,6 +193,7 @@ export default function DashboardSection2() {
     }) || [];
 
   const comparissonSectorData = calculateSectorChanges(
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     (co2EmissionByYearAndModal?.data as any) || []
   );
 
@@ -205,15 +205,14 @@ export default function DashboardSection2() {
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingModalAnalysis
           ? [1, 2, 3].map((index) => (
-              <Skeleton
-                key={index}
-                className={` w-full h-[200px] rounded-xl${
-                  index === [1, 2, 3].length - 1
-                    ? "lg:col-span-2 xl:col-span-1"
-                    : ""
+            <Skeleton
+              key={index}
+              className={` w-full h-[200px] rounded-xl${index === [1, 2, 3].length - 1
+                ? "lg:col-span-2 xl:col-span-1"
+                : ""
                 }`}
-              />
-            ))
+            />
+          ))
           : modalAnalysis?.modalsData?.map((transport, index) => (
               <Link
                 href="/transports"
@@ -224,10 +223,10 @@ export default function DashboardSection2() {
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
                 }`}
-              >
-                <ModalAnalysisYearlyCard transport={transport} hover />
-              </Link>
-            ))}
+            >
+              <ModalAnalysisYearlyCard transport={transport} dict={dict} hover />
+            </Link>
+          ))}
       </div>
 
       <div className="text-xl font-bold">
@@ -266,17 +265,16 @@ export default function DashboardSection2() {
       </div>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
-        isLoadingCo2EmissionByModalSecondYear
+          isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
-              <Skeleton
-                key={index}
-                className={` w-full h-[200px] rounded-xl${
-                  index === [1, 2, 3].length - 1
-                    ? "lg:col-span-2 xl:col-span-1"
-                    : ""
+            <Skeleton
+              key={index}
+              className={` w-full h-[200px] rounded-xl${index === [1, 2, 3].length - 1
+                ? "lg:col-span-2 xl:col-span-1"
+                : ""
                 }`}
-              />
-            ))
+            />
+          ))
           : co2EmissionsByModals?.map((emission, index) => (
               <div
                 className={`${
@@ -285,11 +283,11 @@ export default function DashboardSection2() {
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
                 }`}
-                key={`${emission.mode}-${index}`}
-              >
-                <TransportCo2eComparissonCard {...emission} />
-              </div>
-            ))}
+              key={`${emission.mode}-${index}`}
+            >
+              <TransportCo2eComparissonCard {...emission} />
+            </div>
+          ))}
       </div>
       <div className="text-lg font-medium flex items-center gap-1 ">
         Emissões por passageiro (kgCO2e)
@@ -298,17 +296,16 @@ export default function DashboardSection2() {
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
-        isLoadingCo2EmissionByModalSecondYear
+          isLoadingCo2EmissionByModalSecondYear
           ? [1, 2, 3].map((index) => (
-              <Skeleton
-                className={`w-full h-[200px] rounded-xl ${
-                  index === [1, 2, 3].length - 1
-                    ? "lg:col-span-2 xl:col-span-1"
-                    : ""
+            <Skeleton
+              className={`w-full h-[200px] rounded-xl ${index === [1, 2, 3].length - 1
+                ? "lg:col-span-2 xl:col-span-1"
+                : ""
                 }`}
-                key={index}
-              />
-            ))
+              key={index}
+            />
+          ))
           : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
               <div
                 className={`${
@@ -316,11 +313,11 @@ export default function DashboardSection2() {
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
                 }`}
-                key={`${emission.mode}-${index}`}
-              >
-                <TransportEmissionPerPassengerCard {...emission} />
-              </div>
-            ))}
+              key={`${emission.mode}-${index}`}
+            >
+              <TransportEmissionPerPassengerCard emission={emission} dict={dict} />
+            </div>
+          ))}
       </div>
     </div>
   );

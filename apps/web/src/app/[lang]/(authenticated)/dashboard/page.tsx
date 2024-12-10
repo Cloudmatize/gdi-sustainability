@@ -1,13 +1,11 @@
+'use client'
 
-
-import { getDictionary } from "@/app/[lang]/dictionaries";
 import ComprehensiveDashboard from "@/components/dashboard/dashboard";
 
-export default async function Page({ params: { lang } }: { params: { lang: string } }) {
-  const dict = await getDictionary(lang)
+export default function Page() {
   return (
     <>
-      <ComprehensiveDashboard dict={dict} />
+      <ComprehensiveDashboard />
     </>
   );
 }
