@@ -31,6 +31,8 @@ import {
   useSidebar,
 } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
+import { useContext } from "react";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 
 interface DesktopSideBarProps {
   dict: any
@@ -38,12 +40,20 @@ interface DesktopSideBarProps {
 
 export function DesktopSideBar({ dict }: DesktopSideBarProps) {
   const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
+  const { getCurrentFlag }  = useContext(FeatureFlagsContext);
   const routes = getRoutes(dict.routes)
 
-  const handleChangeOpenState = (route: { id: number; parent?: number }) => {
+  const filteredRoutes = routes.filter((route) => {
+    if (!route.fliptFlag) return true;
+    const flag = getCurrentFlag(route.fliptFlag);
+    return flag?.enabled;
+    
+  });
+
+  const handleChangeOpenState = (route: { id: number; parent?: number; children?: any[] }) => {
     if (!openRoute.includes(route.id)) {
       if (route.parent) {
-        const routes: number[] = [route.id, route.parent];
+        const routes = [route.id, route.parent];
         setOpenRoute(routes);
       } else {
         setOpenRoute([route.id]);
@@ -81,7 +91,7 @@ export function DesktopSideBar({ dict }: DesktopSideBarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="py-2 flex flex-col gap-0 px-2 overflow-clip">
-        {routes?.map((route) =>
+        {filteredRoutes?.map((route) =>
           route?.children ? (
             <DropdownMenu key={route.id}>
               <Collapsible

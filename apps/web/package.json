@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@cloudmatize/ts-utils": "workspace:*",
+    "@flipt-io/flipt": "^0.2.15",
     "@formatjs/intl-localematcher": "^0.5.8",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-collapsible": "^1.1.1",

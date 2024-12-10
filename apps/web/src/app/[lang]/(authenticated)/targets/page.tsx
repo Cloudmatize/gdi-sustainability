@@ -1,13 +1,16 @@
+"use client";
+import Unauthorized from "@/components/auth/unauthorized";
 import TargetsPage from "@/components/targets/page";
-import { getDictionary } from "../../dictionaries";
+import { FLIPT_TARGETS_FLAG, IS_FLIPT_ACTIVE } from "@/constants/flipt";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
+import { useContext } from "react";
 
-interface Props {
-  params: {
-    lang: string
+export default function Page() {
+  const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  const flag = getCurrentFlag(FLIPT_TARGETS_FLAG);
+
+  if (IS_FLIPT_ACTIVE && !flag?.enabled) {
+    return <Unauthorized />;
   }
-}
-
-export default async function Page({ params: { lang } }: Props) {
-  const dict = await getDictionary(lang)
-  return <TargetsPage dict={dict} />;
+  return <TargetsPage />;
 }

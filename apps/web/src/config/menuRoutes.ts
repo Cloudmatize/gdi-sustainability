@@ -1,6 +1,32 @@
+import {
+  FLIPT_BUILDINGS_FLAG,
+  FLIPT_TARGETS_FLAG,
+  FLIPT_TRANSPORTS_FLAG,
+  IS_FLIPT_ACTIVE,
+} from "@/constants/flipt";
 import { Building, Bus, Goal, Home } from "lucide-react";
 
-export let routes = [
+interface Route {
+  id: number;
+  title: string;
+  path: string;
+  icon: any
+  fliptFlag?: string;
+  children?: Route[];
+  router_title: string;
+}
+
+
+
+type RoutesObject = {
+  [key: string]: {
+    title: string;
+    router_title: string;
+  };
+};
+
+
+export const routes: Route[] = [
   {
     id: 1,
     title: "Visão geral",
@@ -14,6 +40,7 @@ export let routes = [
     path: "/transports",
     router_title: "transports",
     icon: Bus,
+    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_TRANSPORTS_FLAG : undefined,
   },
   {
     id: 3,
@@ -21,6 +48,7 @@ export let routes = [
     path: "/buildings",
     router_title: "buildings",
     icon: Building,
+    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_BUILDINGS_FLAG : undefined,
   },
 
   {
@@ -29,27 +57,10 @@ export let routes = [
     path: "/targets",
     router_title: "targets",
     icon: Goal,
+    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_TARGETS_FLAG : undefined,
   },
 ];
 
-type Route = {
-  id: number;
-  title: string;
-  path: string;
-  router_title: string;
-  icon: React.ComponentType;
-};
-
-type RouteUpdate = {
-  router_title: string;
-  title: string;
-};
-type RoutesObject = {
-  [key: string]: {
-    title: string;
-    router_title: string;
-  };
-};
 
 export const getRoutes = (_routes: RoutesObject): Route[] => {
   if (!_routes || typeof _routes !== "object") {
