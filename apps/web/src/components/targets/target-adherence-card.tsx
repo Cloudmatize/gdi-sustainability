@@ -10,11 +10,13 @@ interface Props {
   targetEmissions: number;
   baseEmissions: number;
   targetYear: number;
+  dict: any;
 }
 export default function TargetAdherenceCard({
   targetEmissions,
   baseEmissions,
   targetYear,
+  dict
 }: Props) {
   const { hypothesisMode, totalCo2Emission } = useTargetsStore();
   const { simulated: simulatedEmissions } = totalCo2Emission;
@@ -25,9 +27,9 @@ export default function TargetAdherenceCard({
     <Card className="w-full h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-xl font-semibold flex flex-col">
-          Índice de aderência à meta para {targetYear}
+          {dict.targets.goalsTracker.cards.targetAdherence.title} {targetYear}
           <span className="text-sm font-medium text-muted-foreground">
-            Baseado nas emissões do último ano: {baseEmissions.toLocaleString()}{" "}
+            {dict.targets.goalsTracker.cards.targetAdherence.description} {baseEmissions.toLocaleString()}{" "}
             (tCO2e)
           </span>
         </CardTitle>
@@ -38,7 +40,7 @@ export default function TargetAdherenceCard({
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Target className="h-4 w-4 text-primary-foreground" />
-                <span className="font-medium">Atual</span>
+                <span className="font-medium">{dict.targets.goalsTracker.cards.targetAdherence.contentTitle} </span>
               </div>
               <span className="text-2xl font-bold text-foreground">
                 {baseAdherence?.toFixed(2) ?
@@ -61,7 +63,7 @@ export default function TargetAdherenceCard({
 
 
             <div className="text-xs text-muted-foreground">
-              da meta de redução de emissões para {targetYear}
+              {dict.targets.goalsTracker.cards.targetAdherence.content} {targetYear}
             </div>
           </div>
 
@@ -70,7 +72,7 @@ export default function TargetAdherenceCard({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <TrendingDown className="h-4 w-4 text-foreground" />
-                  <span className="font-medium text-foreground">Simulado</span>
+                  <span className="font-medium text-foreground">{dict.targets.goalsTracker.cards.targetAdherence.footerTitle}</span>
                 </div>
                 <span className="text-2xl font-bold text-foreground">
                   {simulatedAdherence.toFixed(2)}%
@@ -83,7 +85,7 @@ export default function TargetAdherenceCard({
               />
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>
-                  Emissões simuladas: {simulatedEmissions.toLocaleString()} tCO₂
+                  {dict.targets.goalsTracker.cards.targetAdherence.footer} {simulatedEmissions.toLocaleString()} tCO₂
                 </span>
               </div>
             </div>

@@ -1,6 +1,13 @@
-"use client";
 import TargetsPage from "@/components/targets/page";
+import { getDictionary } from "../../dictionaries";
 
-export default function Page() {
-  return <TargetsPage />;
+interface Props {
+  params: {
+    lang: string
+  }
+}
+
+export default async function Page({ params: { lang } }: Props) {
+  const dict = await getDictionary(lang)
+  return <TargetsPage dict={dict} />;
 }
