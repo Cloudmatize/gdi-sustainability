@@ -8,8 +8,8 @@ interface Props {
   dict: any;
 }
 export function TotalCO2eCard({
-  buildingsCo2Emission,
-  transportsCo2Emission,
+  buildingsCo2Emission=0,
+  transportsCo2Emission=0,
   dict
 }: Props) {
   return (

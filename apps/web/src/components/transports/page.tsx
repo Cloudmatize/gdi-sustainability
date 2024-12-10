@@ -50,7 +50,7 @@ export default function TransportsPage() {
   };
   const { date } = filters;
 
-  const { data } = useTransportsCO2Emission({
+  const { data, isFetching } = useTransportsCO2Emission({
     filters,
   });
   return (
@@ -90,30 +90,33 @@ export default function TransportsPage() {
             title="Emissão total"
             value={formatCO2Emission(data?.total.co2Emission)}
             percentage={"100%"}
+            loading={isFetching}
             description={`
-             ${formatNumber(data?.total.trips || 150_000)} viagens`}
+             ${formatNumber(data?.total.trips || 0)} viagens`}
           />
           <InfoCard
             icon={MdCo2}
             title="Dentro da fronteira"
             value={formatCO2Emission(data?.inbound.co2Emission)}
             percentage={data?.inbound?.percentage}
+            loading={isFetching}
             infoTooltip={
               "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade."
             }
             description={`
-            ${formatNumber(data?.inbound.trips || 100_000)} viagens`}
+            ${formatNumber(data?.inbound?.trips || 0)} viagens`}
           />
           <InfoCard
             icon={MdCo2}
             value={formatCO2Emission(data?.outbound.co2Emission)}
             title="Fora da fronteira"
+            loading={isFetching}
             percentage={data?.outbound?.percentage}
             infoTooltip={
               "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade"
             }
             description={`
-              ${formatNumber(data?.outbound.trips || 50_000)} viagens`}
+              ${formatNumber(data?.outbound?.trips || 0)} viagens`}
           />
         </div>
 

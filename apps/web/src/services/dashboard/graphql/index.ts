@@ -11,7 +11,6 @@ import {
   TotalCO2EmissionResponse,
 } from "@/types/transports";
 import { BuildingsCO2EmissionsBySectorResponse } from "@/types/buildings";
-import { mappedSectors } from "@/constants/buildings";
 
 export const getDashboardCO2EmissionByModal = async ({
   filters,
@@ -26,7 +25,7 @@ export const getDashboardCO2EmissionByModal = async ({
       },
     });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = data.cube.map(({ transportation_emission }) => {
         return {
           mode: transportation_emission.mode,
@@ -40,6 +39,7 @@ export const getDashboardCO2EmissionByModal = async ({
       );
       return filteredData;
     }
+    return null;
   } catch (error) {
     console.error("(dashboard):getCO2EmissionByYearAndModalQuery ", error);
   }
@@ -58,7 +58,7 @@ export const getDashboardTransportsCo2TotalEmission = async ({
       queryName: "(dashboard):getDashboardTransportsCo2TotalEmission",
     });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = data.cube.map(({ transportation_emission }) => {
         return {
           totalCO2Emission: transportation_emission.sum_full_co2e_tons,
@@ -67,6 +67,7 @@ export const getDashboardTransportsCo2TotalEmission = async ({
 
       return formattedData[0];
     }
+    return null;
   } catch (error) {
     console.error("getCO2EmissionByYearAndModalQuery", error);
   }
@@ -83,7 +84,7 @@ export const getDashboardBuildingsCo2TotalEmission = async ({}) => {
         }
       );
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const totalCO2Emission = data.cube.reduce((sum, { buildings }) => {
         return sum + buildings.co2e_tons;
       }, 0);
@@ -92,8 +93,8 @@ export const getDashboardBuildingsCo2TotalEmission = async ({}) => {
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.error("getBuildingsCO2EmissionsBySectorQuery", error);
   }
 };
-

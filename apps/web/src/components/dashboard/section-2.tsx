@@ -45,9 +45,6 @@ function calculateSectorChanges(data: SectorData[]): {
   const year2022 = data.find((item) => item.year === String(firstYear));
   const year2023 = data.find((item) => item.year === String(secondYear));
 
-  if (!year2022 || !year2023) {
-    throw new Error("Data for both years must be provided.");
-  }
 
   let highestIncrease = {
     sector: "",
@@ -61,7 +58,7 @@ function calculateSectorChanges(data: SectorData[]): {
   for (const sector in year2022) {
     if (sector !== "year") {
       const value2022 = year2022[sector] as number;
-      const value2023 = year2023[sector] as number;
+      const value2023 = year2023 ? (year2023[sector] as number) : 0;
 
       const percentageChange = ((value2023 - value2022) / value2022) * 100;
 
@@ -217,13 +214,14 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
             />
           ))
           : modalAnalysis?.modalsData?.map((transport, index) => (
-            <Link
-              href="/transports"
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              key={index}
-              className={`  ${index === modalAnalysis.modalsData.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
+              <Link
+                href="/transports"
+                key={index}
+                className={`  ${
+                  modalAnalysis?.modalsData?.length >= 3 &&
+                  index === modalAnalysis.modalsData.length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
                 }`}
             >
               <ModalAnalysisYearlyCard transport={transport} dict={dict} hover />
@@ -278,10 +276,12 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
             />
           ))
           : co2EmissionsByModals?.map((emission, index) => (
-            <div
-              className={`${index === co2EmissionsByModals.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
+              <div
+                className={`${
+                  co2EmissionsByModals.length >= 3 &&
+                  index === co2EmissionsByModals.length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
                 }`}
               key={`${emission.mode}-${index}`}
             >
@@ -307,10 +307,11 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
             />
           ))
           : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
-            <div
-              className={`${index === co2EmissionsByModalsEmissionsByPassenger.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
+              <div
+                className={`${
+                  co2EmissionsByModalsEmissionsByPassenger.length >= 3 && index === co2EmissionsByModalsEmissionsByPassenger.length - 1
+                    ? "lg:col-span-2 xl:col-span-1"
+                    : ""
                 }`}
               key={`${emission.mode}-${index}`}
             >

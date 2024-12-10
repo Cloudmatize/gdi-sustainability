@@ -16,7 +16,7 @@ export const getTargetsCO2EmissionByModal = async () => {
       },
     });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = data.cube.map(({ transportation_emission }) => {
         return {
           mode: transportation_emission.mode,
@@ -30,6 +30,7 @@ export const getTargetsCO2EmissionByModal = async () => {
       );
       return filteredData;
     }
+    return null;
   } catch (error) {
     console.error("getCO2EmissionByYearAndModalQuery", error);
   }

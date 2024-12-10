@@ -1,7 +1,7 @@
 import {
   getDashboardCO2EmissionByModal,
   getDashboardTransportsCo2TotalEmission,
-  getDashboardBuildingsCo2TotalEmission
+  getDashboardBuildingsCo2TotalEmission,
 } from "@/services/dashboard/graphql";
 import { TransportFilters } from "@/store/transports";
 import { useQuery } from "@tanstack/react-query";
@@ -34,15 +34,18 @@ export function useDashboardTransportsTotalCO2Emission({
 
 export function useDashboardBuildingsTotalCO2Emission({
   filters,
-  extraKey
+  extraKey,
+  enabled = true,
 }: {
   filters?: TransportFilters;
   extraKey?: string;
+  enabled?: boolean;
 }) {
   return useQuery({
     queryKey: [`(dashboard): buildings-total-co2-emission`, filters, extraKey],
     queryFn: () => getDashboardBuildingsCo2TotalEmission({ filters }),
     staleTime: 0,
+    enabled,
     refetchOnWindowFocus: false,
   });
 }
