@@ -23,7 +23,7 @@ export function InfoCard({
   description,
   infoTooltip,
 }: InfoCardProps) {
-  return loading || !value ? (
+  return loading  ? (
     <Skeleton className="h-60 w-full  rounded-xl" />
   ) : (
     <Card className="p-4 h-60 w-full ">
