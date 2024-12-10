@@ -1,6 +1,5 @@
-import { routes } from "@/config/menuRoutes";
+import { getRoutes } from "@/config/menuRoutes";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Collapsible,
@@ -35,9 +34,14 @@ import { UserMenu } from "./user-menu";
 import { useContext } from "react";
 import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 
-export function DesktopSideBar() {
+interface DesktopSideBarProps {
+  dict: any
+}
+
+export function DesktopSideBar({ dict }: DesktopSideBarProps) {
   const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
   const { getCurrentFlag }  = useContext(FeatureFlagsContext);
+  const routes = getRoutes(dict.routes)
 
   const filteredRoutes = routes.filter((route) => {
     if (!route.fliptFlag) return true;
@@ -228,7 +232,7 @@ export function DesktopSideBar() {
       <SidebarFooter className="border-t py-4 flex flex-row gap-4 px-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <UserMenu />
+            <UserMenu dict={dict.sidebar.userMenu} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

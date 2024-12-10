@@ -1,4 +1,7 @@
-import { LogOut, User2 } from "lucide-react";
+import federatedLogout from "@/utils/auth/federated-logout";
+import { LogOut, Settings, User2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,15 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton } from "../ui/sidebar";
-import { useSession } from "next-auth/react";
-import federatedLogout from "@/utils/auth/federated-logout";
 
-export function UserMenu() {
+interface UserMenuProps {
+  dict: any
+}
+
+export function UserMenu({ dict }: UserMenuProps) {
   const { data } = useSession();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarMenuButton className="text-wrap  " tooltip={"Menu de usuário"}>
+        <SidebarMenuButton className="flex flex-row" tooltip={"Menu de usuário"}>
           <User2 />
           <p className=" w-full text-wrap">{data?.user?.name}</p>
         </SidebarMenuButton>
@@ -25,11 +30,20 @@ export function UserMenu() {
         <DropdownMenuLabel>{data?.user?.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          className="cursor-pointer"
+        >
+          <Link href="/settings" className="flex items-center gap-2 justify-between">
+            <Settings size={20} />
+            <span>{dict.settings}</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
           onClick={() => federatedLogout()}
           className="cursor-pointer"
         >
           <LogOut />
-          <span>Sair</span>
+          <span>{dict.logout}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
