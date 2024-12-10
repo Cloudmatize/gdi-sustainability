@@ -8,15 +8,16 @@ import { getDictionary } from "../dictionaries";
 
 interface Props {
   children: ReactNode;
-  params: { lang: string }
+  params: { lang: string };
 }
 
-
-
-export default async function AuthenticatedLayout({ params: { lang }, children }: Props) {
-  const dict = await getDictionary(lang)
+export default async function AuthenticatedLayout({
+  params: { lang },
+  children,
+}: Props) {
+  const dict = await getDictionary(lang);
   return (
-    <>
+    <AuthenticatedProviders>
       <SidebarProvider defaultOpen={true}>
         <div className="flex flex-row w-full h-full min-w-full p-0 m-0">
           <AppSidebar dict={dict} />
@@ -38,10 +39,10 @@ export default async function AuthenticatedLayout({ params: { lang }, children }
                 <LangSwitch dict={dict.dashboard.langSwitch} />
               </div>
             </div>
-            <AuthenticatedProviders>{children}</AuthenticatedProviders>
+            {children}
           </div>
         </div>
-      </SidebarProvider >
-    </>
+      </SidebarProvider>
+    </AuthenticatedProviders>
   );
 }

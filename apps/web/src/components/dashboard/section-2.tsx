@@ -222,6 +222,7 @@ export default function DashboardSection2() {
                 href="/transports"
                 key={index}
                 className={`  ${
+                  modalAnalysis?.modalsData?.length >= 3 &&
                   index === modalAnalysis.modalsData.length - 1
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
@@ -282,6 +283,7 @@ export default function DashboardSection2() {
           : co2EmissionsByModals?.map((emission, index) => (
               <div
                 className={`${
+                  co2EmissionsByModals.length >= 3 &&
                   index === co2EmissionsByModals.length - 1
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
@@ -313,7 +315,7 @@ export default function DashboardSection2() {
           : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
               <div
                 className={`${
-                  index === co2EmissionsByModalsEmissionsByPassenger.length - 1
+                  co2EmissionsByModalsEmissionsByPassenger.length >= 3 && index === co2EmissionsByModalsEmissionsByPassenger.length - 1
                     ? "lg:col-span-2 xl:col-span-1"
                     : ""
                 }`}

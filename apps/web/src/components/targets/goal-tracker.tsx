@@ -11,7 +11,7 @@ import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { cx } from "class-variance-authority";
 import { CalendarClock, Target } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
@@ -20,6 +20,8 @@ import MultiModalSimulatorTransferSimulator from "./modal-trips-transfer-simulat
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
 import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
+import { FLIPT_TARGET_SIMULATION, IS_FLIPT_ACTIVE } from "@/constants/flipt";
 
 const transformData = (
   data: {
@@ -58,6 +60,10 @@ const transformData = (
 };
 
 export default function GoalTracker() {
+  const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  const isActiveFliptTargetSimulation =
+    IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_TARGET_SIMULATION)?.enabled;
+
   const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
     useTransportCO2EmissionByYear({});
   const {
@@ -110,20 +116,22 @@ export default function GoalTracker() {
       )}
 
       <div className="flex justify-end w-full">
-        <div className="flex items-center  space-x-2">
-          <Switch
-            disabled={
-              loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
-            }
-            checked={hypothesisMode}
-            onCheckedChange={(value) => {
-              setHypothesisMode(value);
-              setOpenSidebar(value);
-            }}
-            id="hypothesis-mode"
-          />
-          <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
-        </div>
+        {isActiveFliptTargetSimulation && (
+          <div className="flex items-center  space-x-2">
+            <Switch
+              disabled={
+                loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
+              }
+              checked={hypothesisMode}
+              onCheckedChange={(value) => {
+                setHypothesisMode(value);
+                setOpenSidebar(value);
+              }}
+              id="hypothesis-mode"
+            />
+            <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
+          </div>
+        )}
       </div>
       <div className="space-y-3 py-1 w-full">
         <div

@@ -7,8 +7,8 @@ interface Props {
   buildingsCo2Emission: number;
 }
 export function TotalCO2eCard({
-  buildingsCo2Emission,
-  transportsCo2Emission,
+  buildingsCo2Emission = 0,
+  transportsCo2Emission = 0,
 }: Props) {
   return (
     <Card className="border w-full">
