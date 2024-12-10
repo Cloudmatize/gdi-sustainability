@@ -23,6 +23,16 @@
         "logout": "Sair"
       }
     },
+    "translatedChartLegends": {
+      "AUTOMOBILE": "Automóvel",
+      "BUS": "Ônibus",
+      "MOTORCYCLE": "Motocicleta",
+      "RAIL": "Trem",
+      "SUBWAY": "Metrô",
+      "ON FOOT": "A pé",
+      "CYCLING": "Ciclismo",
+      "PLANE": "Avião"
+    },
     "dashboard": {
       "firstSection": {
         "title": "Visão geral de emissões de CO2 do ano de "
@@ -31,6 +41,65 @@
         "title": "Alterar idioma",
         "pt": "Português Brasileiro",
         "en": "Inglês"
+      }
+    },
+    "buildings": {},
+    "targets": {},
+    "transports": {
+      "title":"Emissão de transportes",
+      "description": "As informações sobre emissões de CO2 no transporte auxiliam a organização a monitorar, analisar e progredir em direção às metas de sustentabilidade, focando na redução de gases de efeito estufa.",
+      "metrics": {
+        "title": "Emissão de CO2 em toneladas",
+        "totalEmissions": {
+          "title": "Emissão total",
+          "description": "viagens"
+        },
+        "withinTheBorder": {
+          "title": "Dentro da fronteira",
+          "infoTooltip": "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade.",
+          "description": "viagens"
+        },
+        "outOfTheBorder": {
+          "title": "Fora da fronteira",
+          "infoTooltip": "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade",
+          "description": "viagens"
+        }
+      },
+      "sections": {
+        "CO2InboundAndOutbound": {
+          "title": "Comparação de emissões dentro e fora dos limites geográficos",
+          "description": "Compara a média de emissão de CO2 por quilômetro entre diferentes tipos de transporte, diferenciando as emissões dentro e fora dos limites geográficos.",
+          "chart": {
+            "title": "Emissão CO2 (tCO2e)",
+            "legendOne": "Dentro da fronteira",
+            "legendTwo": "Fora da fronteira",
+            "tooltip": {
+              "withinLimit": "Dentro do limite",
+              "outsideLimit": "Fora do limite"
+            }
+          }
+        },
+        "Co2EmissionPerTransport": {
+          "title": "Comparação de emissões por tipo de transporte",
+          "description": "Compara as emissões de CO2 divididas por tipos específicos de transporte, proporcionando uma visão sobre a eficiência de cada modalidade ao longo dos anos.",
+          "chart": {
+            "title": "Emissão CO2 (tCO2e)",
+            "legendOne": "Dentro da fronteira",
+            "legendTwo": "Fora da fronteira"
+          },
+          "cards": {
+            "percentageDescription": "do total de transportes"
+          }
+        },
+        "Co2EmissionPerKilometer": {
+          "title": "Comparação de emissões por quilômetro e tipo de transporte",
+          "description": "Compara as emissões de CO2 por quilômetro entre diferentes tipos de transporte, destacando as variações entre as modalidades.",
+          "chart": {
+            "title": "Emissão CO2 (kgCO2e/km)",
+            "legendOne": "Dentro da fronteira",
+            "legendTwo": "Fora da fronteira"
+          }
+        }
       }
     },
     "settings": {

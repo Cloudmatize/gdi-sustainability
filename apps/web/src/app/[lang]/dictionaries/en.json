@@ -23,6 +23,16 @@
         "logout": "Logout"
       }
     },
+    "translatedChartLegends": {
+      "AUTOMOBILE": "Automobile",
+      "BUS": "Bus",
+      "MOTORCYCLE": "Motorcycle",
+      "RAIL": "Rail",
+      "SUBWAY": "Subway",
+      "ON FOOT": "On Foot",
+      "CYCLING": "Cycling",
+      "PLANE": "Plane"
+    },
     "dashboard": {
       "firstSection": {
         "title": "CO2 emissions overview for the year "
@@ -31,6 +41,65 @@
         "title": "Change language",
         "pt": "Brazilian Portuguese",
         "en": "English"
+      }
+    },
+    "buildings": {},
+    "targets": {},
+    "transports": {
+      "title":"Transport emissions",
+      "description": "Information on CO2 emissions in transportation helps organizations monitor, analyze, and progress toward sustainability goals, focusing on reducing greenhouse gases.",
+      "metrics": {
+        "title": "CO2 emissions in tons",
+        "totalEmissions": {
+          "title": "Total emissions",
+          "description": "trips"
+        },
+        "withinTheBorder": {
+          "title": "Within the border",
+          "infoTooltip": "Relates to emissions collected by trips that started and ended in the city itself.",
+          "description": "trips"
+        },
+        "outOfTheBorder": {
+          "title": "Outside the border",
+          "infoTooltip": "Relates to emissions collected by trips that at some point in the trip passed through the city. That is, that vehicle at some point emitted carbon in the city, but his trip did not end in the city itself",
+          "description": "trips"
+        }
+      },
+      "sections": {
+        "CO2InboundAndOutbound": {
+          "title": "Comparison of emissions within and outside geographic boundaries",
+          "description": "Compares the average CO2 emissions per kilometer between different types of transport, differentiating emissions within and outside geographic boundaries.",
+          "chart": {
+            "title": "CO2 Emission (tCO2e)",
+            "legendOne": "Within the boundary",
+            "legendTwo": "Outside the boundary",
+            "tooltip": {
+              "withinLimit": "Within the boundary",
+              "outsideLimit": "Outside the boundary"
+            }
+          }
+        },
+        "Co2EmissionPerTransport": {
+          "title": "Comparison of emissions by type of transport",
+          "description": "Compares CO2 emissions divided by specific types of transport, providing insight into the efficiency of each mode over the years.",
+          "chart": {
+            "title": "CO2 emissions (tCO2e)",
+            "legendOne": "Within the border",
+            "legendTwo": "Outside the border"
+          },
+          "cards": {
+            "percentageDescription": "of total transport"
+          }
+        },
+        "Co2EmissionPerKilometer": {
+          "title": "Comparison of emissions per kilometer and type of transport",
+          "description": "Compares CO2 emissions per kilometer between different types of transport, highlighting the variations between modes.",
+          "chart": {
+            "title": "CO2 emissions (kgCO2e/km)",
+            "legendOne": "Within the border",
+            "legendTwo": "Outside the border"
+          }
+        }
       }
     },
     "settings": {
