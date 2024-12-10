@@ -11,7 +11,7 @@ interface Props {
 export default function Page({ params: { lang }, children }: Props) {
 
     return (
-        <DictionaryProvider locale={lang}>
+        <DictionaryProvider locale={lang || 'en'}>
             {children}
         </DictionaryProvider>
     );

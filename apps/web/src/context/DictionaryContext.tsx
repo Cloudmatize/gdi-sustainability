@@ -20,7 +20,7 @@ export const useDictionary = () => {
     return context;
 };
 
-export const DictionaryProvider = ({ children, locale }: { children: React.ReactNode; locale: string }) => {
+export const DictionaryProvider = ({ children, locale = 'en' }: { children: React.ReactNode; locale: string }) => {
     const [dict, setDict] = useState<unknown>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -43,9 +43,7 @@ export const DictionaryProvider = ({ children, locale }: { children: React.React
 
     return (
         <DictionaryContext.Provider value={{ dict, loadDictionary }}>
-            {isLoading ? (
-                <LoadingPage />
-            ) : (
+            {isLoading ? <LoadingPage /> : (
                 children
             )}
         </DictionaryContext.Provider>
