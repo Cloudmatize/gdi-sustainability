@@ -1,18 +1,18 @@
+'use client'
 import LangSwitch from "@/components/lang-switch"
-import { getColors } from "@/components/theme-provider/theme-cookie"
 import { Separator } from "@/components/ui/separator"
 import { useDictionary } from "@/context/DictionaryContext"
 import { Settings } from "lucide-react"
 
-async function Page() {
-    const colorTypes = ['primary', 'foreground']
-    let colors = await getColors(colorTypes)
-    if (!colors) {
-        colors = [
-            { type: 'primary', color: '#00E682' },
-            { type: 'foreground', color: '#fafafa' },
-        ]
-    }
+function Page() {
+    // const colorTypes = ['primary', 'foreground']
+    // let colors = await getColors(colorTypes)
+    // if (!colors) {
+    //     colors = [
+    //         { type: 'primary', color: '#00E682' },
+    //         { type: 'foreground', color: '#fafafa' },
+    //     ]
+    // }
     const { dict } = useDictionary();
 
     return (

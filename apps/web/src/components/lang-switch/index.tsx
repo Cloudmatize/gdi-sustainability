@@ -18,7 +18,7 @@ function LangSwitch({ title }: LangProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="cursor-pointer">
-                {title ? (<Button variant="outline" className="w-full bg-primary"><Languages />{dict?.dashboard.langSwitch?.title}</Button>) : <Languages />}
+                {title ? (<Button variant="outline" className="w-full"><Languages />{dict?.dashboard.langSwitch?.title}</Button>) : <Languages />}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="">
                 <DropdownMenuLabel>{dict?.dashboard.langSwitch?.title}</DropdownMenuLabel>
