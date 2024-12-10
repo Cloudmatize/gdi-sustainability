@@ -34,7 +34,7 @@ function QueryConfig(): QueryClientConfig {
     query: Query<unknown, unknown, unknown, QueryKey>
   ) => {
     const { response } = error as Error;
-    if (response.status === 500 && query.state.data !== undefined) {
+    if (response?.status === 500 && query?.state?.data !== undefined) {
       query.destroy();
     }
   };

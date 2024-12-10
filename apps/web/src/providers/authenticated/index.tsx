@@ -1,13 +1,13 @@
 "use client";
 import { ReactNode } from "react";
-import { GraphQLProvider } from "./graphql";
-import { graphQLClient } from "@/services/graphql";
+import { FeatureFlagsProvider } from "./feature-flags";
 
 type ProvidersProps = {
   children: ReactNode;
 };
 
 export function AuthenticatedProviders({ children }: ProvidersProps) {
-  return children
+  
+  return <FeatureFlagsProvider>{children}</FeatureFlagsProvider>;
   // return <GraphQLProvider client={graphQLClient}>{children}</GraphQLProvider>;
 }
