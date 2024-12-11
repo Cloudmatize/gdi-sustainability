@@ -2,14 +2,10 @@
 
 import Image from "next/image";
 import { useTargetsStore } from "@/store/targets";
-import ModalSimulator from "./modal-simulator";
-import { CardContent } from "../ui/card";
-import { MdCo2 } from "react-icons/md";
-import { ArrowDown, ArrowUp, Target } from "lucide-react";
 import PrintGoalTrackerTable from "./print/print-goal-tracker-table";
 import { TravelMode } from "@/types/transports";
 import PrintTransportEmissionTargets from "./print/print-transport-emissions-targets";
-import PrintModalSimulator from "./print/print-modal-simulator";
+import DistributionsMode from "./print/print-distribution-transfers";
 
 interface Props {
   componentRef: any;
@@ -99,6 +95,7 @@ const PrintOverviewInfo = () => {
     </div>
   );
 };
+
 export default function PrintTargetReportPage({
   componentRef,
   data: {
@@ -110,14 +107,20 @@ export default function PrintTargetReportPage({
     transportEmissionsTarget,
   },
 }: Props) {
-  const { hypothesisMode } = useTargetsStore();
+  const { hypothesisMode, transfers } = useTargetsStore();
+
   return (
     <div>
       <div ref={componentRef} className=" space-y-4 text-xs ">
         <Header />
+
         <div className="px-8   space-y-3">
           <div className="pb-10 pt-5 px-4">
             <PrintOverviewInfo />
+          </div>
+
+          <div>
+            <DistributionsMode transfers={(transfers as any) || []} />
           </div>
           <div className="mt-8 border rounded-lg">
             <PrintGoalTrackerTable data={targetsCo2EmissionByModal || []} />
