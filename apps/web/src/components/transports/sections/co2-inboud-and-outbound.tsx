@@ -111,7 +111,7 @@ export default function CO2InboundAndOutbound({ dict }: DictionaryContextType) {
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer height="100%">
               <BarChart
-                data={data}
+                data={data || []}
                 margin={{ top: 30 }}
               >
                 <XAxis

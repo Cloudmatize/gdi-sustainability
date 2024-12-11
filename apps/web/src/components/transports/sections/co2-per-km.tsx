@@ -73,7 +73,7 @@ export default function Co2EmissionPerKilometer({ dict }: DictionaryContextType)
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={data}
+                data={data || []}
                 layout="vertical"
                 margin={{ top: 20, bottom: 30, left: 50, right: 30 }}
               >
