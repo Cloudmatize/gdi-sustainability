@@ -56,15 +56,17 @@ const CustomTooltip = ({
   active,
   payload,
   label,
+  dict
 }: {
   active?: boolean;
   payload?: Payload[];
   label?: string;
+  dict: DictionaryContextType['dict']
 }) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
-        {label}
+
         {payload.map((item, index) => {
           return (
             !!item.value && (
@@ -78,7 +80,7 @@ const CustomTooltip = ({
                     style={{ backgroundColor: item.color }}
                   />
                   <span className="text-foreground font-bold  text-center">
-                    {String(item?.dataKey) || ""}
+                    {dict?.mappedTravelMode[String(item?.dataKey)] || ""}
                   </span>
                 </div>
                 {formatNumber(item.value.toFixed(0)) || 0} tons
@@ -91,7 +93,7 @@ const CustomTooltip = ({
   }
 };
 
-const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: DictionaryContextType['dict'] }) => {
   return (
     <div className="custom-legend w-full flex gap-3 justify-center items-center mt-8">
       {payload?.map((d, index) => (
@@ -101,7 +103,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             style={{ backgroundColor: d?.color }}
           />
           <span className="text-sm text-foreground text-center">
-            {d?.value}
+            {dict?.mappedTravelMode[d?.value]}
           </span>
         </div>
       ))}
@@ -212,7 +214,7 @@ export const ModalEmissionAnalysisCard = ({
   );
 };
 
-export default function Co2EmissionPerTransport({ dict }: DictionaryContextType) {
+export default function Co2EmissionPerTransport({ dict }: DictionaryContextType['dict']) {
   const { data, isFetching } = useTransportsCO2EmissionByYearAndModal({});
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
@@ -282,9 +284,9 @@ export default function Co2EmissionPerTransport({ dict }: DictionaryContextType)
                     return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <RechartTooltip content={<CustomTooltip />} />
+                <RechartTooltip content={<CustomTooltip dict={dict} />} />
 
-                <Legend content={<CustomLegend />} />
+                <Legend content={<CustomLegend dict={dict} />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
                     // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
