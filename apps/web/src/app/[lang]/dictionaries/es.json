@@ -3,6 +3,11 @@
     "title": "Acceso no autorizado",
     "description": "Lo sentimos, no tienes permiso para acceder a esta página. Por favor, verifica tus credenciales o contacta al administrador del sistema."
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "Lo sentimos, la página que buscas no existe.",
+    "link": "Volver a la página principal"
+  },
   "routes": {
     "dashboard": {
       "title": "Overview",

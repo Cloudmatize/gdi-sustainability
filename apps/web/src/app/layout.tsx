@@ -21,6 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // biome-ignore lint/a11y/useHtmlLang: <explanation>
     <html suppressHydrationWarning>
       <head>
         <PublicEnvScript />
