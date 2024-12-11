@@ -122,7 +122,7 @@ export default function TransportsPage() {
 
         <CO2InboundAndOutbound dict={dict} />
         <Co2EmissionPerTransport dict={dict} />
-        <Co2EmissionPerKilometer dict={dict?.transports.sections.Co2EmissionPerKilometer} />
+        <Co2EmissionPerKilometer dict={dict} />
       </div>
     </div>
   );

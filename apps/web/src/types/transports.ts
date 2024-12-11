@@ -59,7 +59,7 @@ export interface CO2EmissionByYear {
 export interface CO2EmissionModalAnalysis {
   percentage_contribution: number;
   avg_percentage_yearly: number;
-  contribution_status: "Elevação" | "Redução";
+  contribution_status: string;
   mode: TravelMode;
 }
 
