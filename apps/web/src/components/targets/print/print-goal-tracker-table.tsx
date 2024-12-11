@@ -20,8 +20,9 @@ import { useTargetsStore } from "@/store/targets";
 import { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { RotateCcw, TrendingDown, TrendingUp } from "lucide-react";
-import ModalSimulator from "./modal-simulator";
+import ModalSimulator from "../modal-simulator";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
+import PrintModalSimulator from "./print-modal-simulator";
 
 interface TransportModeReal {
   mode: string;
@@ -75,7 +76,7 @@ const transformData = (
       icon: getIconByTransportMode({
         mode: item.mode,
         asChild: true,
-        className: "text-slate-700 h-4 w-4",
+        className: "text-slate-700 h-3 w-3",
       }),
       baseTrips: item.trips,
       tripPercentage: 0,
@@ -87,6 +88,7 @@ const transformData = (
       ),
     };
   });
+  console.log("formattedData22222", formattedData);
   return formattedData || [];
 };
 
@@ -165,23 +167,19 @@ function simulateTransfers(
   return Array.from(transportMap.values());
 }
 
-export default function GoalTrackerTable({ data }: Props) {
+export default function PrintGoalTrackerTable({ data }: Props) {
   const [passengersPerTripData, setPassengersPerTripData] = useState(
     passengersPerTripMapping
   );
-
   const initialTransportData = transformData(data, passengersPerTripData);
-  const [transportData, setTransportData] = useState(
-    transformData(data, passengersPerTripData)
-  );
+
+  const [transportData, setTransportData] = useState(initialTransportData);
 
   const [simulatedCo2Emissions, setSimulatedCo2Emissions] = useState(
     [] as FormattedTransportMode[]
   );
 
   const { setTotalCo2Emission } = useTargetsStore();
-
-  const transportDataTesst = transformData(data, passengersPerTripData);
 
   const { transfers } = useTargetsStore();
 
@@ -198,7 +196,7 @@ export default function GoalTrackerTable({ data }: Props) {
 
   useEffect(() => {
     const simulatedCo2EmissionsData = simulateTransfers(
-      transportDataTesst,
+      initialTransportData,
       transfers
     );
     const sumSimulatedTotalCo2Emisisons = simulatedCo2EmissionsData?.reduce(
@@ -208,7 +206,7 @@ export default function GoalTrackerTable({ data }: Props) {
       0
     );
 
-    const originalTotalCo2Emissions = transportDataTesst?.reduce(
+    const originalTotalCo2Emissions = initialTransportData?.reduce(
       (acc, mode) => {
         return acc + mode.totalEmissions;
       },
@@ -221,29 +219,36 @@ export default function GoalTrackerTable({ data }: Props) {
     setSimulatedCo2Emissions(simulatedCo2EmissionsData);
   }, [transfers, passengersPerTripData]);
   return (
-    <Card className="h-full w-full  ">
+    <div className="h-full w-full border-0">
       <CardHeader>
         <CardTitle>
           Relatório de emissões por transporte no último ano (
           {new Date().getFullYear() - 1})
         </CardTitle>
       </CardHeader>
+      <PrintModalSimulator />
 
-      <ModalSimulator />
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Modal</TableHead>
-              <TableHead className="text-end">Viagens Totais</TableHead>
-              <TableHead className="text-end">Passageiros/Viagem</TableHead>
-              <TableHead className="text-end">Emissões Totais (ton)</TableHead>
-              <TableHead className="text-end">
+              <TableHead className="text-xs ">Modal</TableHead>
+              <TableHead className="text-end text-xs  flex-1">
+                Viagens Totais
+              </TableHead>
+
+              <TableHead className="text-end text-xs  flex-1">
+                Emissões Totais (ton)
+              </TableHead>
+              <TableHead className=" text-end text-xs">
+                Passageiros/Viagem
+              </TableHead>
+              <TableHead className="   text-end text-xs">
                 Emissões/Passageiro (kgCO₂)
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="pb-5  w-full ">
+          <TableBody className="pb-5  w-full text-xs ">
             {transportData.map((mode, index) => {
               const initialTransportMode = initialTransportData.find(
                 (t) => t.id === mode.id
@@ -309,8 +314,8 @@ export default function GoalTrackerTable({ data }: Props) {
                       <span>{mappedTravelMode[mode.name as TravelMode]}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right flex-1 ">
-                    <div className="space-y-2">
+                  <TableCell className="text-right  w-[50%] ">
+                    <div className="space-y-1">
                       <div className="flex justify-end items-center gap-2">
                         <span className="font-medium">
                           {mode.baseTrips?.toLocaleString()}
@@ -337,7 +342,7 @@ export default function GoalTrackerTable({ data }: Props) {
                                 {getIconByTransportMode({
                                   mode: log?.from as TravelMode,
                                   asChild: true,
-                                  className: " w-4 h-4",
+                                  className: " w-3 h-3",
                                 })}
                               </span>
                               <span>{`${log.trips.toLocaleString()}`}</span>
@@ -354,7 +359,7 @@ export default function GoalTrackerTable({ data }: Props) {
                               {getIconByTransportMode({
                                 mode: log?.to as TravelMode,
                                 asChild: true,
-                                className: "text-red-500 w-4 h-4",
+                                className: "text-red-500 w-3 h-3",
                               })}
                             </span>
 
@@ -364,7 +369,48 @@ export default function GoalTrackerTable({ data }: Props) {
                       })}
                     </div>
                   </TableCell>
-                  <TableCell className="text-right pr-10 ">
+
+                  <TableCell className="text-right w-[50%] ">
+                    <div className="space-y-1">
+                      <div className="flex justify-end items-center gap-2 ">
+                        <span className="font-medium">
+                          {mode.totalEmissions.toLocaleString()}
+                        </span>
+
+                        {showTotalEmissions && !!totalEmissions && (
+                          <>
+                            {"➜"}
+                            <span className="text-primary-foreground font-bold">
+                              {totalEmissions.toLocaleString()}
+                            </span>
+                          </>
+                        )}
+                      </div>
+
+                      {!!totalCo2Variation && (
+                        <div className="flex justify-end items-center gap-1 text-slate-600">
+                          <span className="flex items-center gap-1">
+                            <span className={`${totalCo2VariationColor}`}>
+                              {totalCo2Variation.toLocaleString()}
+                            </span>
+
+                            <span className="flex gap-1 items-center">
+                              {percentageVariation > 0 ? (
+                                <TrendingUp className="h-4 w-4 text-destructive-foreground  " />
+                              ) : (
+                                <TrendingDown className="h-4 w-4 text-primary-foreground " />
+                              )}
+                              <div className={`${percentageVariationColor}`}>
+                                ({percentageVariation.toFixed(1)}
+                                %)
+                              </div>
+                            </span>
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right pr-10  ">
                     <div className="flex items-center justify-end ">
                       {mode.passengersPerTrip !==
                         passengersPerTripMapping[mode.id] && (
@@ -380,58 +426,10 @@ export default function GoalTrackerTable({ data }: Props) {
                           <RotateCcw className="ml-1 h-3 w-3" />
                         </button>
                       )}
-                      <Input
-                        type="text"
-                        pattern="\d*"
-                        required
-                        maxLength={4}
-                        min={1}
-                        max={2000}
-                        value={mode.passengersPerTrip}
-                        onChange={(e) =>
-                          handlePassengerChange(mode.id, Number(e.target.value))
-                        }
-                        className="w-20 text-center"
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right flex-1 ">
-                    <div className="flex justify-end items-center gap-2">
-                      <span className="font-medium">
-                        {mode.totalEmissions.toLocaleString()}
-                      </span>
-
-                      {showTotalEmissions && !!totalEmissions && (
-                        <>
-                          {"➜"}
-                          <span className="text-primary-foreground font-bold">
-                            {totalEmissions.toLocaleString()}
-                          </span>
-                        </>
-                      )}
-                    </div>
-
-                    {!!totalCo2Variation && (
-                      <div className="flex justify-end items-center gap-2 text-slate-600">
-                        <span className="flex items-center gap-2">
-                          <span className={`${totalCo2VariationColor}`}>
-                            {totalCo2Variation.toLocaleString()}
-                          </span>
-
-                          <span className="flex gap-1 items-center">
-                            {percentageVariation > 0 ? (
-                              <TrendingUp className="h-4 w-4 text-destructive-foreground  " />
-                            ) : (
-                              <TrendingDown className="h-4 w-4 text-primary-foreground " />
-                            )}
-                            <div className={`${percentageVariationColor}`}>
-                              ({percentageVariation.toFixed(1)}
-                              %)
-                            </div>
-                          </span>
-                        </span>
+                      <div className="w-10 text-center">
+                        {mode.passengersPerTrip}
                       </div>
-                    )}
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end items-center gap-2">
@@ -446,6 +444,6 @@ export default function GoalTrackerTable({ data }: Props) {
           </TableBody>
         </Table>
       </CardContent>
-    </Card>
+    </div>
   );
 }

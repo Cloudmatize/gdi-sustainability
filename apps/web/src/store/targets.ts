@@ -33,7 +33,7 @@ interface TargetsState {
 }
 
 export const useTargetsStore = create<TargetsState>()((set, get) => ({
-  hypothesisMode: false,
+  hypothesisMode: true,
   setHypothesisMode: (mode) => set({ hypothesisMode: mode }),
   transfers: [],
   setTransfers: (transfers) => set({ transfers }),
