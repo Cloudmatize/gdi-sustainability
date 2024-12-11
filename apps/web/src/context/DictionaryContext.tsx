@@ -27,7 +27,6 @@ export const DictionaryProvider = ({ children, locale = 'en' }: { children: Reac
     const loadDictionary = async (locale: string) => {
         try {
             const dictionary = await getServerSidePropsHelper({ locale });
-            console.log('Updated dictionary:', dictionary.dictionaryData);
             setDict(dictionary.dictionaryData);
         } catch (error) {
             console.error('Failed to load dictionary:', error);

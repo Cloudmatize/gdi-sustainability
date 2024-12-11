@@ -4,7 +4,7 @@ import RootLayout from './layout';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
     return (
-        <RootLayout locale={router.locale}>
+        <RootLayout >
             <Component {...pageProps} />
         </RootLayout>
     );
