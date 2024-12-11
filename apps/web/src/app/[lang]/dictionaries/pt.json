@@ -68,24 +68,6 @@
             "description1": "Os edifícios não residenciais possuem ",
             "description2": "da área total e contribuem com ",
             "description3": "das emissões"
-          },
-          "AverageEmissionsByTransport": {
-            "title": "Emissões médias por transporte (tCO2e)",
-            "TransportCo2eComparissonCard": {
-              "co2EmissionsByModalsEmissionsByPassenger": {
-                "description": {
-                  "greater": "maior",
-                  "lower": "menor",
-                  "lastYear": " que o ano anterior",
-                  "keepTheSame": "Manteve o mesmo valor",
-                  "noDataToCompare": "Sem dados para comparação"
-                }
-              }
-            }
-          },
-          "EmissionsPerPassenger": {
-            "title": "Emissões por passageiro (kgCO2e)",
-            "infoToolTip": "Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte."
           }
         }
       },
@@ -127,6 +109,24 @@
             "description1": "Non-residential buildings account for ",
             "description2": " of the total area and contribute to ",
             "description3": " of emissions"
+          },
+          "AverageEmissionsByTransport": {
+            "title": "Emissões médias por transporte (tCO2e)",
+            "TransportCo2eComparissonCard": {
+              "co2EmissionsByModalsEmissionsByPassenger": {
+                "description": {
+                  "greater": "maior",
+                  "lower": "menor",
+                  "lastYear": " que o ano anterior",
+                  "keepTheSame": "Manteve o mesmo valor",
+                  "noDataToCompare": "Sem dados para comparação"
+                }
+              }
+            }
+          },
+          "EmissionsPerPassenger": {
+            "title": "Emissões por passageiro (kgCO2e)",
+            "infoToolTip": "Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte."
           }
         }
       },
