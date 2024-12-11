@@ -107,8 +107,8 @@ function formatBuildingsFloorAreasBySector(
 export default function DashboardSection1({ dict }: DictionaryContextType) {
   const { getCurrentFlag } = useContext(FeatureFlagsContext);
 
-  const isFliptBuildingsFlagActive =
-    IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_BUILDINGS_FLAG)?.enabled;
+  // const isFliptBuildingsFlagActive =
+  //   IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_BUILDINGS_FLAG)?.enabled;
 
   const {
     data: transportsCo2Emission,
@@ -131,13 +131,13 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
     data: buildingsCo2Emission,
     isFetching: isLoadingBuildingsCo2Emission,
   } = useDashboardBuildingsTotalCO2Emission({
-    enabled: isFliptBuildingsFlagActive,
+    // enabled: isFliptBuildingsFlagActive,
   });
 
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({
       extraKey: "dashboard",
-      enabled: isFliptBuildingsFlagActive,
+      // enabled: isFliptBuildingsFlagActive,
     });
 
   const transportsComparissonInfo = generateComparisonMessage(
@@ -198,7 +198,7 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
         </div>
       ),
     },
-    ...(isFliptBuildingsFlagActive
+    ...(true
       ? [
           {
             title: dict?.dashboard?.firstSection.cards.tCO2PerBuilding.title,
@@ -258,7 +258,7 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
           },
         ]
       : []),
-    ...(isFliptBuildingsFlagActive
+    ...(true
       ? [
           {
             title: dict?.dashboard?.firstSection.cards.nonResidential.title,

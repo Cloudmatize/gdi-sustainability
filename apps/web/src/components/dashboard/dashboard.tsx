@@ -9,18 +9,17 @@ import { FLIPT_BUILDINGS_FLAG, IS_FLIPT_ACTIVE } from "@/constants/flipt";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function ComprehensiveDashboard() {
-  const { getCurrentFlag } = useContext(FeatureFlagsContext);
   const { dict, loadDictionary } = useDictionary();
-
-
-  const isFliptBuildingsFlagActive =
-    IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_BUILDINGS_FLAG)?.enabled;
+  
+  // const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  // const isFliptBuildingsFlagActive =
+  //   IS_FLIPT_ACTIVE && getCurrentFlag(FLIPT_BUILDINGS_FLAG)?.enabled;
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 flex flex-col gap-6 lg:px-16 lg:py-10">
       <DashboardSection1 dict={dict} />
       <DashboardSection2 dict={dict} />
-      {isFliptBuildingsFlagActive && <DashboardSection3 />}
+      <DashboardSection3 />
     </div>
   );
 }

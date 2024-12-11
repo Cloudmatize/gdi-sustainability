@@ -27,13 +27,14 @@ import { UserMenu } from "./user-menu";
 export function MobileSideBar({ dict }: DictionaryContextType) {
   const [openRoute, setOpenRoute] = useState([0])
   const { open, toggleSidebar } = useSidebar()
-  const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  // const { getCurrentFlag } = useContext(FeatureFlagsContext);
   const routes = getRoutes(dict?.routes)
 
   const filteredRoutes = routes.filter((route) => {
-    if (!route.fliptFlag) return true;
-    const flag = getCurrentFlag(route.fliptFlag);
-    return flag?.enabled;
+    return true
+    // if (!route.fliptFlag) return true;
+    // const flag = getCurrentFlag(route.fliptFlag);
+    // return flag?.enabled;
   });
   const handleChangeOpenState = (route: { id: number; parent?: number }) => {
     if (!openRoute.includes(route.id)) {

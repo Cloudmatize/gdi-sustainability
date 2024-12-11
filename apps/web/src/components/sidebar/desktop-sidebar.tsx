@@ -38,13 +38,14 @@ import { UserMenu } from "./user-menu";
 
 export function DesktopSideBar({ dict }: DictionaryContextType) {
   const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
-  const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  // const { getCurrentFlag } = useContext(FeatureFlagsContext);
   const routes = getRoutes(dict.routes)
 
   const filteredRoutes = routes.filter((route) => {
+    return true
     if (!route.fliptFlag) return true;
-    const flag = getCurrentFlag(route.fliptFlag);
-    return flag?.enabled;
+    // const flag = getCurrentFlag(route.fliptFlag);
+    // return flag?.enabled;
 
   });
 
