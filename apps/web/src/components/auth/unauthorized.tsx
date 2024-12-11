@@ -12,7 +12,7 @@ export default function Unauthorized() {
     <div className="h-[70%] flex items-center justify-center">
       <div className="w-full max-w-md mx-auto text-center">
         <CardHeader>
-          <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <XCircle className="w-16 h-16 text-destructive-foreground mx-auto mb-4" />
           <CardTitle className="text-2xl font-bold text-gray-800">
             {dict.unauthorized.title}
           </CardTitle>

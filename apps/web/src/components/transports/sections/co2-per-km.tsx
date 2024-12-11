@@ -10,9 +10,27 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
+
+const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+  return (
+    <div className="custom-legend w-full flex gap-3 justify-center items-center mt-6">
+      {payload?.map((d, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <div
+            className="w-[12px] h-[12px] rounded-full"
+            style={{ backgroundColor: d?.color }}
+          />
+          <span className="text-sm text-foreground text-center">
+            {d?.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const CustomTooltip = ({
   active,
@@ -26,7 +44,7 @@ const CustomTooltip = ({
   if (active && payload && payload.length) {
     const item = payload[0];
     return (
-      <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
+      <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg" key={label}>
         <div className="flex gap-2 items-center ">
           <div className="flex items-center gap-2  h-10  ">
             <div
@@ -51,14 +69,19 @@ export default function Co2EmissionPerKilometer({ dict }: DictionaryContextType)
   const { data, isFetching } = useTransportsCO2EmissionPerKM({
     filters,
   });
+  const translatedData = data?.map((_data) => ({
+    mode: dict?.mappedTravelMode[_data?.mode],
+    emissionCO2KgPerKm: _data?.emissionCO2KgPerKm
+  }))
+
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold mb-2 text-foreground">
-          {dict?.title}
+          {dict?.transports.sections.Co2EmissionPerKilometer.title}
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          {dict?.description}
+          {dict?.transports.sections.Co2EmissionPerKilometer.description}
         </p>
       </div>
 
@@ -67,13 +90,13 @@ export default function Co2EmissionPerKilometer({ dict }: DictionaryContextType)
       ) : (
         <Card className="p-6  overflow-auto">
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            {dict?.chart.title}
+            {dict?.transports.sections.Co2EmissionPerKilometer.chart.title}
           </h3>
 
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={data || []}
+                data={translatedData || data || []}
                 layout="vertical"
                 margin={{ top: 20, bottom: 30, left: 50, right: 30 }}
               >
