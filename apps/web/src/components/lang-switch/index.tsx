@@ -38,6 +38,14 @@ function LangSwitch({ title }: LangProps) {
                     <Image src="/langs/en.png" alt={dict?.dashboard.langSwitch?.en} height={20} width={20} />
                     <span>{dict?.dashboard.langSwitch?.en}</span>
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                    className="cursor-pointer w-full h-12"
+
+                    onClick={() => changeLang('es')}
+                >
+                    <Image src="/langs/es.png" alt={dict?.dashboard.langSwitch?.es} height={20} width={20} />
+                    <span>{dict?.dashboard.langSwitch?.es}</span>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

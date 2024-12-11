@@ -2,7 +2,7 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 // Define available locales
-const locales = ['en', 'pt'];
+const locales = ['en', 'pt', 'es'];
 
 // Default locale (you can adjust based on your logic)
 const defaultLocale = 'pt';
