@@ -3,17 +3,16 @@ import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 
 interface Props {
-  data: {
-    sector: string;
-    percentageChange: number;
-  };
+  sector: string;
+  percentageChange: number;
   title: string;
   icon?: JSX.Element;
   isIncrease: boolean;
   dict: DictionaryContextType['dict']
 }
 export default function TransportSectorAnalysisCard({
-  data,
+  sector,
+  percentageChange,
   title,
   icon,
   isIncrease,
@@ -25,7 +24,7 @@ export default function TransportSectorAnalysisCard({
         <CardTitle className="text-sm md:text-base flex items-center justify-between">
           <span className="flex items-center gap-2">
             {icon}
-            {data?.sector}
+            {sector}
           </span>
           <div className="text-end">
             {title}
@@ -53,7 +52,7 @@ export default function TransportSectorAnalysisCard({
                   : "text-primary-foreground"
                   } text-2xl font-bold`}
               >
-                {data?.percentageChange.toFixed(2)}%
+                {percentageChange.toFixed(2)}%
               </div>
             </div>
           </div>
