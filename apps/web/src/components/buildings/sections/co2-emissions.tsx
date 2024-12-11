@@ -35,7 +35,7 @@ export default function CO2Emissions() {
               <ResponsiveContainer height={300}>
                 <PieChart>
                   <Pie
-                    data={data}
+                    data={data || []}
                     cx="50%"
                     cy="50%"
                     label

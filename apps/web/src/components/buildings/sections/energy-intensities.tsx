@@ -71,7 +71,7 @@ export default function EnergyIntensities({ dict }: DictionaryContextType) {
           <Card className="p-6 w-full">
             <div className="h-[400px] ">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data || []}>
                   <PolarGrid />
                   <PolarAngleAxis
                     fontSize={12}
