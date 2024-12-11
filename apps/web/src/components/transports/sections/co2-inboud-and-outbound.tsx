@@ -22,22 +22,21 @@ const CustomTooltip = ({
   active,
   payload,
   label,
-  tooltipTranslate
+  dict
 }: {
   active?: boolean;
   payload?: Payload[];
   label?: string;
-  // biome-ignore lint/suspicious/noExplicitAny: x
-  tooltipTranslate: any;
+  dict: DictionaryContextType['dict'];
 }) => {
   if (active && payload && payload.length) {
     const mapped: { [key: string]: string } = {
-      withinLimit: tooltipTranslate.withinLimit,
-      outsideLimit: tooltipTranslate.outsideLimit,
+      withinLimit: dict?.transports.sections.CO2InboundAndOutbound.chart.tooltip.withinLimit,
+      outsideLimit: dict?.transports.sections.CO2InboundAndOutbound.chart.tooltip.outsideLimit,
     };
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
-        <p className="py-1">{label}</p>
+        <p className="py-1">{dict?.mappedTravelMode[label]}</p>
         {payload.map((item, index) => {
           return (
             <div
@@ -129,7 +128,7 @@ export default function CO2InboundAndOutbound({ dict }: DictionaryContextType) {
                   strokeWidth={0.3}
                   tickMargin={10}
                 />
-                <Tooltip content={<CustomTooltip tooltipTranslate={dict?.transports.sections.CO2InboundAndOutbound.chart.tooltip} />} />
+                <Tooltip content={<CustomTooltip dict={dict} />} />
                 <Legend content={<CustomLegend />} />
                 <Bar
                   strokeWidth={1}
