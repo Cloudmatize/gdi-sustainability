@@ -1,4 +1,8 @@
 {
+  "unauthorized": {
+    "title": "Acceso no autorizado",
+    "description": "Lo sentimos, no tienes permiso para acceder a esta página. Por favor, verifica tus credenciales o contacta al administrador del sistema."
+  },
   "routes": {
     "dashboard": {
       "title": "Overview",
