@@ -116,9 +116,9 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
         : null;
 
       const description = differenceTotalCo2EmissionPercentage
-        ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${differenceTotalCo2EmissionPercentage > 0 ? "maior" : "menor"
-        } que o ano anterior`
-        : "Sem dados para comparação";
+        ? `${Math.abs(differenceTotalCo2EmissionPercentage).toFixed(2)}% ${differenceTotalCo2EmissionPercentage > 0 ? dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.greater : dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.lower
+        }${dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.lastYear}`
+        : dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.noDataToCompare;
 
       return {
         mode: firstYearData?.mode,
@@ -172,9 +172,9 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
           : 0;
 
       const description = differenceEmissionPerPassengerPercentage
-        ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${differenceEmissionPerPassengerPercentage > 0 ? "maior" : "menor"
-        } que o ano anterior`
-        : "Manteve o mesmo valor";
+        ? `${Math.abs(differenceEmissionPerPassengerPercentage).toFixed(2)}% ${differenceEmissionPerPassengerPercentage > 0 ? dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.greater : dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.lower
+        }${dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.lastYear}`
+        : dict.dashboard.secondSection.cards.AverageEmissionsByTransport.TransportCo2eComparissonCard.co2EmissionsByModalsEmissionsByPassenger.description.keepTheSame;
 
       return {
         mode: firstYearData?.mode,
@@ -264,7 +264,7 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
       </div>
 
       <div className="text-lg font-medium">
-        Emissões médias por transporte (tCO2e)
+        {dict.dashboard.secondSection.cards.AverageEmissionsByTransport.title}
       </div>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {isLoadingCo2EmissionByModalFirstYear ||
@@ -287,13 +287,13 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
                 }`}
               key={`${emission.mode}-${index}`}
             >
-              <TransportCo2eComparissonCard {...emission} />
+              <TransportCo2eComparissonCard emission={emission} dict={dict} />
             </div>
           ))}
       </div>
       <div className="text-lg font-medium flex items-center gap-1 ">
-        Emissões por passageiro (kgCO2e)
-        <InfoTooltip content="Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte." />
+        {dict.dashboard.secondSection.cards.EmissionsPerPassenger.title}
+        <InfoTooltip content={dict.dashboard.secondSection.cards.EmissionsPerPassenger.infoToolTip} />
       </div>
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">

@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { mappedTravelMode } from "@/constants/transports";
-import { TravelMode } from "@/types/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 
 export type Co2ComparissonCardProps = {
+
   mode: string;
   firstYear: {
     year: number;
@@ -14,15 +14,19 @@ export type Co2ComparissonCardProps = {
     co2Emissions: number;
   };
   description: string;
+
 };
 
 export default function TransportCo2eComparissonCard(
-  emission: Co2ComparissonCardProps
+  { emission, dict }: {
+    emission: Co2ComparissonCardProps,
+    dict: DictionaryContextType['dict']
+  }
 ) {
   return (
     <Card key={emission.mode} className="border w-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle> {mappedTravelMode[emission.mode as TravelMode]}</CardTitle>
+        <CardTitle> {dict?.mappedTravelMode[emission.mode]}</CardTitle>
         {getIconByTransportMode({ mode: emission.mode })}
       </CardHeader>
       <CardContent>
