@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CardIcons from "@/components/ui/card-icons";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { Building2, CarFront, Scale } from "lucide-react";
 
 interface Props {
   transportsCo2Emission: number;
   buildingsCo2Emission: number;
-  dict: any;
+  dict: DictionaryContextType['dict'];
 }
 export function TotalCO2eCard({
-  buildingsCo2Emission=0,
-  transportsCo2Emission=0,
+  buildingsCo2Emission = 0,
+  transportsCo2Emission = 0,
   dict
 }: Props) {
   return (

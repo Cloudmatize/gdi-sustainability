@@ -1,4 +1,8 @@
 {
+  "chartTrends": {
+    "ELEVATION": "Elevação",
+    "REDUCTION": "Redução"
+  },
   "unauthorized": {
     "title": "Acceso no autorizado",
     "description": "Lo sentimos, no tienes permiso para acceder a esta página. Por favor, verifica tus credenciales o contacta al administrador del sistema."
@@ -84,6 +88,9 @@
         "title": "Transportation Emissions Comparison from 2018 to ",
         "cards": {
           "title": "Transportation Emissions Comparison of the Last 2 Years",
+          "ModalAnalysisYearlyCard": {
+    "description": "emisiones anuales promedio"
+  },
           "TransportSectorAnalysisHighestIncrease": {
             "title": "Sector with Highest Increase",
             "isIncrease": "Increase in emissions over the last 2 years"

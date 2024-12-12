@@ -9,7 +9,8 @@ interface Props {
   transport: {
     mode: TravelMode;
     percentageContribution: number;
-    contributionStatus: "Redução" | "Elevação";
+    contributionStatus: string;
+    contributionStatusTranslated: string;
     avgPercentageYearly: number;
   };
   hover?: boolean;
@@ -23,7 +24,7 @@ export default function ModalAnalysisYearlyCard({ transport, hover, dict }: Prop
         <CardTitle className="gap-2 flex">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 flex-row">
-              {getIconByTransportMode({ mode: transport?.mode }) as any}
+              {getIconByTransportMode({ mode: transport?.mode })}
               <span className="">
                 {dict?.mappedTravelMode[transport.mode]}
               </span>
@@ -43,19 +44,17 @@ export default function ModalAnalysisYearlyCard({ transport, hover, dict }: Prop
         <div className="flex items-end justify-between w-full h-full gap-2">
           <div className="space-y-1 w-full h-full gap-4">
             <p className="text-sm text-muted-foreground text-wrap">
-              {transport.contributionStatus === "Redução"
-                ? "Redução"
-                : "Aumento"}{" "}
-              anual médio nas emissões
+              {transport.contributionStatusTranslated}{' '}
+              {dict?.dashboard?.secondSection?.cards?.ModalAnalysisYearlyCard?.description}
             </p>
             <div className="flex items-center flex-row gap-2 w-full">
-              {transport.contributionStatus === "Redução" ? (
+              {transport.contributionStatus === "REDUCTION" ? (
                 <MdTrendingDown className="text-primary-foreground fill-teal-400 text-xl" />
               ) : (
                 <MdTrendingUp className="text-destructive-foreground fill-destructive-foreground text-xl" />
               )}
               <div
-                className={`${transport.contributionStatus === "Redução" ? "text-primary-foreground" : "text-destructive-foreground"} text-2xl font-bold`}
+                className={`${transport.contributionStatus === "REDUCTION" ? "text-primary-foreground" : "text-destructive-foreground"} text-2xl font-bold`}
               >
                 {transport.avgPercentageYearly}%
               </div>

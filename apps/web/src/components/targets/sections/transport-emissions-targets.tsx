@@ -30,7 +30,7 @@ const mappedGoal = {
 function checkEmissionsStatus(
   currentEmission: number | undefined | null,
   targetEmission: number | undefined | null,
-  dict: any
+  dict: DictionaryContextType['dict']
 ) {
   if (!currentEmission) return null;
   if (
@@ -82,7 +82,7 @@ const CustomTooltip = ({
   active?: boolean;
   payload?: Payload[];
   label?: string;
-  dict: any;
+  dict: DictionaryContextType['dict']
 }) => {
   if (active && payload && payload.length) {
     return (

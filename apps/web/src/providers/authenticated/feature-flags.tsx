@@ -1,11 +1,11 @@
 import LoadingPage from "@/components/loading-page";
 import { AppRuntimeEnv } from "@/domain/env";
 import { flipt } from "@/services/flipt";
-import { FliptApi } from "@flipt-io/flipt";
-import { FlagList } from "@flipt-io/flipt/api";
+import type { FliptApi } from "@flipt-io/flipt";
+import type { FlagList } from "@flipt-io/flipt/api";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { ReactNode, createContext } from "react";
+import { type ReactNode, createContext } from "react";
 
 type FeatureFlagsContextProps = {
   flags?: FlagList;
@@ -24,7 +24,7 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
   const { data: session, status } = useSession();
 
   const { data: dataFlipt, isFetching } = useQuery({
-    queryKey: [`feature-flags`, AppRuntimeEnv.NEXT_PUBLIC_FLIPT_NAMESPACE],
+    queryKey: ["feature-flags", AppRuntimeEnv.NEXT_PUBLIC_FLIPT_NAMESPACE],
     queryFn: async () => {
       const token = session?.token as unknown as string;
       const response = await flipt(token).flags.list(
@@ -39,7 +39,7 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
 
 
   function getCurrentFlag(flagKey: string) {
-    return dataFlipt?.flags?.find((item: any) => item.key === flagKey);
+    return dataFlipt?.flags?.find((item: FliptApi.Flag) => item.key === flagKey);
   }
 
 
@@ -55,7 +55,7 @@ export function FeatureFlagsProvider({ children }: FeatureFlagsProviderProps) {
         {children}
       </FeatureFlagsContext.Provider>
     );
-  } else if (!(status === "authenticated")) {
+  } if (!(status === "authenticated")) {
     return <>{children}</>;
   }
 }

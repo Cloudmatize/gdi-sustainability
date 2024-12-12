@@ -10,11 +10,6 @@ import InfoCard from "../info-card";
 import EnergyFractions from "./sections/energy-fractions";
 import EnergyIntensities from "./sections/energy-intensities";
 
-export interface BuildingsPageProps {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  dict: any
-}
-
 export default function BuildingsPage() {
   const { data } = useBuildingsFloorAreasBySector({});
   const { dict } = useDictionary();

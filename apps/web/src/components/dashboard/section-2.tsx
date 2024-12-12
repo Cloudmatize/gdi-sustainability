@@ -213,19 +213,25 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
                 }`}
             />
           ))
-          : modalAnalysis?.modalsData?.map((transport, index) => (
-            <Link
-              href="/transports"
-              key={index}
-              className={`  ${modalAnalysis?.modalsData?.length >= 3 &&
-                index === modalAnalysis.modalsData.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
-                }`}
-            >
-              <ModalAnalysisYearlyCard transport={transport} dict={dict} hover />
-            </Link>
-          ))}
+          : modalAnalysis?.modalsData?.map((transport, index) => {
+            const formattedModal = {
+              ...transport,
+              contributionStatusTranslated: dict?.chartTrends[transport.contributionStatus]
+            };
+            return (
+              <Link
+                href="/transports"
+                key={index}
+                className={`  ${modalAnalysis?.modalsData?.length >= 3 &&
+                  index === modalAnalysis.modalsData.length - 1
+                  ? "lg:col-span-2 xl:col-span-1"
+                  : ""
+                  }`}
+              >
+                <ModalAnalysisYearlyCard transport={formattedModal} dict={dict} hover />
+              </Link>
+            )
+          })}
       </div>
 
       <div className="text-xl font-bold">
