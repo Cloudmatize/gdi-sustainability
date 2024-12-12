@@ -88,7 +88,6 @@ const transformData = (
       ),
     };
   });
-  console.log("formattedData22222", formattedData);
   return formattedData || [];
 };
 

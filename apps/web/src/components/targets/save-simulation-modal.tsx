@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,27 +9,25 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Copy } from 'lucide-react'
-import { useTargetsStore } from '@/store/targets'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Copy } from "lucide-react";
+import { useTargetsStore } from "@/store/targets";
 
 export default function SaveSimulationModal() {
-  const [open, setOpen] = useState(false)
-  const [reportName, setReportName] = useState('')
-  const {  transfers } = useTargetsStore()
+  const [open, setOpen] = useState(false);
+  const [reportName, setReportName] = useState("");
+  const { transfers } = useTargetsStore();
 
   const handleSave = () => {
-    console.log('Saving report:', reportName)
-    console.log('transfers', transfers)
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <>
-      <Button 
-      size='sm'
+      <Button
+        size="sm"
         onClick={() => setOpen(true)}
         className="w-full  bg-teal-500 hover:bg-teal-600 text-white"
       >
@@ -41,10 +39,7 @@ export default function SaveSimulationModal() {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Salvar simulação</DialogTitle>
-            <DialogDescription>
-                Dê um nome para a simulação
-              
-            </DialogDescription>
+            <DialogDescription>Dê um nome para a simulação</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
@@ -59,21 +54,15 @@ export default function SaveSimulationModal() {
             </div>
           </div>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setOpen(false)}>
               Cancelar
             </Button>
-            <Button 
-              onClick={handleSave}
-              className="text-white bg-teal-500"
-            >
+            <Button onClick={handleSave} className="text-white bg-teal-500">
               Confirmar
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }

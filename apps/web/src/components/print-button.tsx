@@ -1,9 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
+import { usePrintStore } from "@/store/print";
 
 interface PrintButtonProps {
   title?: string;
@@ -16,13 +17,31 @@ export function PrintButton({
   disabled,
   contentToPrint,
 }: PrintButtonProps) {
+  const { setIsPrinting } = usePrintStore();
+  const [startToPrint, setStartToPrint] = useState(false);
+
+  useEffect(() => {
+    if (startToPrint) {
+      setIsPrinting(true);
+      const timer = setTimeout(() => {
+        handlePrint();
+        setStartToPrint(false);
+        setIsPrinting(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [startToPrint]);
+
   const handlePrint = useReactToPrint({
     documentTitle: title,
-    contentRef: contentToPrint,
     onBeforePrint: async () => {
-      console.log("Printing...");
+      setIsPrinting(true);
     },
-    onAfterPrint: () => console.log("after printing..."),
+    onAfterPrint: () => {
+      setIsPrinting(false);
+    },
+    contentRef: contentToPrint,
   });
 
   return (
@@ -31,11 +50,10 @@ export function PrintButton({
       variant="outline"
       size="icon"
       className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800"
-      disabled={disabled}
-      onClick={() => handlePrint()}
+      disabled={disabled || startToPrint}
+      onClick={() => setStartToPrint(true)}
     >
       <Printer className="h-4 w-4" />
-      <span className="sr-only">Print</span>
     </Button>
   );
 }

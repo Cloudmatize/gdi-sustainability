@@ -24,7 +24,7 @@ export default function ReportHistory() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold text-slate-700 flex items-center gap-2">
           <History className="h-6 w-6 text-slate-700" />
-          Histórico de relatórios
+          Histórico de relatórios de simulação de metas
         </h1>
         <div className="relative w-full sm:w-64">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-slate-700" />

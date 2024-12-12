@@ -22,6 +22,7 @@ import TargetAdherenceCard from "./target-adherence-card";
 import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
 import { PrintButton } from "../print-button";
 import PrintTargetReportPage from "./print-target-report-page";
+import { usePrintStore } from "@/store/print";
 
 const transformData = (
   data: {
@@ -101,148 +102,135 @@ export default function GoalTracker() {
     transportEmissionsTarget?.[transportEmissionsTarget.length - 1];
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
+
+  const { isPrinting } = usePrintStore();
   return (
     <>
-      <Sidebar
-        canSeeSidebarAfterMinimalize
-        isOpen={openSidebar}
-        setIsOpen={setOpenSidebar}
+      <div
+        className={cx(
+          "container mx-auto space-y-6",
+          isPrinting ? "hidden" : ""
+        )}
       >
-        <MultiModalSimulatorTransferSimulator data={modalData || []} />
-      </Sidebar>
-      <PrintButton
-        title="Imprimir Metas de Emissão de CO2"
-        disabled={loadingCo2EmissionByYear}
-        contentToPrint={contentRef}
-      />
-      <PrintTargetReportPage
-        componentRef={contentRef}
-        data={{
-          lastYearCo2Emission,
-          loadingCo2EmissionByYear,
-          targetCo2EmissionsFinalYear,
-          yearBaseCo2Emission,
-          targetsCo2EmissionByModal,
-          transportEmissionsTarget,
-        }}
-      />
-    </>
-  );
-  return (
-    <div className="container mx-auto space-y-6">
-      {hypothesisMode && (
-        <Sidebar
-          canSeeSidebarAfterMinimalize
-          isOpen={openSidebar}
-          setIsOpen={setOpenSidebar}
-        >
-          <MultiModalSimulatorTransferSimulator data={modalData || []} />
-        </Sidebar>
-      )}
+        {hypothesisMode && (
+          <Sidebar
+            canSeeSidebarAfterMinimalize
+            isOpen={openSidebar}
+            setIsOpen={setOpenSidebar}
+          >
+            <MultiModalSimulatorTransferSimulator data={modalData || []} />
+          </Sidebar>
+        )}
 
-      <div className="flex justify-end w-full">
-        <div className="flex items-center  space-x-2">
-          <Switch
-            disabled={
-              loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
-            }
-            checked={hypothesisMode}
-            onCheckedChange={(value) => {
-              setHypothesisMode(value);
-              setOpenSidebar(value);
-            }}
-            id="hypothesis-mode"
+        <div className="flex justify-end w-full">
+          <div className="flex items-center  space-x-2">
+            <Switch
+              disabled={
+                loadingTargetsCo2EmissionByModal || loadingCo2EmissionByYear
+              }
+              checked={hypothesisMode}
+              onCheckedChange={(value) => {
+                setHypothesisMode(value);
+                setOpenSidebar(value);
+              }}
+              id="hypothesis-mode"
+            />
+            <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
+          </div>
+          <PrintButton
+            title="Imprimir Metas de Emissão de CO2"
+            disabled={loadingCo2EmissionByYear}
+            contentToPrint={contentRef}
           />
-          <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
         </div>
-        <PrintButton
-          title="Imprimir Metas de Emissão de CO2"
-          disabled={loadingCo2EmissionByYear}
-          contentToPrint={contentRef}
-        />
-        {/* <PrintTargetReportPage
+        <div className="space-y-3 py-1 w-full">
+          <div
+            className={cx(
+              "grid gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-4"
+            )}
+          >
+            <div
+              className={cx(
+                "h-full col-span-2 lg:col-span-1",
+                hypothesisMode ? "col-span-2 lg:col-span-1" : ""
+              )}
+            >
+              {loadingCo2EmissionByYear ? (
+                <Skeleton className="h-[185px]" />
+              ) : (
+                <GoalCard
+                  icon={CalendarClock}
+                  title="Ano base"
+                  value={String(BASE_YEAR)}
+                  subLabel="Emissão inicial de CO2"
+                  subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
+                  subUnit="toneladas de CO2"
+                />
+              )}
+            </div>
+            <div
+              className={cx(
+                "h-full col-span-2 lg:col-span-1",
+                hypothesisMode ? "col-span-2 lg:col-span-1" : ""
+              )}
+            >
+              {loadingCo2EmissionByYear ? (
+                <Skeleton className="h-[185px]" />
+              ) : (
+                <GoalCard
+                  icon={Target}
+                  title="Meta"
+                  value={TARGET_YEAR}
+                  subLabel={`Emissão estimada (-${REDUCTION_RATE}%)`}
+                  subValue={Math.trunc(
+                    yearBaseCo2Emission * ((100 - REDUCTION_RATE) / 100)
+                  ).toLocaleString()}
+                  subUnit="toneladas de CO2"
+                />
+              )}
+            </div>
+
+            <div
+              className={cx(
+                "h-full col-span-2 md:col-span-2",
+                hypothesisMode ? "" : ""
+              )}
+            >
+              {loadingCo2EmissionByYear ? (
+                <Skeleton className="h-[185px]" />
+              ) : (
+                <TargetAdherenceCard
+                  targetYear={TARGET_YEAR}
+                  baseEmissions={lastYearCo2Emission || 0}
+                  targetEmissions={
+                    targetCo2EmissionsFinalYear.targetCo2Emission || 0
+                  }
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        {hypothesisMode && (
+          <GoalTrackerTable data={targetsCo2EmissionByModal || []} />
+        )}
+        {loadingCo2EmissionByYear ? (
+          <Skeleton className="h-[500px]" />
+        ) : (
+          <TransportEmissionTargets data={transportEmissionsTarget} />
+        )}
+      </div>
+      {isPrinting && (
+        <PrintTargetReportPage
           componentRef={contentRef}
           data={{
             lastYearCo2Emission,
-            loadingCo2EmissionByYear,
             targetCo2EmissionsFinalYear,
             yearBaseCo2Emission,
+            targetsCo2EmissionByModal,
+            transportEmissionsTarget,
           }}
-        /> */}
-      </div>
-      <div className="space-y-3 py-1 w-full">
-        <div
-          className={cx("grid gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-4")}
-        >
-          <div
-            className={cx(
-              "h-full col-span-2 lg:col-span-1",
-              hypothesisMode ? "col-span-2 lg:col-span-1" : ""
-            )}
-          >
-            {loadingCo2EmissionByYear ? (
-              <Skeleton className="h-[185px]" />
-            ) : (
-              <GoalCard
-                icon={CalendarClock}
-                title="Ano base"
-                value={String(BASE_YEAR)}
-                subLabel="Emissão inicial de CO2"
-                subValue={Math.trunc(yearBaseCo2Emission).toLocaleString()}
-                subUnit="toneladas de CO2"
-              />
-            )}
-          </div>
-          <div
-            className={cx(
-              "h-full col-span-2 lg:col-span-1",
-              hypothesisMode ? "col-span-2 lg:col-span-1" : ""
-            )}
-          >
-            {loadingCo2EmissionByYear ? (
-              <Skeleton className="h-[185px]" />
-            ) : (
-              <GoalCard
-                icon={Target}
-                title="Meta"
-                value={TARGET_YEAR}
-                subLabel={`Emissão estimada (-${REDUCTION_RATE}%)`}
-                subValue={Math.trunc(
-                  yearBaseCo2Emission * ((100 - REDUCTION_RATE) / 100)
-                ).toLocaleString()}
-                subUnit="toneladas de CO2"
-              />
-            )}
-          </div>
-
-          <div
-            className={cx(
-              "h-full col-span-2 md:col-span-2",
-              hypothesisMode ? "" : ""
-            )}
-          >
-            {loadingCo2EmissionByYear ? (
-              <Skeleton className="h-[185px]" />
-            ) : (
-              <TargetAdherenceCard
-                targetYear={TARGET_YEAR}
-                baseEmissions={lastYearCo2Emission || 0}
-                targetEmissions={
-                  targetCo2EmissionsFinalYear.targetCo2Emission || 0
-                }
-              />
-            )}
-          </div>
-        </div>
-      </div>
-      {hypothesisMode && (
-        <GoalTrackerTable data={targetsCo2EmissionByModal || []} />
+        />
       )}
-      {loadingCo2EmissionByYear ? (
-        <Skeleton className="h-[500px]" />
-      ) : (
-        <TransportEmissionTargets data={transportEmissionsTarget} />
-      )}
-    </div>
+    </>
   );
 }
