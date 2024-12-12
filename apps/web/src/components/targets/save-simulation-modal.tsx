@@ -13,14 +13,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Copy } from "lucide-react";
-import { useTargetsStore } from "@/store/targets";
 
-export default function SaveSimulationModal() {
+interface Props {
+  onSave?: (data: { title: string }) => void;
+}
+export default function SaveSimulationModal({ onSave }: Props) {
   const [open, setOpen] = useState(false);
   const [reportName, setReportName] = useState("");
-  const { transfers } = useTargetsStore();
 
   const handleSave = () => {
+    if (onSave) {
+      onSave({ title: reportName });
+    }
     setOpen(false);
   };
 

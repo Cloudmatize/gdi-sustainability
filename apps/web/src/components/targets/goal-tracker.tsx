@@ -103,6 +103,14 @@ export default function GoalTracker() {
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
 
+  const printContent =  {
+    lastYearCo2Emission,
+    targetCo2EmissionsFinalYear,
+    yearBaseCo2Emission,
+    targetsCo2EmissionByModal,
+    transportEmissionsTarget,
+  }
+
   const { isPrinting } = usePrintStore();
   return (
     <>
@@ -118,7 +126,11 @@ export default function GoalTracker() {
             isOpen={openSidebar}
             setIsOpen={setOpenSidebar}
           >
-            <MultiModalSimulatorTransferSimulator data={modalData || []} />
+            <MultiModalSimulatorTransferSimulator
+              contentRef={contentRef}
+              printContent={printContent}
+              data={modalData || []}
+            />
           </Sidebar>
         )}
 
@@ -137,11 +149,6 @@ export default function GoalTracker() {
             />
             <Label htmlFor="hypothesis-mode">Realizar simulação</Label>
           </div>
-          <PrintButton
-            title="Imprimir Metas de Emissão de CO2"
-            disabled={loadingCo2EmissionByYear}
-            contentToPrint={contentRef}
-          />
         </div>
         <div className="space-y-3 py-1 w-full">
           <div
@@ -222,13 +229,7 @@ export default function GoalTracker() {
       {isPrinting && (
         <PrintTargetReportPage
           componentRef={contentRef}
-          data={{
-            lastYearCo2Emission,
-            targetCo2EmissionsFinalYear,
-            yearBaseCo2Emission,
-            targetsCo2EmissionByModal,
-            transportEmissionsTarget,
-          }}
+          data={printContent}
         />
       )}
     </>

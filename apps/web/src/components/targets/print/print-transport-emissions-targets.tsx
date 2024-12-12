@@ -1,9 +1,13 @@
 "use client";
 
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
+import { calculateSimulatedCO2Emissions } from "@/services/transports/graphql";
 import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { Target } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Legend,
   Line,
@@ -106,6 +110,12 @@ const CustomTooltip = ({
     );
   }
 };
+type DataEntry = {
+  year: number;
+  co2Emission: number | null;
+  targetCo2Emission: number | null;
+  simulatedCo2Emission?: number | null;
+};
 
 interface Props {
   data?: {
@@ -116,7 +126,48 @@ interface Props {
   }[];
 }
 export default function PrintTransportEmissionTargets({ data = [] }: Props) {
+  const [transportEmissionData, setTransportEmissionData] = useState<
+    DataEntry[]
+  >([]);
+
   const { totalCo2Emission, hypothesisMode } = useTargetsStore();
+  function updateSimulatedEmissions(
+    data: DataEntry[],
+    simulatedRaw: Record<string, number>
+  ): DataEntry[] {
+    return data.map((entry) => {
+      const rawValue = simulatedRaw[entry.year.toString()];
+      if (rawValue !== undefined) {
+        return {
+          ...entry,
+          simulatedCo2Emission: rawValue,
+        };
+      }
+      return entry;
+    });
+  }
+
+  useEffect(() => {
+    if (data || !hypothesisMode) {
+      setTransportEmissionData(data);
+    }
+    if (hypothesisMode && totalCo2Emission.percentage) {
+      const simulatedCo2Emission = calculateSimulatedCO2Emissions(
+        totalCo2Emission?.original,
+        totalCo2Emission?.simulated
+      );
+
+      let updatedData = updateSimulatedEmissions(data, simulatedCo2Emission);
+
+      let lastYearData = updatedData?.find(
+        (item) => item.year === currentYear - 1
+      );
+      if (lastYearData && !lastYearData.simulatedCo2Emission) {
+        lastYearData.simulatedCo2Emission = lastYearData.co2Emission || null;
+      }
+      setTransportEmissionData(updatedData);
+    }
+  }, [data, totalCo2Emission.percentage, hypothesisMode]);
 
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
   const currentYearEmissionStatus = checkEmissionsStatus(
@@ -143,7 +194,7 @@ export default function PrintTransportEmissionTargets({ data = [] }: Props) {
         <div className="h-[380px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
-              data={data}
+              data={transportEmissionData}
               margin={{ top: 20, right: 70, left: 20, bottom: 20 }}
             >
               <XAxis

@@ -48,8 +48,8 @@ export function PrintButton({
     <Button
       id="print-button"
       variant="outline"
-      size="icon"
-      className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800"
+      size="sm"
+      className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 p-2"
       disabled={disabled || startToPrint}
       onClick={() => setStartToPrint(true)}
     >
@@ -57,3 +57,5 @@ export function PrintButton({
     </Button>
   );
 }
+
+

@@ -13,8 +13,10 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { useTargetsStore } from "@/store/targets";
 import type { TravelMode } from "@/types/transports";
-import { Plus, Save, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import SaveSimulationModal from "./save-simulation-modal";
+import { PrintButton } from "../print-button";
+import { MutableRefObject } from "react";
 
 interface Distribution {
   id: string;
@@ -23,6 +25,8 @@ interface Distribution {
 }
 
 interface Props {
+  printContent: any;
+  contentRef: MutableRefObject<null>;
   data: {
     id: TravelMode;
     name: string;
@@ -30,8 +34,29 @@ interface Props {
     icon: JSX.Element | undefined;
   }[];
 }
-export default function ModalTripsTransferSimulator({ data }: Props) {
-  const { transfers, setTransfers } = useTargetsStore();
+export default function ModalTripsTransferSimulator({
+  data,
+  contentRef,
+  printContent,
+}: Props) {
+  const {
+    transfers,
+    setTransfers,
+    setReportSimulationsHistory,
+    reportSimulationsHistory,
+  } = useTargetsStore();
+
+  const handleConfirmSaveSimulation = ({ title }: { title: string }) => {
+    const reportData = {
+      reportName: title,
+      generatedDate: new Date().toISOString(),
+      data: {
+        ...printContent,
+        transfers,
+      },
+    };
+    setReportSimulationsHistory([...reportSimulationsHistory, reportData]);
+  };
   const addTransferRow = () => {
     const newDistId = String(Math.floor(Math.random() * 9000) + 1000);
     setTransfers([
@@ -262,8 +287,15 @@ export default function ModalTripsTransferSimulator({ data }: Props) {
                   </Button>
                 )}
             </div>
-            <SaveSimulationModal/>
-         
+
+            <div className="flex items-center gap-10">
+              <PrintButton
+                title="Imprimir Metas de Emissão de CO2"
+                disabled={false}
+                contentToPrint={contentRef}
+              />
+              <SaveSimulationModal onSave={handleConfirmSaveSimulation} />
+            </div>
           </div>
         ))}
         {transfers.length < 1 && (
