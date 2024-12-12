@@ -244,7 +244,8 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
                     </div>
                   }
                 >
-                  {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} ${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}`}
+                  {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.kgCO2PerSquareMeter}
+                  `}
                 </Tooltip>
               </div>
               <CardDescription className="mt-2 text-center">
