@@ -234,7 +234,7 @@ export default function Co2EmissionPerTransport({ dict }: DictionaryContextType[
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
-            contributionStatus: dict?.chartTrends[modal.contributionStatus]
+            contributionStatusTranslated: dict?.chartTrends[modal.contributionStatus]
           };
           return (
             <div className="w-full" key={index}>
