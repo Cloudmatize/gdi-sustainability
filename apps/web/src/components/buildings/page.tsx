@@ -31,7 +31,7 @@ export default function BuildingsPage() {
         <p className="text-muted-foreground max-w-lg">
           {dict?.buildings.description}
         </p>
-        <DataSourceInfo />
+        <DataSourceInfo dict={dict} />
 
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">{dict?.buildings.metrics.title}</p>
