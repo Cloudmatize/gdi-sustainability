@@ -3,7 +3,7 @@
     "ELEVATION": "Elevación",
     "REDUCTION": "Reducción"
   },
-  "DataSourceInfo": {
+  "dataSourceInfo": {
     "title": "¿De dónde vienen los datos?",
     "GoogleEnvironmentalInsightsExplorer": {
       "title": "Google Environmental Insights Explorer",

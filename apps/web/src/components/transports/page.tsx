@@ -80,7 +80,7 @@ export default function TransportsPage() {
         <p className="text-muted-foreground max-w-lg">
           {dict?.transports.description}
         </p>
-        <DataSourceInfo dict={dict} />
+        <DataSourceInfo />
         <div className="border-t border-gray-200 py-6" />
         <p className="text-muted-foreground ">{dict?.transports.metrics.title}</p>
         {/* Metrics */}

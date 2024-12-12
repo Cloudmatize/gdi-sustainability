@@ -3,11 +3,7 @@
     "ELEVATION": "Elevation",
     "REDUCTION": "Reduction"
   },
-  "mappedSectors": {
-    "NON-RESIDENTIAL": "Non-Residential",
-    "RESIDENTIAL": "Residential"
-  },
-  "DataSourceInfo": {
+  "dataSourceInfo": {
     "title": "Where do the data come from?",
     "GoogleEnvironmentalInsightsExplorer": {
       "title": "Google Environmental Insights Explorer",
@@ -24,6 +20,10 @@
       "description": "Buildings generate greenhouse gas emissions directly from the combustion of fossil fuels (e.g., heating) and indirectly from the electricity used by residents and equipment. The amount of GHG emitted directly or indirectly by buildings depends on various factors such as: the number of buildings, building types, etc.",
       "seeMore": "See more"
     }
+  },
+  "mappedSectors": {
+    "NON-RESIDENTIAL": "Non-Residential",
+    "RESIDENTIAL": "Residential"
   },
   "ENERGY_FRACTIONS": {
     "PROPANE": "Propane",

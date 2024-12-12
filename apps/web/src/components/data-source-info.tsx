@@ -10,11 +10,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import type { DictionaryContextType } from "@/context/DictionaryContext";
+import { useDictionary } from "@/context/DictionaryContext";
 import { HelpCircle } from "lucide-react";
 import Link from "next/link";
 
-export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) {
+export default function DataSourceInfo() {
+  const { dict } = useDictionary()
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -24,7 +25,7 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
           className="gap-2 text-slate-600 border-slate-200 hover:bg-slate-50"
         >
           <HelpCircle className="h-4 w-4" />
-          {dict?.DataSourceInfo?.title}
+          {dict.dataSourceInfo.title}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px]">
@@ -33,12 +34,12 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>
-                {dict?.DataSourceInfo?.GoogleEnvironmentalInsightsExplorer?.title}
+                {dict?.dataSourceInfo.GoogleEnvironmentalInsightsExplorer.title}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col  items-center">
                   <p>
-                    {dict?.DataSourceInfo?.GoogleEnvironmentalInsightsExplorer?.description}
+                    {dict.dataSourceInfo.GoogleEnvironmentalInsightsExplorer.description}
                   </p>
 
                   <div className="w-full">
@@ -53,7 +54,7 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
                         size="sm"
                         className="mt-4 w-full"
                       >
-                        {dict?.DataSourceInfo?.GoogleEnvironmentalInsightsExplorer?.seeMore}
+                        {dict?.dataSourceInfo?.GoogleEnvironmentalInsightsExplorer?.seeMore}
                       </Button>
                     </Link>
                   </div>
@@ -62,12 +63,12 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger className="text-center ">
-                {dict?.DataSourceInfo?.TransportIssuance?.title}
+                {dict?.dataSourceInfo?.TransportIssuance?.title}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col  items-center">
                   <p>
-                    {dict?.DataSourceInfo?.TransportIssuance?.description}
+                    {dict?.dataSourceInfo?.TransportIssuance?.description}
                   </p>
 
                   <div className="w-full">
@@ -82,7 +83,7 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
                         size="sm"
                         className="mt-4 w-full"
                       >
-                        {dict?.DataSourceInfo?.TransportIssuance?.seeMore}
+                        {dict?.dataSourceInfo?.TransportIssuance?.seeMore}
                       </Button>
                     </Link>
                   </div>
@@ -91,12 +92,12 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className="text-center ">
-                {dict?.DataSourceInfo?.BuildingIssuance?.title}
+                {dict?.dataSourceInfo?.BuildingIssuance?.title}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col  items-center">
                   <p>
-                    {dict?.DataSourceInfo?.BuildingIssuance?.description}
+                    {dict?.dataSourceInfo?.BuildingIssuance?.description}
                   </p>
 
                   <div className="w-full">
@@ -111,7 +112,7 @@ export default function DataSourceInfo({ dict }: DictionaryContextType['dict']) 
                         size="sm"
                         className="mt-4 w-full"
                       >
-                        {dict?.DataSourceInfo?.BuildingIssuance?.seeMore}
+                        {dict?.dataSourceInfo?.BuildingIssuance?.seeMore}
                       </Button>
                     </Link>
                   </div>

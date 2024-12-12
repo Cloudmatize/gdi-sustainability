@@ -7,7 +7,7 @@
     "NON-RESIDENTIAL": "Não Residencial",
     "RESIDENTIAL": "Residencial"
   },
-  "DataSourceInfo": {
+  "dataSourceInfo": {
     "title": "De onde vêm os dados?",
     "GoogleEnvironmentalInsightsExplorer": {
       "title": "Google Environmental Insights Explorer",
