@@ -13,15 +13,14 @@ import {
   useDashboardBuildingsTotalCO2Emission,
   useDashboardTransportsTotalCO2Emission,
 } from "@/hooks/dashboard";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 import Link from "next/link";
+import { useContext } from "react";
 import { Tooltip } from "../tooltip";
 import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
 import { TotalCO2eCard } from "./cards/total-co2e-card";
 import TargetAdherenceSection from "./target-adherence-section";
-import { FLIPT_BUILDINGS_FLAG, IS_FLIPT_ACTIVE } from "@/constants/flipt";
-import { useContext } from "react";
-import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 
 function generateComparisonMessage(
   value1: number,
@@ -44,24 +43,24 @@ function generateComparisonMessage(
 function formatBuildingsFloorAreasBySector(
   data:
     | {
-        residential: {
-          area: number;
-          count: number;
-          co2Emission: number;
-          percentage: number;
-        };
-        notResidential: {
-          area: number;
-          count: number;
-          co2Emission: number;
-          percentage: number;
-        };
-        total: {
-          area: number;
-          count: number;
-          co2Emission: number;
-        };
-      }
+      residential: {
+        area: number;
+        count: number;
+        co2Emission: number;
+        percentage: number;
+      };
+      notResidential: {
+        area: number;
+        count: number;
+        co2Emission: number;
+        percentage: number;
+      };
+      total: {
+        area: number;
+        count: number;
+        co2Emission: number;
+      };
+    }
     | undefined
 ) {
   if (!data) return {};
@@ -136,6 +135,7 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
 
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({
+      dict: dict,
       extraKey: "dashboard",
       // enabled: isFliptBuildingsFlagActive,
     });
@@ -189,7 +189,7 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
             {dict?.dashboard?.firstSection.cards.totalCO2Emission.description1}
             {
               dict?.dashboard?.firstSection.cards.totalCO2Emission.trends[
-                transportsComparissonInfo.trend
+              transportsComparissonInfo.trend
               ]
             }
             {dict?.dashboard?.firstSection.cards.totalCO2Emission.description2}
@@ -200,125 +200,125 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
     },
     ...(true
       ? [
-          {
-            title: dict?.dashboard?.firstSection.cards.tCO2PerBuilding.title,
-            icon: (
-              <CardIcons>
-                <House />
-              </CardIcons>
-            ),
-            href: "/buildings",
-            loading: isLoadingBuildingsInfo,
-            content: (
-              <div className="flex flex-col w-full">
-                <div className="flex items-center justify-evenly gap-3 mb-5  text-xl md:text-2xl 2xl:text-3xl ">
-                  <Tooltip
-                    triggerContent={
-                      <div>
-                        <div className="text-2xl font-bold text-primary-foreground text-center">
-                          {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
-                        </div>
-                        <div className="text-sm text-muted-foreground text-center">
-                          {
-                            dict?.dashboard?.firstSection.cards.tCO2PerBuilding
-                              .tooltipContent
-                          }
-                        </div>
+        {
+          title: dict?.dashboard?.firstSection.cards.tCO2PerBuilding.title,
+          icon: (
+            <CardIcons>
+              <House />
+            </CardIcons>
+          ),
+          href: "/buildings",
+          loading: isLoadingBuildingsInfo,
+          content: (
+            <div className="flex flex-col w-full">
+              <div className="flex items-center justify-evenly gap-3 mb-5  text-xl md:text-2xl 2xl:text-3xl ">
+                <Tooltip
+                  triggerContent={
+                    <div>
+                      <div className="text-2xl font-bold text-primary-foreground text-center">
+                        {formattedBuildingsInfo?.residential?.tCO2PerBuilding}
                       </div>
-                    }
-                  >
-                    {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.tCO2PerBuilding}`}
-                  </Tooltip>
+                      <div className="text-sm text-muted-foreground text-center">
+                        {
+                          dict?.dashboard?.firstSection.cards.tCO2PerBuilding
+                            .tooltipContent
+                        }
+                      </div>
+                    </div>
+                  }
+                >
+                  {`${formattedBuildingsInfo?.residential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.tCO2PerBuilding}`}
+                </Tooltip>
 
-                  <Tooltip
-                    triggerContent={
-                      <div>
-                        <div className="text-2xl font-bold text-primary-foreground text-center">
-                          {
-                            formattedBuildingsInfo?.residential
-                              ?.kgCO2PerSquareMeter
-                          }
-                        </div>
-                        <div className="text-sm text-muted-foreground text-center">
-                          kgCO2e/m²
-                        </div>
+                <Tooltip
+                  triggerContent={
+                    <div>
+                      <div className="text-2xl font-bold text-primary-foreground text-center">
+                        {
+                          formattedBuildingsInfo?.residential
+                            ?.kgCO2PerSquareMeter
+                        }
                       </div>
-                    }
-                  >
-                    {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} ${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}`}
-                  </Tooltip>
-                </div>
-                <CardDescription className="mt-2 text-center">
-                  {`${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description1}
+                      <div className="text-sm text-muted-foreground text-center">
+                        kgCO2e/m²
+                      </div>
+                    </div>
+                  }
+                >
+                  {`${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter} ${formattedBuildingsInfo?.residential?.kgCO2PerSquareMeter}`}
+                </Tooltip>
+              </div>
+              <CardDescription className="mt-2 text-center">
+                {`${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description1}
             ${formattedBuildingsInfo.residential?.areaPercentage}% ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description2}
             ${formattedBuildingsInfo.residential?.totalCo2EmissionPercentage}% ${dict?.dashboard?.firstSection.cards.tCO2PerBuilding.description3}`}
-                </CardDescription>
-              </div>
-            ),
-          },
-        ]
+              </CardDescription>
+            </div>
+          ),
+        },
+      ]
       : []),
     ...(true
       ? [
-          {
-            title: dict?.dashboard?.firstSection.cards.nonResidential.title,
-            href: "/buildings",
-            icon: (
-              <CardIcons>
-                <Building />
-              </CardIcons>
-            ),
-            loading: isLoadingBuildingsInfo,
-            content: (
-              <div className="flex flex-col w-full ">
-                <div className="flex items-center justify-evenly gap-3 mb-5  text-xl md:text-2xl 2xl:text-3xl ">
-                  <Tooltip
-                    triggerContent={
-                      <div>
-                        <div className="text-2xl font-bold text-primary-foreground text-center">
-                          {
-                            formattedBuildingsInfo?.nonResidential
-                              ?.tCO2PerBuilding
-                          }
-                        </div>
-                        <div className="text-sm text-muted-foreground text-center">
-                          {
-                            dict?.dashboard?.firstSection.cards.nonResidential
-                              .tooltipContent
-                          }
-                        </div>
+        {
+          title: dict?.dashboard?.firstSection.cards.nonResidential.title,
+          href: "/buildings",
+          icon: (
+            <CardIcons>
+              <Building />
+            </CardIcons>
+          ),
+          loading: isLoadingBuildingsInfo,
+          content: (
+            <div className="flex flex-col w-full ">
+              <div className="flex items-center justify-evenly gap-3 mb-5  text-xl md:text-2xl 2xl:text-3xl ">
+                <Tooltip
+                  triggerContent={
+                    <div>
+                      <div className="text-2xl font-bold text-primary-foreground text-center">
+                        {
+                          formattedBuildingsInfo?.nonResidential
+                            ?.tCO2PerBuilding
+                        }
                       </div>
-                    }
-                  >
-                    {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.nonResidential.tCO2PerBuilding}`}
-                  </Tooltip>
-                  <Tooltip
-                    triggerContent={
-                      <div>
-                        <div className="text-2xl font-bold text-primary-foreground text-center">
-                          {
-                            formattedBuildingsInfo?.nonResidential
-                              ?.kgCO2PerSquareMeter
-                          }
-                        </div>
-                        <div className="text-sm text-muted-foreground text-center">
-                          kgCO2e/m²
-                        </div>
+                      <div className="text-sm text-muted-foreground text-center">
+                        {
+                          dict?.dashboard?.firstSection.cards.nonResidential
+                            .tooltipContent
+                        }
                       </div>
-                    }
-                  >
-                    {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} ${dict?.dashboard?.firstSection.cards.nonResidential.kgCO2PerSquareMeter}`}
-                  </Tooltip>
-                </div>
-                <CardDescription className="mt-2 text-center">
-                  {`${dict?.dashboard?.firstSection.cards.nonResidential.description1}
+                    </div>
+                  }
+                >
+                  {`${formattedBuildingsInfo?.nonResidential?.tCO2PerBuilding} ${dict?.dashboard?.firstSection.cards.nonResidential.tCO2PerBuilding}`}
+                </Tooltip>
+                <Tooltip
+                  triggerContent={
+                    <div>
+                      <div className="text-2xl font-bold text-primary-foreground text-center">
+                        {
+                          formattedBuildingsInfo?.nonResidential
+                            ?.kgCO2PerSquareMeter
+                        }
+                      </div>
+                      <div className="text-sm text-muted-foreground text-center">
+                        kgCO2e/m²
+                      </div>
+                    </div>
+                  }
+                >
+                  {`${formattedBuildingsInfo?.nonResidential?.kgCO2PerSquareMeter} ${dict?.dashboard?.firstSection.cards.nonResidential.kgCO2PerSquareMeter}`}
+                </Tooltip>
+              </div>
+              <CardDescription className="mt-2 text-center">
+                {`${dict?.dashboard?.firstSection.cards.nonResidential.description1}
           ${formattedBuildingsInfo.nonResidential?.areaPercentage}% ${dict?.dashboard?.firstSection.cards.nonResidential.description2}
           ${formattedBuildingsInfo.nonResidential?.totalCo2EmissionPercentage}% ${dict?.dashboard?.firstSection.cards.nonResidential.description3}`}
-                </CardDescription>
-              </div>
-            ),
-          },
-        ]
+              </CardDescription>
+            </div>
+          ),
+        },
+      ]
       : []),
   ];
 
@@ -352,9 +352,8 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
             <Skeleton key={`${card.title}-${index}`} className="h-[182px]" />
           ) : (
             <Link
-              className={`${
-                index === cards.length - 1 ? "lg:col-span-2 xl:col-span-1" : ""
-              }`}
+              className={`${index === cards.length - 1 ? "lg:col-span-2 xl:col-span-1" : ""
+                }`}
               href={card.href}
               key={`${card.title}-${index}`}
             >
