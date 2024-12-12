@@ -3,6 +3,12 @@
     "ELEVATION": "Elevação",
     "REDUCTION": "Redução"
   },
+  "ENERGY_FRACTIONS": {
+    "PROPANE": "Propano",
+    "ELECTRICITY": "Electricidad",
+    "DIESEL_OIL": "Aceite Diesel",
+    "NATURAL_GAS": "Gas Natural"
+  },
   "unauthorized": {
     "title": "Acceso no autorizado",
     "description": "Lo sentimos, no tienes permiso para acceder a esta página. Por favor, verifica tus credenciales o contacta al administrador del sistema."
@@ -146,6 +152,28 @@
           }
         }
       },
+      "thirdSection": {
+    "title": "Emisiones por fuente de energía",
+    "cards": {
+      "highestCO2Emission": {
+        "title": "Fuente principal de emisiones de CO2",
+        "content": {
+          "0": "Contribución a las emisiones de los edificios",
+          "1": "Total de CO₂ emitido (tCO2e)"
+        }
+      },
+      "efficiencyComparison": {
+        "title": "Intensidad de emisiones por fuente de energía",
+        "content": {
+          "0": "Fuente más eficiente",
+          "1": "Fuente menos eficiente",
+          "2": "tiene el menor impacto por kWh con",
+          "3": "siendo",
+          "4": "veces más eficiente que"
+        }
+      }
+    }
+  },
       "langSwitch": {
         "title": "Change language",
         "pt": "Brazilian Portuguese",

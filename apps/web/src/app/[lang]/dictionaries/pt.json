@@ -3,6 +3,12 @@
     "ELEVATION": "Elevação",
     "REDUCTION": "Redução"
   },
+  "ENERGY_FRACTIONS": {
+    "PROPANE": "Propano",
+  "ELECTRICITY": "Eletricidade",
+  "DIESEL_OIL": "Óleo Diesel",
+  "NATURAL_GAS": "Gás Natural"
+  },
   "unauthorized": {
     "title": "Acesso não autorizado",
     "description": "Desculpe, você não tem permissão para acessar esta página. Por favor, verifique suas credenciais ou entre em contato com o administrador do sistema."
@@ -143,6 +149,28 @@
           "EmissionsPerPassenger": {
             "title": "Emissões por passageiro (kgCO2e)",
             "infoToolTip": "Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte."
+          }
+        }
+      },
+      "thirdSection": {
+        "title": "Emissões por fonte de energia",
+        "cards": {
+          "highestCO2Emission": {
+            "title": "Fonte principal de emissões de CO2",
+            "content": {
+              "0": "Contribuição nas emissões dos edifícios",
+              "1": "Total de CO₂ emitido (tCO2e)"
+            }
+          },
+          "efficiencyComparison": {
+"title": "Intensidade de emissões por fonte de energia",
+            "content": {
+              "0": "Fonte mais eficiente",
+              "1": "Fonte menos eficiente",
+              "2": "tem o menor impacto por kWh com",
+              "3": "sendo",
+              "4": "vezes mais eficiente que"
+            }
           }
         }
       },
