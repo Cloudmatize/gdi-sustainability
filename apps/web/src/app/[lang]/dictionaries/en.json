@@ -3,6 +3,12 @@
     "ELEVATION": "Elevation",
     "REDUCTION": "Reduction"
   },
+  "ENERGY_FRACTIONS": {
+    "PROPANE": "Propane",
+    "ELECTRICITY": "Electricity",
+    "DIESEL_OIL": "Diesel Oil",
+    "NATURAL_GAS": "Natural Gas"
+  },
   "unauthorized": {
     "title": "Unauthorized Access",
     "description": "Sorry, you do not have permission to access this page. Please check your credentials or contact the system administrator."
@@ -146,6 +152,28 @@
           }
         }
       },
+      "thirdSection": {
+    "title": "Emissions by Energy Source",
+    "cards": {
+      "highestCO2Emission": {
+        "title": "Main Source of CO2 Emissions",
+        "content": {
+          "0": "Contribution to building emissions",
+          "1": "Total CO₂ emitted (tCO2e)"
+        }
+      },
+      "efficiencyComparison": {
+        "title": "Emission Intensity by Energy Source",
+        "content": {
+          "0": "Most efficient source",
+          "1": "Least efficient source",
+          "2": "has the lowest impact per kWh with",
+          "3": "being",
+          "4": "times more efficient than"
+        }
+      }
+    }
+  },
       "langSwitch": {
         "title": "Change language",
         "pt": "Brazilian Portuguese",
