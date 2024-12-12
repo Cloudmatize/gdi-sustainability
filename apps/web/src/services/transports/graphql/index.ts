@@ -470,10 +470,10 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
       });
 
       const reductionModals = modalsData?.filter(
-        (modal) => modal.contributionStatus === "Redução"
+        (modal) => modal.contributionStatus === "REDUCTION"
       );
       const elevationModals = modalsData?.filter(
-        (modal) => modal.contributionStatus === "Elevação"
+        (modal) => modal.contributionStatus === "ELEVATION"
       );
 
       const modalWithHighestYearlyReduction = reductionModals?.reduce(
