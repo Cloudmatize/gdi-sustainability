@@ -9,6 +9,7 @@
   },
   "dataSourceInfo": {
     "title": "De onde vêm os dados?",
+    "subTitle": "Fonte de Dados",
     "GoogleEnvironmentalInsightsExplorer": {
       "title": "Google Environmental Insights Explorer",
       "description": "O Explorador de Insights Ambientais (EIE) do Google é fundamentado na ideia de que dados e tecnologias podem ajudar a acelerar a transição do mundo para um futuro com baixas emissões de carbono. O EIE tem como objetivo simplificar o processo de estabelecimento de uma linha de base de emissões e identificação de oportunidades tangíveis de redução, o que estabelece o alicerce para ação eficaz. O EIE utiliza fontes de dados exclusivas do Google e capacidades de modelagem para produzir estimativas de atividade, emissões e oportunidades de redução. Ao disponibilizar informações ambientais em uma plataforma robusta e gratuita, buscamos atender a tomadores de decisão e pesquisadores que trabalham nessas questões e soluções para cidades em todo o mundo.",

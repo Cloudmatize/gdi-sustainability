@@ -30,7 +30,7 @@ export default function DataSourceInfo() {
       </PopoverTrigger>
       <PopoverContent className="w-[300px]">
         <div className="space-y-4">
-          <h4 className="font-medium leading-none">Fontes de Dados</h4>
+          <h4 className="font-medium leading-none">{dict.dataSourceInfo.subTitle}</h4>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>

@@ -5,6 +5,7 @@
   },
   "dataSourceInfo": {
     "title": "Where do the data come from?",
+    "subTitle": "Data Source",
     "GoogleEnvironmentalInsightsExplorer": {
       "title": "Google Environmental Insights Explorer",
       "description": "The Google Environmental Insights Explorer (EIE) is based on the idea that data and technology can help accelerate the world’s transition to a low-carbon future. The EIE aims to simplify the process of establishing an emissions baseline and identifying tangible reduction opportunities, providing the foundation for effective action. The EIE uses exclusive Google data sources and modeling capabilities to generate activity, emissions, and reduction opportunity estimates. By providing environmental information on a robust, free platform, we aim to serve decision-makers and researchers working on these issues and solutions for cities worldwide.",
