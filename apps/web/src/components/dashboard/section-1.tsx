@@ -135,7 +135,6 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
 
   const { data: buildingsInfo, isFetching: isLoadingBuildingsInfo } =
     useBuildingsFloorAreasBySector({
-      dict: dict,
       extraKey: "dashboard",
       // enabled: isFliptBuildingsFlagActive,
     });
