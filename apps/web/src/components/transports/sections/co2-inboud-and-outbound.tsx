@@ -87,6 +87,13 @@ export default function CO2InboundAndOutbound({ dict }: DictionaryContextType) {
   const { data, isFetching } = useTransportsCO2EmissionByTravelBounds({
     filters,
   });
+
+  const translatedData = data?.map((_data) => ({
+    name: dict?.mappedTravelMode[_data?.name],
+    withinLimit: _data?.withinLimit,
+    outsideLimit: _data?.outsideLimit,
+  }))
+
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col md:flex-row justify-between gap-6">
@@ -110,7 +117,7 @@ export default function CO2InboundAndOutbound({ dict }: DictionaryContextType) {
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer height="100%">
               <BarChart
-                data={data || []}
+                data={translatedData || []}
                 margin={{ top: 30 }}
               >
                 <XAxis

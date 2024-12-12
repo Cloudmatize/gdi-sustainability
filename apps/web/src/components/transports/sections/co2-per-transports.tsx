@@ -119,7 +119,7 @@ export const ModalEmissionAnalysisCard = ({
     mode: string;
     avgPercentageYearly: number;
     percentageContribution: number;
-    contributionStatus: "Elevação" | "Redução";
+    contributionStatus: string;
     isHighestYearlyReduction: boolean;
     isLowestYearlyReduction: boolean;
   };
@@ -137,7 +137,7 @@ export const ModalEmissionAnalysisCard = ({
   const title = mappedTravelMode[data?.mode as TravelMode];
   const Icon = mappedTravelModeIcons[data?.mode as TravelMode] || Bus;
 
-  const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
+  const trend = data?.contributionStatus === "ELEVATION" ? "up" : "down";
 
   return loading ? (
     <Skeleton className="h-60 w-full rounded-xl" />
@@ -170,7 +170,8 @@ export const ModalEmissionAnalysisCard = ({
           </div>
           <div className=" flex items-center gap-1">
             <p className="text-sm text-muted-foreground ">
-              Média anual de {trend === "up" ? "elevação" : "redução"}:
+              Média anual de {trend === "up" ? "ELEVATION" : "redução"}:
+              mexer aqui
             </p>
             <div className="flex items-center gap-1">
               {trend === "up" ? (
@@ -233,9 +234,7 @@ export default function Co2EmissionPerTransport({ dict }: DictionaryContextType[
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
-            contributionStatus: modal.contributionStatus as
-              | "Redução"
-              | "Elevação",
+            contributionStatus: dict?.chartTrends[modal.contributionStatus]
           };
           return (
             <div className="w-full" key={index}>

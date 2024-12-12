@@ -1,5 +1,6 @@
 'use client'
-import { ChangeEvent, Fragment, useEffect, useState } from 'react';
+import type { DictionaryContextType } from '@/context/DictionaryContext';
+import { type ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { hexToHsl } from '../hexToHsl';
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -7,7 +8,7 @@ import { Label } from "../ui/label";
 import { clearColors, setColor } from "./theme-cookie";
 
 interface ThemeColorProps {
-    dict: any;
+    dict: DictionaryContextType['dict']
     colors: { type: string; color: string }[] | null;
 }
 

@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsStore } from "@/store/targets";
 import { Target, TrendingDown } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
@@ -10,7 +11,7 @@ interface Props {
   targetEmissions: number;
   baseEmissions: number;
   targetYear: number;
-  dict: any;
+  dict: DictionaryContextType['dict']
 }
 export default function TargetAdherenceCard({
   targetEmissions,
