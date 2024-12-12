@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ENERGY_FRACTIONS } from "@/constants/buildings";
 import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useBuildingsEnergyIntensitiesBySector } from "@/hooks/buildings";
 import {
@@ -16,10 +15,12 @@ import {
 
 const CustomTooltip = ({
   active,
+  dict,
   payload,
   label,
 }: {
   active?: boolean;
+  dict: DictionaryContextType['dict']
   payload?: {
     color: string;
     payload: {
@@ -39,7 +40,7 @@ const CustomTooltip = ({
               style={{ backgroundColor: item.color }}
             />
             <span className="text-foreground font-bold  w-24 text-center">
-              {ENERGY_FRACTIONS[label as keyof typeof ENERGY_FRACTIONS]}
+              {dict?.ENERGY_FRACTIONS[label as string]}
             </span>
           </div>
           {item.payload.value} kg/kWh
@@ -75,8 +76,8 @@ export default function EnergyIntensities({ dict }: DictionaryContextType) {
                   <PolarGrid />
                   <PolarAngleAxis
                     fontSize={12}
-                    tickFormatter={(value: keyof typeof ENERGY_FRACTIONS) =>
-                      `${ENERGY_FRACTIONS[value]}`
+                    tickFormatter={(value) =>
+                      `${dict?.ENERGY_FRACTIONS[value as string]}`
                     }
                     dataKey="name"
                   />
@@ -88,7 +89,7 @@ export default function EnergyIntensities({ dict }: DictionaryContextType) {
                     fillOpacity={0.6}
                   />
 
-                  <Tooltip content={<CustomTooltip />} />
+                  <Tooltip content={<CustomTooltip dict={dict} />} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>

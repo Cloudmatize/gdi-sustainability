@@ -3,6 +3,10 @@
     "ELEVATION": "Elevação",
     "REDUCTION": "Redução"
   },
+  "mappedSectors": {
+    "NON-RESIDENTIAL": "No residencial",
+    "RESIDENTIAL": "Residencial"
+  },
   "ENERGY_FRACTIONS": {
     "PROPANE": "Propano",
     "ELECTRICITY": "Electricidad",

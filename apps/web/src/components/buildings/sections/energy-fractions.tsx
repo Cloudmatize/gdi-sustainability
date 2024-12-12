@@ -3,7 +3,6 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { gradientColors } from "@/config/colors";
-import { ENERGY_FRACTIONS } from "@/constants/buildings";
 import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useBuildingsEnergyFractionsBySector } from "@/hooks/buildings";
 import { formatNumber } from "@/utils/format-number";
@@ -21,7 +20,7 @@ import {
 } from "recharts";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
-const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: DictionaryContextType['dict'] }) => {
   return (
     <div className="custom-legend w-full flex gap-3 justify-center items-center mt-6">
       {payload?.map((d, index) => (
@@ -31,7 +30,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             style={{ backgroundColor: d?.color }}
           />
           <span className="text-sm text-foreground text-center">
-            {ENERGY_FRACTIONS[d.value as keyof typeof ENERGY_FRACTIONS]}
+            {dict?.ENERGY_FRACTIONS[d.value as string]}
           </span>
         </div>
       ))}
@@ -40,10 +39,12 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
 };
 const CustomTooltip = ({
   active,
+  dict,
   payload,
   label,
 }: {
   active?: boolean;
+  dict: DictionaryContextType['dict']
   payload?: Payload[];
   label?: string;
 }) => {
@@ -65,8 +66,8 @@ const CustomTooltip = ({
                   />
                   <span className="text-foreground font-bold  text-center">
                     {item.dataKey &&
-                      ENERGY_FRACTIONS[
-                      item.dataKey as keyof typeof ENERGY_FRACTIONS
+                      dict?.ENERGY_FRACTIONS[
+                      item.dataKey as string
                       ]}
                   </span>
                 </div>
@@ -82,9 +83,11 @@ const CustomTooltip = ({
 const CustomPieChartTooltip = ({
   active,
   payload,
+  dict,
   label,
 }: {
   active?: boolean;
+  dict: DictionaryContextType['dict'];
   payload?: {
     value: number;
     payload: {
@@ -109,8 +112,8 @@ const CustomPieChartTooltip = ({
             />
             <span className="text-foreground font-bold  w-24 text-center">
               {
-                ENERGY_FRACTIONS[
-                item.payload.name as keyof typeof ENERGY_FRACTIONS
+                dict?.ENERGY_FRACTIONS[
+                item.payload.name as string
                 ]
               }
             </span>
@@ -136,8 +139,19 @@ const CustomPieChartTooltip = ({
 
 export default function EnergyFractions({ dict }: DictionaryContextType) {
   const { data, isFetching } = useBuildingsEnergyFractionsBySector({});
-  const barData = data
-    ? Object.entries(data.energyFractions[0])
+  const translatedData = {
+    totalEmissionCO2ByFraction: data?.totalEmissionCO2ByFraction?.map((totalEmissionCO2ByFraction) => ({
+      name: totalEmissionCO2ByFraction.name,
+      co2Emission: totalEmissionCO2ByFraction.co2Emission,
+      percentage: totalEmissionCO2ByFraction.percentage
+    })),
+    energyFractions: data?.energyFractions?.map((_energyFractions) => ({
+      ..._energyFractions,
+      sector: dict?.mappedSectors[_energyFractions?.sector],
+    }))
+  }
+  const barData = translatedData?.energyFractions
+    ? Object.entries(translatedData?.energyFractions[0])
       .filter(([key, value]) => key !== "sector")
       .flatMap(([key]) => key)
     : [];
@@ -162,7 +176,7 @@ export default function EnergyFractions({ dict }: DictionaryContextType) {
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={data?.energyFractions}
+                    data={translatedData?.energyFractions}
                     layout="vertical"
                     stackOffset="expand"
                     margin={{ top: 10, right: 30, left: 100, bottom: 20 }}
@@ -190,9 +204,9 @@ export default function EnergyFractions({ dict }: DictionaryContextType) {
                       formatter={(value) =>
                         `${(Number(value) * 100).toFixed(1)}%`
                       }
-                      content={<CustomTooltip />}
+                      content={<CustomTooltip dict={dict} />}
                     />
-                    <Legend content={<CustomLegend />} />
+                    <Legend content={<CustomLegend dict={dict} />} />
                     {barData?.map((fraction, index) => {
                       return (
                         <Bar
@@ -237,9 +251,9 @@ export default function EnergyFractions({ dict }: DictionaryContextType) {
                       />
                     ))}
                   </Pie>
-                  <Legend align="center" content={<CustomLegend />} />
+                  <Legend align="center" content={<CustomLegend dict={dict} />} />
                   <Tooltip
-                    content={<CustomPieChartTooltip />}
+                    content={<CustomPieChartTooltip dict={dict} />}
                     formatter={(value) => `${value}%`}
                   />
                 </PieChart>

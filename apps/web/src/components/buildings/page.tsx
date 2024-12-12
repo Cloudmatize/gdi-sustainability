@@ -11,8 +11,8 @@ import EnergyFractions from "./sections/energy-fractions";
 import EnergyIntensities from "./sections/energy-intensities";
 
 export default function BuildingsPage() {
-  const { data } = useBuildingsFloorAreasBySector({});
   const { dict } = useDictionary();
+  const { data } = useBuildingsFloorAreasBySector({});
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
