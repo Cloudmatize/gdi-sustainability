@@ -36,7 +36,7 @@ const CustomTooltip = ({
     };
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
-        <p className="py-1">{dict?.mappedTravelMode[label]}</p>
+        <p className="py-1">{dict?.mappedTravelMode[label as string]}</p>
         {payload.map((item, index) => {
           return (
             <div
