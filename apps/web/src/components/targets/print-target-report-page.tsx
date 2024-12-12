@@ -120,7 +120,7 @@ export default function PrintTargetReportPage({
           </div>
 
           <div>
-            <DistributionsMode transfers={(transfers as any) || []} />
+            {/* <DistributionsMode transfers={(transfers as any) || []} /> */}
           </div>
           <div className="mt-8 border rounded-lg">
             <PrintGoalTrackerTable data={targetsCo2EmissionByModal || []} />
