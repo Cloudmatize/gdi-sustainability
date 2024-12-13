@@ -6,14 +6,13 @@ import {
   getBuildingsFloorAreasBySectorQuery,
 } from "./queries";
 
-import {
+import type {
   BuildingsCO2EmissionsBySectorResponse,
   BuildingsEnergyFractionsBySectorResponse,
   BuildingsEnergyIntensitiesBySectorResponse,
   BuildingsFloorAreasBySectorResponse,
 } from "@/types/buildings";
 
-import { mappedSectors } from "@/constants/buildings";
 import { gradientColors } from "@/config/colors";
 
 export const getBuildingsFloorAreasBySector = async ({}) => {
@@ -24,18 +23,18 @@ export const getBuildingsFloorAreasBySector = async ({}) => {
         queryName: "getBuildingsFloorAreasBySectorQuery",
       });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const mappedData = data.cube.map(({ buildings }) => {
         return {
           area: buildings.sum_floor_area,
-          sector: mappedSectors[buildings.sector],
+          sector: buildings.sector,
           count: buildings.buildings || 0,
           co2e_tons: buildings.co2e_tons,
         };
       });
-      const residential = mappedData.find((d) => d.sector === "Residencial");
+      const residential = mappedData.find((d) => d.sector === "RESIDENTIAL");
       const nonResidential = mappedData.find(
-        (d) => d.sector === "Não Residencial"
+        (d) => d.sector === "NON-RESIDENTIAL"
       );
       const totalCo2Emission =
         (residential?.co2e_tons || 0) + (nonResidential?.co2e_tons || 0);
@@ -68,6 +67,7 @@ export const getBuildingsFloorAreasBySector = async ({}) => {
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.error("getBuildingsFloorAreasBySectorQuery", error);
   }
@@ -84,17 +84,18 @@ export const getBuildingsCO2EmissionsBySector = async ({}) => {
         }
       );
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = data.cube.map(({ buildings }, index) => {
         return {
           co2e: buildings.co2e_tons,
-          sector: mappedSectors[buildings.sector],
+          sector: buildings.sector,
           color: index === 0 ? gradientColors[0] : gradientColors[2],
         };
       });
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.error("getBuildingsCO2EmissionsBySectorQuery", error);
   }
@@ -107,8 +108,8 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
         query
       );
 
-    if (data) {
-      const energyFractions = data.cube.map(({ buildings }) => {
+    if (data && data?.cube?.length > 0) {
+      const energyFractions = data?.cube?.map(({ buildings }) => {
         const fractions = {
           PROPANE: buildings.propane_fraction,
           ELECTRICITY: buildings.diesel_oil_fraction,
@@ -116,7 +117,7 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
           NATURAL_GAS: buildings.natural_gas_fraction,
         };
 
-        (Object.keys(fractions) as Array<keyof typeof fractions>).forEach(
+        (Object.keys(fractions) as Array<keyof typeof fractions>).map(
           (key) => {
             if (fractions[key] === 0) {
               delete fractions[key];
@@ -132,7 +133,7 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
           }, {});
 
         return {
-          sector: mappedSectors[buildings.sector],
+          sector: buildings.sector,
           ...sortedFractions,
         };
       });
@@ -178,6 +179,8 @@ export const getBuildingsEnergyFractionsBySector = async ({}) => {
 
       return formattedData;
     }
+
+    return null;
   } catch (error) {
     console.error("getBuildingsEnergyFractionsBySectorQuery", error);
   }
@@ -190,7 +193,7 @@ export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
         query
       );
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const mappedData = data.cube.map(({ buildings_intensity }) => {
         const intensities = {
           PROPANE: buildings_intensity.avg_propane_intensity,
@@ -199,7 +202,7 @@ export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
           NATURAL_GAS: buildings_intensity.avg_natural_gas_intensity,
         };
 
-        (Object.keys(intensities) as Array<keyof typeof intensities>).forEach(
+        (Object.keys(intensities) as Array<keyof typeof intensities>).map(
           (key) => {
             if (intensities[key] === 0) {
               delete intensities[key];
@@ -218,7 +221,7 @@ export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
       });
 
       const formattedData = mappedData
-        .map((item) => {
+        .flatMap((item) => {
           const total = Object.values(item).reduce(
             (acc, value) => acc + value,
             0
@@ -230,10 +233,11 @@ export const getBuildingsEnergyIntensitiesBySector = async ({}) => {
               percentage: Number(((value / total) * 100).toFixed(2)),
             };
           });
-        })
-        .flat();
+        });
       return formattedData;
     }
+
+    return null;
   } catch (error) {
     console.error("getBuildingsEnergyIntensitiesBySectorQuery", error);
   }

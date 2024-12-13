@@ -7,13 +7,18 @@ import {
 
 import { useQuery } from "@tanstack/react-query";
 
-export function useBuildingsFloorAreasBySector({ extraKey}: {
+export function useBuildingsFloorAreasBySector({
+  extraKey,
+  enabled = true,
+}: {
   extraKey?: string;
+  enabled?: boolean;
 }) {
   return useQuery({
     queryKey: [`(buildings): floor-areas-by-sector`, extraKey],
     queryFn: () => getBuildingsFloorAreasBySector({}),
     staleTime: 0,
+    enabled,
     refetchOnWindowFocus: false,
   });
 }

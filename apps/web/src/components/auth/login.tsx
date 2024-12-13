@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Leaf } from "lucide-react";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { signIn } from "next-auth/react";
 import { Spinner } from "../spinner";
 
-export default function Login() {
+export default function Login({ dict }: DictionaryContextType) {
   const handleLogin = () => {
     signIn("keycloak", { redirect: true });
   };
@@ -18,7 +18,7 @@ export default function Login() {
         <Card className="w-full max-w-md space-y-12 p-8">
           <div className="text-center">
             <h1 className="text-base my-5 font-semibold text-slate-700">
-              Bem vindo ao
+              {dict?.title}
               <br />
             </h1>
 
@@ -26,7 +26,7 @@ export default function Login() {
               <img src="/logos/logo-go-sustainability.png" alt="GDI Logo" />
             </div>
             <p className="mt-2 text-sm text-slate-700">
-              Transformando dados em ações sustentáveis.
+              {dict?.description}
             </p>
           </div>
 
@@ -35,7 +35,7 @@ export default function Login() {
               className="w-full bg-primary-foreground hover:bg-primary text-white hover:text-primary-foreground"
               onClick={handleLogin}
             >
-              {status === "loading" ? <Spinner /> : "Entrar"}
+              {status === "loading" ? <Spinner /> : dict?.action}
             </Button>
           </div>
         </Card>

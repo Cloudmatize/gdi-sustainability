@@ -6,15 +6,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ENERGY_FRACTIONS } from "@/constants/buildings";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import {
   useBuildingsEnergyFractionsBySector,
   useBuildingsEnergyIntensitiesBySector,
 } from "@/hooks/buildings";
 import { ArrowDownUp, Droplet, Zap } from "lucide-react";
+import Link from "next/link";
 import CardIcons from "../ui/card-icons";
 import { Skeleton } from "../ui/skeleton";
-import Link from "next/link";
 
 type EmissionData = {
   name: any;
@@ -27,33 +27,41 @@ type EnergyData = {
   value: number;
   percentage: number;
 };
-function getHighestCO2Emission(emissions: EmissionData[]): EmissionData {
+function getHighestCO2Emission(emissions: EmissionData[] = []): EmissionData {
   if (emissions.length === 0) {
-    throw new Error("The emissions array is empty.");
+    return {
+      name: "",
+      co2Emission: 0,
+      percentage: 0,
+    };
   }
 
-  return emissions.reduce((max, current) =>
-    current.co2Emission > max.co2Emission ? current : max
+  return emissions?.reduce((max, current) =>
+    current?.co2Emission > max?.co2Emission ? current : max
   );
 }
 
-function compareEfficiency(data: EnergyData[]): {
+function compareEfficiency(data: EnergyData[] = []): {
   highest: EnergyData;
   lowest: EnergyData;
   differenceFactor: number;
 } {
   if (data.length === 0) {
-    throw new Error("The data array is empty.");
+    return {
+      highest: { name: "", value: 0, percentage: 0 },
+      lowest: { name: "", value: 0, percentage: 0 },
+      differenceFactor: 0,
+    };
   }
 
-  const highest = data.reduce((max, current) =>
-    current.value > max.value ? current : max
+  const highest = data?.reduce((max, current) =>
+    current?.value > max?.value ? current : max
   );
-  const lowest = data.reduce((min, current) =>
-    current.value < min.value ? current : min
+  const lowest = data?.reduce((min, current) =>
+    current?.value < min?.value ? current : min
   );
 
-  const differenceFactor = highest.value / lowest.value;
+  const differenceFactor = highest?.value / lowest?.value;
 
   return {
     highest,
@@ -62,7 +70,7 @@ function compareEfficiency(data: EnergyData[]): {
   };
 }
 
-export default function DashboardSection3() {
+export default function DashboardSection3({ dict }: DictionaryContextType['dict']) {
   const {
     data: energyFractionsBySector,
     isFetching: isLoadingEnergyFractionsBySector,
@@ -79,9 +87,11 @@ export default function DashboardSection3() {
   const efficiencyComparison = energyIntensitiesBySector
     ? compareEfficiency(energyIntensitiesBySector)
     : null;
+
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Emissões por fonte de energia</h2>
+      <h2 className="text-2xl font-bold">{dict?.dashboard?.thirdSection?.title}</h2>
 
       <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
         {/* Main Contributor Card */}
@@ -95,21 +105,21 @@ export default function DashboardSection3() {
                   <CardIcons>
                     <Zap />
                   </CardIcons>
-                  Fonte principal de emissões de CO2
+                  {dict?.dashboard?.thirdSection?.cards?.highestCO2Emission?.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="mt-4 ">
                 <div className="text-2xl font-bold text-foreground mb-2">
                   {
-                    ENERGY_FRACTIONS[
-                      highestCO2Emission?.name as keyof typeof ENERGY_FRACTIONS
+                    dict?.ENERGY_FRACTIONS[
+                    highestCO2Emission?.name as string
                     ]
                   }
                 </div>
                 <div className="space-y-1">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">
-                      Contribuição nas emissões dos edifícios
+                      {dict?.dashboard?.thirdSection?.cards?.highestCO2Emission?.content[0]}
                     </span>
                     <span className="font-bold text-end text-lg text-primary-foreground">
                       {((highestCO2Emission?.percentage || 0) * 100).toFixed(2)}
@@ -118,7 +128,7 @@ export default function DashboardSection3() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">
-                      Total de CO₂ emitido (tCO2e)
+                      {dict?.dashboard?.thirdSection?.cards?.highestCO2Emission?.content[1]}
                     </span>
                     <span className="font-bold text-lg text-primary-foreground">
                       {Math.trunc(
@@ -143,7 +153,7 @@ export default function DashboardSection3() {
                   <CardIcons>
                     <ArrowDownUp />
                   </CardIcons>
-                  Intensidade de emissões por fonte de energia
+                  {dict?.dashboard?.thirdSection?.cards?.efficiencyComparison?.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="mt-2 gap-2 flex flex-col ">
@@ -151,29 +161,28 @@ export default function DashboardSection3() {
                   <div className="flex items-center">
                     <p className="text-xl font-bold text-foreground min-w-36">
                       {
-                        ENERGY_FRACTIONS[
-                          efficiencyComparison?.lowest
-                            .name as keyof typeof ENERGY_FRACTIONS
+                        dict?.ENERGY_FRACTIONS[
+                        efficiencyComparison?.lowest.name as string
                         ]
                       }
                     </p>
                     <div className="flex items-center gap-1 text-primary-foreground">
                       <Droplet size={16} className="" />
-                      <span className="font-medium">Fonte mais eficiente</span>
+                      <span className="font-medium">
+                        {dict?.dashboard?.thirdSection?.cards?.efficiencyComparison?.content[0]}</span>
                     </div>
                   </div>
                   <div className="flex items-center ">
                     <div className="text-xl font-bold text-foreground min-w-36">
                       {
-                        ENERGY_FRACTIONS[
-                          efficiencyComparison?.highest
-                            .name as keyof typeof ENERGY_FRACTIONS
+                        dict?.ENERGY_FRACTIONS[
+                        efficiencyComparison?.highest.name as string
                         ]
                       }
                     </div>
                     <div className="flex items-center gap-2 text-destructive-foreground">
                       <Zap size={16} className="" />
-                      <span className="font-medium">Fonte menos eficiente</span>
+                      <span className="font-medium">{dict?.dashboard?.thirdSection?.cards?.efficiencyComparison?.content[1]}</span>
                     </div>
                   </div>
                 </div>
@@ -181,19 +190,17 @@ export default function DashboardSection3() {
               <CardFooter>
                 <CardDescription>
                   {
-                    ENERGY_FRACTIONS[
-                      efficiencyComparison?.lowest
-                        .name as keyof typeof ENERGY_FRACTIONS
+                    dict?.ENERGY_FRACTIONS[
+                    efficiencyComparison?.lowest.name as string
                     ]
-                  }{" "}
-                  tem o menor impacto por kWh com (
-                  {efficiencyComparison?.lowest.value} kgCO₂/kWh), sendo{" "}
-                  {efficiencyComparison?.differenceFactor?.toFixed(2)} vezes
-                  mais eficiente que{" "}
+                  }
+                  {" "}
+                  {dict?.dashboard?.thirdSection?.cards?.efficiencyComparison?.content[2]} (
+                  {efficiencyComparison?.lowest.value} kgCO₂/kWh), {dict?.dashboard?.thirdSection?.cards?.efficiencyComparison?.content[3]}{" "}
+                  {efficiencyComparison?.differenceFactor?.toFixed(2)} {dict?.dashboard?.thirdSection?.cards?.efficiencyComparison?.content[4]}{" "}
                   {
-                    ENERGY_FRACTIONS[
-                      efficiencyComparison?.highest
-                        .name as keyof typeof ENERGY_FRACTIONS
+                    dict?.ENERGY_FRACTIONS[
+                    efficiencyComparison?.highest.name as string
                     ]
                   }{" "}
                   com ({efficiencyComparison?.highest.value} kgCO₂/kWh).

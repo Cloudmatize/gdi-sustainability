@@ -1,4 +1,4 @@
-import { TravelMode } from "@/types/transports";
+import type { TravelMode } from "@/types/transports";
 
 export const mappedTravelMode: {
   [key in TravelMode]: string;

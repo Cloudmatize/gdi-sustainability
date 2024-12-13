@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTransportsCO2EmissionByTravelBounds } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
@@ -15,25 +16,27 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const CustomTooltip = ({
   active,
   payload,
   label,
+  dict
 }: {
   active?: boolean;
   payload?: Payload[];
   label?: string;
+  dict: DictionaryContextType['dict'];
 }) => {
   if (active && payload && payload.length) {
     const mapped: { [key: string]: string } = {
-      withinLimit: "Dentro do limite",
-      outsideLimit: "Fora do limite",
+      withinLimit: dict?.transports.sections.CO2InboundAndOutbound.chart.tooltip.withinLimit,
+      outsideLimit: dict?.transports.sections.CO2InboundAndOutbound.chart.tooltip.outsideLimit,
     };
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
-        <p className="py-1">{label}</p>
+        <p className="py-1">{dict?.mappedTravelMode[label as string]}</p>
         {payload.map((item, index) => {
           return (
             <div
@@ -78,23 +81,28 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
   );
 };
 
-export default function CO2InboundAndOutbound() {
+export default function CO2InboundAndOutbound({ dict }: DictionaryContextType) {
   const { filters } = useTransportsStore();
 
   const { data, isFetching } = useTransportsCO2EmissionByTravelBounds({
     filters,
   });
+
+  const translatedData = data?.map((_data) => ({
+    name: dict?.mappedTravelMode[_data?.name],
+    withinLimit: _data?.withinLimit,
+    outsideLimit: _data?.outsideLimit,
+  }))
+
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col md:flex-row justify-between gap-6">
         <div className="space-y-6">
           <h2 className="text-2xl font-semibold text-foreground">
-            Comparação de emissões dentro e fora dos limites geográficos
+            {dict?.transports.sections.CO2InboundAndOutbound.title}
           </h2>
           <p className="text-muted-foreground max-w-lg">
-            Compara a média de emissão de CO2 por quilômetro entre diferentes
-            tipos de transporte, diferenciando as emissões dentro e fora dos
-            limites geográficos.
+            {dict?.transports.sections.CO2InboundAndOutbound.description}
           </p>
         </div>
       </div>
@@ -104,12 +112,12 @@ export default function CO2InboundAndOutbound() {
       ) : (
         <Card className="p-6 overflow-auto">
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emissão CO2 (tCO2e)
+            {dict?.transports.sections.CO2InboundAndOutbound.chart.title}
           </h3>
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer height="100%">
               <BarChart
-                data={data}
+                data={translatedData || []}
                 margin={{ top: 30 }}
               >
                 <XAxis
@@ -127,7 +135,7 @@ export default function CO2InboundAndOutbound() {
                   strokeWidth={0.3}
                   tickMargin={10}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip dict={dict} />} />
                 <Legend content={<CustomLegend />} />
                 <Bar
                   strokeWidth={1}
@@ -141,7 +149,7 @@ export default function CO2InboundAndOutbound() {
                     offset: 10,
                   }}
                   dataKey="withinLimit"
-                  name="Dentro da fronteira"
+                  name={dict?.transports.sections.CO2InboundAndOutbound.chart.legendOne}
                   legendType="circle"
                   fill="#1ba18d"
                   radius={[4, 4, 0, 0]}
@@ -157,7 +165,7 @@ export default function CO2InboundAndOutbound() {
                     offset: 10,
                   }}
                   dataKey="outsideLimit"
-                  name="Fora da fronteira"
+                  name={dict?.transports.sections.CO2InboundAndOutbound.chart.legendTwo}
                   legendType="circle"
                   fill="#9aeee2"
                   radius={[4, 4, 0, 0]}

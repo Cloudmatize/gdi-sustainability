@@ -4,6 +4,7 @@ import { Bus } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDictionary } from "@/context/DictionaryContext";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
@@ -43,6 +44,7 @@ const EmissionCard = ({
   );
 
 export default function TransportsPage() {
+  const { dict } = useDictionary();
   const { filters, setFilters } = useTransportsStore();
 
   const handleYearChange = (value: string) => {
@@ -50,7 +52,7 @@ export default function TransportsPage() {
   };
   const { date } = filters;
 
-  const { data } = useTransportsCO2Emission({
+  const { data, isFetching } = useTransportsCO2Emission({
     filters,
   });
   return (
@@ -61,7 +63,7 @@ export default function TransportsPage() {
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4">
             <h1 className="flex flex-nowrap break-keep items-center gap-3 text-3xl font-bold text-foreground">
-              Emissão de transportes <Bus size={36} />
+              {dict?.transports.title} <Bus size={36} />
             </h1>
           </div>
           <div className="flex items-center gap-2 my-3 xl:my-0">
@@ -76,50 +78,51 @@ export default function TransportsPage() {
 
         {/* Description */}
         <p className="text-muted-foreground max-w-lg">
-          As informações sobre emissões de CO2 no transporte auxiliam a
-          organização a monitorar, analisar e progredir em direção às metas de
-          sustentabilidade, focando na redução de gases de efeito estufa.
+          {dict?.transports.description}
         </p>
         <DataSourceInfo />
         <div className="border-t border-gray-200 py-6" />
-        <p className="text-muted-foreground ">Emissão de CO2 em toneladas</p>
+        <p className="text-muted-foreground ">{dict?.transports.metrics.title}</p>
         {/* Metrics */}
         <div className="flex flex-col xl:flex-row gap-6">
           <InfoCard
             icon={MdCo2}
-            title="Emissão total"
+            title={dict?.transports.metrics.totalEmissions.title}
             value={formatCO2Emission(data?.total.co2Emission)}
             percentage={"100%"}
+            loading={isFetching}
             description={`
-             ${formatNumber(data?.total.trips || 150_000)} viagens`}
+             ${formatNumber(data?.total.trips || 0)} ${dict?.transports.metrics.totalEmissions.description}`}
           />
           <InfoCard
             icon={MdCo2}
-            title="Dentro da fronteira"
+            title={dict?.transports.metrics.withinTheBorder.title}
             value={formatCO2Emission(data?.inbound.co2Emission)}
             percentage={data?.inbound?.percentage}
+            loading={isFetching}
             infoTooltip={
-              "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade."
+              dict?.transports.metrics.withinTheBorder.infoTooltip
             }
             description={`
-            ${formatNumber(data?.inbound.trips || 100_000)} viagens`}
+            ${formatNumber(data?.inbound.trips || 0)} ${dict?.transports.metrics.totalEmissions.description}`}
           />
           <InfoCard
             icon={MdCo2}
             value={formatCO2Emission(data?.outbound.co2Emission)}
-            title="Fora da fronteira"
+            title={dict?.transports.metrics.outOfTheBorder.title}
+            loading={isFetching}
             percentage={data?.outbound?.percentage}
             infoTooltip={
-              "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade"
+              dict?.transports.metrics.outOfTheBorder.infoTooltip
             }
             description={`
-              ${formatNumber(data?.outbound.trips || 50_000)} viagens`}
+              ${formatNumber(data?.outbound.trips || 0)} ${dict?.transports.metrics.outOfTheBorder.description}`}
           />
         </div>
 
-        <CO2InboundAndOutbound />
-        <Co2EmissionPerTransport />
-        <Co2EmissionPerKilometer />
+        <CO2InboundAndOutbound dict={dict} />
+        <Co2EmissionPerTransport dict={dict} />
+        <Co2EmissionPerKilometer dict={dict} />
       </div>
     </div>
   );

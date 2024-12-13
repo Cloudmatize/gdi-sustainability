@@ -1,0 +1,9 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["build", "-f", "Dockerfile", "-t", "${_DOCKER_IMAGE_URL}", "."]
+    env:
+      - "DOCKER_BUILDKIT=1"
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "${_DOCKER_IMAGE_URL}"]

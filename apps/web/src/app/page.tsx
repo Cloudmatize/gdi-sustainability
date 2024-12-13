@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation'
 
-export default async function Home() {
-  redirect("/dashboard");
+function page() {
+    return redirect('/dashboard')
 }
+
+export default page
