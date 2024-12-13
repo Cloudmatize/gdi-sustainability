@@ -67,9 +67,9 @@ export default function PrintTargetReportPage({
   const { isPrinting } = usePrintStore();
 
   return (
-    <div className="overflow-y-hidden h-screen ">
+    <div className=" h-screen  ">
       {isPrinting && <PrintLoadingStatePage />}
-      <div ref={componentRef} className=" space-y-4 text-xs ">
+      <div ref={componentRef} className=" space-y-4 text-xs  py-4">
         <Header
           title="Relatório de meta de emissão de CO2"
           subtitle={title}

@@ -21,6 +21,7 @@ import PrintTargetReportPage from "./print-target-report-page";
 import { PrintButton } from "../print-button";
 import { usePrintStore } from "@/store/print";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { cx } from "class-variance-authority";
 
 export default function ReportHistory() {
   const { data, isFetching } = useTargetsReportsHistory({});
@@ -49,31 +50,28 @@ export default function ReportHistory() {
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
           <DialogContent
             aria-describedby={undefined}
-            className="h-[90vh] sm:max-w-[900px] lg:max-w-[1200px] overflow-y-auto"
+            className="h-[90vh] sm:max-w-[900px] lg:max-w-[1200px] overflow-auto"
           >
             <DialogTitle></DialogTitle>
             <PrintTargetReportPage
               title={selectedReport?.reportName}
-              date={format(
-                new Date(selectedReport?.generatedDate),
-                "yyyy/MM/dd HH:mm"
-              )}
+              date={format(selectedReport?.generatedDate, "yyyy/MM/dd HH:mm")}
               isHistoryReport
               data={{ ...selectedReport?.data }}
             />
           </DialogContent>
         </Dialog>
       )}
-
-      <div className="space-y-6 p-6">
-        {isPrinting && (
-          <PrintTargetReportPage
-            componentRef={contentRef}
-            isHistoryReport
-            data={printContent}
-          />
-        )}
-
+      {isPrinting && selectedReport && (
+        <PrintTargetReportPage
+          title={selectedReport?.reportName}
+          date={format(selectedReport?.generatedDate, "yyyy/MM/dd HH:mm")}
+          componentRef={contentRef}
+          isHistoryReport
+          data={printContent}
+        />
+      )}
+      <div className={cx("space-y-6 p-6", isPrinting ? "hidden" : "")}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h1 className="text-2xl font-semibold text-slate-700 flex items-center gap-2">
             <History className="h-6 w-6 text-slate-700" />
