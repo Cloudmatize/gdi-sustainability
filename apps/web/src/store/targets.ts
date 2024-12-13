@@ -1,3 +1,5 @@
+import { TargetPrintContentData } from "@/components/targets/print-target-report-page";
+import { TravelMode } from "@/types/transports";
 import { create } from "zustand";
 
 interface Distribution {
@@ -6,7 +8,7 @@ interface Distribution {
   percentage: number;
 }
 
-interface TransferRow {
+export interface TransferRow {
   id: string;
   fromMode: string;
   distributions: Distribution[];
@@ -15,21 +17,7 @@ interface TransferRow {
 export interface ReportSimulationHistory {
   reportName: string;
   generatedDate: string;
-  data: {
-    transfers: TransferRow[];
-    lastYearCo2Emission: number;
-    targetCo2EmissionsFinalYear: {
-      targetCo2Emission: number | null;
-      year: number;
-      co2Emission: number | null;
-    };
-    transfpormEmissionsTarget: {
-      year: number;
-      co2Emission: number | null;
-      targetCo2Emission: number | null;
-    }[];
-    yearBaseCo2Emission: number;
-  };
+  data: TargetPrintContentData;
 }
 
 interface TargetsState {

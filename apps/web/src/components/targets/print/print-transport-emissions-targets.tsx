@@ -124,13 +124,22 @@ interface Props {
     targetCo2Emission: number | null;
     simulatedCo2Emission?: number | null;
   }[];
+  hypothesisMode: boolean;
+  totalCo2Emission: {
+    original: number;
+    simulated: number;
+    percentage: number;
+  };
 }
-export default function PrintTransportEmissionTargets({ data = [] }: Props) {
+export default function PrintTransportEmissionTargets({
+  data = [],
+  hypothesisMode,
+  totalCo2Emission,
+}: Props) {
   const [transportEmissionData, setTransportEmissionData] = useState<
     DataEntry[]
   >([]);
 
-  const { totalCo2Emission, hypothesisMode } = useTargetsStore();
   function updateSimulatedEmissions(
     data: DataEntry[],
     simulatedRaw: Record<string, number>
@@ -151,7 +160,7 @@ export default function PrintTransportEmissionTargets({ data = [] }: Props) {
     if (data || !hypothesisMode) {
       setTransportEmissionData(data);
     }
-    if (hypothesisMode && totalCo2Emission.percentage) {
+    if (hypothesisMode && totalCo2Emission?.percentage) {
       const simulatedCo2Emission = calculateSimulatedCO2Emissions(
         totalCo2Emission?.original,
         totalCo2Emission?.simulated
@@ -167,7 +176,7 @@ export default function PrintTransportEmissionTargets({ data = [] }: Props) {
       }
       setTransportEmissionData(updatedData);
     }
-  }, [data, totalCo2Emission.percentage, hypothesisMode]);
+  }, [data, totalCo2Emission?.percentage, hypothesisMode]);
 
   const lastYearData = data?.find((item) => item.year === currentYear - 1);
   const currentYearEmissionStatus = checkEmissionsStatus(
@@ -248,7 +257,7 @@ export default function PrintTransportEmissionTargets({ data = [] }: Props) {
                   r: 6,
                 }}
               />
-              {hypothesisMode && totalCo2Emission.percentage && (
+              {hypothesisMode && totalCo2Emission?.percentage && (
                 <Line
                   type="monotone"
                   dataKey="simulatedCo2Emission"

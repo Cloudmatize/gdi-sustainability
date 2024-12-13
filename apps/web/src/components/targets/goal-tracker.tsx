@@ -82,7 +82,8 @@ export default function GoalTracker() {
     };
   });
 
-  const { hypothesisMode, setHypothesisMode } = useTargetsStore();
+  const { hypothesisMode, setHypothesisMode, transfers, totalCo2Emission } =
+    useTargetsStore();
 
   useEffect(() => {
     return () => {
@@ -109,6 +110,8 @@ export default function GoalTracker() {
     yearBaseCo2Emission,
     targetsCo2EmissionByModal,
     transportEmissionsTarget,
+    transfers,
+    totalCo2Emission,
   };
 
   const { isPrinting } = usePrintStore();
@@ -127,14 +130,13 @@ export default function GoalTracker() {
             setIsOpen={setOpenSidebar}
           >
             <MultiModalSimulatorTransferSimulator
-              contentRef={contentRef}
               printContent={printContent}
               data={modalData || []}
             />
           </Sidebar>
         )}
 
-        <div className="flex justify-end w-full gap-6" >
+        <div className="flex justify-end w-full gap-6">
           <PrintButton
             title="Imprimir Metas de Emissão de CO2"
             disabled={false}
@@ -232,7 +234,11 @@ export default function GoalTracker() {
         )}
       </div>
       {isPrinting && (
-        <PrintTargetReportPage componentRef={contentRef} data={printContent} />
+        <PrintTargetReportPage
+          componentRef={contentRef}
+          data={printContent}
+          isHistoryReport={hypothesisMode}
+        />
       )}
     </>
   );

@@ -32,6 +32,7 @@ interface TransportModeReal {
 
 interface Props {
   data: TransportModeReal[];
+  transfers: Transfer[];
 }
 
 type TransferLog = {
@@ -166,7 +167,7 @@ function simulateTransfers(
   return Array.from(transportMap.values());
 }
 
-export default function PrintGoalTrackerTable({ data }: Props) {
+export default function PrintGoalTrackerTable({ data , transfers}: Props) {
   const [passengersPerTripData, setPassengersPerTripData] = useState(
     passengersPerTripMapping
   );
@@ -180,7 +181,6 @@ export default function PrintGoalTrackerTable({ data }: Props) {
 
   const { setTotalCo2Emission } = useTargetsStore();
 
-  const { transfers } = useTargetsStore();
 
   const handlePassengerChange = (id: string, value: number) => {
     setPassengersPerTripData((prev) => ({

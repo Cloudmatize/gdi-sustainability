@@ -26,36 +26,25 @@ interface Distribution {
 
 interface Props {
   printContent: any;
-  contentRef: MutableRefObject<null>;
   data: {
     id: TravelMode;
     name: string;
-
     icon: JSX.Element | undefined;
   }[];
 }
 export default function ModalTripsTransferSimulator({
   data,
-  contentRef,
   printContent,
 }: Props) {
-  const {
-    transfers,
-    setTransfers,
-    setReportSimulationsHistory,
-    reportSimulationsHistory,
-  } = useTargetsStore();
+  const { transfers, setTransfers } = useTargetsStore();
 
   const handleConfirmSaveSimulation = ({ title }: { title: string }) => {
     const reportData = {
       reportName: title,
       generatedDate: new Date().toISOString(),
-      data: {
-        ...printContent,
-        transfers,
-      },
+      data: printContent,
     };
-    setReportSimulationsHistory([...reportSimulationsHistory, reportData]);
+    console.log("reportData", reportData);
   };
   const addTransferRow = () => {
     const newDistId = String(Math.floor(Math.random() * 9000) + 1000);

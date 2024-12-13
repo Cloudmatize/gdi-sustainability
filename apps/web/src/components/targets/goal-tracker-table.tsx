@@ -58,7 +58,7 @@ type Distribution = {
   percentage: number;
 };
 
-type Transfer = {
+export type Transfer = {
   id: string;
   fromMode: string;
   distributions: Distribution[];
