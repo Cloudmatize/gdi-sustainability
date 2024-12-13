@@ -241,7 +241,12 @@
             "title": "Composición de fuentes de energía por sector"
           },
           "ImpactOfEnergySourcesOnEmissions": {
-            "title": "Impacto de las fuentes de energía en las emisiones"
+            "title": "Impacto de las fuentes de energía en las emisiones",
+            "CustomPieChartTooltip": {
+              "0": "toneladas de CO2 emitidas",
+              "1": "Equivalente a ",
+              "2": " del total"
+            }
           }
         }
       }

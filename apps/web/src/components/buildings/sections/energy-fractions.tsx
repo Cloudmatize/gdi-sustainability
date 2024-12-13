@@ -123,12 +123,11 @@ const CustomPieChartTooltip = ({
           <span className="font-bold ">
             {formatNumber(Number(item.payload.payload.co2Emission.toFixed(0)))}{" "}
           </span>
-          tons de CO2 emitidos
+          {dict?.buildings?.sections?.EnergyFractions?.cards?.ImpactOfEnergySourcesOnEmissions?.CustomPieChartTooltip?.[0]}
         </div>
         <div>
-          Equivale à{" "}
-          <span className="font-bold">{(item.value * 100).toFixed(1)}%</span> do
-          total
+          {dict?.buildings?.sections?.EnergyFractions?.cards?.ImpactOfEnergySourcesOnEmissions?.CustomPieChartTooltip?.[1]}
+          <span className="font-bold">{(item.value * 100).toFixed(1)}%</span> {dict?.buildings?.sections?.EnergyFractions?.cards?.ImpactOfEnergySourcesOnEmissions?.CustomPieChartTooltip?.[2]}
         </div>
       </div>
     );

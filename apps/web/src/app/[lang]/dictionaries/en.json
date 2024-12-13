@@ -229,7 +229,12 @@
             "title": "Composition of Energy Sources by Sector"
           },
           "ImpactOfEnergySourcesOnEmissions": {
-            "title": "Impact of Energy Sources on Emissions"
+            "title": "Impact of Energy Sources on Emissions",
+            "CustomPieChartTooltip": {
+              "0": "tons of CO2 emitted",
+              "1": "Equals to ",
+              "2": " of the total"
+            }
           }
         }
       },
