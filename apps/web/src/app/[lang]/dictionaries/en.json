@@ -1,4 +1,9 @@
 {
+  "print": {
+    "loadingTitle": "Printing...",
+    "loadingDescription": "Please wait while your document is being prepared.",
+    "generatedWhen": "Report issued on "
+  },
   "chartTrends": {
     "ELEVATION": "Elevation",
     "REDUCTION": "Reduction"

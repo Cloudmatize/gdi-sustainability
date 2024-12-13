@@ -2,9 +2,11 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Printer, X } from "lucide-react";
+import { useDictionary } from "@/context/DictionaryContext";
+import { Printer } from "lucide-react";
 
 export default function PrintLoadingStatePage() {
+  const { dict } = useDictionary()
   return (
     <div className="min-h-screen  flex items-center justify-center bg-white p-4">
       <Card className="w-full max-w-lg relative overflow-hidden">
@@ -23,10 +25,10 @@ export default function PrintLoadingStatePage() {
           <div className="text-center">
             <Printer className="h-12 w-12 text-slate-700 mb-4 mx-auto animate-pulse" />
             <h2 className="text-2xl font-bold text-slate-700 mb-2">
-              Imprimindo...
+              {dict?.loadingTitle}
             </h2>
             <p className="text-slate-600">
-              Por favor, aguarde enquanto seu documento é preparado.
+              {dict?.loadingDescription}
             </p>
           </div>
         </div>
