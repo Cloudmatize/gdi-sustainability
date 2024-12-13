@@ -8,7 +8,7 @@ export interface DictionaryContextType {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     dict: any | null;
     loadDictionary?: (locale: string) => Promise<void>;
-    locale: string;
+    locale?: string;
 }
 
 const DictionaryContext = createContext<DictionaryContextType | undefined>(undefined);
