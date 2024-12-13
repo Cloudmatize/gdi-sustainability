@@ -5,10 +5,10 @@
   },
   "dataSourceInfo": {
     "title": "¿De dónde vienen los datos?",
-    "subTitle": "Fuente de Datos",
+    "subTitle": "Fuente de datos",
     "GoogleEnvironmentalInsightsExplorer": {
       "title": "Google Environmental Insights Explorer",
-      "description": "El Explorador de Insights Ambientales (EIE) de Google se basa en la idea de que los datos y las tecnologías pueden ayudar a acelerar la transición del mundo a un futuro con bajas emisiones de carbono. El EIE tiene como objetivo simplificar el proceso de establecer una línea base de emisiones e identificar oportunidades tangibles de reducción, lo que establece la base para una acción eficaz. El EIE utiliza fuentes de datos exclusivas de Google y capacidades de modelado para generar estimaciones de actividad, emisiones y oportunidades de reducción. Al proporcionar información ambiental en una plataforma robusta y gratuita, buscamos atender a los tomadores de decisiones e investigadores que trabajan en estos problemas y soluciones para las ciudades en todo el mundo.",
+      "description": "El explorador de insights ambientales (EIE) de Google se basa en la idea de que los datos y las tecnologías pueden ayudar a acelerar la transición del mundo a un futuro con bajas emisiones de carbono. El EIE tiene como objetivo simplificar el proceso de establecer una línea base de emisiones e identificar oportunidades tangibles de reducción, lo que establece la base para una acción eficaz. El EIE utiliza fuentes de datos exclusivas de Google y capacidades de modelado para generar estimaciones de actividad, emisiones y oportunidades de reducción. Al proporcionar información ambiental en una plataforma robusta y gratuita, buscamos atender a los tomadores de decisiones e investigadores que trabajan en estos problemas y soluciones para las ciudades en todo el mundo.",
       "seeMore": "Ver más"
     },
     "TransportIssuance": {
@@ -29,8 +29,8 @@
   "ENERGY_FRACTIONS": {
     "PROPANE": "Propano",
     "ELECTRICITY": "Electricidad",
-    "DIESEL_OIL": "Aceite Diesel",
-    "NATURAL_GAS": "Gas Natural"
+    "DIESEL_OIL": "Aceite diesel",
+    "NATURAL_GAS": "Gas natural"
   },
   "unauthorized": {
     "title": "Acceso no autorizado",
@@ -205,43 +205,43 @@
     }
   },
   "buildings": {
-    "title": "Emisiones de Edificios",
+    "title": "Emisiones de edificios",
     "description": "La información sobre las emisiones de CO2 de los edificios ayuda a la organización a monitorear, analizar y avanzar hacia los objetivos de sostenibilidad, enfocándose en la reducción de gases de efecto invernadero.",
     "metrics": {
       "title": "Emisiones de CO2 en toneladas",
       "totalEmissions": {
-        "title": "Emisiones Totales",
+        "title": "Emisiones totales",
         "description": "edificios"
       },
       "issuanceOfResidentialBuildings": {
-        "title": "Emisiones de Edificios Residenciales"
+        "title": "Emisiones de edificios residenciales"
       },
       "issuanceOfNonResidentialBuildings": {
-        "title": "Emisiones de Edificios No Residenciales"
+        "title": "Emisiones de edificios no residenciales"
       }
     },
     "sections": {
       "EnergyFractions": {
-        "title": "Composición de Energía e Impacto de las Emisiones en el Municipio",
+        "title": "Composición de energía e impacto de las emisiones en el municipio",
         "description": "Análisis de la composición de las fuentes de energía utilizadas en el municipio y evaluación del impacto de las emisiones de CO2 generadas por diferentes tipos de energía.",
         "cards": {
           "CompositionOfEnergySourcesBySector": {
-            "title": "Composición de Fuentes de Energía por Sector"
+            "title": "Composición de fuentes de energía por sector"
           },
           "ImpactOfEnergySourcesOnEmissions": {
-            "title": "Impacto de las Fuentes de Energía en las Emisiones"
+            "title": "Impacto de las fuentes de energía en las emisiones"
           }
         }
       },
       "EnergyIntensities": {
-        "title": "Intensidad de Emisiones por Fuente de Energía",
+        "title": "Intensidad de emisiones por fuente de energía",
         "description": "Compara la cantidad de CO2 emitido por kilovatio-hora entre diferentes fuentes de energía, destacando el impacto ambiental de cada una.",
         "cards": {
           "CompositionOfEnergySourcesBySector": {
-            "title": "Composición de Fuentes de Energía por Sector"
+            "title": "Composición de fuentes de energía por sector"
           },
           "ImpactOfEnergySourcesOnEmissions": {
-            "title": "Impacto de las Fuentes de Energía en las Emisiones"
+            "title": "Impacto de las fuentes de energía en las emisiones"
           }
         }
       }
@@ -251,45 +251,45 @@
     "title": "Objetivos",
     "goalsTracker": {
       "simulation": {
-        "title": "Ejecutar Simulación",
+        "title": "Ejecutar simulación",
         "simulator": {
-          "title": "Simulador de Transferencia de Viajes Entre Modos de Transporte",
+          "title": "Simulador de transferencia de viajes entre modos de transporte",
           "to": "A",
           "from": "Desde",
           "fromMode": "de los viajes de",
           "toMode": "transferidos a",
-          "addDistribution": "Añadir Distribución",
-          "addTransferRow": "Añadir Transferencia"
+          "addDistribution": "Añadir distribución",
+          "addTransferRow": "Añadir transferencia"
         }
       },
       "cards": {
         "baseYear": {
-          "title": "Año Base",
-          "subLabel": "Emisión Inicial de CO2",
+          "title": "Año base",
+          "subLabel": "Emisión inicial de CO2",
           "subUnit": "toneladas de CO2"
         },
         "target": {
           "title": "Objetivo",
-          "subLabel": "Emisión Estimada",
+          "subLabel": "Emisión estimada",
           "subUnit": "toneladas de CO2"
         },
         "targetAdherence": {
-          "title": "Índice de Adherencia al Objetivo para",
+          "title": "Índice de adherencia al objetivo para",
           "description": "Basado en las emisiones del año pasado:",
           "contentTitle": "Actual",
           "content": "del objetivo de reducción de emisiones para ",
           "footerTitle": "Simulado",
-          "footer": "Emisiones Simuladas: "
+          "footer": "Emisiones simuladas: "
         },
         "goalTrackerTable": {
-          "title": "Informe de Emisiones del Transporte del Último Año",
+          "title": "Informe de emisiones del transporte del último año",
           "content": {
             "table": {
-              "th1": "Modo de Transporte",
-              "th2": "Viajes Totales",
-              "th3": "Pasajeros/Viaje",
-              "th4": "Emisiones Totales",
-              "th5": "Emisiones/Pasajero"
+              "th1": "Modo de transporte",
+              "th2": "Viajes totales",
+              "th3": "Pasajeros/viaje",
+              "th4": "Emisiones totales",
+              "th5": "Emisiones/pasajero"
             }
           },
           "modalSimulator": {
@@ -298,16 +298,16 @@
           }
         },
         "transportEmissionTargets": {
-          "title": "Nivel de Adherencia al Objetivo",
+          "title": "Nivel de adherencia al objetivo",
           "inTheGoal": "Dentro del objetivo",
           "outOfTheGoal": "Fuera del objetivo",
           "chart": {
-            "ReferenceLine_BASE_YEAR": "Año Base",
-            "ReferenceLine_TARGET_YEAR": "Año de Cumplimiento del Objetivo",
+            "ReferenceLine_BASE_YEAR": "Año base",
+            "ReferenceLine_TARGET_YEAR": "Año de cumplimiento del objetivo",
             "mappedGoal": {
-              "targetCo2Emission": "Objetivo de Emisiones",
-              "co2Emission": "Emisiones Totales",
-              "simulatedCo2Emission": "Emisiones Proyectadas"
+              "targetCo2Emission": "Objetivo de emisiones",
+              "co2Emission": "Emisiones totales",
+              "simulatedCo2Emission": "Emisiones proyectadas"
             }
           }
         }
@@ -315,12 +315,12 @@
     }
   },
   "transports": {
-    "title": "Emisiones del Transporte",
+    "title": "Emisiones del transporte",
     "description": "La información sobre las emisiones de CO2 en el transporte ayuda a las organizaciones a monitorear, analizar y avanzar hacia los objetivos de sostenibilidad, enfocándose en la reducción de gases de efecto invernadero.",
     "metrics": {
       "title": "Emisiones de CO2 en toneladas",
       "totalEmissions": {
-        "title": "Emisiones Totales",
+        "title": "Emisiones totales",
         "description": "viajes"
       },
       "withinTheBorder": {
