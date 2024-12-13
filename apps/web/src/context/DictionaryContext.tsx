@@ -8,6 +8,7 @@ export interface DictionaryContextType {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     dict: any | null;
     loadDictionary?: (locale: string) => Promise<void>;
+    locale: string;
 }
 
 const DictionaryContext = createContext<DictionaryContextType | undefined>(undefined);
@@ -41,7 +42,7 @@ export const DictionaryProvider = ({ children, locale = 'en' }: { children: Reac
     }, [locale]);
 
     return (
-        <DictionaryContext.Provider value={{ dict, loadDictionary }}>
+        <DictionaryContext.Provider value={{ dict, loadDictionary, locale }}>
             {isLoading ? <LoadingPage /> : (
                 children
             )}
