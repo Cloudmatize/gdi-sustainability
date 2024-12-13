@@ -289,11 +289,6 @@ export default function ModalTripsTransferSimulator({
             </div>
 
             <div className="flex items-center gap-10">
-              <PrintButton
-                title="Imprimir Metas de Emissão de CO2"
-                disabled={false}
-                contentToPrint={contentRef}
-              />
               <SaveSimulationModal onSave={handleConfirmSaveSimulation} />
             </div>
           </div>

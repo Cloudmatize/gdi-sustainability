@@ -103,13 +103,13 @@ export default function GoalTracker() {
 
   const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
 
-  const printContent =  {
+  const printContent = {
     lastYearCo2Emission,
     targetCo2EmissionsFinalYear,
     yearBaseCo2Emission,
     targetsCo2EmissionByModal,
     transportEmissionsTarget,
-  }
+  };
 
   const { isPrinting } = usePrintStore();
   return (
@@ -134,7 +134,12 @@ export default function GoalTracker() {
           </Sidebar>
         )}
 
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end w-full gap-6" >
+          <PrintButton
+            title="Imprimir Metas de Emissão de CO2"
+            disabled={false}
+            contentToPrint={contentRef}
+          />
           <div className="flex items-center  space-x-2">
             <Switch
               disabled={
@@ -227,10 +232,7 @@ export default function GoalTracker() {
         )}
       </div>
       {isPrinting && (
-        <PrintTargetReportPage
-          componentRef={contentRef}
-          data={printContent}
-        />
+        <PrintTargetReportPage componentRef={contentRef} data={printContent} />
       )}
     </>
   );

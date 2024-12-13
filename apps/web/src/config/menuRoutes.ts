@@ -4,7 +4,7 @@ type Route = {
   id: number;
   title: string;
   path: string;
-  icon: React.ComponentType;
+  icon?: React.ComponentType;
   children?: Route[];
 };
 export const routes: Route[] = [
@@ -29,8 +29,22 @@ export const routes: Route[] = [
 
   {
     id: 4,
-    title: "Rastreador de metas",
-    path: "/targets",
+    title: "Metas",
+    path: "/",
     icon: Goal,
+    children: [
+      {
+        title: "Rastreador de metas",
+        path: "/targets",
+        id: 5,
+        icon: Goal,
+      },
+      {
+        title: "Histórico de simulações",
+        path: "/targets/history",
+        id: 6,
+        icon: Goal,
+      },
+    ],
   },
 ];

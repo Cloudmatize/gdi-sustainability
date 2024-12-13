@@ -1,23 +1,38 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Download, FileDown, History, Search } from 'lucide-react'
+import { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Download, FileDown, History, Search } from "lucide-react";
+import { useTargetsReportsHistory } from "@/hooks/targets";
+import { Skeleton } from "../ui/skeleton";
 
 const reports = [
-  { id: 1, title: "Relatório de Emissões - Janeiro 2024", date: "15/01/2024, 10:30" },
+  {
+    id: 1,
+    title: "Relatório de Emissões - Janeiro 2024",
+    date: "15/01/2024, 10:30",
+  },
   { id: 2, title: "Simulação de Redução CO2", date: "14/01/2024, 15:45" },
-  { id: 3, title: "Análise de Transportes 2023", date: "13/01/2024, 09:15" }
-]
+  { id: 3, title: "Análise de Transportes 2023", date: "13/01/2024, 09:15" },
+];
 
 export default function ReportHistory() {
-  const [searchQuery, setSearchQuery] = useState('')
+  const { data, isFetching } = useTargetsReportsHistory({});
+  console.log("data", data);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredReports = reports.filter(report =>
-    report.title.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredReports = data?.filter((report) =>
+    report.reportName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="space-y-6 p-6">
@@ -36,44 +51,41 @@ export default function ReportHistory() {
           />
         </div>
       </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow className="border-b border-slate-700">
-            <TableHead className="text-slate-700">Título</TableHead>
-            <TableHead className="text-slate-700">Data</TableHead>
-            <TableHead className="text-right text-slate-700">Ações</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredReports.map((report) => (
-            <TableRow key={report.id} className="border-b border-gray-100">
-              <TableCell className="font-medium">{report.title}</TableCell>
-              <TableCell>{report.date}</TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-slate-700 hover:text-slate-800 hover:bg-slate-100"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span className="sr-only">Download</span>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-slate-700 hover:text-slate-800 hover:bg-slate-100"
-                  >
-                    <FileDown className="h-4 w-4" />
-                    <span className="sr-only">Export CSV</span>
-                  </Button>
-                </div>
-              </TableCell>
+      {isFetching ? (
+        <Skeleton className="h-screen"/>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow className="border-b border-slate-700">
+              <TableHead className="text-slate-700">Título</TableHead>
+              <TableHead className="text-slate-700">Data</TableHead>
+              <TableHead className="text-right text-slate-700">Ações</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredReports?.map((report, index) => (
+              <TableRow key={index} className="border-b border-gray-100">
+                <TableCell className="font-medium">
+                  {report.reportName}
+                </TableCell>
+                <TableCell>{report.generatedDate}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-slate-700 hover:text-slate-800 hover:bg-slate-100"
+                    >
+                      <Download className="h-4 w-4" />
+                      <span className="sr-only">Download</span>
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
-  )
+  );
 }

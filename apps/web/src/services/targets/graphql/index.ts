@@ -34,3 +34,4 @@ export const getTargetsCO2EmissionByModal = async () => {
     console.error("getCO2EmissionByYearAndModalQuery", error);
   }
 };
+
