@@ -1,26 +1,25 @@
 import {
-  getTotalCO2EmissionQuery,
   getCO2EmissionByTravelBoundsQuery,
-  getCO2EmissionPerKMQuery,
-  getCO2EmissionByYearQuery,
   getCO2EmissionByYearAndModalQuery,
+  getCO2EmissionByYearQuery,
+  getCO2EmissionPerKMQuery,
+  getTotalCO2EmissionQuery,
   getTransportsCO2EmissionModalAnalysisQuery,
 } from "./queries";
 
-import {
-  TotalCO2EmissionResponse,
-  CO2EmissionByTravelBoundsResponse,
-  CO2EmissionByYearResponse,
-  CO2EmissionPerKMResponse,
-  TravelMode,
-  CO2EmissionByYearAndModalResponse,
-  CO2EmissionModalAnalysisResponse,
-} from "@/types/transports";
+import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
 import { graphQLClient } from "@/services/graphql";
+import type { TransportFilters } from "@/store/transports";
+import type {
+  CO2EmissionByTravelBoundsResponse,
+  CO2EmissionByYearAndModalResponse,
+  CO2EmissionByYearResponse,
+  CO2EmissionModalAnalysisResponse,
+  CO2EmissionPerKMResponse,
+  TotalCO2EmissionResponse,
+  TravelMode,
+} from "@/types/transports";
 import { convertTons } from "@/utils/convert-tons";
-import { mappedTravelMode } from "@/constants/transports";
-import { TransportFilters } from "@/store/transports";
-import { TARGET_YEAR, REDUCTION_RATE, BASE_YEAR } from "@/constants/targets";
 
 interface TransportationEmission {
   sum_full_co2e_tons: number;
@@ -190,7 +189,7 @@ export const getTransportsCO2Emission = async ({
       queryName: "getTotalCO2EmissionQuery",
     });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const outboundCO2Emission = data.cube.find(
         (d) => d.transportation_emission.travel_bounds === "OUTBOUND"
       )?.transportation_emission;
@@ -230,6 +229,7 @@ export const getTransportsCO2Emission = async ({
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
   }
@@ -245,7 +245,7 @@ export const getTransportsCO2EmissionByTravelBounds = async ({
       query,
       { queryName: "getCO2EmissionByTravelBoundsQuery" }
     );
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = Object.values(
         data.cube.reduce(
           (
@@ -259,7 +259,7 @@ export const getTransportsCO2EmissionByTravelBounds = async ({
               transportation_emission;
             if (!acc[mode])
               acc[mode] = {
-                name: mappedTravelMode[mode],
+                name: mode,
                 withinLimit: 0,
                 outsideLimit: 0,
               };
@@ -280,6 +280,7 @@ export const getTransportsCO2EmissionByTravelBounds = async ({
       );
       return filteredData;
     }
+    return null;
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
   }
@@ -297,11 +298,11 @@ export const getTransportsCO2EmissionPerKM = async ({
       queryName: "getCO2EmissionPerKMQuery",
     });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const formattedData = data.cube
         .map(({ graph_transportation_emission_by_mode }) => {
           return {
-            mode: mappedTravelMode[graph_transportation_emission_by_mode.mode],
+            mode: graph_transportation_emission_by_mode.mode,
             emissionCO2KgPerKm: convertTons(
               graph_transportation_emission_by_mode.avg_co2e_tons_per_km,
               "kg"
@@ -312,6 +313,7 @@ export const getTransportsCO2EmissionPerKM = async ({
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
   }
@@ -332,7 +334,7 @@ export const getTransportsCO2EmissionByYearAndModal = async ({
       { queryName: "getCO2EmissionByYearAndModalQuery" }
     );
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const uniqueYears = Array.from(
         new Set(
           data.cube.map(
@@ -363,7 +365,7 @@ export const getTransportsCO2EmissionByYearAndModal = async ({
 
         if (resultMap[year]) {
           Object.keys(resultMap[year]).forEach((mode) => {
-            entry[mappedTravelMode[mode as TravelMode]] = resultMap[year][mode];
+            entry[mode] = resultMap[year][mode];
           });
         }
 
@@ -391,8 +393,8 @@ export const getTransportsCO2EmissionByYearAndModal = async ({
       const filteredUniqueModes = uniqueModes.filter((mode) => {
         return formattedDataWithNulls.some(
           (entry) =>
-            entry[mappedTravelMode[mode as TravelMode]] !== null &&
-            entry[mappedTravelMode[mode as TravelMode]] !== undefined
+            entry[mode] !== null &&
+            entry[mode] !== undefined
         );
       });
 
@@ -400,11 +402,12 @@ export const getTransportsCO2EmissionByYearAndModal = async ({
       return {
         data: formattedDataWithNulls,
         modals: filteredUniqueModes.map(
-          (mode) => mappedTravelMode[mode as TravelMode]
+          (mode) => mode
         ),
         emissionsAnalysis,
       };
     }
+    return null;
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
   }
@@ -422,7 +425,7 @@ export const getTransportsCO2EmissionByYear = async ({
       queryName: "getCO2EmissionByYearQuery",
     });
 
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const emissionsByYear = data.cube
         .map(({ transportation_emission }) => {
           return {
@@ -434,6 +437,7 @@ export const getTransportsCO2EmissionByYear = async ({
 
       return emissionsByYear;
     }
+    return null;
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
   }
@@ -448,12 +452,12 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
         queryName: "getTransportsCO2EmissionModalAnalysisQuery",
       }
     );
-    if (data) {
+    if (data && data?.cube?.length > 0) {
       const modalsData: {
         mode: TravelMode;
         percentageContribution: number;
         avgPercentageYearly: number;
-        contributionStatus: "Redução" | "Elevação";
+        contributionStatus: string;
       }[] = data?.cube?.map(({ transportation_emission_cards }) => {
         return {
           mode: transportation_emission_cards.mode,
@@ -466,10 +470,10 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
       });
 
       const reductionModals = modalsData?.filter(
-        (modal) => modal.contributionStatus === "Redução"
+        (modal) => modal.contributionStatus === "REDUCTION"
       );
       const elevationModals = modalsData?.filter(
-        (modal) => modal.contributionStatus === "Elevação"
+        (modal) => modal.contributionStatus === "ELEVATION"
       );
 
       const modalWithHighestYearlyReduction = reductionModals?.reduce(
@@ -504,6 +508,7 @@ export const getTransportsCO2EmissionModalAnalysis = async () => {
 
       return formattedData;
     }
+    return null;
   } catch (error) {
     console.log("Error fetching total CO2 emission", error);
   }

@@ -31,6 +31,7 @@ export interface TargetPrintContentData {
         co2Emissions: number;
         trips: number;
       }[]
+    | null
     | undefined;
   transportEmissionsTarget:
     | {
@@ -38,6 +39,7 @@ export interface TargetPrintContentData {
         co2Emission: number | null;
         targetCo2Emission: number | null;
       }[]
+    | null
     | undefined;
 }
 interface Props {

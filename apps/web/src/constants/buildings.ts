@@ -1,4 +1,4 @@
-import { BuildingsSector, EnergyFractions } from "@/types/buildings";
+import type { BuildingsSector, EnergyFractions } from "@/types/buildings";
 
 export const mappedSectors: {
   [key in BuildingsSector]: string;

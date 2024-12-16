@@ -3,4 +3,4 @@ const nextConfig = {
   transpilePackages: ["@cloudmatize/ts-utils"],
 };
 
-export default nextConfig;
+export default nextConfig

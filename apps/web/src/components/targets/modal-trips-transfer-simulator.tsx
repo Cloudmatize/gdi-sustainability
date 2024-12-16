@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsStore } from "@/store/targets";
 import type { TravelMode } from "@/types/transports";
 import { Plus, Trash2 } from "lucide-react";
@@ -31,10 +32,12 @@ interface Props {
     name: string;
     icon: JSX.Element | undefined;
   }[];
+  dict: DictionaryContextType['dict']
 }
 export default function ModalTripsTransferSimulator({
   data,
   printContent,
+  dict,
 }: Props) {
   const { transfers, setTransfers } = useTargetsStore();
 
@@ -129,18 +132,15 @@ export default function ModalTripsTransferSimulator({
     <Card className="w-full h-full overflow-y-auto rounded-none ">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-xl text-center font-semibold">
-          Simulador de transferência de viagens entre modais
+          {dict?.targets?.goalsTracker.simulation.simulator.title}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 mt-4  h-[80%]">
         {transfers.map((transfer) => (
           <div key={transfer.id} className="space-y-4 p-4  rounded-lg h-full">
             <div className="flex items-center gap-5">
-              <Badge
-                variant="outline"
-                className="h-8 mr-3 bg-slate-600 text-white font-normal "
-              >
-                De:
+              <Badge variant="outline" className="h-8 mr-3 bg-slate-600 text-white font-normal ">
+                {dict?.targets?.goalsTracker.simulation.simulator.from}:
               </Badge>
               <Select
                 value={transfer.fromMode}
@@ -185,7 +185,7 @@ export default function ModalTripsTransferSimulator({
                   >
                     <div className="flex gap-3 items-center w-full">
                       <Badge variant="outline" className="h-8 mr-3">
-                        Para:
+                        {dict?.targets?.goalsTracker.simulation.simulator.to}:
                       </Badge>
                       <Select
                         value={dist.toMode}
@@ -253,9 +253,9 @@ export default function ModalTripsTransferSimulator({
                         step={1}
                       />
                       <div className="text-sm text-muted-foreground mt-1">
-                        {dist.percentage}% das viagens de{" "}
+                        {dist.percentage}% {dict?.targets?.goalsTracker.simulation.simulator.fromMode}{" "}
                         {data.find((d) => d.id === transfer.fromMode)?.name}{" "}
-                        transferidas para{" "}
+                        {dict?.targets?.goalsTracker.simulation.simulator.toMode}{" "}
                         {data.find((d) => d.id === dist.toMode)?.name}
                       </div>
                     </div>
@@ -272,7 +272,7 @@ export default function ModalTripsTransferSimulator({
                     className="w-full mt-2"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Adicionar distribuição
+                    {dict?.targets?.goalsTracker.simulation.simulator.addDistribution}
                   </Button>
                 )}
             </div>
@@ -285,7 +285,7 @@ export default function ModalTripsTransferSimulator({
         {transfers.length < 1 && (
           <Button variant="outline" onClick={addTransferRow} className="w-full">
             <Plus className="h-4 w-4 mr-2" />
-            Adicionar transferência
+            {dict?.targets?.goalsTracker.simulation.simulator.addTransferRow}
           </Button>
         )}
       </CardContent>

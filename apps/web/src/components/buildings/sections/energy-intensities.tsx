@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ENERGY_FRACTIONS } from "@/constants/buildings";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useBuildingsEnergyIntensitiesBySector } from "@/hooks/buildings";
 import {
   PolarAngleAxis,
@@ -15,10 +15,12 @@ import {
 
 const CustomTooltip = ({
   active,
+  dict,
   payload,
   label,
 }: {
   active?: boolean;
+  dict: DictionaryContextType['dict']
   payload?: {
     color: string;
     payload: {
@@ -38,7 +40,7 @@ const CustomTooltip = ({
               style={{ backgroundColor: item.color }}
             />
             <span className="text-foreground font-bold  w-24 text-center">
-              {ENERGY_FRACTIONS[label as keyof typeof ENERGY_FRACTIONS]}
+              {dict?.ENERGY_FRACTIONS[label as string]}
             </span>
           </div>
           {item.payload.value} kg/kWh
@@ -50,18 +52,16 @@ const CustomTooltip = ({
   return null;
 };
 
-export default function EnergyIntensities() {
+export default function EnergyIntensities({ dict }: DictionaryContextType) {
   const { data, isFetching } = useBuildingsEnergyIntensitiesBySector({});
   return (
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold text-foreground mb-2">
-          Intensidade de emissões por fonte de energia
+          {dict?.buildings.sections.EnergyIntensities.title}
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Compara a quantidade de CO2 emitida por quilowatt-hora entre
-          diferentes fontes de energia, destacando o impacto ambiental de cada
-          uma.
+          {dict?.buildings.sections.EnergyIntensities.description}
         </p>
       </div>
 
@@ -72,12 +72,12 @@ export default function EnergyIntensities() {
           <Card className="p-6 w-full">
             <div className="h-[400px] ">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data || []}>
                   <PolarGrid />
                   <PolarAngleAxis
                     fontSize={12}
-                    tickFormatter={(value: keyof typeof ENERGY_FRACTIONS) =>
-                      `${ENERGY_FRACTIONS[value]}`
+                    tickFormatter={(value) =>
+                      `${dict?.ENERGY_FRACTIONS[value as string]}`
                     }
                     dataKey="name"
                   />
@@ -89,7 +89,7 @@ export default function EnergyIntensities() {
                     fillOpacity={0.6}
                   />
 
-                  <Tooltip content={<CustomTooltip />} />
+                  <Tooltip content={<CustomTooltip dict={dict} />} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>

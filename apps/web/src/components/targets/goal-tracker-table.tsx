@@ -13,15 +13,15 @@ import {
 import { useEffect, useState } from "react";
 
 import {
-  mappedTravelMode,
-  passengersPerTripMapping,
+  passengersPerTripMapping
 } from "@/constants/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsStore } from "@/store/targets";
-import { TravelMode } from "@/types/transports";
+import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
+import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 import { RotateCcw, TrendingDown, TrendingUp } from "lucide-react";
 import ModalSimulator from "./modal-simulator";
-import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
 
 interface TransportModeReal {
   mode: string;
@@ -31,6 +31,7 @@ interface TransportModeReal {
 
 interface Props {
   data: TransportModeReal[];
+  dict: DictionaryContextType['dict']
 }
 
 type TransferLog = {
@@ -101,11 +102,13 @@ function simulateTransfers(
     ])
   );
 
+  // biome-ignore lint/complexity/noForEach: <explanation>
   transferData.forEach((transfer) => {
     const fromMode = transportMap.get(transfer.fromMode);
 
     if (!fromMode) return;
 
+    // biome-ignore lint/complexity/noForEach: <explanation>
     transfer.distributions.forEach((distribution) => {
       const toMode = transportMap.get(distribution.toMode);
 
@@ -137,13 +140,13 @@ function simulateTransfers(
       fromMode.emissionsPerPassenger =
         fromMode.baseTrips > 0
           ? (fromMode.totalEmissions * 1000) /
-            (fromMode.baseTrips * fromMode.passengersPerTrip)
+          (fromMode.baseTrips * fromMode.passengersPerTrip)
           : 0;
 
       toMode.emissionsPerPassenger =
         toMode.baseTrips > 0
           ? (toMode.totalEmissions * 1000) /
-            (toMode.baseTrips * toMode.passengersPerTrip)
+          (toMode.baseTrips * toMode.passengersPerTrip)
           : 0;
 
       fromMode.transferLogs?.push({
@@ -165,7 +168,7 @@ function simulateTransfers(
   return Array.from(transportMap.values());
 }
 
-export default function GoalTrackerTable({ data }: Props) {
+export default function GoalTrackerTable({ data, dict }: Props) {
   const [passengersPerTripData, setPassengersPerTripData] = useState(
     passengersPerTripMapping
   );
@@ -192,6 +195,7 @@ export default function GoalTrackerTable({ data }: Props) {
     }));
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setTransportData(transformData(data, passengersPerTripData));
   }, [passengersPerTripData]);
@@ -224,22 +228,22 @@ export default function GoalTrackerTable({ data }: Props) {
     <Card className="h-full w-full  ">
       <CardHeader>
         <CardTitle>
-          Relatório de emissões por transporte no último ano (
+          {dict?.targets?.goalsTracker.cards.goalTrackerTable.title} (
           {new Date().getFullYear() - 1})
         </CardTitle>
       </CardHeader>
 
-      <ModalSimulator />
+      <ModalSimulator dict={dict} />
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Modal</TableHead>
-              <TableHead className="text-end">Viagens Totais</TableHead>
-              <TableHead className="text-end">Passageiros/Viagem</TableHead>
-              <TableHead className="text-end">Emissões Totais (ton)</TableHead>
+              <TableHead>{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th1}</TableHead>
+              <TableHead className="text-end">{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th2}</TableHead>
+              <TableHead className="text-end">{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th3}</TableHead>
+              <TableHead className="text-end">{dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th4} (ton)</TableHead>
               <TableHead className="text-end">
-                Emissões/Passageiro (kgCO₂)
+                {dict?.targets?.goalsTracker.cards.goalTrackerTable.content.table.th5} (kgCO₂)
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -306,7 +310,7 @@ export default function GoalTrackerTable({ data }: Props) {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span>{mode.icon}</span>
-                      <span>{mappedTravelMode[mode.name as TravelMode]}</span>
+                      <span>{dict?.mappedTravelMode[mode.name]}</span>
                     </div>
                   </TableCell>
                   <TableCell className="text-right flex-1 ">
@@ -368,18 +372,19 @@ export default function GoalTrackerTable({ data }: Props) {
                     <div className="flex items-center justify-end ">
                       {mode.passengersPerTrip !==
                         passengersPerTripMapping[mode.id] && (
-                        <button
-                          onClick={() =>
-                            handlePassengerChange(
-                              mode.id,
-                              passengersPerTripMapping[mode.id]
-                            )
-                          }
-                          className="mr-4 text-gray-500 hover:text-gray-700  "
-                        >
-                          <RotateCcw className="ml-1 h-3 w-3" />
-                        </button>
-                      )}
+                          <button
+                            onClick={() =>
+                              handlePassengerChange(
+                                mode.id,
+                                passengersPerTripMapping[mode.id]
+                              )
+                            }
+                            type="submit"
+                            className="mr-4 text-gray-500 hover:text-gray-700  "
+                          >
+                            <RotateCcw className="ml-1 h-3 w-3" />
+                          </button>
+                        )}
                       <Input
                         type="text"
                         pattern="\d*"

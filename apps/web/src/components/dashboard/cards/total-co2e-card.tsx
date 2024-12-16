@@ -1,19 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CardIcons from "@/components/ui/card-icons";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { Building2, CarFront, Scale } from "lucide-react";
 
 interface Props {
   transportsCo2Emission: number;
   buildingsCo2Emission: number;
+  dict: DictionaryContextType['dict'];
 }
 export function TotalCO2eCard({
-  buildingsCo2Emission,
-  transportsCo2Emission,
+  buildingsCo2Emission = 0,
+  transportsCo2Emission = 0,
+  dict
 }: Props) {
   return (
     <Card className="border w-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle>Emissões totais (tCO2e)</CardTitle>
+        <CardTitle>{dict?.dashboard?.firstSection.cards.TotalCO2eCard.title}</CardTitle>
         <CardIcons>
           <Scale />
         </CardIcons>
@@ -31,7 +34,7 @@ export function TotalCO2eCard({
               <div className="flex items-center gap-2">
                 <CarFront size={20} className="text-primary-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  Transportes:{" "}
+                  {dict?.dashboard?.firstSection.cards.TotalCO2eCard.transportsCo2Emission}{" "}
                   {Math.trunc(transportsCo2Emission || 0).toLocaleString()}{" "}
                 </span>
               </div>
@@ -39,7 +42,7 @@ export function TotalCO2eCard({
             <div className="flex items-center gap-2">
               <Building2 size={20} className="text-primary-foreground" />
               <span className="text-sm text-muted-foreground">
-                Edifícios:{" "}
+                {dict?.dashboard?.firstSection.cards.TotalCO2eCard.buildingsCo2Emission}{" "}
                 {Math.trunc(buildingsCo2Emission || 0).toLocaleString()}{" "}
               </span>
             </div>

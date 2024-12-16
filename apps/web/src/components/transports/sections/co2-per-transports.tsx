@@ -6,6 +6,7 @@ import InfoTooltip from "@/components/ui/info-tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { elegantColors } from "@/config/colors";
 import { mappedTravelMode } from "@/constants/transports";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
 import {
   useTransportsCO2EmissionByYearAndModal,
   useTransportsCO2EmissionModalAnalysis,
@@ -55,15 +56,17 @@ const CustomTooltip = ({
   active,
   payload,
   label,
+  dict
 }: {
   active?: boolean;
   payload?: Payload[];
   label?: string;
+  dict: DictionaryContextType['dict']
 }) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
-        {label}
+
         {payload.map((item, index) => {
           return (
             !!item.value && (
@@ -77,7 +80,7 @@ const CustomTooltip = ({
                     style={{ backgroundColor: item.color }}
                   />
                   <span className="text-foreground font-bold  text-center">
-                    {String(item?.dataKey) || ""}
+                    {dict?.mappedTravelMode[String(item?.dataKey)] || ""}
                   </span>
                 </div>
                 {formatNumber(item.value.toFixed(0)) || 0} tons
@@ -90,7 +93,7 @@ const CustomTooltip = ({
   }
 };
 
-const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+const CustomLegend = ({ payload, dict }: { payload?: Payload[], dict: DictionaryContextType['dict'] }) => {
   return (
     <div className="custom-legend w-full flex gap-3 justify-center items-center mt-8">
       {payload?.map((d, index) => (
@@ -100,7 +103,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             style={{ backgroundColor: d?.color }}
           />
           <span className="text-sm text-foreground text-center">
-            {d?.value}
+            {dict?.mappedTravelMode[d?.value]}
           </span>
         </div>
       ))}
@@ -116,7 +119,7 @@ export const ModalEmissionAnalysisCard = ({
     mode: string;
     avgPercentageYearly: number;
     percentageContribution: number;
-    contributionStatus: "Elevação" | "Redução";
+    contributionStatus: string;
     isHighestYearlyReduction: boolean;
     isLowestYearlyReduction: boolean;
   };
@@ -134,7 +137,7 @@ export const ModalEmissionAnalysisCard = ({
   const title = mappedTravelMode[data?.mode as TravelMode];
   const Icon = mappedTravelModeIcons[data?.mode as TravelMode] || Bus;
 
-  const trend = data?.contributionStatus === "Elevação" ? "up" : "down";
+  const trend = data?.contributionStatus === "ELEVATION" ? "up" : "down";
 
   return loading ? (
     <Skeleton className="h-60 w-full rounded-xl" />
@@ -157,18 +160,18 @@ export const ModalEmissionAnalysisCard = ({
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             <p
-              className={` font-bold ${
-                trend === "up"
-                  ? "text-destructive-foreground"
-                  : "text-primary-foreground"
-              }`}
+              className={` font-bold ${trend === "up"
+                ? "text-destructive-foreground"
+                : "text-primary-foreground"
+                }`}
             >
               {data.contributionStatus}
             </p>
           </div>
           <div className=" flex items-center gap-1">
             <p className="text-sm text-muted-foreground ">
-              Média anual de {trend === "up" ? "elevação" : "redução"}:
+              Média anual de {trend === "up" ? "ELEVATION" : "redução"}:
+              mexer aqui
             </p>
             <div className="flex items-center gap-1">
               {trend === "up" ? (
@@ -177,11 +180,10 @@ export const ModalEmissionAnalysisCard = ({
                 <TrendingDown className="h-4 w-4 text-primary-foreground" />
               )}
               <span
-                className={` font-bold ${
-                  trend === "up"
-                    ? "text-destructive-foreground"
-                    : "text-primary-foreground"
-                }`}
+                className={` font-bold ${trend === "up"
+                  ? "text-destructive-foreground"
+                  : "text-primary-foreground"
+                  }`}
               >
                 {data.avgPercentageYearly}%
               </span>
@@ -213,7 +215,7 @@ export const ModalEmissionAnalysisCard = ({
   );
 };
 
-export default function Co2EmissionPerTransport() {
+export default function Co2EmissionPerTransport({ dict }: DictionaryContextType['dict']) {
   const { data, isFetching } = useTransportsCO2EmissionByYearAndModal({});
   const { data: modalAnalysis, isFetching: isLoadingModalAnalysis } =
     useTransportsCO2EmissionModalAnalysis();
@@ -221,12 +223,10 @@ export default function Co2EmissionPerTransport() {
     <div className="space-y-12 py-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold mb-2 text-foreground">
-          Comparação de emissões por tipo de transporte
+          {dict?.transports.sections.Co2EmissionPerTransport.title}
         </h2>
         <p className="text-muted-foreground max-w-lg">
-          Compara as emissões de CO2 divididas por tipos específicos de
-          transporte, proporcionando uma visão sobre a eficiência de cada
-          modalidade ao longo dos anos.
+          {dict?.transports.sections.Co2EmissionPerTransport.description}
         </p>
       </div>
 
@@ -234,16 +234,14 @@ export default function Co2EmissionPerTransport() {
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
-            contributionStatus: modal.contributionStatus as
-              | "Redução"
-              | "Elevação",
+            contributionStatusTranslated: dict?.chartTrends[modal.contributionStatus]
           };
           return (
             <div className="w-full" key={index}>
               {isLoadingModalAnalysis ? (
                 <Skeleton className="h-[300px]" />
               ) : (
-                <ModalAnalysisYearlyCard transport={formattedModal} />
+                <ModalAnalysisYearlyCard transport={formattedModal} dict={dict} />
               )}
             </div>
           );
@@ -255,7 +253,7 @@ export default function Co2EmissionPerTransport() {
       ) : (
         <Card className="p-4 h-fit overflow-auto" >
           <h3 className="font-semibold text-foreground text-sm mb-6">
-            Emissão CO2 (tCO2e)
+            {dict?.transports.sections.Co2EmissionPerTransport.chart.title}
           </h3>
           <div className="h-[400px]  w-[400px] sm:w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -285,9 +283,9 @@ export default function Co2EmissionPerTransport() {
                     return `${formatCO2Emission(value) || 0}`;
                   }}
                 />
-                <RechartTooltip content={<CustomTooltip />} />
+                <RechartTooltip content={<CustomTooltip dict={dict} />} />
 
-                <Legend content={<CustomLegend />} />
+                <Legend content={<CustomLegend dict={dict} />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
                     // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>

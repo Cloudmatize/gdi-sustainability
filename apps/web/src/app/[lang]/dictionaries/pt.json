@@ -1,0 +1,400 @@
+{
+  "chartTrends": {
+    "ELEVATION": "Elevação",
+    "REDUCTION": "Redução"
+  },
+  "mappedSectors": {
+    "NON-RESIDENTIAL": "Não Residencial",
+    "RESIDENTIAL": "Residencial"
+  },
+  "dataSourceInfo": {
+    "title": "De onde vêm os dados?",
+    "subTitle": "Fonte de Dados",
+    "GoogleEnvironmentalInsightsExplorer": {
+      "title": "Google Environmental Insights Explorer",
+      "description": "O Explorador de Insights Ambientais (EIE) do Google é fundamentado na ideia de que dados e tecnologias podem ajudar a acelerar a transição do mundo para um futuro com baixas emissões de carbono. O EIE tem como objetivo simplificar o processo de estabelecimento de uma linha de base de emissões e identificação de oportunidades tangíveis de redução, o que estabelece o alicerce para ação eficaz. O EIE utiliza fontes de dados exclusivas do Google e capacidades de modelagem para produzir estimativas de atividade, emissões e oportunidades de redução. Ao disponibilizar informações ambientais em uma plataforma robusta e gratuita, buscamos atender a tomadores de decisão e pesquisadores que trabalham nessas questões e soluções para cidades em todo o mundo.",
+      "seeMore": "Ver mais"
+    },
+    "TransportIssuance": {
+      "title": "Emissão de transportes",
+      "description": "Os veículos de transporte geram emissões de gases do efeito estufa diretamente pela combustão de combustíveis fósseis e indiretamente pelo consumo de eletricidade de veículos elétricos (VE). A quantidade de GEE emitidos pelo setor de transporte em uma cidade depende de fatores como: Meios de transporte Tipos de combustíveis usados Data de fabricação e eficiência de veículos Número total de viagens Quilômetros percorridos anualmente",
+      "seeMore": "Ver mais"
+    },
+    "BuildingIssuance": {
+      "title": "Emissão de edifícios",
+      "description": "Os edifícios geram emissões de gases do efeito estufa diretamente da combustão de combustíveis fósseis (por exemplo, o aquecimento) e indiretamente da eletricidade que os residentes e equipamentos utilizam. A quantidade de GEE emitida direta ou indiretamente pelos edifícios depende de muitos fatores, como: numéro de edifícios, tipo de edifícios etc...",
+      "seeMore": "Ver mais"
+    }
+  },
+  "ENERGY_FRACTIONS": {
+    "PROPANE": "Propano",
+    "ELECTRICITY": "Eletricidade",
+    "DIESEL_OIL": "Óleo Diesel",
+    "NATURAL_GAS": "Gás Natural"
+  },
+  "unauthorized": {
+    "title": "Acesso não autorizado",
+    "description": "Desculpe, você não tem permissão para acessar esta página. Por favor, verifique suas credenciais ou entre em contato com o administrador do sistema."
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "Desculpe, a página que você está procurando não existe.",
+    "link": "Voltar para a página inicial"
+  },
+  "routes": {
+    "dashboard": {
+      "title": "Visão geral",
+      "router_title": "dashboard"
+    },
+    "transports": {
+      "title": "Emissão de transportes",
+      "router_title": "transports"
+    },
+    "buildings": {
+      "title": "Emissão de edifícios",
+      "router_title": "buildings"
+    },
+    "targets": {
+      "title": "Rastreador de metas",
+      "router_title": "targets"
+    }
+  },
+  "sidebar": {
+    "userMenu": {
+      "settings": "Configurações",
+      "logout": "Sair"
+    }
+  },
+  "mappedTravelMode": {
+    "AUTOMOBILE": "Automóvel",
+    "BUS": "Ônibus",
+    "MOTORCYCLE": "Motocicleta",
+    "RAIL": "Trem",
+    "SUBWAY": "Metrô",
+    "ON FOOT": "A pé",
+    "CYCLING": "Ciclismo",
+    "PLANE": "Avião"
+  },
+  "dashboard": {
+    "firstSection": {
+      "title": "Visão geral de emissões de CO2 do ano de ",
+      "cards": {
+        "TotalCO2eCard": {
+          "title": "Emissões totais (tCO2e)",
+          "transportsCo2Emission": "Transportes:",
+          "buildingsCo2Emission": "Edifícios:"
+        },
+        "totalCO2Emission": {
+          "title": "Comparação emissões transporte (tCO2e)",
+          "description1": "As emissões de transporte ",
+          "description2": " em ",
+          "trends": {
+            "positive": "aumentaram",
+            "negative": "diminuiram"
+          }
+        },
+        "tCO2PerBuilding": {
+          "title": "Métricas por edifício residencial",
+          "tooltipContent": "tCO2e/edifício",
+          "tCO2PerBuilding": "toneladas de CO2 emitidos por edifício.",
+          "kgCO2PerSquareMeter": "kilogramas de CO2 emitidos por metro quadrado.",
+          "description1": "Os edifícios residenciais possuem ",
+          "description2": "da área total e contribuem com ",
+          "description3": "das emissões"
+        },
+        "nonResidential": {
+          "title": "Métricas por edifício não residencial",
+          "tooltipContent": "tCO2e/edifício",
+          "tCO2PerBuilding": "toneladas de CO2 emitidos por edifício.",
+          "kgCO2PerSquareMeter": "kilogramas de CO2 emitidos por metro quadrado.",
+          "description1": "Os edifícios não residenciais possuem ",
+          "description2": "da área total e contribuem com ",
+          "description3": "das emissões"
+        }
+      }
+    },
+    "secondSection": {
+      "title": "Comparativo de emissões por transporte de 2018 à ",
+      "cards": {
+        "title": "Comparativo de emissões por transporte dos últimos 2 anos",
+        "ModalAnalysisYearlyCard": {
+          "description": "anual médio nas emissões"
+        },
+        "TransportSectorAnalysisHighestIncrease": {
+          "title": "Setor com maior aumento",
+          "isIncrease": "Aumento dos últimos 2 anos nas emissões"
+        },
+        "TransportSectorAnalysisHighestReduction": {
+          "title": "Setor com maior redução",
+          "isIncrease": "Redução dos últimos 2 anos nas emissões"
+        },
+        "totalCO2Emission": {
+          "title": "Transportation Emissions Comparison (tCO2e)",
+          "description1": "Transportation emissions ",
+          "description2": " in ",
+          "trends": {
+            "positive": "increased",
+            "negative": "decreased"
+          }
+        },
+        "tCO2PerBuilding": {
+          "title": "Metrics per Residential Building",
+          "tooltipContent": "tCO2e/building",
+          "tCO2PerBuilding": "tons of CO2 emitted per building.",
+          "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+          "description1": "Residential buildings account for ",
+          "description2": " of the total area and contribute to ",
+          "description3": " of emissions"
+        },
+        "nonResidential": {
+          "title": "Metrics per Non-Residential Building",
+          "tooltipContent": "tCO2e/building",
+          "tCO2PerBuilding": "tons of CO2 emitted per building.",
+          "kgCO2PerSquareMeter": "kilograms of CO2 emitted per square meter.",
+          "description1": "Non-residential buildings account for ",
+          "description2": " of the total area and contribute to ",
+          "description3": " of emissions"
+        },
+        "AverageEmissionsByTransport": {
+          "title": "Emissões médias por transporte (tCO2e)",
+          "TransportCo2eComparissonCard": {
+            "co2EmissionsByModalsEmissionsByPassenger": {
+              "description": {
+                "greater": "maior",
+                "lower": "menor",
+                "lastYear": " que o ano anterior",
+                "keepTheSame": "Manteve o mesmo valor",
+                "noDataToCompare": "Sem dados para comparação"
+              }
+            }
+          }
+        },
+        "EmissionsPerPassenger": {
+          "title": "Emissões por passageiro (kgCO2e)",
+          "infoToolTip": "Emissões por passageiro refere-se à quantidade de emissões de CO2 produzidas por passageiro para cada modo de transporte. Esta métrica ajuda a entender o impacto ambiental de transportar um único passageiro usando diferentes modos de transporte."
+        }
+      }
+    },
+    "thirdSection": {
+      "title": "Emissões por fonte de energia",
+      "cards": {
+        "highestCO2Emission": {
+          "title": "Fonte principal de emissões de CO2",
+          "content": {
+            "0": "Contribuição nas emissões dos edifícios",
+            "1": "Total de CO₂ emitido (tCO2e)"
+          }
+        },
+        "efficiencyComparison": {
+          "title": "Intensidade de emissões por fonte de energia",
+          "content": {
+            "0": "Fonte mais eficiente",
+            "1": "Fonte menos eficiente",
+            "2": "tem o menor impacto por kWh com",
+            "3": "sendo",
+            "4": "vezes mais eficiente que"
+          }
+        }
+      }
+    },
+    "langSwitch": {
+      "title": "Alterar idioma",
+      "pt": "Português Brasileiro",
+      "en": "Inglês",
+      "es": "Espanhol"
+    }
+  },
+  "buildings": {
+    "title": "Emissão de edifícios",
+    "description": "As informações sobre emissões de CO2 dos edifícios auxiliam a organização a monitorar, analisar e progredir em direção às metas de sustentabilidade, focando na redução de gases de efeito estufa.",
+    "metrics": {
+      "title": "Emissão de CO2 em toneladas",
+      "totalEmissions": {
+        "title": "Emissão total",
+        "description": "edifícios"
+      },
+      "issuanceOfResidentialBuildings": {
+        "title": "Emissão de edifícios residenciais"
+      },
+      "issuanceOfNonResidentialBuildings": {
+        "title": "Emissão de edifícios não residenciais"
+      }
+    },
+    "sections": {
+      "EnergyFractions": {
+        "title": "Composição energética e impacto de emissões no município",
+        "description": "Análise da composição das fontes de energia utilizadas no município e avalia o impacto das emissões de CO2 geradas por diferentes tipos de energia.",
+        "cards": {
+          "CompositionOfEnergySourcesBySector": {
+            "title": "Composição das fontes energéticas por setor"
+          },
+          "ImpactOfEnergySourcesOnEmissions": {
+            "title": "Impacto das fontes de energia nas emissões",
+            "CustomPieChartTooltip": {
+              "0": "tons de CO2 emitidos",
+              "1": "Equivale à ",
+              "2": " do total"
+            }
+          }
+        }
+      },
+      "EnergyIntensities": {
+        "title": "Intensidade de emissões por fonte de energia",
+        "description": "Compara a quantidade de CO2 emitida por quilowatt-hora entre diferentes fontes de energia, destacando o impacto ambiental de cada uma.",
+        "cards": {
+          "CompositionOfEnergySourcesBySector": {
+            "title": "Composição das fontes energéticas por setor"
+          },
+          "ImpactOfEnergySourcesOnEmissions": {
+            "title": "Impacto das fontes de energia nas emissões"
+          }
+        }
+      }
+    }
+  },
+  "targets": {
+    "title": "Metas",
+    "goalsTracker": {
+      "simulation": {
+        "title": "Realizar simulação",
+        "simulator": {
+          "title": "Simulador de transferência de viagens entre modais",
+          "to": "Para",
+          "from": "De",
+          "fromMode": "das viagens de",
+          "toMode": "transferidas para",
+          "addDistribution": "Adicionar distribuição",
+          "addTransferRow": "Adicionar transferência"
+        }
+      },
+      "cards": {
+        "baseYear": {
+          "title": "Ano base",
+          "subLabel": "Emissão inicial de CO2",
+          "subUnit": "toneladas de CO2"
+        },
+        "target": {
+          "title": "Meta",
+          "subLabel": "Emissão estimada",
+          "subUnit": "toneladas de CO2"
+        },
+        "targetAdherence": {
+          "title": "Índice de aderência à meta para",
+          "description": "Baseado nas emissões do último ano:",
+          "contentTitle": "Atual",
+          "content": "da meta de redução de emissões para ",
+          "footerTitle": "Simulado",
+          "footer": "Emissões simuladas: "
+        },
+        "goalTrackerTable": {
+          "title": "Relatório de emissões por transporte no último ano",
+          "content": {
+            "table": {
+              "th1": "Meio de Transporte",
+              "th2": "Viagens Totais",
+              "th3": "Passageiros/Viagem",
+              "th4": "Emissões Totais",
+              "th5": "Emissões/Passageiro"
+            }
+          },
+          "modalSimulator": {
+            "totalInitialIssuance": "total de emissão inicial",
+            "totalExpectedIssuance": "total de emissão prevista"
+          }
+        },
+        "transportEmissionTargets": {
+          "title": "Grau de aderência a meta",
+          "inTheGoal": "Dentro da meta",
+          "outOfTheGoal": "Fora da meta",
+          "chart": {
+            "ReferenceLine_BASE_YEAR": "Ano de referência",
+            "ReferenceLine_TARGET_YEAR": "Ano de conclusão da meta",
+            "mappedGoal": {
+              "targetCo2Emission": "Meta de emissões",
+              "co2Emission": "Total de emissões",
+              "simulatedCo2Emission": "Emissões projetadas"
+            }
+          }
+        }
+      }
+    }
+  },
+  "transports": {
+    "title": "Emissão de transportes",
+    "description": "As informações sobre emissões de CO2 no transporte auxiliam a organização a monitorar, analisar e progredir em direção às metas de sustentabilidade, focando na redução de gases de efeito estufa.",
+    "metrics": {
+      "title": "Emissão de CO2 em toneladas",
+      "totalEmissions": {
+        "title": "Emissão total",
+        "description": "viagens"
+      },
+      "withinTheBorder": {
+        "title": "Dentro da fronteira",
+        "infoTooltip": "Diz respeito a aquelas emissões coletadas por viagens que se iniciaram e finalizaram na própria cidade.",
+        "description": "viagens"
+      },
+      "outOfTheBorder": {
+        "title": "Fora da fronteira",
+        "infoTooltip": "Diz respeito a aquelas emissões coletadas por viagens que em algum momento da viagem passaram pela cidade. Isso é, aquele veículo em algum momento emitiu carbono na cidade, porém sua viagem não finalizou na própria cidade",
+        "description": "viagens"
+      }
+    },
+    "sections": {
+      "CO2InboundAndOutbound": {
+        "title": "Comparação de emissões dentro e fora dos limites geográficos",
+        "description": "Compara a média de emissão de CO2 por quilômetro entre diferentes tipos de transporte, diferenciando as emissões dentro e fora dos limites geográficos.",
+        "chart": {
+          "title": "Emissão CO2 (tCO2e)",
+          "legendOne": "Dentro da fronteira",
+          "legendTwo": "Fora da fronteira",
+          "tooltip": {
+            "withinLimit": "Dentro do limite",
+            "outsideLimit": "Fora do limite"
+          }
+        }
+      },
+      "Co2EmissionPerTransport": {
+        "title": "Comparação de emissões por tipo de transporte",
+        "description": "Compara as emissões de CO2 divididas por tipos específicos de transporte, proporcionando uma visão sobre a eficiência de cada modalidade ao longo dos anos.",
+        "chart": {
+          "title": "Emissão CO2 (tCO2e)",
+          "legendOne": "Dentro da fronteira",
+          "legendTwo": "Fora da fronteira"
+        },
+        "cards": {
+          "percentageDescription": "do total de transportes"
+        }
+      },
+      "Co2EmissionPerKilometer": {
+        "title": "Comparação de emissões por quilômetro e tipo de transporte",
+        "description": "Compara as emissões de CO2 por quilômetro entre diferentes tipos de transporte, destacando as variações entre as modalidades.",
+        "chart": {
+          "title": "Emissão CO2 (kgCO2e/km)",
+          "legendOne": "Dentro da fronteira",
+          "legendTwo": "Fora da fronteira"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Alterações realizadas aqui ficarão salvas apenas neste dispositivo"
+  },
+  "login": {
+    "title": "Bem vindo ao ",
+    "description": "Transformando dados em ações sustentáveis.",
+    "action": "Entrar"
+  },
+  "themeSwitch": {
+    "title": "Alterar tema",
+    "dark": "Escuro",
+    "light": "Claro",
+    "system": "Cor do sistema"
+  },
+  "themeColorSwitch": {
+    "title": "Alterar cores",
+    "primary": "Cores dos botões",
+    "text": "Cores dos textos",
+    "standard": "Redefinir"
+  }
+}

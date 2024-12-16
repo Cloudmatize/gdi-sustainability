@@ -1,3 +1,3 @@
 [submodule "packages/utils"]
-	path = packages/utils
+	path = packages/ts-utils
 	url = git@github.com:Cloudmatize/ts-utils.git

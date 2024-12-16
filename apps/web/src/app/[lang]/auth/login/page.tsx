@@ -1,6 +1,9 @@
 import Login from "@/components/auth/login";
+import { getDictionary } from "../../dictionaries";
 interface SignInPageProp {
-  params: object;
+  params: {
+    lang: string
+  };
   searchParams: {
     callbackUrl: string;
     error: string;
@@ -8,7 +11,9 @@ interface SignInPageProp {
 }
 
 export default async function LoginPage({
+  params: { lang },
   searchParams: { callbackUrl, error },
 }: SignInPageProp) {
-  return <Login />;
+  const dict = await getDictionary(lang)
+  return <Login dict={dict?.login} />;
 }

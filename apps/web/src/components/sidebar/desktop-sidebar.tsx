@@ -1,9 +1,9 @@
-// @ts-nocheck
-
-import { routes } from "@/config/menuRoutes";
+import { getRoutes } from "@/config/menuRoutes";
+import type { DictionaryContextType } from "@/context/DictionaryContext";
+import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { useContext } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -35,13 +35,25 @@ import {
 } from "../ui/sidebar";
 import { UserMenu } from "./user-menu";
 
-export function DesktopSideBar() {
-  const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
 
-  const handleChangeOpenState = (route: { id: number; parent?: number }) => {
+export function DesktopSideBar({ dict }: DictionaryContextType) {
+  const { open, toggleSidebar, openRoute, setOpenRoute } = useSidebar();
+  // const { getCurrentFlag } = useContext(FeatureFlagsContext);
+  const routes = getRoutes(dict.routes)
+
+  const filteredRoutes = routes.filter((route) => {
+    return true
+    if (!route.fliptFlag) return true;
+    // const flag = getCurrentFlag(route.fliptFlag);
+    // return flag?.enabled;
+
+  });
+
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const handleChangeOpenState = (route: { id: number; parent?: number; children?: any[] }) => {
     if (!openRoute.includes(route.id)) {
       if (route.parent) {
-        const routes: number[] = [route.id, route.parent];
+        const routes = [route.id, route.parent];
         setOpenRoute(routes);
       } else {
         setOpenRoute([route.id]);
@@ -61,9 +73,10 @@ export function DesktopSideBar() {
       <SidebarHeader className="border-b h-[65px]  gap-2 justify-center flex flex-col items-center w-full">
         <SidebarMenu className="p-0 m-0 flex flex-col justify-center items-center">
           <SidebarMenuItem className="flex flex-col justify-center items-center w-full">
-            <div
+            <button
               className="bg-transparent p-0 m-0 justify-center flex flex-row cursor-pointer"
               onClick={handleToggleSideBar}
+              type="submit"
             >
               <div
                 className={`flex  h-full w-full flex-row gap-2  items-center ${open ? " justify-center" : " justify-start"}`}
@@ -74,13 +87,13 @@ export function DesktopSideBar() {
                   className="w-40  "
                 />
               </div>
-            </div>
+            </button>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="py-2 flex flex-col gap-0 px-2 overflow-clip">
-        {routes?.map((route) =>
-          route.children ? (
+        {filteredRoutes?.map((route) =>
+          route?.children ? (
             <DropdownMenu key={route.id}>
               <Collapsible
                 open={openRoute.includes(Number(route.id))}
@@ -114,7 +127,7 @@ export function DesktopSideBar() {
                             onClick={(e) => handleChangeOpenState(route as any)}
                           >
                             <div className="flex flex-row gap-2 items-center">
-                              <route.icon size={20}  className="font-bold" />
+                              <route.icon size={20} className="font-bold" />
                               <p
                                 className={`${open ? "text-sm" : "text-[0px]"} delay-100 transition-all ease-in-out duration-200`}
                               >
@@ -220,7 +233,7 @@ export function DesktopSideBar() {
       <SidebarFooter className="border-t py-4 flex flex-row gap-4 px-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <UserMenu />
+            <UserMenu dict={dict?.sidebar?.userMenu} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
