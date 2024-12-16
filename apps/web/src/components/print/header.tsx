@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import { useDictionary } from "@/context/DictionaryContext";
 import { format } from "date-fns/format";
+import Image from "next/image";
 type HeaderProps = {
   title: string;
   subtitle?: string;
@@ -9,6 +10,7 @@ type HeaderProps = {
 };
 
 export function Header({ title, subtitle, generatedAt }: HeaderProps) {
+  const { dict } = useDictionary()
   return (
     <div className="flex flex-col p-4 justify-center items-center gap-3 mb-5 bg-gray-50">
       <div className="flex items-center justify-evenly w-full">
@@ -32,7 +34,7 @@ export function Header({ title, subtitle, generatedAt }: HeaderProps) {
         {subtitle && <p className="text-sm">{subtitle}</p>}
 
         <p className="text-xs pt-2">
-          {`Relatório emitido em ${generatedAt || format(new Date(), "dd/MM/yyyy HH:mm")}`}
+          {`${dict?.print?.generatedWhen} ${generatedAt || format(new Date(), "dd/MM/yyyy HH:mm")}`}
         </p>
       </div>
     </div>

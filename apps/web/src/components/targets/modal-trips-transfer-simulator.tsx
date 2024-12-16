@@ -32,7 +32,7 @@ interface Props {
     name: string;
     icon: JSX.Element | undefined;
   }[];
-  dict: DictionaryContextType['dict']
+  dict: DictionaryContextType["dict"];
 }
 export default function ModalTripsTransferSimulator({
   data,
@@ -139,7 +139,10 @@ export default function ModalTripsTransferSimulator({
         {transfers.map((transfer) => (
           <div key={transfer.id} className="space-y-4 p-4  rounded-lg h-full">
             <div className="flex items-center gap-5">
-              <Badge variant="outline" className="h-8 mr-3 bg-slate-600 text-white font-normal ">
+              <Badge
+                variant="outline"
+                className="h-8 mr-3 bg-slate-600 text-white font-normal "
+              >
                 {dict?.targets?.goalsTracker.simulation.simulator.from}:
               </Badge>
               <Select
@@ -253,9 +256,16 @@ export default function ModalTripsTransferSimulator({
                         step={1}
                       />
                       <div className="text-sm text-muted-foreground mt-1">
-                        {dist.percentage}% {dict?.targets?.goalsTracker.simulation.simulator.fromMode}{" "}
+                        {dist.percentage}%{" "}
+                        {
+                          dict?.targets?.goalsTracker.simulation.simulator
+                            .fromMode
+                        }{" "}
                         {data.find((d) => d.id === transfer.fromMode)?.name}{" "}
-                        {dict?.targets?.goalsTracker.simulation.simulator.toMode}{" "}
+                        {
+                          dict?.targets?.goalsTracker.simulation.simulator
+                            .toMode
+                        }{" "}
                         {data.find((d) => d.id === dist.toMode)?.name}
                       </div>
                     </div>
@@ -272,14 +282,17 @@ export default function ModalTripsTransferSimulator({
                     className="w-full mt-2"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    {dict?.targets?.goalsTracker.simulation.simulator.addDistribution}
+                    {
+                      dict?.targets?.goalsTracker.simulation.simulator
+                        .addDistribution
+                    }
                   </Button>
                 )}
             </div>
 
-            <div className="flex items-center gap-10">
+            {/* <div className="flex items-center gap-10">
               <SaveSimulationModal onSave={handleConfirmSaveSimulation} />
-            </div>
+            </div> */}
           </div>
         ))}
         {transfers.length < 1 && (

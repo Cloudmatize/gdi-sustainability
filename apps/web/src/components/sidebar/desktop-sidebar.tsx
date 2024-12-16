@@ -1,9 +1,7 @@
 import { getRoutes } from "@/config/menuRoutes";
 import type { DictionaryContextType } from "@/context/DictionaryContext";
-import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
-import { useContext } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -43,7 +41,7 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
 
   const filteredRoutes = routes.filter((route) => {
     return true
-    if (!route.fliptFlag) return true;
+    // if (!route.fliptFlag) return true;
     // const flag = getCurrentFlag(route.fliptFlag);
     // return flag?.enabled;
 

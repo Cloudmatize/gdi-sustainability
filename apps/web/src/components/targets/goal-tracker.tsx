@@ -7,24 +7,22 @@ import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { usePrintStore } from "@/store/print";
 import { useTargetsStore } from "@/store/targets";
 import type { TravelMode } from "@/types/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { cx } from "class-variance-authority";
 import { CalendarClock, Target } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { PrintButton } from "../print-button";
 import { Sidebar } from "../sidebar";
 import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
 import GoalTrackerTable from "./goal-tracker-table";
 import MultiModalSimulatorTransferSimulator from "./modal-trips-transfer-simulator";
+import PrintTargetReportPage from "./print-target-report-page";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
-import { PrintButton } from "../print-button";
-import PrintTargetReportPage, {
-  TargetPrintContentData,
-} from "./print-target-report-page";
-import { usePrintStore } from "@/store/print";
 
 const transformData = (
   data: {
@@ -132,13 +130,12 @@ export default function GoalTracker({ dict }: DictionaryContextType) {
             setIsOpen={setOpenSidebar}
           >
             <MultiModalSimulatorTransferSimulator
-              printContent={printContent}
               dict={dict}
+              printContent={printContent}
               data={modalData || []}
             />
           </Sidebar>
         )}
-
         <div className="flex justify-end w-full gap-6">
           <PrintButton
             title="Imprimir Metas de Emissão de CO2"
@@ -208,7 +205,6 @@ export default function GoalTracker({ dict }: DictionaryContextType) {
                 />
               )}
             </div>
-
             <div
               className={cx(
                 "h-full col-span-2 md:col-span-2",

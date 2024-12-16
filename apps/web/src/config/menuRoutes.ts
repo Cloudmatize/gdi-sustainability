@@ -1,19 +1,18 @@
 import {
   FLIPT_BUILDINGS_FLAG,
-  FLIPT_TARGETS_FLAG,
   FLIPT_TRANSPORTS_FLAG,
   IS_FLIPT_ACTIVE,
 } from "@/constants/flipt";
-import { Building, Bus, Goal, Home } from "lucide-react";
+import { Building, Bus, Goal, Home, LucideProps } from "lucide-react";
 
 interface Route {
   id: number;
   title: string;
   path: string;
   icon: any;
-  fliptFlag?: string;
   children?: Route[];
   router_title: string;
+  fliptFlag?: string;
 }
 
 type RoutesObject = {
@@ -50,9 +49,9 @@ export const routes: Route[] = [
   {
     id: 4,
     title: "Metas",
+    router_title: "targets",
     path: "/",
     icon: Goal,
-    router_title: "targets",
     children: [
       {
         title: "Rastreador de metas",
@@ -61,13 +60,13 @@ export const routes: Route[] = [
         router_title: "targets_tracker",
         icon: Goal,
       },
-      {
-        title: "Histórico de simulações",
-        path: "/targets/history",
-        router_title: "targets_history",
-        id: 6,
-        icon: Goal,
-      },
+      // {
+      //   title: "Histórico de simulações",
+      //   path: "/targets/history",
+      //   router_title: "targets_history",
+      //   id: 6,
+      //   icon: Goal,
+      // },
     ],
   },
 ];
@@ -88,4 +87,24 @@ export const getRoutes = (_routes: RoutesObject): Route[] => {
   });
 
   return updatedRoutes;
+
+  // Extract the values from the object and map them to the `routes` array
+  // const updatedRoutes = routes.map((route) => {
+  //   let updatedRoute = {}
+  //   if (route?.children) {
+  //     const updatedRoutesChildren = route?.children.map((_route_children) => {
+  //       const updatedRoute = _routes[route.router_title];
+  //       if (updatedRoute) {
+  //         return { ...route, title: updatedRoute.title };
+  //       }
+  //     })
+  //   }
+  //   const updatedRoute = _routes[route.router_title];
+  //   if (updatedRoute) {
+  //     return { ...route, title: updatedRoute.title };
+  //   }
+  //   return route; // Keep the original route if no update is found
+  // });
+
+  // return updatedRoutes;
 };
