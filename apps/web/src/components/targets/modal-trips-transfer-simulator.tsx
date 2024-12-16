@@ -47,7 +47,6 @@ export default function ModalTripsTransferSimulator({
       generatedDate: new Date().toISOString(),
       data: printContent,
     };
-    console.log("reportData", reportData);
   };
   const addTransferRow = () => {
     const newDistId = String(Math.floor(Math.random() * 9000) + 1000);
