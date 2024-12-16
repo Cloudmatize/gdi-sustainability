@@ -1,22 +1,19 @@
 import {
   FLIPT_BUILDINGS_FLAG,
-  FLIPT_TARGETS_FLAG,
   FLIPT_TRANSPORTS_FLAG,
   IS_FLIPT_ACTIVE,
 } from "@/constants/flipt";
-import { Building, Bus, Goal, Home } from "lucide-react";
+import { Building, Bus, Goal, Home, LucideProps } from "lucide-react";
 
 interface Route {
   id: number;
   title: string;
   path: string;
-  icon: any
-  fliptFlag?: string;
+  icon: any;
   children?: Route[];
   router_title: string;
+  fliptFlag?: string;
 }
-
-
 
 type RoutesObject = {
   [key: string]: {
@@ -24,7 +21,6 @@ type RoutesObject = {
     router_title: string;
   };
 };
-
 
 export const routes: Route[] = [
   {
@@ -50,17 +46,30 @@ export const routes: Route[] = [
     icon: Building,
     fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_BUILDINGS_FLAG : undefined,
   },
-
   {
     id: 4,
-    title: "Rastreador de metas",
-    path: "/targets",
+    title: "Metas",
     router_title: "targets",
+    path: "/",
     icon: Goal,
-    fliptFlag: IS_FLIPT_ACTIVE ? FLIPT_TARGETS_FLAG : undefined,
+    children: [
+      {
+        title: "Rastreador de metas",
+        path: "/targets",
+        id: 5,
+        router_title: "targets_tracker",
+        icon: Goal,
+      },
+      // {
+      //   title: "Histórico de simulações",
+      //   path: "/targets/history",
+      //   router_title: "targets_history",
+      //   id: 6,
+      //   icon: Goal,
+      // },
+    ],
   },
 ];
-
 
 export const getRoutes = (_routes: RoutesObject): Route[] => {
   if (!_routes || typeof _routes !== "object") {
@@ -78,4 +87,24 @@ export const getRoutes = (_routes: RoutesObject): Route[] => {
   });
 
   return updatedRoutes;
+
+  // Extract the values from the object and map them to the `routes` array
+  // const updatedRoutes = routes.map((route) => {
+  //   let updatedRoute = {}
+  //   if (route?.children) {
+  //     const updatedRoutesChildren = route?.children.map((_route_children) => {
+  //       const updatedRoute = _routes[route.router_title];
+  //       if (updatedRoute) {
+  //         return { ...route, title: updatedRoute.title };
+  //       }
+  //     })
+  //   }
+  //   const updatedRoute = _routes[route.router_title];
+  //   if (updatedRoute) {
+  //     return { ...route, title: updatedRoute.title };
+  //   }
+  //   return route; // Keep the original route if no update is found
+  // });
+
+  // return updatedRoutes;
 };
