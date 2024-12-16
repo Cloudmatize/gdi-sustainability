@@ -5,6 +5,7 @@ import { PublicProviders } from "@/providers/public";
 import type { Metadata } from "next";
 import { PublicEnvScript } from "next-runtime-env";
 import { Inter } from "next/font/google";
+import Head from "next/head";
 import { Suspense } from "react";
 import "./globals.css";
 
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
   description: "Go Sustainability - A platform for sustainable development",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,9 +25,10 @@ export default function RootLayout({
   return (
     // biome-ignore lint/a11y/useHtmlLang: <explanation>
     <html suppressHydrationWarning>
-      <head>
+      <Head>
         <PublicEnvScript />
-      </head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
