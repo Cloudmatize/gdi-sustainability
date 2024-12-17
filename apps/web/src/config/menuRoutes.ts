@@ -98,7 +98,6 @@ export const getRoutes = (_routes: RoutesObject): Route[] => {
             ...children, title: _routes[children.router_title]?.title
           })
         })
-        console.log(updatedChildrens)
         actualRoutes.push({ ...route, title: updatedRoute.title, children: updatedChildrens })
       } else {
         actualRoutes.push({ ...route, title: updatedRoute.title})
