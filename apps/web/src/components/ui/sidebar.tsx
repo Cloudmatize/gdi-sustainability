@@ -39,8 +39,8 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 type SidebarContext = {
   state: "expanded" | "collapsed";
   open: boolean;
-  openRoute: number[];
-  setOpenRoute: (openRoute: number[]) => void;
+  openRoute: string[];
+  setOpenRoute: (openRoute: string[]) => void;
   setOpen: (open: boolean) => void;
   openMobile: boolean;
   setOpenMobile: (open: boolean) => void;
@@ -297,7 +297,7 @@ const CustomSideBarTrigger = forwardRef<
   const { toggleSidebar, open, isMobile, setOpenRoute } = useSidebar();
 
   const handleRemoveChecks = () => {
-    setOpenRoute([0]);
+    // setOpenRoute(['']);
     toggleSidebar();
   };
 
@@ -601,11 +601,11 @@ const SidebarMenuItem = React.forwardRef<
 SidebarMenuItem.displayName = "SidebarMenuItem";
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-primary hover:text-sidebar-accent-primary-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        default: "hover:bg-sidebar-primary hover:text-sidebar-accent-primary-foreground",
         outline:
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
@@ -627,6 +627,7 @@ const SidebarMenuButton = React.forwardRef<
   React.ComponentProps<"button"> & {
     asChild?: boolean;
     isActive?: boolean;
+    disabled?: boolean;
     tooltip?: string | React.ComponentProps<typeof TooltipContent>;
   } & VariantProps<typeof sidebarMenuButtonVariants>
 >(
@@ -634,8 +635,9 @@ const SidebarMenuButton = React.forwardRef<
     {
       asChild = false,
       isActive = false,
-      variant = "default",
+      variant = "outline",
       size = "default",
+      disabled = false,
       tooltip,
       className,
       ...props
@@ -651,7 +653,7 @@ const SidebarMenuButton = React.forwardRef<
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+        className={` ${cn(sidebarMenuButtonVariants({ variant, size }), className)} ${isActive ? 'bg-primary text-primary-foreground' : ''} ${disabled ? "bg-zinc-200 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-500" : ""}`}
         {...props}
       />
     );
@@ -800,11 +802,12 @@ const SidebarMenuSubButton = React.forwardRef<
     asChild?: boolean;
     size?: "sm" | "md";
     isActive?: boolean;
+    disabled?: boolean;
     tooltip?: string | React.ComponentProps<typeof TooltipContent>;
   }
 >(
   (
-    { asChild = false, size = "md", tooltip, isActive, className, ...props },
+    { asChild = false, size = "md", tooltip, disabled, isActive, className, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : "a";
@@ -817,11 +820,14 @@ const SidebarMenuSubButton = React.forwardRef<
         data-size={size}
         data-active={isActive}
         className={cn(
-          "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
-          "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
+          // "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring bg-sidebar-normal hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
+          // "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
+
+          "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 peer/menu-button w-full text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-primary hover:text-sidebar-accent-primary-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
           size === "sm" && "text-xs",
           size === "md" && "text-sm",
           "group-data-[collapsible=icon]:hidden",
+          disabled ? "bg-zinc-200 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-500" : "",
           className
         )}
         {...props}
