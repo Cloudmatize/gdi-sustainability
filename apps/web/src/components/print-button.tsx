@@ -41,7 +41,12 @@ export function PrintButton({
     onAfterPrint: () => {
       setIsPrinting(false);
     },
-    
+    pageStyle: `
+      @page {
+      }
+      body {
+      }
+    `,
     contentRef: contentToPrint,
   });
 

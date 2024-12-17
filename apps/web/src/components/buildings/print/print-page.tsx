@@ -23,7 +23,7 @@ export default function PrintBuildingsPage({ componentRef }: Props) {
   const { data } = useBuildingsFloorAreasBySector({});
 
   return (
-    <div className="h-screen overflow-y-auto">
+    <div className="h-screen">
       {isPrinting && <PrintLoadingStatePage />}
       <div ref={componentRef} className=" space-y-4 text-xs  ">
         <Header
