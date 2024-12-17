@@ -7,6 +7,7 @@ import { Building } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
 import DataSourceInfo from "../data-source-info";
 import InfoCard from "../info-card";
+import YearSelect from "../year-select";
 import EnergyFractions from "./sections/energy-fractions";
 import EnergyIntensities from "./sections/energy-intensities";
 
@@ -24,6 +25,14 @@ export default function BuildingsPage() {
             <h1 className="flex flex-nowrap break-keep items-center gap-3 text-3xl font-bold text-foreground">
               {dict?.buildings.title} <Building size={36} />
             </h1>
+          </div>
+          <div className="flex items-center gap-2 my-3 xl:my-0">
+            <YearSelect
+              endYear={2023}
+              startYear={2018}
+              value={String(new Date().getFullYear() - 1)}
+              disabled
+            />
           </div>
         </div>
 
