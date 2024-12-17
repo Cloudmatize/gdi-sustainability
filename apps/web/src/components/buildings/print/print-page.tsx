@@ -11,6 +11,7 @@ import { Building } from "lucide-react";
 import { MutableRefObject } from "react";
 import { MdCo2 } from "react-icons/md";
 import PrintEnergyFractions from "./print-energy-fractions";
+import PrintEnergyIntensities from "./print-energy-intensities";
 
 interface Props {
   componentRef?: MutableRefObject<null>;
@@ -83,8 +84,8 @@ export default function PrintBuildingsPage({ componentRef }: Props) {
               ${formatNumber(data?.notResidential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.notResidential.area)}m²)`}
             />
           </div>
-          <PrintEnergyFractions dict={dict} />
-          {/* <EnergyIntensities dict={dict} /> */}
+          <PrintEnergyFractions />
+          <PrintEnergyIntensities />
         </div>
       </div>
     </div>

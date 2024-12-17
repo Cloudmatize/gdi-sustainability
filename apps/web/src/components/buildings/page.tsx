@@ -46,7 +46,7 @@ export default function BuildingsPage() {
       <div
         className={cx(
           "min-h-screen bg-background p-4 md:p-6 lg:px-16",
-          !isPrinting ? "hidden" : ""
+          // !isPrinting ? "hidden" : ""
         )}
       >
         <div className="mx-auto space-y-6">
@@ -116,13 +116,13 @@ export default function BuildingsPage() {
 
   return (
     <>
-      <PrintButton
+      {/* <PrintButton
         title="Página de emissões de CO2 por edifícios"
         disabled={false}
         contentToPrint={contentRef}
-      />
-      {/* <MainContent /> */}
-      <PrintBuildingsPage componentRef={contentRef} />
+      /> */}
+      <MainContent />
+      {/* <PrintBuildingsPage componentRef={contentRef} /> */}
       {/* {isPrinting && <PrintBuildingsPage componentRef={contentRef} />} */}
     </>
   );

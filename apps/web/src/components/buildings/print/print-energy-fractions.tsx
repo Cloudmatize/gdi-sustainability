@@ -115,8 +115,6 @@ const renderCustomizedLabelPieChart = ({
   midAngle,
   innerRadius,
   outerRadius,
-  percent,
-  index,
   payload,
   dict,
 }: any) => {
@@ -224,8 +222,9 @@ const CustomPieChartTooltip = ({
   return null;
 };
 
-export default function PrintEnergyFractions({ dict }: DictionaryContextType) {
+export default function PrintEnergyFractions() {
   const { data, isFetching } = useBuildingsEnergyFractionsBySector({});
+  const { dict } = useDictionary();
   const translatedData = {
     totalEmissionCO2ByFraction: data?.totalEmissionCO2ByFraction?.map(
       (totalEmissionCO2ByFraction) => ({
