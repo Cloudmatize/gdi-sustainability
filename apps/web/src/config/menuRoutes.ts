@@ -74,7 +74,7 @@ export const routes: Route[] = [
         router_title: "targets_history",
         id: 6,
         icon: Goal,
-        disabled: false
+        disabled: true
       },
     ],
   },
