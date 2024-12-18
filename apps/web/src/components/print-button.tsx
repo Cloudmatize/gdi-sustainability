@@ -41,6 +41,7 @@ export function PrintButton({
     onAfterPrint: () => {
       setIsPrinting(false);
     },
+    
     contentRef: contentToPrint,
   });
 
