@@ -242,7 +242,7 @@ export default function PrintCo2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="flex  gap-6  break-inside-avoid">
+      <div className="flex  gap-6    break-after-page">
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
@@ -267,8 +267,8 @@ export default function PrintCo2EmissionPerTransport() {
       {isFetching ? (
         <Skeleton className="h-[350px] rounded-xl" />
       ) : (
-        <Card className="p-6 h-[400px]  mt-10 pt-10  break-inside-avoid ">
-          <h3 className="font-semibold text-foreground text-sm ">
+        <Card className="p-6 h-[400px]">
+          <h3 className="font-semibold text-foreground text-xs ">
             {dict?.transports.sections.Co2EmissionPerTransport.chart.title}
           </h3>
           <div className="h-full  w-full">
@@ -286,12 +286,12 @@ export default function PrintCo2EmissionPerTransport() {
                   tickSize={1}
                   strokeWidth={0.3}
                   stroke="#888888"
-                  fontSize={10}
+                  fontSize={8}
                   tickMargin={18}
                 />
                 <YAxis
                   stroke="#888888"
-                  fontSize={10}
+                  fontSize={8}
                   tickMargin={10}
                   strokeWidth={0.3}
                   tickFormatter={(value: number) => {
@@ -310,7 +310,7 @@ export default function PrintCo2EmissionPerTransport() {
                       formatter: (value: number) =>
                         `${formatCO2Emission(value) || 0} `,
                       fill: "#666",
-                      fontSize: 10,
+                      fontSize: 8,
                       offset: 10,
                     }}
                     dataKey={modal}
