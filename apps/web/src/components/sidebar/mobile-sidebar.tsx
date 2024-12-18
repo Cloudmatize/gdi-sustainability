@@ -1,8 +1,8 @@
-import { getRoutes } from "@/config/menuRoutes";
+import { Route, getRoutes } from "@/config/menuRoutes";
 import type { DictionaryContextType } from "@/context/DictionaryContext";
-import { FeatureFlagsContext } from "@/providers/authenticated/feature-flags";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useContext, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -25,7 +25,7 @@ import { UserMenu } from "./user-menu";
 
 
 export function MobileSideBar({ dict }: DictionaryContextType) {
-  const [openRoute, setOpenRoute] = useState([0])
+  const [openRoute, setOpenRoute] = useState([''])
   const { open, toggleSidebar } = useSidebar()
   // const { getCurrentFlag } = useContext(FeatureFlagsContext);
   const routes = getRoutes(dict?.routes)
@@ -36,22 +36,33 @@ export function MobileSideBar({ dict }: DictionaryContextType) {
     // const flag = getCurrentFlag(route.fliptFlag);
     // return flag?.enabled;
   });
-  const handleChangeOpenState = (route: { id: number; parent?: number }) => {
-    if (!openRoute.includes(route.id)) {
-      if (route.parent) {
-        const routes = [route.id, route.parent];
-        setOpenRoute(routes);
-      } else {
-        setOpenRoute([route.id]);
+  const handleChangeOpenState = (route: Route, children?: Route) => {
+    if (children?.router_title) {
+      if (route?.disabled) {
+        return
       }
+      if (children?.disabled) {
+        return
+      }
+      const routes = [route.router_title, children?.router_title];
+      setOpenRoute(routes);
+      return
+    }
+    if (route?.disabled) {
+      return
+    }
+
+    if (!openRoute.includes(route.router_title)) {
+      setOpenRoute([route.router_title]);
       return;
     }
-    setOpenRoute([0]);
+
+    // setOpenRoute(['']);
     return;
   };
 
   const handleToggleSideBar = () => {
-    setOpenRoute([0]);
+    // setOpenRoute(['']);
     toggleSidebar();
   };
 
@@ -75,8 +86,8 @@ export function MobileSideBar({ dict }: DictionaryContextType) {
         {filteredRoutes?.map((route) =>
           route?.children ? (
             <Collapsible
-              key={route.id}
-              open={openRoute.includes(route.id)}
+              key={route.router_title}
+              open={openRoute.includes(route.router_title)}
               className="group/collapsible"
             >
               <SidebarGroup className="p-1 my-1 flex flex-col items-center">
@@ -85,7 +96,9 @@ export function MobileSideBar({ dict }: DictionaryContextType) {
                     <SidebarMenuButton
                       tooltip={route.title}
                       variant="default"
-                      className={`px-2 transition-all duration-200 delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.id) ? "bg-teal-400 text-white w-full font-bold" : "w-full "}`}
+                      disabled={route?.disabled}
+                      isActive={openRoute.includes(route.router_title)}
+                      className={"px-2 transition-all duration-200 delay-150 flex font-normal flex-row justify-between items-center text-slate-600 w-full"}
                       onClick={(e) => handleChangeOpenState(route)}
                     >
                       <div className="flex flex-row gap-2 items-center">
@@ -96,7 +109,7 @@ export function MobileSideBar({ dict }: DictionaryContextType) {
                           {route.title}
                         </p>
                       </div>
-                      {openRoute.includes(route.id) ? (
+                      {openRoute.includes(route.router_title) ? (
                         <ChevronUp />
                       ) : (
                         <ChevronDown />
@@ -110,12 +123,12 @@ export function MobileSideBar({ dict }: DictionaryContextType) {
                     <SidebarMenu className="border-l-2 px-4">
                       {route?.children?.map((children) => (
                         <SidebarMenuItem key={children.title} className="max-w-56 w-56">
-                          <SidebarMenuButton asChild className={`max-w-56  w-full ${openRoute.includes(children.id) ? "bg-teal-400 text-white font-bold" : ""}`} onClick={(e) => handleChangeOpenState(children)}>
-                            <a href={children.path}>
+                          <Link href={children?.disabled ? '#' : children.path}>
+                            <SidebarMenuButton disabled={children?.disabled} isActive={openRoute.includes(children.router_title)} className={"max-w-56 w-full"} onClick={(e) => handleChangeOpenState(route, children)}>
                               <children.icon />
                               <span>{children.title}</span>
-                            </a>
-                          </SidebarMenuButton>
+                            </SidebarMenuButton>
+                          </Link>
                         </SidebarMenuItem>
                       ))}
                     </SidebarMenu>
@@ -124,14 +137,16 @@ export function MobileSideBar({ dict }: DictionaryContextType) {
               </SidebarGroup>
             </Collapsible>
           ) : (
-            <SidebarGroup className="p-1" key={route.id}>
+            <SidebarGroup className="p-1" key={route.router_title}>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem className="w-full">
-                    <SidebarMenuButton variant="default" className={`w-full text-slate-600  ${openRoute.includes(route.id) ? "bg-teal-400 text-white font-bold" : ""}`} onClick={(e) => handleChangeOpenState(route)}>
-                      <route.icon size={20} />
-                      {route.title}
-                    </SidebarMenuButton>
+                    <Link href={route?.disabled ? '#' : route.path} className="flex flex-row gap-2">
+                      <SidebarMenuButton isActive={openRoute.includes(route.router_title)} variant="default" className={"w-full"} onClick={(e) => handleChangeOpenState(route)}>
+                        <route.icon size={20} />
+                        {route.title}
+                      </SidebarMenuButton>
+                    </Link>
                   </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
