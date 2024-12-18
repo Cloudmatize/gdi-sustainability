@@ -17,14 +17,18 @@ import PrintBuildingsPage from "@/components/buildings/print/print-page";
 import { PrintButton } from "@/components/print-button";
 import { cx } from "class-variance-authority";
 import { usePrintStore } from "@/store/print";
+import PrintTargetsPage from "@/components/targets/print/print-page";
+import { useTargetsStore } from "@/store/targets";
 
 const pages = [
   { value: "transports", label: "Transports" },
   { value: "buildings", label: "Buildings" },
+  { value: "targets", label: "Targets" },
 ];
 
 function Page() {
   const { dict } = useDictionary();
+  const { transfers, totalCo2Emission } = useTargetsStore();
   const [selectedPages, setSelectedPages] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
 
@@ -39,11 +43,22 @@ function Page() {
   const pagesToPrint = [
     {
       key: "transports",
-      Page: PrintTransportsPage,
+      Page: <PrintTransportsPage />,
     },
     {
       key: "buildings",
-      Page: PrintBuildingsPage,
+      Page: <PrintBuildingsPage />,
+    },
+    {
+      key: "targets",
+      Page: (
+        <PrintTargetsPage
+          data={{
+            totalCo2Emission,
+            transfers,
+          }}
+        />
+      ),
     },
   ];
 
@@ -56,7 +71,7 @@ function Page() {
         <div ref={contentRef}>
           {filteredPages.map((page) => (
             <div key={page.key} className="break-after-page">
-              <page.Page key={page.key} />
+              {page.Page}
             </div>
           ))}
         </div>

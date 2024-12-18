@@ -21,6 +21,29 @@ export interface TargetPrintContentData {
     percentage: number;
   };
   transfers: TransferRow[];
+  yearBaseCo2Emission: number;
+  lastYearCo2Emission: number;
+  targetCo2EmissionsFinalYear: {
+    targetCo2Emission: number | null;
+    year: number;
+    co2Emission: number | null;
+  };
+  targetsCo2EmissionByModal:
+    | {
+        mode: TravelMode;
+        co2Emissions: number;
+        trips: number;
+      }[]
+    | null
+    | undefined;
+  transportEmissionsTarget:
+    | {
+        year: number;
+        co2Emission: number | null;
+        targetCo2Emission: number | null;
+      }[]
+    | null
+    | undefined;
 }
 interface Props {
   componentRef?: MutableRefObject<null>;
@@ -69,25 +92,21 @@ const transformData = (
 export default function PrintTargetsPage({
   componentRef,
   isHistoryReport = false,
+
   date,
   title,
-  data: { transfers, totalCo2Emission },
+  data: {
+    transfers,
+    totalCo2Emission,
+    lastYearCo2Emission,
+    targetCo2EmissionsFinalYear,
+    targetsCo2EmissionByModal,
+    transportEmissionsTarget,
+    yearBaseCo2Emission,
+  },
 }: Props) {
   const hypothesisMode = isHistoryReport ? true : false;
   const { isPrinting } = usePrintStore();
-
-  const { data: co2EmissionByYear } = useTransportCO2EmissionByYear({});
-  const { data: targetsCo2EmissionByModal } = useTargetsCO2EmissionByModal();
-  const transportEmissionsTarget = transformData(co2EmissionByYear || []);
-
-  const targetCo2EmissionsFinalYear =
-    transportEmissionsTarget?.[transportEmissionsTarget.length - 1];
-
-  const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
-  const lastYearCo2Emission =
-    co2EmissionByYear?.find(
-      (item) => item.year === new Date().getFullYear() - 1
-    )?.co2Emission || 0;
 
   return (
     <div className=" h-screen  ">
