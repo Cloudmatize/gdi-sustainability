@@ -23,71 +23,74 @@ export default function PrintBuildingsPage({ componentRef }: Props) {
   const { data } = useBuildingsFloorAreasBySector({});
 
   return (
-    <div className="h-screen">
-      {isPrinting && <PrintLoadingStatePage />}
-      <div ref={componentRef} className=" space-y-4 text-xs  ">
-        <Header
-          title="Relatório de meta de emissão de CO2"
-          subtitle={"Página de emissões de CO2 por edifícios"}
-          generatedAt={new Date().toLocaleDateString()}
-        />
+    isPrinting && (
+      <div className="h-screen">
+        {isPrinting && <PrintLoadingStatePage />}
+        <div ref={componentRef} className=" space-y-4 text-xs  ">
+          <Header
+            title="Relatório de meta de emissão de CO2"
+            subtitle={"Página de emissões de CO2 por edifícios"}
+            generatedAt={new Date().toLocaleDateString()}
+          />
 
-        <div className="mx-auto space-y-6 py-8 px-10 text-xs">
-          {/* Header */}
+          <div className="mx-auto space-y-6 py-8 px-10 text-xs">
+            {/* Header */}
 
-          <div className="flex items-center justify-between flex-wrap">
-            <div className="flex items-center gap-4">
-              <h1 className="flex flex-nowrap break-keep items-center gap-3 text-lg  font-bold text-foreground">
-                {dict?.buildings.title} <Building size={20} />
-              </h1>
+            <div className="flex items-center justify-between flex-wrap">
+              <div className="flex items-center gap-4">
+                <h1 className="flex flex-nowrap break-keep items-center gap-3 text-lg  font-bold text-foreground">
+                  {dict?.buildings.title} <Building size={20} />
+                </h1>
+              </div>
             </div>
-          </div>
 
-          {/* Description */}
-          <p className="text-muted-foreground max-w-lg">
-            {dict?.buildings.description}
-          </p>
+            {/* Description */}
+            <p className="text-muted-foreground max-w-lg">
+              {dict?.buildings.description}
+            </p>
 
-          <div className="border-t border-gray-200 py-1" />
-          <p className="text-muted-foreground ">
-            {dict?.buildings.metrics.title}
-          </p>
+            <div className="border-t border-gray-200 py-1" />
+            <p className="text-muted-foreground ">
+              {dict?.buildings.metrics.title}
+            </p>
 
-          {/* Metrics */}
-          <div className="grid grid-cols-3 gap-3  ">
-            <InfoCard
-              icon={MdCo2}
-              title={dict?.buildings.metrics.totalEmissions.title}
-              value={formatCO2Emission(data?.total?.co2Emission)}
-              percentage={"100%"}
-              description={`
+            {/* Metrics */}
+            <div className="grid grid-cols-3 gap-3  ">
+              <InfoCard
+                icon={MdCo2}
+                title={dict?.buildings.metrics.totalEmissions.title}
+                value={formatCO2Emission(data?.total?.co2Emission)}
+                percentage={"100%"}
+                description={`
              ${formatNumber(data?.total?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.total?.area)}m²)`}
-            />
-            <InfoCard
-              icon={MdCo2}
-              title={
-                dict?.buildings.metrics.issuanceOfResidentialBuildings.title
-              }
-              value={formatCO2Emission(data?.residential?.co2Emission)}
-              percentage={data?.residential?.percentage}
-              description={`
+              />
+              <InfoCard
+                icon={MdCo2}
+                title={
+                  dict?.buildings.metrics.issuanceOfResidentialBuildings.title
+                }
+                value={formatCO2Emission(data?.residential?.co2Emission)}
+                percentage={data?.residential?.percentage}
+                description={`
              ${formatNumber(data?.residential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.residential.area)}m²)`}
-            />
-            <InfoCard
-              icon={MdCo2}
-              value={formatCO2Emission(data?.notResidential?.co2Emission)}
-              title={
-                dict?.buildings.metrics.issuanceOfNonResidentialBuildings.title
-              }
-              percentage={data?.notResidential?.percentage}
-              description={`
+              />
+              <InfoCard
+                icon={MdCo2}
+                value={formatCO2Emission(data?.notResidential?.co2Emission)}
+                title={
+                  dict?.buildings.metrics.issuanceOfNonResidentialBuildings
+                    .title
+                }
+                percentage={data?.notResidential?.percentage}
+                description={`
               ${formatNumber(data?.notResidential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.notResidential.area)}m²)`}
-            />
+              />
+            </div>
+            <PrintEnergyFractions />
+            <PrintEnergyIntensities />
           </div>
-          <PrintEnergyFractions />
-          <PrintEnergyIntensities />
         </div>
       </div>
-    </div>
+    )
   );
 }

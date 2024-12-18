@@ -20,7 +20,7 @@ const CustomTooltip = ({
   label,
 }: {
   active?: boolean;
-  dict: DictionaryContextType['dict']
+  dict: DictionaryContextType["dict"];
   payload?: {
     color: string;
     payload: {
@@ -72,7 +72,12 @@ export default function EnergyIntensities({ dict }: DictionaryContextType) {
           <Card className="p-6 w-full">
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="60%" outerRadius="100%" data={data || []}>
+                <RadarChart
+                  cx="50%"
+                  cy="60%"
+                  outerRadius="100%"
+                  data={data || []}
+                >
                   <PolarGrid />
                   <PolarAngleAxis
                     fontSize={12}

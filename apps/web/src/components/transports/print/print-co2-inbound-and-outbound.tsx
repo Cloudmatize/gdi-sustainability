@@ -117,7 +117,7 @@ export default function PrintCO2InboundAndOutbound() {
       {isFetching ? (
         <Skeleton className="h-[350px]" />
       ) : (
-        <Card className="p-6  h-[350px]  ">
+        <Card className={`min-w-[1460px] md:w-full h-[350px]  p-6`}>
           <h3 className="font-semibold text-foreground text-sm mb-6">
             {dict?.transports.sections.CO2InboundAndOutbound.chart.title}
           </h3>

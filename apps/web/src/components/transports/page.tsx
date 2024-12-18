@@ -19,6 +19,8 @@ import Co2EmissionPerTransport from "./sections/co2-per-transports";
 import { PrintButton } from "../print-button";
 import { useRef } from "react";
 import PrintTransportsPage from "./print/print-page";
+import { usePrintStore } from "@/store/print";
+import { cx } from "class-variance-authority";
 
 const EmissionCard = ({
   title,
@@ -56,14 +58,19 @@ export default function TransportsPage() {
   const { date } = filters;
 
   const contentRef = useRef(null);
-
+  const { isPrinting } = usePrintStore();
   const { data, isFetching } = useTransportsCO2Emission({
     filters,
   });
 
-  const MainContent = () => {
-    return (
-      <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
+  return (
+    <>
+      <div
+        className={cx(
+          "min-h-screen bg-background p-4 md:p-6 lg:px-16",
+          isPrinting ? "hidden" : ""
+        )}
+      >
         <div className="mx-auto space-y-6">
           {/* Header */}
 
@@ -137,17 +144,7 @@ export default function TransportsPage() {
           <Co2EmissionPerKilometer dict={dict} />
         </div>
       </div>
-    );
-  };
-  return (
-    <>
-      {/* <PrintButton
-        title="Página de emissões de CO2 por transporte"
-        disabled={false}
-        contentToPrint={contentRef}
-      /> */}
-      <MainContent />
-      {/* <PrintTransportsPage componentRef={contentRef} /> */}
+      <PrintTransportsPage componentRef={contentRef} />
     </>
   );
 }

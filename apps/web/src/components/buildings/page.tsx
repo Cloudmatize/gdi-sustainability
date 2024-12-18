@@ -122,7 +122,7 @@ export default function BuildingsPage() {
         </div>
       </div>
 
-      {isPrinting && <PrintBuildingsPage componentRef={contentRef} />}
+      {<PrintBuildingsPage componentRef={contentRef} />}
     </>
   );
 }

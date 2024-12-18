@@ -36,9 +36,9 @@ export default function PrintCo2EmissionPerKilometer() {
       </div>
 
       {isFetching ? (
-        <Skeleton className="h-[450px]" />
+        <Skeleton className="h-[300px]" />
       ) : (
-        <Card className="p-6  h-[300px]">
+        <Card className={`min-w-[1460px] md:w-full h-[300px]  p-6`}>
           <h3 className="font-semibold text-foreground text-sm mb-6">
             {dict?.transports.sections.Co2EmissionPerKilometer.chart.title}
           </h3>
