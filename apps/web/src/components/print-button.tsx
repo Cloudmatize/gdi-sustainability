@@ -53,7 +53,7 @@ export function PrintButton({
     contentRef: contentToPrint,
     pageStyle: `@media print {
       @page {
-        size: 410mm 410mm;
+        size: A4;
         margin: 1mm;
       }
     }`,
