@@ -308,6 +308,7 @@ export default function PrintEnergyFractions() {
                     {barData?.map((fraction, index) => {
                       return (
                         <Bar
+                          isAnimationActive={false}
                           maxBarSize={20}
                           dataKey={fraction}
                           key={`${fraction}-${index}`}
@@ -350,6 +351,7 @@ export default function PrintEnergyFractions() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
+                    isAnimationActive={false}
                     data={data?.totalEmissionCO2ByFraction}
                     cx="50%"
                     cy="50%"

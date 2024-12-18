@@ -42,6 +42,12 @@ export function PrintButton({
       setIsPrinting(false);
     },
     contentRef: contentToPrint,
+    pageStyle: `@media print {
+      @page {
+        size: 410mm 410mm;
+        margin: 1mm;
+      }
+    }`
   });
 
   return (

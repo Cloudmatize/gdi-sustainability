@@ -90,9 +90,9 @@ export default function PrintEnergyIntensities() {
                       `${dict?.ENERGY_FRACTIONS[value as string]} `
                     }
                     dataKey="name"
-                    
                   />
                   <Radar
+                    isAnimationActive={false}
                     name="Intensidade de consumo"
                     dataKey="percentage"
                     stroke="#1ba18d"

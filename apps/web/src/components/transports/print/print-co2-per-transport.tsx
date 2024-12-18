@@ -302,6 +302,7 @@ export default function PrintCo2EmissionPerTransport() {
                 <Legend align="left" content={<CustomLegend dict={dict} />} />
                 {data?.modals?.map((modal, index) => (
                   <Line
+                    isAnimationActive={false}
                     // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     key={index}
                     type="monotone"

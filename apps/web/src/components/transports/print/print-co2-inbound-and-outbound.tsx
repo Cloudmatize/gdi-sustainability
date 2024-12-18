@@ -144,6 +144,7 @@ export default function PrintCO2InboundAndOutbound() {
                 />
                 <Legend align="left" content={<CustomLegend />} />
                 <Bar
+                  isAnimationActive={false}
                   strokeWidth={1}
                   label={{
                     position: "top",

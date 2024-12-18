@@ -72,6 +72,7 @@ export default function PrintCo2EmissionPerKilometer() {
               <Bar
                 dataKey="emissionCO2KgPerKm"
                 fill="#22ccb2"
+                isAnimationActive={false}
                 radius={[0, 4, 4, 0]}
                 label={{
                   position: "right",
