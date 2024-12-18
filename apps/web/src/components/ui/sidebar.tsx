@@ -81,7 +81,7 @@ const SidebarProvider = forwardRef<
   ) => {
     const isMobile = useIsMobile();
     const [openMobile, setOpenMobile] = useState(false);
-    const [openRoute, setOpenRoute] = useState<number[]>([0]);
+    const [openRoute, setOpenRoute] = useState<string[]>(['']);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
