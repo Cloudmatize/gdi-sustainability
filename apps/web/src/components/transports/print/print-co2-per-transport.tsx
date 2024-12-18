@@ -242,7 +242,7 @@ export default function PrintCo2EmissionPerTransport() {
         </p>
       </div>
 
-      <div className="flex  gap-6 ">
+      <div className="flex  gap-6  break-inside-avoid">
         {modalAnalysis?.modalsData?.map((modal, index) => {
           const formattedModal = {
             ...modal,
@@ -265,14 +265,14 @@ export default function PrintCo2EmissionPerTransport() {
       </div>
 
       {isFetching ? (
-        <Skeleton className="h-[450px] rounded-xl" />
+        <Skeleton className="h-[350px] rounded-xl" />
       ) : (
-        <Card className="p-6 h-[550px] ">
+        <Card className="p-6 h-[400px]  mt-10 pt-10  break-inside-avoid ">
           <h3 className="font-semibold text-foreground text-sm ">
             {dict?.transports.sections.Co2EmissionPerTransport.chart.title}
           </h3>
           <div className="h-full  w-full">
-            <ResponsiveContainer height="100%">
+            <ResponsiveContainer height="100%" width="100%">
               <LineChart
                 data={data?.data}
                 margin={{

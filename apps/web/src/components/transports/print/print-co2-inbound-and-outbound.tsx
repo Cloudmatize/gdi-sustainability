@@ -122,8 +122,11 @@ export default function PrintCO2InboundAndOutbound() {
             {dict?.transports.sections.CO2InboundAndOutbound.chart.title}
           </h3>
           <div className="h-full  w-full">
-            <ResponsiveContainer height="100%">
-              <BarChart data={translatedData || []} margin={{ top: 30 , bottom:40 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={translatedData || []}
+                margin={{ top: 30, bottom: 40 }}
+              >
                 <XAxis
                   stroke="#888888"
                   fontSize={12}
