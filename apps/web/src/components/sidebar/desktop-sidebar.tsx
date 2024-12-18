@@ -1,4 +1,4 @@
-import { getRoutes } from "@/config/menuRoutes";
+import { Route, getRoutes } from "@/config/menuRoutes";
 import type { DictionaryContextType } from "@/context/DictionaryContext";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
@@ -47,23 +47,33 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
 
   });
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const handleChangeOpenState = (route: { id: number; parent?: number; children?: any[] }) => {
-    if (!openRoute.includes(route.id)) {
-      if (route.parent) {
-        const routes = [route.id, route.parent];
-        setOpenRoute(routes);
-      } else {
-        setOpenRoute([route.id]);
+  const handleChangeOpenState = (route: Route, children?: Route) => {
+    if (children?.router_title) {
+      if (route?.disabled) {
+        return
       }
+      if (children?.disabled) {
+        return
+      }
+      const routes = [route.router_title, children?.router_title];
+      setOpenRoute(routes);
+      return
+    }
+    if (route?.disabled) {
+      return
+    }
+
+    if (!openRoute.includes(route.router_title)) {
+      setOpenRoute([route.router_title]);
       return;
     }
-    setOpenRoute([0]);
+
+    // setOpenRoute(['']);
     return;
   };
 
   const handleToggleSideBar = () => {
-    setOpenRoute([0]);
+    // setOpenRoute(['']);
     toggleSidebar();
   };
   return (
@@ -92,9 +102,9 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
       <SidebarContent className="py-2 flex flex-col gap-0 px-2 overflow-clip">
         {filteredRoutes?.map((route) =>
           route?.children ? (
-            <DropdownMenu key={route.id}>
+            <DropdownMenu key={route.router_title}>
               <Collapsible
-                open={openRoute.includes(Number(route.id))}
+                open={openRoute.includes(route.router_title)}
                 className="group/collapsible"
               >
                 <SidebarGroup className="p-1 my-1 flex flex-col items-center">
@@ -104,12 +114,13 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
                         <SidebarMenuButton
                           tooltip={route.title}
                           variant="default"
-                          className={`w-full delay-100 transition-all ease-in-out duration-200 text-slate-600 font-normal ${openRoute.includes(Number(route.id)) ? "bg-teal-400 text-white font-bold" : ""}`}
-                          onClick={(e) => handleChangeOpenState(route as any)}
+                          className={`w-full transition-width ease-in-out font-normal ${openRoute.includes(route.router_title)}`}
+                          onClick={(e) => handleChangeOpenState(route)}
+                          disabled={route?.disabled}
                         >
                           <route.icon size={20} className="font-bold" />
                           <p
-                            className={`${open ? "text-sm" : "text-[0px]"} delay-100 transition-all ease-in-out duration-200`}
+                            className={`${open ? "text-sm" : "text-[0px]"} transition-width ease-in-out`}
                           >
                             {route.title}
                           </p>
@@ -121,8 +132,9 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
                           <SidebarMenuButton
                             tooltip={route.title}
                             variant="default"
-                            className={`w-full px-2 transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(Number(route.id)) ? "bg-teal-400 text-white" : ""}`}
-                            onClick={(e) => handleChangeOpenState(route as any)}
+                            className={`w-full px-2 transition-all delay-150 flex font-normal flex-row justify-between items-center text-slate-600 ${openRoute.includes(route.router_title) ? "bg-teal-400 text-white" : ""}`}
+                            onClick={(e) => handleChangeOpenState(route)}
+                            disabled={route?.disabled}
                           >
                             <div className="flex flex-row gap-2 items-center">
                               <route.icon size={20} className="font-bold" />
@@ -132,7 +144,7 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
                                 {route.title}
                               </p>
                             </div>
-                            {openRoute.includes(Number(route.id)) ? (
+                            {openRoute.includes(route.router_title) ? (
                               <ChevronUp />
                             ) : (
                               <ChevronDown />
@@ -154,12 +166,18 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
                         >
                           <SidebarMenuSubButton
                             asChild
-                            className={`max-w-56 text-slate-600 flex flex-row justify-start gap-2 ${openRoute.includes(children.id) ? "bg-teal-400 text-white w-full font-bold" : " w-full "}`}
+                            disabled={children?.disabled}
+                            isActive={openRoute.includes(children.router_title)}
+                            className={"max-w-56 flex flex-row justify-start gap-2 w-full"}
+                            onClick={(e) => handleChangeOpenState(route, children)}
                           >
-                            <a href={children.path}>
+                            <Link
+                              href={children?.disabled ? '#' : children.path}
+                              className=""
+                            >
                               <children.icon size={20} />
                               <span>{children.title}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuSubButton>
                         </DropdownMenuItem>
                       ))}
@@ -174,18 +192,19 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
                             <SidebarMenuSubButton
                               tooltip={children.title}
                               asChild
-                              className={`max-w-48 font-normal text-slate-600 ${openRoute.includes(children.id) ? "bg-teal-400 text-white mb-2 w-full font-bold" : "mb-2 w-full "}`}
-                              onClick={(e) => handleChangeOpenState(children)}
+                              isActive={openRoute.includes(children.router_title)}
+                              className={"max-w-48 mb-2 w-full"}
+                              onClick={(e) => handleChangeOpenState(route, children)}
+                              disabled={children?.disabled}
                             >
                               <Link
-                                href={children.path}
-                                className="text-slate-600"
+                                href={children?.disabled ? '#' : children.path}
+                                className=""
                               >
                                 <children.icon
                                   size={20}
-                                  className="text-slate-600"
                                 />
-                                <span className="duration-200">
+                                <span>
                                   {children.title}
                                 </span>
                               </Link>
@@ -199,23 +218,24 @@ export function DesktopSideBar({ dict }: DictionaryContextType) {
               </Collapsible>
             </DropdownMenu>
           ) : (
-            <SidebarGroup className="p-1" key={route.id}>
+            <SidebarGroup className="p-1" key={route.router_title}>
               <SidebarGroupContent>
                 <SidebarMenu className="flex flex-col">
                   <SidebarMenuItem className="max-w-56 w-56">
-                    <Link href={route.path}>
+                    <Link href={route?.disabled ? '#' : route.path}>
                       <SidebarMenuButton
                         tooltip={route.title}
                         variant="default"
-                        className={`flex flex-row flex-nowrap justify-start transition-[width] min-h-8 max-h-8 h-8 ease-in-out delay-150 duration-200 max-w-56 font-normal text-slate-600 ${openRoute.includes(Number(route.id)) ? "bg-teal-400 text-white w-full font-bold" : " w-full"}`}
-                        onClick={(e) => handleChangeOpenState(route as any)}
+                        disabled={route?.disabled}
+                        isActive={openRoute.includes(route.router_title)}
+                        onClick={(e) => handleChangeOpenState(route)}
                       >
                         <route.icon
                           size={20}
-                          className={`${open ? "size-5" : "size-5"} transition-all delay-150 duration-200 ease-in-out`}
+                          className={`${open ? "size-5" : "size-5"} transition-width delay-150 duration-200 ease-in-out`}
                         />
                         <p
-                          className={`${open ? "text-sm" : "text-[0px]"} delay-100 transition-all ease-in-out duration-200`}
+                          className={`${open ? "text-sm" : "text-[0px]"} transition-width delay-100 ease-in-out duration-200`}
                         >
                           {route.title}
                         </p>

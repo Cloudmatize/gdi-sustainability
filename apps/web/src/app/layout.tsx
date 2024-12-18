@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   description: "Go Sustainability - A platform for sustainable development",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <head>
         <PublicEnvScript />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={inter.className}>
         <ThemeProvider

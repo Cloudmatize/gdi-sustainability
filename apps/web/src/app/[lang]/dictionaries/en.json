@@ -60,8 +60,14 @@
       "router_title": "buildings"
     },
     "targets": {
-      "title": "Goal Tracker",
+      "title": "Targets",
       "router_title": "targets"
+    },
+    "targets_history": {
+      "title": "Simulation History"
+    },
+    "targets_tracker": {
+      "title": "Goal Tracker"
     }
   },
   "sidebar": {
