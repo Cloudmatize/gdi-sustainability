@@ -257,9 +257,9 @@ export default function PrintEnergyFractions() {
       </div>
       <div className="flex gap-6 flex-row">
         {isFetching ? (
-          <Skeleton className="h-[490px] w-full first:rounded-xl" />
+          <Skeleton className="h-[300px] w-full first:rounded-xl" />
         ) : (
-          <Card className="p-6 w-1/2  ">
+          <Card className="p-6 ">
             <div className="space-y-4 w-[400px] sm:w-full">
               <h3 className="font-semibold">
                 {
@@ -267,7 +267,7 @@ export default function PrintEnergyFractions() {
                     .CompositionOfEnergySourcesBySector.title
                 }
               </h3>
-              <div className="h-[250px] w-full">
+              <div className=" h-[250px]  min-w-[730px]  md:w-1/2 ">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={translatedData?.energyFractions}
@@ -340,14 +340,14 @@ export default function PrintEnergyFractions() {
         {isFetching ? (
           <Skeleton className="h-[490px] w-full" />
         ) : (
-          <Card className="p-6  w-1/2">
+          <Card className="p-6 ">
             <h3 className="font-semibold mb-4">
               {
                 dict?.buildings.sections.EnergyFractions.cards
                   .ImpactOfEnergySourcesOnEmissions.title
               }
             </h3>
-            <div className="h-[250px]">
+            <div className="  h-[250px] min-w-[615px]  md:w-1/2">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie

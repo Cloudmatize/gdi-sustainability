@@ -59,64 +59,69 @@ export default function BuildingsPage() {
                 {dict?.buildings.title} <Building size={36} />
               </h1>
             </div>
-            <PrintButton
-              title="Página de emissões de CO2 por edifícios"
-              disabled={false}
-              contentToPrint={contentRef}
-            />
-          </div>
-          <div className="flex items-center gap-2 my-3 xl:my-0">
-            <YearSelect
-              endYear={2023}
-              startYear={2018}
-              value={String(new Date().getFullYear() - 1)}
-              disabled
-            />
-          </div>
-        </div>
-        {/* Description */}
-        <p className="text-muted-foreground max-w-lg">
-          {dict?.buildings.description}
-        </p>
-        <DataSourceInfo />
 
-        <div className="border-t border-gray-200 py-6" />
-        <p className="text-muted-foreground ">
-          {dict?.buildings.metrics.title}
-        </p>
+            <div className="flex items-center gap-5 my-3 xl:my-0">
+              <YearSelect
+                endYear={2023}
+                startYear={2018}
+                value={String(new Date().getFullYear() - 1)}
+                disabled
+              />
+              <PrintButton
+                title="Página de emissões de CO2 por edifícios"
+                disabled={false}
+                contentToPrint={contentRef}
+              />
+            </div>
+          </div>
 
-        {/* Metrics */}
-        <div className="flex flex-col xl:flex-row gap-6 ">
-          <InfoCard
-            icon={MdCo2}
-            title={dict?.buildings.metrics.totalEmissions.title}
-            value={formatCO2Emission(data?.total?.co2Emission)}
-            percentage={"100%"}
-            description={`
+          {/* Description */}
+          <p className="text-muted-foreground max-w-lg">
+            {dict?.buildings.description}
+          </p>
+          <DataSourceInfo />
+
+          <div className="border-t border-gray-200 py-6" />
+          <p className="text-muted-foreground ">
+            {dict?.buildings.metrics.title}
+          </p>
+
+          {/* Metrics */}
+          <div className="flex flex-col xl:flex-row gap-6 ">
+            <InfoCard
+              icon={MdCo2}
+              title={dict?.buildings.metrics.totalEmissions.title}
+              value={formatCO2Emission(data?.total?.co2Emission)}
+              percentage={"100%"}
+              description={`
            ${formatNumber(data?.total?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.total?.area)}m²)`}
-          />
-          <InfoCard
-            icon={MdCo2}
-            title={dict?.buildings.metrics.issuanceOfResidentialBuildings.title}
-            value={formatCO2Emission(data?.residential?.co2Emission)}
-            percentage={data?.residential?.percentage}
-            description={`
+            />
+            <InfoCard
+              icon={MdCo2}
+              title={
+                dict?.buildings.metrics.issuanceOfResidentialBuildings.title
+              }
+              value={formatCO2Emission(data?.residential?.co2Emission)}
+              percentage={data?.residential?.percentage}
+              description={`
            ${formatNumber(data?.residential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.residential.area)}m²)`}
-          />
-          <InfoCard
-            icon={MdCo2}
-            value={formatCO2Emission(data?.notResidential?.co2Emission)}
-            title={
-              dict?.buildings.metrics.issuanceOfNonResidentialBuildings.title
-            }
-            percentage={data?.notResidential?.percentage}
-            description={`
+            />
+            <InfoCard
+              icon={MdCo2}
+              value={formatCO2Emission(data?.notResidential?.co2Emission)}
+              title={
+                dict?.buildings.metrics.issuanceOfNonResidentialBuildings.title
+              }
+              percentage={data?.notResidential?.percentage}
+              description={`
             ${formatNumber(data?.notResidential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.notResidential.area)}m²)`}
-          />
+            />
+          </div>
+          <EnergyFractions dict={dict} />
+          <EnergyIntensities dict={dict} />
         </div>
-        <EnergyFractions dict={dict} />
-        <EnergyIntensities dict={dict} />
       </div>
+
       {isPrinting && <PrintBuildingsPage componentRef={contentRef} />}
     </>
   );

@@ -141,13 +141,13 @@ export default function TransportsPage() {
   };
   return (
     <>
-      <PrintButton
+      {/* <PrintButton
         title="Página de emissões de CO2 por transporte"
         disabled={false}
         contentToPrint={contentRef}
-      />
-      {/* <MainContent /> */}
-      <PrintTransportsPage componentRef={contentRef} />
+      /> */}
+      <MainContent />
+      {/* <PrintTransportsPage componentRef={contentRef} /> */}
     </>
   );
 }

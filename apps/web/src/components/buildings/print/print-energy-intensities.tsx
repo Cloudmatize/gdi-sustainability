@@ -1,5 +1,6 @@
 "use client";
 
+import { pageSizeMMinPixels } from "@/components/print-button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -72,38 +73,31 @@ export default function PrintEnergyIntensities() {
 
       <div className="flex gap-1">
         {isFetching ? (
-          <Skeleton className="h-[250px] w-full" />
+          <Skeleton className="h-[200px] w-full" />
         ) : (
-          <Card className=" w-full h-[200px]">
-            <div className="h-[250px] ">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart
-                  cx="50%"
-                  cy="50%"
-                  outerRadius="80%"
-                  data={data || []}
-                >
-                  <PolarGrid />
-                  <PolarAngleAxis
-                    fontSize={12}
-                    tickFormatter={(value, b) =>
-                      `${dict?.ENERGY_FRACTIONS[value as string]} `
-                    }
-                    dataKey="name"
-                  />
-                  <Radar
-                    isAnimationActive={false}
-                    name="Intensidade de consumo"
-                    dataKey="percentage"
-                    stroke="#1ba18d"
-                    fill="#9aeee2"
-                    fillOpacity={0.6}
-                  />
+          <Card className={`min-w-[1460px] md:w-full h-[200px] pt-10`}>
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data || []}>
+                <PolarGrid />
+                <PolarAngleAxis
+                  fontSize={12}
+                  tickFormatter={(value, b) =>
+                    `${dict?.ENERGY_FRACTIONS[value as string]} `
+                  }
+                  dataKey="name"
+                />
+                <Radar
+                  isAnimationActive={false}
+                  name="Intensidade de consumo"
+                  dataKey="percentage"
+                  stroke="#1ba18d"
+                  fill="#9aeee2"
+                  fillOpacity={0.6}
+                />
 
-                  <Tooltip content={<CustomTooltip dict={dict} />} />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
+                <Tooltip content={<CustomTooltip dict={dict} />} />
+              </RadarChart>
+            </ResponsiveContainer>
           </Card>
         )}
       </div>

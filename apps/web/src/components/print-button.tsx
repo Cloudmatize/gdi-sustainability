@@ -11,6 +11,7 @@ interface PrintButtonProps {
   disabled: boolean;
   contentToPrint: MutableRefObject<null>;
 }
+export const pageSizeMMinPixels = 410 * 3.78;
 
 export function PrintButton({
   title = "Print This Document",
@@ -32,6 +33,7 @@ export function PrintButton({
       return () => clearTimeout(timer);
     }
   }, [startToPrint]);
+
 
   const handlePrint = useReactToPrint({
     documentTitle: title,
