@@ -17,11 +17,11 @@ import { Skeleton } from "../ui/skeleton";
 import { format } from "date-fns/format";
 import { ReportSimulationHistory } from "@/store/targets";
 import { Dialog, DialogContent } from "../ui/dialog";
-import PrintTargetReportPage from "./print-target-report-page";
 import { PrintButton } from "../print-button";
 import { usePrintStore } from "@/store/print";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { cx } from "class-variance-authority";
+import PrintTargetsPage from "./print/print-page";
 
 export default function ReportHistory() {
   const { data, isFetching } = useTargetsReportsHistory({});
@@ -53,7 +53,7 @@ export default function ReportHistory() {
             className="h-[90vh] sm:max-w-[900px] lg:max-w-[1200px] overflow-auto"
           >
             <DialogTitle></DialogTitle>
-            <PrintTargetReportPage
+            <PrintTargetsPage
               title={selectedReport?.reportName}
               date={format(selectedReport?.generatedDate, "yyyy/MM/dd HH:mm")}
               isHistoryReport
@@ -63,7 +63,7 @@ export default function ReportHistory() {
         </Dialog>
       )}
       {isPrinting && selectedReport && (
-        <PrintTargetReportPage
+        <PrintTargetsPage
           title={selectedReport?.reportName}
           date={format(selectedReport?.generatedDate, "yyyy/MM/dd HH:mm")}
           componentRef={contentRef}

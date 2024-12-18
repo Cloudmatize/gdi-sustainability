@@ -1,15 +1,18 @@
 "use client";
 
-import { TransferRow } from "@/store/targets";
-import PrintGoalTrackerTable from "./print/print-goal-tracker-table";
-import { TravelMode } from "@/types/transports";
-import PrintTransportEmissionTargets from "./print/print-transport-emissions-targets";
-import DistributionsMode from "./print/print-distribution-transfers";
-import PrintLoadingStatePage from "../print-loading-page";
-import { Header } from "../print/header";
+import PrintLoadingStatePage from "@/components/print-loading-page";
+import { Header } from "@/components/print/header";
 import { usePrintStore } from "@/store/print";
+import { TransferRow } from "@/store/targets";
+import { TravelMode } from "@/types/transports";
 import { MutableRefObject } from "react";
-import PrintOverviewInfo from "./print/print-overview-info";
+import PrintOverviewInfo from "./print-overview-info";
+import DistributionsMode from "./print-distribution-transfers";
+import PrintGoalTrackerTable from "./print-goal-tracker-table";
+import PrintTransportEmissionTargets from "./print-transport-emissions-targets";
+import { useTransportCO2EmissionByYear } from "@/hooks/transports";
+import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
+import { calculateCityEmissionTargets } from "@/services/transports/graphql";
 
 export interface TargetPrintContentData {
   totalCo2Emission: {
@@ -50,24 +53,68 @@ interface Props {
   data: TargetPrintContentData;
 }
 
-export default function PrintTargetReportPage({
+const transformData = (
+  data: {
+    year: number;
+    co2Emission: number | null;
+  }[]
+) => {
+  const targetEmissions = calculateCityEmissionTargets(
+    data[0]?.co2Emission || 0
+  );
+
+  const formattedData: {
+    year: number;
+    co2Emission: number | null;
+    targetCo2Emission: number | null;
+  }[] = [];
+
+  const allYears = new Set([
+    ...data.map((item) => item.year),
+    ...Object.keys(targetEmissions).map((year) => Number.parseInt(year, 10)),
+  ]);
+
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  allYears.forEach((year) => {
+    const co2Emission =
+      data.find((item) => item.year === year)?.co2Emission || null;
+    const targetCo2Emission = targetEmissions[year] || null;
+
+    formattedData.push({
+      year,
+      co2Emission,
+      targetCo2Emission,
+    });
+  });
+  return formattedData;
+};
+
+export default function PrintTargetsPage({
   componentRef,
   isHistoryReport = false,
   date,
   title,
-  data: {
-    transfers,
-    totalCo2Emission,
-    yearBaseCo2Emission,
-    lastYearCo2Emission,
-    targetCo2EmissionsFinalYear,
-    targetsCo2EmissionByModal,
-    transportEmissionsTarget,
-  },
+  data: { transfers, totalCo2Emission },
 }: Props) {
   const hypothesisMode = isHistoryReport ? true : false;
   const { isPrinting } = usePrintStore();
 
+  const { data: co2EmissionByYear, isFetching: loadingCo2EmissionByYear } =
+    useTransportCO2EmissionByYear({});
+  const {
+    data: targetsCo2EmissionByModal,
+    isFetching: loadingTargetsCo2EmissionByModal,
+  } = useTargetsCO2EmissionByModal();
+  const transportEmissionsTarget = transformData(co2EmissionByYear || []);
+
+  const targetCo2EmissionsFinalYear =
+    transportEmissionsTarget?.[transportEmissionsTarget.length - 1];
+
+  const yearBaseCo2Emission = co2EmissionByYear?.[0]?.co2Emission || 0;
+  const lastYearCo2Emission =
+    co2EmissionByYear?.find(
+      (item) => item.year === new Date().getFullYear() - 1
+    )?.co2Emission || 0;
   return (
     <div className=" h-screen  ">
       {isPrinting && <PrintLoadingStatePage />}
