@@ -1,70 +1,46 @@
-"use client";
-
-import { Bus } from "lucide-react";
-
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import DataSourceInfo from "@/components/data-source-info";
+import InfoCard from "@/components/print/info-card";
+import PrintLoadingStatePage from "@/components/print-loading-page";
+import { Header } from "@/components/print/header";
+import YearSelect from "@/components/year-select";
 import { useDictionary } from "@/context/DictionaryContext";
 import { useTransportsCO2Emission } from "@/hooks/transports";
+import { usePrintStore } from "@/store/print";
 import { useTransportsStore } from "@/store/transports";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { formatNumber } from "@/utils/format-number";
+import { Bus } from "lucide-react";
+import { MutableRefObject } from "react";
 import { MdCo2 } from "react-icons/md";
-import DataSourceInfo from "../data-source-info";
-import InfoCard from "../info-card";
-import YearSelect from "../year-select";
-import CO2InboundAndOutbound from "./sections/co2-inboud-and-outbound";
-import Co2EmissionPerKilometer from "./sections/co2-per-km";
-import Co2EmissionPerTransport from "./sections/co2-per-transports";
-import { PrintButton } from "../print-button";
-import { useRef } from "react";
-import PrintTransportsPage from "./print/print-page";
+import PrintCO2InboundAndOutbound from "./print-co2-inbound-and-outbound";
+import PrintCo2EmissionPerTransport from "./print-co2-per-transport";
+import PrintCo2EmissionPerKilometer from "./print-co2-per-km";
 
-const EmissionCard = ({
-  title,
-  value,
-}: {
-  title: string;
-  value?: string | number;
-  loading?: boolean;
-}) =>
-  !value ? (
-    <Skeleton className="h-52 rounded-xl" />
-  ) : (
-    <Card className="p-6 h-44 md:h-40 lg:h-52">
-      <div className=" h-full flex flex-col gap-2">
-        <div className="flex flex-row justify-between h-16">
-          <span className="text-muted-foreground max-w-[75%]">{title}</span>
-          <div className="rounded bg-teal-400 py-3 px-3 max-w-12 max-h-12">
-            <span className="font-bold text-sm text-white">CO₂</span>
-          </div>
-        </div>
-        <span className="text-6xl md:text-6xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
-          {value}
-        </span>
-      </div>
-    </Card>
-  );
+interface Props {
+  componentRef?: MutableRefObject<null>;
+}
 
-export default function TransportsPage() {
+export default function PrintTransportsPage({ componentRef }: Props) {
+  const { isPrinting } = usePrintStore();
   const { dict } = useDictionary();
   const { filters, setFilters } = useTransportsStore();
-
-  const handleYearChange = (value: string) => {
-    setFilters({ date: [Number(value)] });
-  };
   const { date } = filters;
-
-  const contentRef = useRef(null);
 
   const { data, isFetching } = useTransportsCO2Emission({
     filters,
   });
 
-  const MainContent = () => {
-    return (
-      <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
-        <div className="mx-auto space-y-6">
+  return (
+    <div className="h-screen  overflow-y-auto">
+      {isPrinting && <PrintLoadingStatePage />}
+      <div ref={componentRef} className=" space-y-4 text-xs  ">
+        <Header
+          title="Página de emissões por transporte"
+          subtitle="Página de emissões por transporte gerada em 2023 (fix)"
+          generatedAt={new Date().toLocaleDateString()}
+        />
+
+        <div className="mx-auto space-y-6 py-8 px-10 text-xs">
           {/* Header */}
 
           <div className="flex items-center justify-between flex-wrap">
@@ -79,12 +55,7 @@ export default function TransportsPage() {
                 endYear={2023}
                 startYear={2018}
                 value={String(date ? date[0] : new Date().getFullYear() - 1)}
-                onValueChange={handleYearChange}
-              />
-              <PrintButton
-                title="Página de emissões de CO2 por transporte"
-                disabled={false}
-                contentToPrint={contentRef}
+                onValueChange={() => {}}
               />
             </div>
           </div>
@@ -93,14 +64,13 @@ export default function TransportsPage() {
           <p className="text-muted-foreground max-w-lg">
             {dict?.transports.description}
           </p>
-          <DataSourceInfo />
 
-          <div className="border-t border-gray-200 py-6" />
+          <div className="border-t border-gray-200 py-1" />
           <p className="text-muted-foreground ">
             {dict?.transports.metrics.title}
           </p>
           {/* Metrics */}
-          <div className="flex flex-col xl:flex-row gap-6">
+          <div className="grid grid-cols-3 gap-3  ">
             <InfoCard
               icon={MdCo2}
               title={dict?.transports.metrics.totalEmissions.title}
@@ -131,23 +101,11 @@ export default function TransportsPage() {
             ${formatNumber(data?.outbound.trips || 0)} ${dict?.transports.metrics.outOfTheBorder.description}`}
             />
           </div>
-
-          <CO2InboundAndOutbound dict={dict} />
-          <Co2EmissionPerTransport dict={dict} />
-          <Co2EmissionPerKilometer dict={dict} />
+          <PrintCO2InboundAndOutbound />
+          <PrintCo2EmissionPerTransport />
+          <PrintCo2EmissionPerKilometer />
         </div>
       </div>
-    );
-  };
-  return (
-    <>
-      <PrintButton
-        title="Página de emissões de CO2 por transporte"
-        disabled={false}
-        contentToPrint={contentRef}
-      />
-      {/* <MainContent /> */}
-      <PrintTransportsPage componentRef={contentRef} />
-    </>
+    </div>
   );
 }
