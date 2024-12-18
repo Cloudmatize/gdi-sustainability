@@ -8,7 +8,7 @@ import { Printer } from "lucide-react";
 export default function PrintLoadingStatePage() {
   const { dict } = useDictionary();
   return (
-    <div className="min-h-screen  flex items-center justify-center bg-white p-4">
+    <div className="min-h-screen  flex items-center justify-center bg-white p-4 print:hidden">
       <Card className="w-full max-w-lg relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-2xl font-bold text-slate-700">

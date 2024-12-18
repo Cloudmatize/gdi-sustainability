@@ -122,7 +122,9 @@ export default function BuildingsPage() {
         </div>
       </div>
 
-      {<PrintBuildingsPage componentRef={contentRef} />}
+      <div className="h-screen">
+        <PrintBuildingsPage componentRef={contentRef} />
+      </div>
     </>
   );
 }

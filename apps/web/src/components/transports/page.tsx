@@ -71,7 +71,7 @@ export default function TransportsPage() {
           isPrinting ? "hidden" : ""
         )}
       >
-        <div className="mx-auto space-y-6">
+        <div className="mx-auto space-y-6 overflow-y-hidden">
           {/* Header */}
 
           <div className="flex items-center justify-between flex-wrap">
@@ -144,7 +144,9 @@ export default function TransportsPage() {
           <Co2EmissionPerKilometer dict={dict} />
         </div>
       </div>
-      <PrintTransportsPage componentRef={contentRef} />
+      <div className="h-screen">
+        <PrintTransportsPage componentRef={contentRef} />
+      </div>
     </>
   );
 }

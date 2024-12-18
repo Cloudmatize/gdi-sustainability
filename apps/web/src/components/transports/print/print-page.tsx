@@ -32,7 +32,7 @@ export default function PrintTransportsPage({ componentRef }: Props) {
 
   return (
     isPrinting && (
-      <div className="h-screen ">
+      <div className="break-after-all break-before-all">
         {isPrinting && <PrintLoadingStatePage />}
         <div ref={componentRef} className=" space-y-4 text-xs  ">
           <Header
@@ -46,7 +46,7 @@ export default function PrintTransportsPage({ componentRef }: Props) {
 
             <div className="flex items-center justify-between flex-wrap">
               <div className="flex items-center gap-4">
-                <h1 className="flex flex-nowrap break-keep items-center gap-3 text-3xl font-bold text-foreground">
+                <h1 className="flex flex-nowrap break-keep items-center gap-3 text-2xl font-bold text-foreground">
                   {dict?.transports.title} <Bus size={36} />
                 </h1>
               </div>
