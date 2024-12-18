@@ -14,7 +14,6 @@ interface PrintButtonProps {
   className?: string;
   showLabel?: boolean;
 }
-export const pageSizeMMinPixels = 410 * 3.78;
 
 export function PrintButton({
   title = "Print This Document",
@@ -33,7 +32,7 @@ export function PrintButton({
         handlePrint();
         setStartToPrint(false);
         setIsPrinting(false);
-      }, 2000);
+      }, 6000);
 
       return () => {
         clearTimeout(timer);

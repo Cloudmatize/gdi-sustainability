@@ -17,7 +17,6 @@ import PrintBuildingsPage from "@/components/buildings/print/print-page";
 import { PrintButton } from "@/components/print-button";
 import { cx } from "class-variance-authority";
 import { usePrintStore } from "@/store/print";
-import PrintLoadingStatePage from "@/components/print-loading-page";
 
 const pages = [
   { value: "transports", label: "Transports" },

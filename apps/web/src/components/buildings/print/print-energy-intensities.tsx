@@ -1,6 +1,5 @@
 "use client";
 
-import { pageSizeMMinPixels } from "@/components/print-button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -11,7 +10,6 @@ import { useBuildingsEnergyIntensitiesBySector } from "@/hooks/buildings";
 import {
   PolarAngleAxis,
   PolarGrid,
-  PolarRadiusAxis,
   Radar,
   RadarChart,
   ResponsiveContainer,
