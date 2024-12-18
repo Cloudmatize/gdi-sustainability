@@ -200,7 +200,7 @@ export default function PrintTransportEmissionTargets({
           </div>
         </div>
 
-        <div className="h-[380px]">
+        <div className={`min-w-[1460px] md:w-full h-[380px]  p-6`}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={transportEmissionData}
