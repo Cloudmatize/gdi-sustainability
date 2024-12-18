@@ -2,7 +2,8 @@
   "print": {
     "loadingTitle": "Imprimindo...",
     "loadingDescription": "Por favor, aguarde enquanto seu documento é preparado.",
-    "generatedWhen": "Relatório emitido em "
+    "generatedWhen": "Relatório emitido em ",
+    "targetsHeaderTitle": "Relatório de meta de emissão de CO2"
   },
   "chartTrends": {
     "ELEVATION": "Elevação",

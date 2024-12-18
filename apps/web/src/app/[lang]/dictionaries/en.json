@@ -2,7 +2,8 @@
   "print": {
     "loadingTitle": "Printing...",
     "loadingDescription": "Please wait while your document is being prepared.",
-    "generatedWhen": "Report issued on "
+    "generatedWhen": "Report issued on ",
+    "targetsHeaderTitle": "CO2 Emission Target Report"
   },
   "chartTrends": {
     "ELEVATION": "Elevation",

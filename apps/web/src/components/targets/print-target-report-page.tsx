@@ -1,15 +1,16 @@
 "use client";
 
-import { TransferRow } from "@/store/targets";
-import PrintGoalTrackerTable from "./print/print-goal-tracker-table";
-import { TravelMode } from "@/types/transports";
-import PrintTransportEmissionTargets from "./print/print-transport-emissions-targets";
-import DistributionsMode from "./print/print-distribution-transfers";
+import { useDictionary } from "@/context/DictionaryContext";
+import { usePrintStore } from "@/store/print";
+import type { TransferRow } from "@/store/targets";
+import type { TravelMode } from "@/types/transports";
+import type { MutableRefObject } from "react";
 import PrintLoadingStatePage from "../print-loading-page";
 import { Header } from "../print/header";
-import { usePrintStore } from "@/store/print";
-import { MutableRefObject } from "react";
+import DistributionsMode from "./print/print-distribution-transfers";
+import PrintGoalTrackerTable from "./print/print-goal-tracker-table";
 import PrintOverviewInfo from "./print/print-overview-info";
+import PrintTransportEmissionTargets from "./print/print-transport-emissions-targets";
 
 export interface TargetPrintContentData {
   totalCo2Emission: {
@@ -26,21 +27,21 @@ export interface TargetPrintContentData {
     co2Emission: number | null;
   };
   targetsCo2EmissionByModal:
-    | {
-        mode: TravelMode;
-        co2Emissions: number;
-        trips: number;
-      }[]
-    | null
-    | undefined;
+  | {
+    mode: TravelMode;
+    co2Emissions: number;
+    trips: number;
+  }[]
+  | null
+  | undefined;
   transportEmissionsTarget:
-    | {
-        year: number;
-        co2Emission: number | null;
-        targetCo2Emission: number | null;
-      }[]
-    | null
-    | undefined;
+  | {
+    year: number;
+    co2Emission: number | null;
+    targetCo2Emission: number | null;
+  }[]
+  | null
+  | undefined;
 }
 interface Props {
   componentRef?: MutableRefObject<null>;
@@ -67,13 +68,14 @@ export default function PrintTargetReportPage({
 }: Props) {
   const hypothesisMode = isHistoryReport ? true : false;
   const { isPrinting } = usePrintStore();
+  const { dict } = useDictionary()
 
   return (
-    <div className=" h-screen  ">
+    <div className=" h-screen">
       {isPrinting && <PrintLoadingStatePage />}
       <div ref={componentRef} className=" space-y-4 text-xs  py-4">
         <Header
-          title="Relatório de meta de emissão de CO2"
+          title={dict?.print?.targetsHeaderTitle}
           subtitle={title}
           generatedAt={date}
         />
