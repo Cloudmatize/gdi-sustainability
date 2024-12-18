@@ -2,8 +2,6 @@
 
 import { Bus } from "lucide-react";
 
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useDictionary } from "@/context/DictionaryContext";
 import { useTransportsCO2Emission } from "@/hooks/transports";
 import { useTransportsStore } from "@/store/transports";
@@ -19,32 +17,8 @@ import Co2EmissionPerTransport from "./sections/co2-per-transports";
 import { PrintButton } from "../print-button";
 import { useRef } from "react";
 import PrintTransportsPage from "./print/print-page";
-
-const EmissionCard = ({
-  title,
-  value,
-}: {
-  title: string;
-  value?: string | number;
-  loading?: boolean;
-}) =>
-  !value ? (
-    <Skeleton className="h-52 rounded-xl" />
-  ) : (
-    <Card className="p-6 h-44 md:h-40 lg:h-52">
-      <div className=" h-full flex flex-col gap-2">
-        <div className="flex flex-row justify-between h-16">
-          <span className="text-muted-foreground max-w-[75%]">{title}</span>
-          <div className="rounded bg-teal-400 py-3 px-3 max-w-12 max-h-12">
-            <span className="font-bold text-sm text-white">CO₂</span>
-          </div>
-        </div>
-        <span className="text-6xl md:text-6xl lg:text-5xl font-bold h-full text-slate-600 flex items-end gap-3">
-          {value}
-        </span>
-      </div>
-    </Card>
-  );
+import { usePrintStore } from "@/store/print";
+import { cx } from "class-variance-authority";
 
 export default function TransportsPage() {
   const { dict } = useDictionary();
@@ -61,9 +35,16 @@ export default function TransportsPage() {
     filters,
   });
 
-  const MainContent = () => {
-    return (
-      <div className="min-h-screen bg-background p-4 md:p-6 lg:px-16">
+  const { isPrinting } = usePrintStore();
+
+  return (
+    <>
+      <div
+        className={cx(
+          "min-h-screen bg-background p-4 md:p-6 lg:px-16",
+          isPrinting ? "hidden" : ""
+        )}
+      >
         <div className="mx-auto space-y-6">
           {/* Header */}
 
@@ -137,17 +118,8 @@ export default function TransportsPage() {
           <Co2EmissionPerKilometer dict={dict} />
         </div>
       </div>
-    );
-  };
-  return (
-    <>
-      <PrintButton
-        title="Página de emissões de CO2 por transporte"
-        disabled={false}
-        contentToPrint={contentRef}
-      />
-      {/* <MainContent /> */}
-      <PrintTransportsPage componentRef={contentRef} />
+
+      {isPrinting && <PrintTransportsPage componentRef={contentRef} />}
     </>
   );
 }

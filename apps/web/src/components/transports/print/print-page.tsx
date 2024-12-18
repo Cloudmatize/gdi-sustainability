@@ -1,4 +1,3 @@
-import DataSourceInfo from "@/components/data-source-info";
 import InfoCard from "@/components/print/info-card";
 import PrintLoadingStatePage from "@/components/print-loading-page";
 import { Header } from "@/components/print/header";
@@ -23,7 +22,7 @@ interface Props {
 export default function PrintTransportsPage({ componentRef }: Props) {
   const { isPrinting } = usePrintStore();
   const { dict } = useDictionary();
-  const { filters, setFilters } = useTransportsStore();
+  const { filters } = useTransportsStore();
   const { date } = filters;
 
   const { data, isFetching } = useTransportsCO2Emission({
@@ -31,7 +30,7 @@ export default function PrintTransportsPage({ componentRef }: Props) {
   });
 
   return (
-    <div className="h-screen  overflow-y-auto">
+    <div className="h-screen ">
       {isPrinting && <PrintLoadingStatePage />}
       <div ref={componentRef} className=" space-y-4 text-xs  ">
         <Header

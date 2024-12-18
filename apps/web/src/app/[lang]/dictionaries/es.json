@@ -62,6 +62,12 @@
     "targets": {
       "title": "Seguimiento de metas",
       "router_title": "targets"
+    },
+    "targets_history": {
+      "title": "Historial de simulación"
+    },
+    "targets_tracker": {
+      "title": "Rastreador de objetivos"
     }
   },
   "sidebar": {

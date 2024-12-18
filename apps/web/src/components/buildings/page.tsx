@@ -7,6 +7,7 @@ import { Building } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
 import DataSourceInfo from "../data-source-info";
 import InfoCard from "../info-card";
+import YearSelect from "../year-select";
 import EnergyFractions from "./sections/energy-fractions";
 import EnergyIntensities from "./sections/energy-intensities";
 import { PrintButton } from "../print-button";
@@ -46,7 +47,7 @@ export default function BuildingsPage() {
       <div
         className={cx(
           "min-h-screen bg-background p-4 md:p-6 lg:px-16",
-         isPrinting ? "hidden" : ""
+          isPrinting ? "hidden" : ""
         )}
       >
         <div className="mx-auto space-y-6">
@@ -64,18 +65,25 @@ export default function BuildingsPage() {
               contentToPrint={contentRef}
             />
           </div>
-
+          <div className="flex items-center gap-2 my-3 xl:my-0">
+            <YearSelect
+              endYear={2023}
+              startYear={2018}
+              value={String(new Date().getFullYear() - 1)}
+              disabled
+            />
+          </div>
           {/* Description */}
           <p className="text-muted-foreground max-w-lg">
             {dict?.buildings.description}
           </p>
           <DataSourceInfo />
-
+        
           <div className="border-t border-gray-200 py-6" />
           <p className="text-muted-foreground ">
             {dict?.buildings.metrics.title}
           </p>
-
+         
           {/* Metrics */}
           <div className="flex flex-col xl:flex-row gap-6 ">
             <InfoCard
