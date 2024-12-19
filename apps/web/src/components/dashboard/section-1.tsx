@@ -340,7 +340,7 @@ export default function DashboardSection1({ dict }: DictionaryContextType) {
         )}
         <Link
           href={"/targets"}
-          className="h-80  md:h-64 xl:h-52 w-full  card-hover"
+          className="h-80  md:h-64 xl:h-52 w-full rounded-full card-hover"
         >
           <TargetAdherenceSection dict={dict} />
         </Link>

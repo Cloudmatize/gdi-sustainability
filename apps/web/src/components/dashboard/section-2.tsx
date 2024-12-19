@@ -7,6 +7,7 @@ import {
 } from "@/hooks/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
+import Link from "next/link";
 import InfoTooltip from "../ui/info-tooltip";
 import { Skeleton } from "../ui/skeleton";
 import TransportCo2eComparissonCard, {
@@ -217,7 +218,7 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
               contributionStatusTranslated: dict?.chartTrends[transport.contributionStatus]
             };
             return (
-              <Link
+              <Link 
                 href="/transports"
                 key={index}
                 className={`  ${modalAnalysis?.modalsData?.length >= 3 &&
@@ -240,30 +241,34 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
-          <TransportSectorAnalysisCard
-            percentageChange={comparissonSectorData?.highestIncrease?.percentageChange}
-            sector={dict?.mappedTravelMode[comparissonSectorData?.highestIncrease?.sector]}
-            title={dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestIncrease.title}
-            icon={getIconByTransportMode({
-              mode: comparissonSectorData?.highestIncrease?.sector.toUpperCase(),
-            })}
-            dict={dict}
-            isIncrease
-          />
+          <Link className="card-hover rounded-full" href="/transports">
+            <TransportSectorAnalysisCard
+              percentageChange={comparissonSectorData?.highestIncrease?.percentageChange}
+              sector={dict?.mappedTravelMode[comparissonSectorData?.highestIncrease?.sector]}
+              title={dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestIncrease.title}
+              icon={getIconByTransportMode({
+                mode: comparissonSectorData?.highestIncrease?.sector.toUpperCase(),
+              })}
+              dict={dict}
+              isIncrease
+            />
+          </Link>
         )}
         {isLoadingCo2EmissionByYearAndModal ? (
           <Skeleton className="h-[160px]" />
         ) : (
-          <TransportSectorAnalysisCard
-            percentageChange={comparissonSectorData?.highestReduction?.percentageChange}
-            sector={dict?.mappedTravelMode[comparissonSectorData?.highestReduction?.sector]}
-            title={dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestReduction.title}
-            icon={getIconByTransportMode({
-              mode: comparissonSectorData?.highestReduction?.sector.toUpperCase(),
-            })}
-            dict={dict}
-            isIncrease={false}
-          />
+          <Link className="card-hover rounded-full" href="/transports">
+            <TransportSectorAnalysisCard
+              percentageChange={comparissonSectorData?.highestReduction?.percentageChange}
+              sector={dict?.mappedTravelMode[comparissonSectorData?.highestReduction?.sector]}
+              title={dict.dashboard.secondSection.cards.TransportSectorAnalysisHighestReduction.title}
+              icon={getIconByTransportMode({
+                mode: comparissonSectorData?.highestReduction?.sector.toUpperCase(),
+              })}
+              dict={dict}
+              isIncrease={false}
+            />
+          </Link>
         )}
       </div>
 
@@ -283,16 +288,18 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
             />
           ))
           : co2EmissionsByModals?.map((emission, index) => (
-            <div
-              className={`${co2EmissionsByModals.length >= 3 &&
-                index === co2EmissionsByModals.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
-                }`}
-              key={`${emission.mode}-${index}`}
-            >
-              <TransportCo2eComparissonCard emission={emission} dict={dict} />
-            </div>
+            <Link className="card-hover rounded-full" href="/transports" key={index}>
+              <div
+                className={`${co2EmissionsByModals.length >= 3 &&
+                  index === co2EmissionsByModals.length - 1
+                  ? "lg:col-span-2 xl:col-span-1"
+                  : ""
+                  }`}
+                key={`${emission.mode}-${index}`}
+              >
+                <TransportCo2eComparissonCard emission={emission} dict={dict} />
+              </div>
+            </Link>
           ))}
       </div>
       <div className="text-lg font-medium flex items-center gap-1 ">
@@ -313,15 +320,17 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
             />
           ))
           : co2EmissionsByModalsEmissionsByPassenger?.map((emission, index) => (
-            <div
-              className={`${co2EmissionsByModalsEmissionsByPassenger.length >= 3 && index === co2EmissionsByModalsEmissionsByPassenger.length - 1
-                ? "lg:col-span-2 xl:col-span-1"
-                : ""
-                }`}
-              key={`${emission.mode}-${index}`}
-            >
-              <TransportEmissionPerPassengerCard emission={emission} dict={dict} />
-            </div>
+            <Link className="card-hover rounded-full" href="/transports" key={index}>
+              <div
+                className={`${co2EmissionsByModalsEmissionsByPassenger.length >= 3 && index === co2EmissionsByModalsEmissionsByPassenger.length - 1
+                  ? "lg:col-span-2 xl:col-span-1"
+                  : ""
+                  }`}
+                key={`${emission.mode}-${index}`}
+              >
+                <TransportEmissionPerPassengerCard emission={emission} dict={dict} />
+              </div>
+            </Link>
           ))}
       </div>
     </div>

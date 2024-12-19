@@ -98,7 +98,7 @@ export default function DashboardSection3({ dict }: DictionaryContextType['dict'
         {isLoadingEnergyFractionsBySector ? (
           <Skeleton className="h-[200px]" />
         ) : (
-          <Link href="/buildings">
+          <Link href="/buildings" className="card-hover rounded-full">
             <Card className="border card-hove h-full ">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
