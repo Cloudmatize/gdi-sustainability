@@ -111,7 +111,7 @@ const CustomLegend = ({
             className="w-[8px] h-[8px] rounded-full"
             style={{ backgroundColor: d?.color }}
           />
-          <span className="text-xs text-foreground text-center">
+          <span className="text-sm text-foreground text-center">
             {dict?.mappedTravelMode[d?.value]}
           </span>
         </div>
@@ -286,12 +286,12 @@ export default function PrintCo2EmissionPerTransport() {
                   tickSize={1}
                   strokeWidth={0.3}
                   stroke="#888888"
-                  fontSize={8}
+                  fontSize={12}
                   tickMargin={18}
                 />
                 <YAxis
                   stroke="#888888"
-                  fontSize={8}
+                  fontSize={12}
                   tickMargin={10}
                   strokeWidth={0.3}
                   tickFormatter={(value: number) => {
@@ -309,9 +309,9 @@ export default function PrintCo2EmissionPerTransport() {
                     label={{
                       position: "top",
                       formatter: (value: number) =>
-                        `${formatCO2Emission(value) || 0} `,
+                        `${formatCO2Emission(value) || 0}`,
                       fill: "#666",
-                      fontSize: 8,
+                      fontSize: 16,
                       offset: 10,
                     }}
                     dataKey={modal}
