@@ -13,6 +13,7 @@ import PrintTransportEmissionTargets from "./print-transport-emissions-targets";
 import { useTransportCO2EmissionByYear } from "@/hooks/transports";
 import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
 
 export interface TargetPrintContentData {
   totalCo2Emission: {
@@ -94,8 +95,8 @@ export default function PrintTargetsPage({
       {isPrinting && <PrintLoadingStatePage />}
       <div ref={componentRef} className=" space-y-4 text-xs  py-4">
         <Header
-          title="Relatório de meta de emissão de CO2"
-          subtitle={title}
+          title="Progresso das Metas de Redução de Emissões"
+          subtitle={`Monitoramento do progresso rumo à meta de redução de emissões de CO₂ até ${TARGET_YEAR}. Inclui análise de aderência, comparação com o ano base de ${BASE_YEAR} e projeções futuras para diferentes meios de transporte.`}
           generatedAt={date}
         />
         <div className="px-8  space-y-3">

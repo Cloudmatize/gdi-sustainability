@@ -32,6 +32,13 @@ function Page() {
   const [selectedPages, setSelectedPages] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
 
+  const mappedTranslations: { [key: string]: string } = {
+    transports: dict.dataSourceInfo.TransportIssuance.title,
+    buildings: dict.dataSourceInfo.BuildingIssuance.title,
+    targets: dict.targets.title,
+  };
+
+  const documentTitle = `Go Sustainability - ${selectedPages.map((page: string) => mappedTranslations[page]).join(", ")}`;
   const handleSelect = (currentValue: string) => {
     setSelectedPages((prev) =>
       prev.includes(currentValue)
@@ -39,7 +46,6 @@ function Page() {
         : [...prev, currentValue]
     );
   };
-
   const pagesToPrint = [
     {
       key: "transports",
@@ -175,7 +181,7 @@ function Page() {
                     ))}
                   </div>
                   <PrintButton
-                    title={dict?.settings?.printTitle || "Print Pages"}
+                    title={documentTitle}
                     showLabel
                     disabled={selectedPages.length === 0}
                     contentToPrint={contentRef}

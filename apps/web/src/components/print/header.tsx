@@ -31,7 +31,7 @@ export function Header({ title, subtitle, generatedAt }: HeaderProps) {
       <div className="flex flex-col justify-center items-center space-y-1">
         <h2 className="text-2xl font-bold">{title}</h2>
 
-        {subtitle && <p className="text-sm">{subtitle}</p>}
+        {subtitle && <p className="text-sm max-w-2xl mt-3 mb-1 text-center">{subtitle}</p>}
 
         <p className="text-xs pt-2">
           {`${dict?.print?.generatedWhen} ${generatedAt || format(new Date(), "dd/MM/yyyy HH:mm")}`}

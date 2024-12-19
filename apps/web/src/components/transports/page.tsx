@@ -89,7 +89,7 @@ export default function TransportsPage() {
                 onValueChange={handleYearChange}
               />
               <PrintButton
-                title="Página de emissões de CO2 por transporte"
+                title="Relatório de Emissões de Transporte - 2022"
                 disabled={false}
                 contentToPrint={contentRef}
               />

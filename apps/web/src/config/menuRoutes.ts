@@ -68,14 +68,14 @@ export const routes: Route[] = [
         router_title: "targets_tracker",
         icon: Goal,
       },
-      {
-        title: "Histórico de simulações",
-        path: "/targets/history",
-        router_title: "targets_history",
-        id: 6,
-        icon: Goal,
-        disabled: true
-      },
+      // {
+      //   title: "Histórico de simulações",
+      //   path: "/targets/history",
+      //   router_title: "targets_history",
+      //   id: 6,
+      //   icon: Goal,
+      //   disabled: true
+      // },
     ],
   },
 ];

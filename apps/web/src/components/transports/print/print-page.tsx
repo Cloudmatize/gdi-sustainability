@@ -36,8 +36,8 @@ export default function PrintTransportsPage({ componentRef }: Props) {
         {isPrinting && <PrintLoadingStatePage />}
         <div ref={componentRef} className=" space-y-4 text-xs  ">
           <Header
-            title="Página de emissões por transporte"
-            subtitle="Página de emissões por transporte gerada em 2023 (fix)"
+            title="Relatório de Emissões de Transporte - 2022"
+            subtitle="Análise das emissões de CO₂ no transporte, destacando valores totais, divisões geográficas e por tipo de veículo. Inclui tendências anuais e eficiência por quilômetro para suporte às metas de sustentabilidade."
             generatedAt={new Date().toLocaleDateString()}
           />
 

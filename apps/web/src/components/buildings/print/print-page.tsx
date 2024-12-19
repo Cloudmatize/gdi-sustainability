@@ -28,8 +28,10 @@ export default function PrintBuildingsPage({ componentRef }: Props) {
         {isPrinting && <PrintLoadingStatePage />}
         <div ref={componentRef} className=" space-y-4 text-xs  ">
           <Header
-            title="Relatório de meta de emissão de CO2"
-            subtitle={"Página de emissões de CO2 por edifícios"}
+            title="Relatório de Emissões de Edifícios"
+            subtitle={
+              "Apresentação das emissões de CO₂ por edificações residenciais e não residenciais, incluindo composição energética e intensidade por fonte. Destaque para o impacto ambiental das diferentes fontes de energia no período avaliado."
+            }
             generatedAt={new Date().toLocaleDateString()}
           />
 

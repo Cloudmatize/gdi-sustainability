@@ -32,7 +32,7 @@ export function PrintButton({
         handlePrint();
         setStartToPrint(false);
         setIsPrinting(false);
-      }, 3_000);
+      }, 8_000);
 
       return () => {
         clearTimeout(timer);
