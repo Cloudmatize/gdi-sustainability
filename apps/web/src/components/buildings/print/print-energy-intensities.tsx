@@ -59,7 +59,7 @@ export default function PrintEnergyIntensities() {
   const { dict } = useDictionary();
   const { data, isFetching } = useBuildingsEnergyIntensitiesBySector({});
   return (
-    <div className="space-y-6 py-2 text-xs">
+    <div className="space-y-6 py-2 text-xs  min-w-[1000px]  md:w-full">
       <div className="flex flex-col gap-4">
         <h2 className="text-base font-semibold text-foreground mb-2">
           {dict?.buildings.sections.EnergyIntensities.title}
@@ -73,7 +73,7 @@ export default function PrintEnergyIntensities() {
         {isFetching ? (
           <Skeleton className="h-[200px] w-full" />
         ) : (
-          <Card className={`min-w-[1460px] md:w-full h-[200px] pt-10`}>
+          <Card className={`min-w-[1000px] md:w-full h-[200px] pt-10`}>
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data || []}>
                 <PolarGrid />

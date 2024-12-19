@@ -143,10 +143,6 @@ const renderCustomizedLabelPieChart = ({
         }
       </tspan>
       <tspan x={x} dy="1.2em">
-        {
-          dict?.buildings?.sections?.EnergyFractions?.cards
-            ?.ImpactOfEnergySourcesOnEmissions?.CustomPieChartTooltip?.[1]
-        }{" "}
         <tspan className="font-bold">
           {(payload.percentage * 100).toFixed(1)}%
         </tspan>{" "}
@@ -246,7 +242,7 @@ export default function PrintEnergyFractions() {
     : [];
 
   return (
-    <div className="space-y-12 py-6 text-xs">
+    <div className="space-y-12 py-6 text-xs min-w-[1200px]  md:w-full">
       <div className="flex flex-col gap-4">
         <h2 className="text-base font-semibold text-foreground mb-2">
           {dict?.buildings.sections.EnergyFractions.title}
@@ -260,14 +256,14 @@ export default function PrintEnergyFractions() {
           <Skeleton className="h-[300px] w-full first:rounded-xl" />
         ) : (
           <Card className="p-6 ">
-            <div className="space-y-4 w-[400px] sm:w-full">
+            <div className="space-y-4 w-[435px] sm:w-full">
               <h3 className="font-semibold">
                 {
                   dict?.buildings.sections.EnergyFractions.cards
                     .CompositionOfEnergySourcesBySector.title
                 }
               </h3>
-              <div className=" h-[250px]  min-w-[730px]  md:w-1/2 ">
+              <div className=" h-[250px]  min-w-[435px]  md:w-1/2 ">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={translatedData?.energyFractions}
@@ -347,7 +343,7 @@ export default function PrintEnergyFractions() {
                   .ImpactOfEnergySourcesOnEmissions.title
               }
             </h3>
-            <div className="  h-[250px] min-w-[615px]  md:w-1/2">
+            <div className="  h-[250px] min-w-[535px]  md:w-1/2">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
