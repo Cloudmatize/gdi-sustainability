@@ -7,8 +7,6 @@ import {
 } from "@/hooks/transports";
 import { getIconByTransportMode } from "@/utils/get-icon-by-transport-mode";
 import { calculateEmissionsForSingleMode } from "@/utils/transports/calculate-emission-for-single-mode";
-import Link from "next/link";
-import ModalAnalysisYearlyCard from "../transports/cards/modal-anaylsis-yearly-card";
 import InfoTooltip from "../ui/info-tooltip";
 import { Skeleton } from "../ui/skeleton";
 import TransportCo2eComparissonCard, {
@@ -199,7 +197,7 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
 
   return (
     <div className="space-y-6">
-      <div className="text-xl font-bold">
+      {/* <div className="text-xl font-bold">
         {dict.dashboard.secondSection.title}{secondYear}
       </div>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
@@ -232,7 +230,7 @@ export default function DashboardSection2({ dict }: DictionaryContextType) {
               </Link>
             )
           })}
-      </div>
+      </div> */}
 
       <div className="text-xl font-bold">
         {dict.dashboard.secondSection.cards.title}
