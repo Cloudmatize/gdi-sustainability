@@ -1,16 +1,17 @@
 "use client";
 
-import { useDictionary } from "@/context/DictionaryContext";
+import PrintLoadingStatePage from "@/components/print-loading-page";
+import { Header } from "@/components/print/header";
 import { usePrintStore } from "@/store/print";
-import type { TransferRow } from "@/store/targets";
-import type { TravelMode } from "@/types/transports";
-import type { MutableRefObject } from "react";
-import PrintLoadingStatePage from "../print-loading-page";
-import { Header } from "../print/header";
-import DistributionsMode from "./print/print-distribution-transfers";
-import PrintGoalTrackerTable from "./print/print-goal-tracker-table";
-import PrintOverviewInfo from "./print/print-overview-info";
-import PrintTransportEmissionTargets from "./print/print-transport-emissions-targets";
+import { TransferRow } from "@/store/targets";
+import { TravelMode } from "@/types/transports";
+import { MutableRefObject } from "react";
+import PrintOverviewInfo from "./print-overview-info";
+import DistributionsMode from "./print-distribution-transfers";
+import PrintGoalTrackerTable from "./print-goal-tracker-table";
+import PrintTransportEmissionTargets from "./print-transport-emissions-targets";
+import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { useDictionary } from "@/context/DictionaryContext";
 
 export interface TargetPrintContentData {
   totalCo2Emission: {
@@ -27,21 +28,21 @@ export interface TargetPrintContentData {
     co2Emission: number | null;
   };
   targetsCo2EmissionByModal:
-  | {
-    mode: TravelMode;
-    co2Emissions: number;
-    trips: number;
-  }[]
-  | null
-  | undefined;
+    | {
+        mode: TravelMode;
+        co2Emissions: number;
+        trips: number;
+      }[]
+    | null
+    | undefined;
   transportEmissionsTarget:
-  | {
-    year: number;
-    co2Emission: number | null;
-    targetCo2Emission: number | null;
-  }[]
-  | null
-  | undefined;
+    | {
+        year: number;
+        co2Emission: number | null;
+        targetCo2Emission: number | null;
+      }[]
+    | null
+    | undefined;
 }
 interface Props {
   componentRef?: MutableRefObject<null>;
@@ -51,24 +52,61 @@ interface Props {
   data: TargetPrintContentData;
 }
 
-export default function PrintTargetReportPage({
+const transformData = (
+  data: {
+    year: number;
+    co2Emission: number | null;
+  }[]
+) => {
+  const targetEmissions = calculateCityEmissionTargets(
+    data[0]?.co2Emission || 0
+  );
+
+  const formattedData: {
+    year: number;
+    co2Emission: number | null;
+    targetCo2Emission: number | null;
+  }[] = [];
+
+  const allYears = new Set([
+    ...data.map((item) => item.year),
+    ...Object.keys(targetEmissions).map((year) => Number.parseInt(year, 10)),
+  ]);
+
+  // biome-ignore lint/complexity/noForEach: <explanation>
+  allYears.forEach((year) => {
+    const co2Emission =
+      data.find((item) => item.year === year)?.co2Emission || null;
+    const targetCo2Emission = targetEmissions[year] || null;
+
+    formattedData.push({
+      year,
+      co2Emission,
+      targetCo2Emission,
+    });
+  });
+  return formattedData;
+};
+
+export default function PrintTargetsPage({
   componentRef,
   isHistoryReport = false,
+
   date,
   title,
   data: {
     transfers,
     totalCo2Emission,
-    yearBaseCo2Emission,
     lastYearCo2Emission,
     targetCo2EmissionsFinalYear,
     targetsCo2EmissionByModal,
     transportEmissionsTarget,
+    yearBaseCo2Emission,
   },
 }: Props) {
   const hypothesisMode = isHistoryReport ? true : false;
   const { isPrinting } = usePrintStore();
-  const { dict } = useDictionary()
+  const { dict } = useDictionary();
 
   return (
     <div className=" h-screen">

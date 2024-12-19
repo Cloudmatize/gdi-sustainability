@@ -61,7 +61,7 @@
       "router_title": "buildings"
     },
     "targets": {
-      "title": "Rastreador de metas",
+      "title": "Metas",
       "router_title": "targets"
     },
     "targets_history": {

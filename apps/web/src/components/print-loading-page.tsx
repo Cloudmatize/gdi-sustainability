@@ -6,15 +6,14 @@ import { useDictionary } from "@/context/DictionaryContext";
 import { Printer } from "lucide-react";
 
 export default function PrintLoadingStatePage() {
-  const { dict } = useDictionary()
+  const { dict } = useDictionary();
   return (
-    <div className="min-h-screen  flex items-center justify-center bg-white p-4">
+    <div className="min-h-screen  flex items-center justify-center bg-white p-4 print:hidden">
       <Card className="w-full max-w-lg relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-2xl font-bold text-slate-700">
             <Skeleton className="h-8 w-48" />
           </CardTitle>
-          <Printer className="h-6 w-6 text-slate-700" />
         </CardHeader>
         <CardContent>
           <Skeleton className="h-4 w-full mb-2" />
@@ -27,9 +26,7 @@ export default function PrintLoadingStatePage() {
             <h2 className="text-2xl font-bold text-slate-700 mb-2">
               {dict?.loadingTitle}
             </h2>
-            <p className="text-slate-600">
-              {dict?.loadingDescription}
-            </p>
+            <p className="text-slate-600">{dict?.loadingDescription}</p>
           </div>
         </div>
       </Card>

@@ -5,17 +5,22 @@ import { MutableRefObject, useEffect, useState } from "react";
 import { Printer } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
 import { usePrintStore } from "@/store/print";
+import { cx } from "class-variance-authority";
 
 interface PrintButtonProps {
   title?: string;
   disabled: boolean;
   contentToPrint: MutableRefObject<null>;
+  className?: string;
+  showLabel?: boolean;
 }
 
 export function PrintButton({
   title = "Print This Document",
   disabled,
   contentToPrint,
+  className,
+  showLabel = false,
 }: PrintButtonProps) {
   const { setIsPrinting } = usePrintStore();
   const [startToPrint, setStartToPrint] = useState(false);
@@ -27,9 +32,13 @@ export function PrintButton({
         handlePrint();
         setStartToPrint(false);
         setIsPrinting(false);
-      }, 2000);
+      }, 8_000);
 
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        setStartToPrint(false);
+        setIsPrinting(false);
+      };
     }
   }, [startToPrint]);
 
@@ -43,6 +52,12 @@ export function PrintButton({
     },
     
     contentRef: contentToPrint,
+    pageStyle: `@media print {
+      @page {
+        size: A4;
+        margin: 1mm;
+      }
+    }`,
   });
 
   return (
@@ -50,11 +65,17 @@ export function PrintButton({
       id="print-button"
       variant="outline"
       size="sm"
-      className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 p-2"
+      className={
+        (cx(
+          "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 p-2"
+        ),
+        className)
+      }
       disabled={disabled || startToPrint}
       onClick={() => setStartToPrint(true)}
     >
       <Printer className="h-4 w-4" />
+      {showLabel && "Print"}
     </Button>
   );
 }

@@ -17,7 +17,7 @@ export function useBuildingsFloorAreasBySector({
   return useQuery({
     queryKey: [`(buildings): floor-areas-by-sector`, extraKey],
     queryFn: () => getBuildingsFloorAreasBySector({}),
-    staleTime: 0,
+    staleTime: Infinity,
     enabled,
     refetchOnWindowFocus: false,
   });
@@ -27,7 +27,7 @@ export function useBuildingsCO2EmissionsBySector({}) {
   return useQuery({
     queryKey: [`(buildings): co2-emissions-by-sector`],
     queryFn: () => getBuildingsCO2EmissionsBySector({}),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
@@ -36,7 +36,7 @@ export function useBuildingsEnergyFractionsBySector({}) {
   return useQuery({
     queryKey: [`(buildings): energy-fractions-by-sector`],
     queryFn: () => getBuildingsEnergyFractionsBySector({}),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
@@ -45,7 +45,7 @@ export function useBuildingsEnergyIntensitiesBySector({}) {
   return useQuery({
     queryKey: [`(buildings): energy-intensities-by-sector`],
     queryFn: () => getBuildingsEnergyIntensitiesBySector({}),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }

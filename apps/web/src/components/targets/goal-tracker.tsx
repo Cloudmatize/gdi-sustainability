@@ -20,9 +20,9 @@ import { Skeleton } from "../ui/skeleton";
 import GoalCard from "./goal-card";
 import GoalTrackerTable from "./goal-tracker-table";
 import MultiModalSimulatorTransferSimulator from "./modal-trips-transfer-simulator";
-import PrintTargetReportPage from "./print-target-report-page";
 import TransportEmissionTargets from "./sections/transport-emissions-targets";
 import TargetAdherenceCard from "./target-adherence-card";
+import PrintTargetsPage from "./print/print-page";
 
 const transformData = (
   data: {
@@ -242,7 +242,7 @@ export default function GoalTracker({ dict }: DictionaryContextType) {
         )}
       </div>
       {isPrinting && (
-        <PrintTargetReportPage
+        <PrintTargetsPage
           componentRef={contentRef}
           data={printContent}
           isHistoryReport={hypothesisMode}

@@ -21,7 +21,7 @@ export function useTransportsCO2Emission({
       getTransportsCO2Emission({
         filters,
       }),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
@@ -37,7 +37,7 @@ export function useTransportsCO2EmissionByTravelBounds({
       getTransportsCO2EmissionByTravelBounds({
         filters,
       }),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
@@ -53,7 +53,7 @@ export function useTransportsCO2EmissionPerKM({
       getTransportsCO2EmissionPerKM({
         filters,
       }),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchInterval: 0,
     refetchOnWindowFocus: false,
   });
@@ -67,7 +67,7 @@ export function useTransportsCO2EmissionByYearAndModal({
   return useQuery({
     queryKey: ["(transports): co2-emission-by-year-and-modal", filters],
     queryFn: () => getTransportsCO2EmissionByYearAndModal({ filters }),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
@@ -76,7 +76,7 @@ export function useTransportsCO2EmissionModalAnalysis() {
   return useQuery({
     queryKey: ["(transports): c02-emission-modal-analysis"],
     queryFn: () => getTransportsCO2EmissionModalAnalysis(),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
@@ -91,7 +91,7 @@ export function useTransportCO2EmissionByYear({
   return useQuery({
     queryKey: ["(transports): co2-emission-by-year", filters],
     queryFn: () => getTransportsCO2EmissionByYear({ filters }),
-    staleTime: 0,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 }
