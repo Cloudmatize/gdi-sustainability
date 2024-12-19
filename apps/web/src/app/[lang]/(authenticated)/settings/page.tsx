@@ -83,7 +83,7 @@ function Page() {
   const { isPrinting } = usePrintStore();
 
   return (
-    <>
+    <div className="overflow-hidden h-screen">
       <PrintPagesContainer />
       <div
         className={cx(
@@ -187,7 +187,7 @@ function Page() {
           </section>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
