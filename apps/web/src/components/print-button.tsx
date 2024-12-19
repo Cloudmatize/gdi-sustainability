@@ -50,6 +50,7 @@ export function PrintButton({
     onAfterPrint: () => {
       setIsPrinting(false);
     },
+    
     contentRef: contentToPrint,
     pageStyle: `@media print {
       @page {

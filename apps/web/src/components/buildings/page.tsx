@@ -10,31 +10,11 @@ import InfoCard from "../info-card";
 import YearSelect from "../year-select";
 import EnergyFractions from "./sections/energy-fractions";
 import EnergyIntensities from "./sections/energy-intensities";
-import { PrintButton } from "../print-button";
+import PrintBuildingsPage from "./print/print-page";
 import { useRef } from "react";
 import { usePrintStore } from "@/store/print";
-import PrintBuildingsPage from "./print/print-page";
 import { cx } from "class-variance-authority";
-
-type FlorAreasBySector = {
-  residential: {
-    area: number;
-    count: number;
-    co2Emission: number;
-    percentage: number;
-  };
-  notResidential: {
-    area: number;
-    count: number;
-    co2Emission: number;
-    percentage: number;
-  };
-  total: {
-    area: number;
-    count: number;
-    co2Emission: number;
-  };
-};
+import { PrintButton } from "../print-button";
 
 export default function BuildingsPage() {
   const { dict } = useDictionary();
@@ -81,6 +61,12 @@ export default function BuildingsPage() {
           </p>
           <DataSourceInfo />
 
+          {/* Description */}
+          <p className="text-muted-foreground max-w-lg">
+            {dict?.buildings.description}
+          </p>
+          <DataSourceInfo />
+
           <div className="border-t border-gray-200 py-6" />
           <p className="text-muted-foreground ">
             {dict?.buildings.metrics.title}
@@ -94,7 +80,7 @@ export default function BuildingsPage() {
               value={formatCO2Emission(data?.total?.co2Emission)}
               percentage={"100%"}
               description={`
-           ${formatNumber(data?.total?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.total?.area)}m²)`}
+             ${formatNumber(data?.total?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.total?.area)}m²)`}
             />
             <InfoCard
               icon={MdCo2}
@@ -104,7 +90,7 @@ export default function BuildingsPage() {
               value={formatCO2Emission(data?.residential?.co2Emission)}
               percentage={data?.residential?.percentage}
               description={`
-           ${formatNumber(data?.residential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.residential.area)}m²)`}
+             ${formatNumber(data?.residential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.residential.area)}m²)`}
             />
             <InfoCard
               icon={MdCo2}
@@ -114,14 +100,13 @@ export default function BuildingsPage() {
               }
               percentage={data?.notResidential?.percentage}
               description={`
-            ${formatNumber(data?.notResidential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.notResidential.area)}m²)`}
+              ${formatNumber(data?.notResidential?.count)} ${dict?.buildings.metrics.totalEmissions.description} (${formatNumber(data?.notResidential.area)}m²)`}
             />
           </div>
           <EnergyFractions dict={dict} />
           <EnergyIntensities dict={dict} />
         </div>
       </div>
-
       <div className="h-screen">
         <PrintBuildingsPage componentRef={contentRef} />
       </div>

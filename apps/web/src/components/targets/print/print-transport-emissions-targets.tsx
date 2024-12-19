@@ -1,10 +1,8 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { BASE_YEAR, TARGET_YEAR } from "@/constants/targets";
+import { useDictionary } from "@/context/DictionaryContext";
 import { calculateSimulatedCO2Emissions } from "@/services/transports/graphql";
-import { useTargetsStore } from "@/store/targets";
 import { formatCO2Emission } from "@/utils/format-co2-emission";
 import { Target } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,18 +16,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 const currentYear = new Date().getFullYear();
-const mappedGoal = {
-  targetCo2Emission: "Meta de emissões",
-  co2Emission: "Total de emissões",
-  simulatedCo2Emission: "Emissões projetadas",
-};
 function checkEmissionsStatus(
   currentEmission: number | undefined | null,
   targetEmission: number | undefined | null
 ) {
+  const { dict } = useDictionary()
   if (!currentEmission) return null;
   if (
     targetEmission !== undefined &&
@@ -37,25 +31,25 @@ function checkEmissionsStatus(
     currentEmission <= targetEmission
   ) {
     return {
-      status: "Dentro da meta",
+      status: dict?.targets?.goalsTracker?.cards?.transportEmissionTargets?.inTheGoal,
       differencePercentage: 0,
     };
-  } else {
-    const differencePercentage = targetEmission
-      ? ((currentEmission - targetEmission) / targetEmission) * 100
-      : 0;
-    return {
-      status: "Fora da meta",
-      differencePercentage: differencePercentage?.toFixed(2),
-      sugestion:
-        targetEmission !== undefined
-          ? targetEmission !== null &&
-            `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
-          : undefined,
-    };
   }
+  const differencePercentage = targetEmission
+    ? ((currentEmission - targetEmission) / targetEmission) * 100
+    : 0;
+  return {
+    status: dict?.targets?.goalsTracker?.cards?.transportEmissionTargets?.outOfTheGoal,
+    differencePercentage: differencePercentage?.toFixed(2),
+    sugestion:
+      targetEmission !== undefined
+        ? targetEmission !== null &&
+        `Reduza ${formatCO2Emission(currentEmission - targetEmission)} toneladas de CO2 para alcançar a meta`
+        : undefined,
+  };
 }
 const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
+  const { dict } = useDictionary()
   return (
     <div className="custom-legend w-full flex gap-3 justify-start items-center mt-8 ">
       {payload?.map((d, index) => (
@@ -65,7 +59,7 @@ const CustomLegend = ({ payload }: { payload?: Payload[] }) => {
             style={{ backgroundColor: d?.color }}
           />
           <span className="text-xs text-foreground text-center">
-            {mappedGoal[d?.value as keyof typeof mappedGoal]}
+            {dict?.targets?.goalsTracker?.cards?.transportEmissionTargets?.chart?.mappedGoal[d?.value as string] || ""}
           </span>
         </div>
       ))}
@@ -81,6 +75,7 @@ const CustomTooltip = ({
   payload?: Payload[];
   label?: string;
 }) => {
+  const { dict } = useDictionary()
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip bg-gray-50 border p-3 rounded-lg">
@@ -98,7 +93,7 @@ const CustomTooltip = ({
                     style={{ backgroundColor: item.color }}
                   />
                   <span className="text-foreground font-bold  text-center">
-                    {mappedGoal[item?.dataKey as keyof typeof mappedGoal] || ""}
+                    {dict?.targets?.goalsTracker?.cards?.transportEmissionTargets?.chart?.mappedGoal[item?.dataKey as string] || ""}
                   </span>
                 </div>
                 {formatCO2Emission(item.value) || 0} tons
@@ -183,19 +178,20 @@ export default function PrintTransportEmissionTargets({
     lastYearData?.co2Emission,
     lastYearData?.targetCo2Emission
   );
+  const { dict } = useDictionary()
   return (
     <div className="border rounded-lg ">
       <div className="p-6 h-[500px] w-[300px] sm:w-full text-xs">
         <div className="mb-8 space-y-2 ">
           <div className="text-sm text-muted-foreground">
-            Grau de aderência a meta
+            {dict?.targets?.goalsTracker?.cards?.transportEmissionTargets?.title}
           </div>
           <div
-            className={`flex gap-3 items-center text-lg font-bold text-gray-500 `}
+            className={"flex gap-3 items-center text-lg font-bold text-gray-500 "}
           >
             {currentYearEmissionStatus?.status}
-            <div className={`rounded-lg bg-gray-200 p-1.5 `}>
-              <Target className={`h-3 w-3 text-gray-500 `} />
+            <div className={"rounded-lg bg-gray-200 p-1.5 "}>
+              <Target className={"h-3 w-3 text-gray-500 "} />
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { CardContent } from "@/components/ui/card";
+import { useDictionary } from "@/context/DictionaryContext";
 import { useTargetsStore } from "@/store/targets";
 import { ArrowDown, ArrowUp, Target } from "lucide-react";
 import { MdCo2 } from "react-icons/md";
@@ -7,6 +8,7 @@ export default function PrintModalSimulator() {
   const {
     totalCo2Emission: { original, percentage, simulated },
   } = useTargetsStore();
+  const { dict } = useDictionary()
   const percentageColor =
     percentage > 0 ? "text-primary-foreground" : "text-red-500";
   return (
@@ -22,7 +24,7 @@ export default function PrintModalSimulator() {
                 {original.toLocaleString()} tCO2e
               </span>
               <span className="text-xs text-muted-foreground  ">
-                total de emissão inicial
+                {dict?.targets?.goalsTracker?.cards?.goalTrackerTable?.modalSimulator?.totalInitialIssuance}
               </span>
             </div>
           </div>
@@ -52,7 +54,7 @@ export default function PrintModalSimulator() {
                 {simulated.toLocaleString()} tCO2e
               </span>
               <span className="text-xs text-muted-foreground ">
-                total de emissão prevista
+                {dict?.targets?.goalsTracker?.cards?.goalTrackerTable?.modalSimulator?.totalExpectedIssuance}
               </span>
             </div>
           </div>

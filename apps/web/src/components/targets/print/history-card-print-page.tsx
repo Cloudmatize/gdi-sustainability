@@ -10,9 +10,8 @@ import PrintOverviewInfo from "./print-overview-info";
 import DistributionsMode from "./print-distribution-transfers";
 import PrintGoalTrackerTable from "./print-goal-tracker-table";
 import PrintTransportEmissionTargets from "./print-transport-emissions-targets";
-import { useTransportCO2EmissionByYear } from "@/hooks/transports";
-import { useTargetsCO2EmissionByModal } from "@/hooks/targets";
 import { calculateCityEmissionTargets } from "@/services/transports/graphql";
+import { useDictionary } from "@/context/DictionaryContext";
 
 export interface TargetPrintContentData {
   totalCo2Emission: {
@@ -107,13 +106,14 @@ export default function PrintTargetsPage({
 }: Props) {
   const hypothesisMode = isHistoryReport ? true : false;
   const { isPrinting } = usePrintStore();
+  const { dict } = useDictionary();
 
   return (
-    <div className=" h-screen  ">
+    <div className=" h-screen">
       {isPrinting && <PrintLoadingStatePage />}
       <div ref={componentRef} className=" space-y-4 text-xs  py-4">
         <Header
-          title="Relatório de meta de emissão de CO2"
+          title={dict?.print?.targetsHeaderTitle}
           subtitle={title}
           generatedAt={date}
         />

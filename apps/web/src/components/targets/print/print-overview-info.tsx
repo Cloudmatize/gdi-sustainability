@@ -1,4 +1,5 @@
 import { BASE_YEAR, REDUCTION_RATE, TARGET_YEAR } from "@/constants/targets";
+import { useDictionary } from "@/context/DictionaryContext";
 
 export default function PrintOverviewInfo({
   yearBaseCo2Emission = 0,
@@ -23,31 +24,33 @@ export default function PrintOverviewInfo({
   const simulatedAdherence =
     (targetCo2EmissionsFinalYear / simulatedEmissions) * 100;
 
+  const { dict } = useDictionary()
+
   return (
     <div className="flex justify-between">
       <div className="space-y-1 ">
-        <div className="text-xs font-medium text-gray-500">Ano base</div>
+        <div className="text-xs font-medium text-gray-500">{dict?.targets?.goalsTracker?.cards?.baseYear?.title}</div>
         <div className="text-xl font-bold">{BASE_YEAR}</div>
         <div className="font-semibold text-muted-foreground">
           {Math.trunc(yearBaseCo2Emission).toLocaleString()}
         </div>
-        <div className="text-xs text-gray-500">toneladas de CO₂</div>
+        <div className="text-xs text-gray-500">{dict?.targets?.goalsTracker?.cards?.baseYear?.subUnit}</div>
       </div>
 
       <div className="space-y-1">
-        <div className="text-xs font-medium text-gray-500">Meta</div>
+        <div className="text-xs font-medium text-gray-500">{dict?.targets?.goalsTracker?.cards?.target?.title}</div>
         <div className="text-xl font-bold">{TARGET_YEAR}</div>
         <div className="font-semibold text-muted-foreground">
           {Math.trunc(
             yearBaseCo2Emission * ((100 - REDUCTION_RATE) / 100)
           ).toLocaleString()}
         </div>
-        <div className="text-xs text-gray-500">toneladas de CO₂ (-20%)</div>
+        <div className="text-xs text-gray-500">{dict?.targets?.goalsTracker?.cards?.target?.subUnit} (-20%)</div>
       </div>
 
       <div className="space-y-1">
         <div className="text-xs font-medium text-gray-500">
-          Índice de aderência à meta
+          {dict?.targets?.goalsTracker?.cards?.targetAdherence?.title}
         </div>
         <div className="flex gap-3 items-center">
           <div className="text-xl font-bold">{baseAdherence.toFixed(2)}% </div>
@@ -78,7 +81,7 @@ export default function PrintOverviewInfo({
           )}
         </div>
 
-        <div className="text-xs text-gray-500">toneladas de CO₂</div>
+        <div className="text-xs text-gray-500">{dict?.targets?.goalsTracker?.cards?.baseYear?.subUnit}</div>
       </div>
     </div>
   );
